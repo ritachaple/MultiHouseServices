@@ -9,6 +9,9 @@
     "@types/react": "*",
     "@types/react-native": "*",
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@react-navigation/stack": "*",
+    "@react-navigation/native": "*",
+    "react-native-gesture-handler": "*"
   }
 }
