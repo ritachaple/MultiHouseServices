@@ -3,6 +3,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { View, Text, Button } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { CheckBox } from 'react-native-elements'
 
 const linking = {
   prefixes: [],
@@ -21,6 +22,16 @@ const HomeScreen = (props: any) => {
       <Button
         title="Go to DetailsScreen"
         onPress={() => props.navigation.navigate('Details')}
+      />
+      <CheckBox
+        center
+        title="Click Here to Remove This Item"
+        iconRight
+        iconType="material"
+        checkedIcon="clear"
+        uncheckedIcon="add"
+        checkedColor="red"
+        checked
       />
     </View>
   )
