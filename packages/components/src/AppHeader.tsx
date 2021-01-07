@@ -1,3 +1,5 @@
-import { Header as AppHeader } from 'react-native/Libraries/NewAppScreen'
+import React from 'react'
 
-export { AppHeader }
+export function AppHeader() {
+  return <></>
+}

@@ -45,8 +45,5 @@
     "*.{js,jsx,ts,tsx,json,html,md,css}": [
       "prettier --write"
     ]
-  },
-  "dependencies": {
-    "axios": "^0.21.1"
   }
 }

@@ -12,9 +12,7 @@
     "@types/react-native": "*",
     "react": "*",
     "react-native": "*",
-    "react-native-gesture-handler": "*"
-  },
-  "dependencies": {
-    "axios": "^0.21.1"
+    "react-native-gesture-handler": "*",
+    "axios": "*"
   }
 }

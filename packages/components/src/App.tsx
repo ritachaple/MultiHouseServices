@@ -9,13 +9,8 @@ import {
 } from 'react-native'
 import Navigation from './code/provider/navigation/Navigation'
 
-import { AppHeader } from './AppHeader'
-
 export function App() {
-  return (
-    // <Text>Hello</Text>
-    <Navigation />
-  )
+  return <Navigation />
 }
 
 const styles = StyleSheet.create({

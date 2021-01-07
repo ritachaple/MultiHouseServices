@@ -16,30 +16,6 @@ const linking = {
   },
 }
 
-const HomeScreen = (props: any) => {
-  return (
-    <View>
-      <Text>Login</Text>
-      <Button
-        title="Go to DetailsScreen"
-        onPress={() => props.navigation.navigate('Details')}
-      />
-    </View>
-  )
-}
-
-const DetailsScreen = (props: any) => {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-      <Button
-        title="Go to Login"
-        onPress={() => props.navigation.navigate('Login')}
-      />
-      <Button title="Go back" onPress={() => props.navigation.goBack()} />
-    </View>
-  )
-}
 const Stack = createStackNavigator()
 
 const Navigation = () => {
@@ -50,7 +26,6 @@ const Navigation = () => {
         headerMode="none"
         screenOptions={{ animationEnabled: true }}
       >
-        <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
       </Stack.Navigator>

@@ -10,3 +10,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+@font-face {
+  font-family: 'MaterialIcons';
+  src: url('./Fonts/MaterialIcons.ttf');
+}
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('./Fonts/FontAwesome.ttf');
+}
