@@ -3,8 +3,10 @@ import { View, Text, StyleSheet } from 'react-native'
 
 const colors = ['red', 'green', 'blue', 'black']
 
-const List = (props: any) => {
-  const [item] = props
+const List = ({ item }: { item: any }) => {
+  // const {item} = props;
+  // console.log('List item: ',props);
+
   return (
     <View style={styles.container}>
       <View style={styles.text}>

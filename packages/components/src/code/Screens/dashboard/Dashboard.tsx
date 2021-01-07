@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native'
-import SearchComplaints from '../Component/SearchComponent'
+import SearchComplaints from '../../Component/SearchComponent'
 
 const Dashboard = ({ navigation }: { navigation: any }) => {
   return (

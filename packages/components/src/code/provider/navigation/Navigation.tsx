@@ -3,8 +3,8 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { View, Text, Button } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
-import Dashboard from '../../Screens/dashboard/Dashboard'
-import Login from '../../Screens/login/login'
+import Dashboard from '../../screens/dashboard/Dashboard'
+import Login from '../../screens/login/login'
 
 const linking = {
   prefixes: [],
