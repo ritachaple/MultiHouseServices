@@ -6,12 +6,15 @@
     "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
+    "@react-navigation/native": "*",
+    "@react-navigation/stack": "*",
     "@types/react": "*",
     "@types/react-native": "*",
     "react": "*",
     "react-native": "*",
-    "@react-navigation/stack": "*",
-    "@react-navigation/native": "*",
     "react-native-gesture-handler": "*"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
   }
 }

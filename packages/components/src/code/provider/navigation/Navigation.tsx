@@ -3,6 +3,8 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { View, Text, Button } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
+import Dashboard from '../../Screens/dashboard/Dashboard'
+import Login from '../../Screens/login/login'
 
 const linking = {
   prefixes: [],
@@ -49,7 +51,8 @@ const Navigation = () => {
         screenOptions={{ animationEnabled: true }}
       >
         <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="Login" component={HomeScreen} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
       </Stack.Navigator>
     </NavigationContainer>
   )
