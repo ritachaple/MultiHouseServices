@@ -13,6 +13,8 @@
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": "*",
-    "axios": "*"
+    "axios": "*",
+    "moment": "*",
+    "react-native-elements":"*"
   }
 }

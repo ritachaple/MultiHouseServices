@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native'
+import GoBack from '../../Component/GoBack'
 import SearchComplaints from '../../Component/SearchComponent'
 
 const Dashboard = ({ navigation }: { navigation: any }) => {
@@ -7,11 +8,7 @@ const Dashboard = ({ navigation }: { navigation: any }) => {
     <View style={styles.container}>
       {/* <Text>Dashboard</Text> */}
       <SearchComplaints />
-      {/* <Button
-          title="Go to Home"
-          onPress={() => navigation.navigate('Home')}
-        /> */}
-      <Button title="Go back" onPress={() => navigation.goBack()} />
+      <GoBack navigation={navigation} />
     </View>
   )
 }

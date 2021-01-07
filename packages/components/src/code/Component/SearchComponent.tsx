@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { View, SafeAreaView, FlatList, Text } from 'react-native'
+import {
+  View,
+  Dimensions,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+} from 'react-native'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import ListComponent from './ListComponent'
+
+const windowWidth = Dimensions.get('window').width
+const windowHeight = Dimensions.get('window').height
 
 const SearchComplaints = () => {
   const [tickit, setTickit] = useState([])
@@ -19,8 +28,8 @@ const SearchComplaints = () => {
         department: [],
         is_deleted: false,
         is_spam: false,
-        to_date: '2021-01-06T12:21:25.060Z',
-        from_date: '2020-12-23T12:21:25.061Z',
+        to_date: '2021-01-07T07:48:16.916Z',
+        from_date: '2020-12-24T07:48:16.916Z',
         custom_filter: null,
         customer_responded: null,
         page_size: 50,
@@ -75,19 +84,32 @@ const SearchComplaints = () => {
   // const keyExtractor = (item:{}, index:number) => index;
 
   return (
-    <SafeAreaView>
-      <FlatList
-        data={tickit}
-        // renderItem={({ item={user_name:""} }) => <ListComponent user_name={item.user_name} />}
-        renderItem={({ item }) => {
-          console.log('renderItem item: ', item)
+    <View style={styles.container}>
+      <ScrollView>
+        <FlatList
+          data={tickit}
+          // renderItem={({ item={user_name:""} }) => <ListComponent user_name={item.user_name} />}
+          renderItem={({ item }) => {
+            console.log('renderItem item: ', item)
 
-          return <ListComponent item={item} />
-        }}
-        keyExtractor={(index: any) => index.toString()}
-      />
-    </SafeAreaView>
+            return <ListComponent item={item} />
+          }}
+          keyExtractor={(index: any) => index.toString()}
+        />
+      </ScrollView>
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // height:windowWidth,
+    // width: windowHeight
+
+    width: '100%',
+    height: '100%',
+  },
+})
 
 export default SearchComplaints
