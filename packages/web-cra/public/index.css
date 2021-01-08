@@ -19,3 +19,8 @@ body {
   font-family: 'FontAwesome';
   src: url('./Fonts/FontAwesome.ttf');
 }
+
+@font-face {
+  font-family: 'SocialIcon';
+  src: url('./Fonts/Zocial.ttf');
+}
