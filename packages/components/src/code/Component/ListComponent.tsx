@@ -1,38 +1,45 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, CheckBox } from 'react-native'
 import moment from 'moment'
-// import { Icon, SocialIcon } from 'react-native-elements'
-// import Icon from 'react-native-vector-icons/Ionicons';
-import { Icon, SocialIcon } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { Hoverable } from 'react-native-web-hover'
 
 const colors = ['red', 'green', 'blue', 'black']
 
 const List = ({ item }: { item: any }) => {
-  // const {item} = props;
-  // console.log('List item: ',props);
-
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row' }}>
-        <View style={{ height: '10', width: '10' }}>
-          {/* <SocialIcon
-  type='facebook'
-/> */}
-          {/* <Icon
-  size={10}
-  name='entypo-twitter'
-  color='#517fa4'
-/> */}
-        </View>
-
         <View style={styles.complaintId}>
+          {/* <Icon name="twitter" size={15} color="#000" /> */}
+          {/* <Icon name="facebook-square" size={15} color="#000"/> */}
+
+          <Hoverable>
+            {({ hovered }) =>
+              hovered ? (
+                <CheckBox value={false} style={styles.checkbox} />
+              ) : (
+                <Icon name="twitter" size={15} color="#000" />
+              )
+            }
+          </Hoverable>
           <Text>#{item.complaint_id}</Text>
         </View>
 
-        <View style={{ flex: 8 }}>
-          <Text style={[styles.complaintText]} numberOfLines={1}>
-            {item.complaint_text}
-          </Text>
+        <View style={{ flex: 5, paddingLeft: '2%' }}>
+          <Hoverable>
+            {({ hovered }) => (
+              <Text
+                style={[
+                  styles.complaintText,
+                  { textDecorationLine: hovered ? 'underline' : 'none' },
+                ]}
+                numberOfLines={1}
+              >
+                {item.complaint_text}
+              </Text>
+            )}
+          </Hoverable>
           <View style={styles.moreDetails}>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.username}>{item.user_name}</Text>
@@ -62,9 +69,13 @@ const List = ({ item }: { item: any }) => {
               {item.fake_factor !== null ? (
                 <View style={{ flexDirection: 'row', paddingLeft: '1%' }}>
                   <Text style={styles.category}>Fake Factor:</Text>
-                  {/* <View style={styles.ovalShape}>
-              <Text style={[styles.category,{color:"white",fontSize:7}]} >Half true</Text>
-            </View> */}
+                  <View style={styles.fakeFactorShape}>
+                    <Text
+                      style={[styles.category, { color: 'white', fontSize: 7 }]}
+                    >
+                      Half true
+                    </Text>
+                  </View>
                 </View>
               ) : (
                 <></>
@@ -72,9 +83,67 @@ const List = ({ item }: { item: any }) => {
             </View>
           </View>
         </View>
-        <View style={{ flex: 2, flexDirection: 'row' }}>
-          {/* <Icon name="ios-book" color="#4F8EF7" /> */}
+        <View style={styles.iconStyle}>
           <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+          >
+            <View style={{ paddingRight: '10%' }}>
+              <Hoverable>
+                {({ hovered }) => (
+                  <Icon
+                    name="smile-o"
+                    size={15}
+                    onPress={() => {
+                      console.log('icon')
+                    }}
+                    color={hovered ? 'green' : 'grey'}
+                  />
+                )}
+              </Hoverable>
+            </View>
+            <View style={{ paddingRight: '10%' }}>
+              <Hoverable>
+                {({ hovered }) => (
+                  <Icon
+                    name="meh-o"
+                    size={15}
+                    onPress={() => {
+                      console.log('meh-o')
+                    }}
+                    color={hovered ? '#dbab16' : 'grey'}
+                  />
+                )}
+              </Hoverable>
+            </View>
+            <Hoverable>
+              {({ hovered }) => (
+                <Icon
+                  style={{ paddingRight: '10%' }}
+                  name="frown-o"
+                  size={15}
+                  onPress={() => {
+                    console.log('frown-o')
+                  }}
+                  color={hovered ? 'red' : 'grey'}
+                />
+              )}
+            </Hoverable>
+          </View>
+
+          <Icon
+            name="square"
+            style={{ paddingTop: '1%' }}
+            size={12}
+            color={
+              colors[item.priority_id] ? colors[item.priority_id] : 'yellow'
+            }
+          />
+
+          <Icon name="navicon" size={15} color="gray" />
+          {/* <Icon name="times-rectangle" size={15} color="gray"/> */}
+          <Icon name="hourglass-half" size={15} color="gray" />
+
+          {/* <View
             style={[
               styles.square,
               {
@@ -83,7 +152,7 @@ const List = ({ item }: { item: any }) => {
                   : 'yellow',
               },
             ]}
-          />
+          /> */}
         </View>
       </View>
     </View>
@@ -111,11 +180,8 @@ const styles = StyleSheet.create({
   },
   moreDetails: {
     color: '#3d9189',
-    // fontSize: 9,
-    // overflow: 'visible',
     marginTop: '0.2%',
     // marginRight: '5%',
-
     paddingBottom: 1,
     // borderColor: 'black',
     // borderWidth: 1,
@@ -173,12 +239,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#5bc0de',
     borderRadius: 20,
     paddingHorizontal: '2%',
+    ':hover': {
+      backgroundColor: 'red',
+    },
   },
   fakeFactorShape: {
     padding: 1,
     backgroundColor: '#D44638',
     borderRadius: 20,
-    paddingHorizontal: '2%',
+  },
+  iconStyle: {
+    flex: 2,
+    flexDirection: 'row',
+    paddingTop: '2%',
+    paddingLeft: '4%',
+    paddingRight: '2%',
+    justifyContent: 'space-between',
+  },
+  checkbox: {
+    borderColor: 'none',
+    height: 10,
+    width: 10,
   },
 })
 
