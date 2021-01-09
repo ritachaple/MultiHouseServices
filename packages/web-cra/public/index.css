@@ -21,6 +21,65 @@ body {
 }
 
 @font-face {
-  font-family: 'SocialIcon';
+  font-family: 'Zocial';
   src: url('./Fonts/Zocial.ttf');
+}
+
+@font-face {
+  font-family: 'AntDesign';
+  src: url('./Fonts/AntDesign.ttf');
+}
+
+@font-face {
+  font-family: 'Entypo';
+  src: url('./Fonts/Entypo.ttf');
+}
+
+@font-face {
+  font-family: 'EvilICon';
+  src: url('./Fonts/EvilIcons.ttf');
+}
+
+@font-face {
+  font-family: 'Feather';
+  src: url('./Fonts/Feather.ttf');
+}
+
+@font-face {
+  font-family: 'FontAwesome5';
+  src: url('./Fonts/FontAwesome5_Brands.ttf');
+}
+
+@font-face {
+  font-family: 'Fontisto';
+  src: url('./Fonts/Fontisto.ttf');
+}
+
+@font-face {
+  font-family: 'Foundation';
+  src: url('./Fonts/Foundation.ttf');
+}
+
+@font-face {
+  font-family: 'Ionicons';
+  src: url('./Fonts/Ionicons.ttf');
+}
+
+@font-face {
+  font-family: 'MaterialCommunityIcons';
+  src: url('./Fonts/MaterialCommunityIcons.ttf');
+}
+
+@font-face {
+  font-family: 'MaterialIcons';
+  src: url('./Fonts/MaterialIcons.ttf');
+}
+
+@font-face {
+  font-family: 'Octicons';
+  src: url('./Fonts/Octicons.ttf');
+}
+@font-face {
+  font-family: 'SimpleLineIcons';
+  src: url('./Fonts/SimpleLineIcons.ttf');
 }
