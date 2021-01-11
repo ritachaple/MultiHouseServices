@@ -167,9 +167,8 @@ const List = ({ item }: { item: any }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingHorizontal: '1%',
     paddingBottom: '1%',
-    borderBottomColor: '#969998',
+    borderBottomColor: '#dce3de',
     borderBottomWidth: 0.1,
     // flexDirection:"row"
   },
