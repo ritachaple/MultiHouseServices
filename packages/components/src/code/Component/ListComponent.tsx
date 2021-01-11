@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, CheckBox } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Hoverable } from 'react-native-web-hover'
+import { Avatar, Badge, withBadge } from 'react-native-elements'
 
 const colors = ['red', 'green', 'blue', 'black']
 
@@ -139,7 +140,11 @@ const List = ({ item }: { item: any }) => {
             }
           />
 
-          <Icon name="navicon" size={15} color="gray" />
+          <View>
+            <Icon name="navicon" size={15} color="gray" />
+            <Text style={styles.threadCount}>{item.thread_count}</Text>
+          </View>
+
           {/* <Icon name="times-rectangle" size={15} color="gray"/> */}
           <Icon name="hourglass-half" size={15} color="gray" />
 
@@ -183,10 +188,6 @@ const styles = StyleSheet.create({
     marginTop: '0.2%',
     // marginRight: '5%',
     paddingBottom: 1,
-    // borderColor: 'black',
-    // borderWidth: 1,
-    // paddingLeft: '2%',
-    // paddingTop: 1,
   },
   category: {
     color: '#aaa',
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     // marginRight: 5,
   },
   complaintText: {
-    color: ' #333',
+    color: '#333',
     fontSize: 12,
     // lineHeight: 1,
     marginTop: '1%',
@@ -239,9 +240,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#5bc0de',
     borderRadius: 20,
     paddingHorizontal: '2%',
-    ':hover': {
-      backgroundColor: 'red',
-    },
   },
   fakeFactorShape: {
     padding: 1,
@@ -257,9 +255,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   checkbox: {
-    borderColor: 'none',
+    // borderColor: 'none',
     height: 10,
     width: 10,
+  },
+  threadCount: {
+    color: '#000',
+    fontSize: 8,
+    position: 'absolute',
+    top: '-5%',
+    right: '-50%',
   },
 })
 
