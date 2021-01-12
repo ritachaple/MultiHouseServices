@@ -17,6 +17,7 @@
     "moment": "*",
     "react-native-elements": "*",
     "react-native-web-hover": "*",
-    "react-native-vector-icons": "*"
+    "react-native-vector-icons": "*",
+    "react-native-popup-menu": "*"
   }
 }

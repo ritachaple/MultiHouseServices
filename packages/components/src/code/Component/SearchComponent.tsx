@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native'
+import { MenuProvider } from 'react-native-popup-menu'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import ListComponent from './ListComponent'
@@ -72,30 +73,22 @@ const SearchComplaints = () => {
     }
   }
 
-  // const renderRow = (item:{user_name:String}) => {
-
-  //     <ListComponent data={item} />
-  // };
-
-  //  const renderRow=(item:{})=>{
-  //   <Text>{item.user_name}</Text>
-  //   }
-
-  // const keyExtractor = (item:{}, index:number) => index;
-
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <FlatList
-          data={tickit}
-          // renderItem={({ item={user_name:""} }) => <ListComponent user_name={item.user_name} />}
-          renderItem={({ item }) => {
-            console.log('renderItem item: ', item)
+      <ScrollView style={{ flex: 1 }}>
+        <MenuProvider>
+          <FlatList
+            style={{ flex: 1 }}
+            data={tickit}
+            // renderItem={({ item={user_name:""} }) => <ListComponent user_name={item.user_name} />}
+            renderItem={({ item }) => {
+              console.log('renderItem item: ', item)
 
-            return <ListComponent item={item} />
-          }}
-          keyExtractor={(index: any) => index.toString()}
-        />
+              return <ListComponent tickitItems={item} />
+            }}
+            keyExtractor={(index: any) => index.toString()}
+          />
+        </MenuProvider>
       </ScrollView>
     </View>
   )
