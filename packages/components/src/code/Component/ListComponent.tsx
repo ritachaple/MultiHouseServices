@@ -1,13 +1,55 @@
-import React from 'react'
-import { View, Text, StyleSheet, CheckBox } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, FlatList, CheckBox } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Hoverable } from 'react-native-web-hover'
-import { Avatar, Badge, withBadge } from 'react-native-elements'
+import { Overlay, Tooltip } from 'react-native-elements'
+
+// import { MenuProvider } from 'react-native-popup-menu';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu'
+// import DropDownPicker from 'react-native-dropdown-picker';
 
 const colors = ['red', 'green', 'blue', 'black']
+const tickitStatus = [
+  'Pending',
+  'Assigned',
+  'Resolve',
+  'Closed',
+  'Escalated',
+  'Reopened',
+  'Blocked',
+  'Qwerty3',
+]
+const tickitIcon = [
+  'hourglass-half',
+  'address-book',
+  'check-circle',
+  'times-rectangle',
+  'Escalated',
+  'circle',
+  'ban',
+  'circle',
+]
 
-const List = ({ item }: { item: any }) => {
+const List = ({ tickitItems }: { tickitItems: any }) => {
+  const [visible, setVisible] = useState(false)
+  const [tickIcon, setTickIcon] = useState('hourglass-half')
+  const [checkbox, setCheckbox] = useState(false)
+  // const inputEl = React.useRef(null)
+
+  const toggleOverlay = () => {
+    setVisible(!visible)
+  }
+
+  const tickitStatusMenu = (index: any) => {
+    setTickIcon(tickitIcon[index])
+  }
+
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row' }}>
@@ -18,38 +60,42 @@ const List = ({ item }: { item: any }) => {
           <Hoverable>
             {({ hovered }) =>
               hovered ? (
-                <CheckBox value={false} style={styles.checkbox} />
+                <CheckBox value={checkbox} style={styles.checkbox} />
               ) : (
                 <Icon name="twitter" size={15} color="#000" />
               )
             }
           </Hoverable>
-          <Text>#{item.complaint_id}</Text>
+          <Text>#{tickitItems.complaint_id}</Text>
         </View>
 
         <View style={{ flex: 5, paddingLeft: '2%' }}>
           <Hoverable>
             {({ hovered }) => (
               <Text
+                onPress={toggleOverlay}
                 style={[
                   styles.complaintText,
                   { textDecorationLine: hovered ? 'underline' : 'none' },
                 ]}
                 numberOfLines={1}
               >
-                {item.complaint_text}
+                {tickitItems.complaint_text}
               </Text>
             )}
           </Hoverable>
           <View style={styles.moreDetails}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.username}>{item.user_name}</Text>
+              <Text style={styles.username}>{tickitItems.user_name}</Text>
               <Text style={styles.complaintTimeZone}>
-                Created:{moment(item.created_on).format('DD MMM YYYY, h:mm a')}
+                Created:
+                {moment(tickitItems.created_on).format('DD MMM YYYY, h:mm a')}
               </Text>
               <Text style={styles.complaintTimeZone}>
                 Updated:{' '}
-                {moment(item.last_modified_on).format('DD MMM YYYY, h:mm a')}
+                {moment(tickitItems.last_modified_on).format(
+                  'DD MMM YYYY, h:mm a',
+                )}
               </Text>
               <Text style={styles.viewLink}>View</Text>
             </View>
@@ -67,7 +113,7 @@ const List = ({ item }: { item: any }) => {
                   Acp name
                 </Text>
               </View>
-              {item.fake_factor !== null ? (
+              {tickitItems.fake_factor !== null ? (
                 <View style={{ flexDirection: 'row', paddingLeft: '1%' }}>
                   <Text style={styles.category}>Fake Factor:</Text>
                   <View style={styles.fakeFactorShape}>
@@ -136,17 +182,68 @@ const List = ({ item }: { item: any }) => {
             style={{ paddingTop: '1%' }}
             size={12}
             color={
-              colors[item.priority_id] ? colors[item.priority_id] : 'yellow'
+              colors[tickitItems.priority_id]
+                ? colors[tickitItems.priority_id]
+                : 'yellow'
             }
           />
 
+          {/* <MenuProvider>
+ <Icon name="navicon" size={15} color="black" />
+  </MenuProvider> */}
           <View>
             <Icon name="navicon" size={15} color="gray" />
-            <Text style={styles.threadCount}>{item.thread_count}</Text>
+            <Text style={styles.threadCount}>{tickitItems.thread_count}</Text>
+          </View>
+          <View>
+            <Menu>
+              <MenuTrigger>
+                <Icon name={tickIcon} size={15} color="gray" />
+              </MenuTrigger>
+              <MenuOptions
+                customStyles={{
+                  optionWrapper: {},
+                  optionsContainer: {
+                    width: '6%',
+                    height: 'fitContent',
+                    zIndex: 1,
+                    position: 'absolute',
+                    top: '10%',
+                    left: '10%',
+                  },
+                  optionText: { fontSize: 8, zIndex: 100 },
+                }}
+              >
+                <FlatList
+                  style={{ flex: 1 }}
+                  data={tickitStatus}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <MenuOption
+                        text={item}
+                        onSelect={() => tickitStatusMenu(index)}
+                      />
+                    )
+                  }}
+                  keyExtractor={(index: any) => index.toString()}
+                />
+              </MenuOptions>
+            </Menu>
           </View>
 
-          {/* <Icon name="times-rectangle" size={15} color="gray"/> */}
-          <Icon name="hourglass-half" size={15} color="gray" />
+          {/* <Icon name="times-rectangle" size={15} color="gray" /> */}
+
+          {/* <Button title="Open Overlay"  /> */}
+
+          <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+            <Text>Hello from Overlay!</Text>
+          </Overlay>
+          <Tooltip popover={<Text>Info here</Text>}>
+            <View>
+              <Icon name="hourglass-half" size={15} color="gray" />
+            </View>
+          </Tooltip>
+          {/* <Tooltip  /> */}
 
           {/* <View
             style={[
@@ -170,6 +267,7 @@ const styles = StyleSheet.create({
     paddingBottom: '1%',
     borderBottomColor: '#dce3de',
     borderBottomWidth: 0.1,
+    zIndex: 0,
     // flexDirection:"row"
   },
   complaintId: {
