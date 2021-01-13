@@ -1,18 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, CheckBox } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Hoverable } from 'react-native-web-hover'
 import { Overlay, Tooltip } from 'react-native-elements'
 
-// import { MenuProvider } from 'react-native-popup-menu';
 import {
   Menu,
   MenuOptions,
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu'
-// import DropDownPicker from 'react-native-dropdown-picker';
 
 const colors = ['red', 'green', 'blue', 'black']
 const tickitStatus = [
@@ -27,11 +25,11 @@ const tickitStatus = [
 ]
 const tickitIcon = [
   'hourglass-half',
-  'address-book',
+  'user',
   'check-circle',
   'times-rectangle',
-  'Escalated',
-  'circle',
+  'angle-double-up',
+  'unlock-alt',
   'ban',
   'circle',
 ]
@@ -40,14 +38,29 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
   const [visible, setVisible] = useState(false)
   const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
-  // const inputEl = React.useRef(null)
+  const [message, setMessage] = useState('')
+
+  const tooltipRef: any = React.useRef(null)
+
+  useEffect(() => {})
 
   const toggleOverlay = () => {
     setVisible(!visible)
   }
 
+  const setTooltip = (msg: any) => {
+    setMessage(msg)
+    tooltipRef.current.toggleTooltip()
+  }
   const tickitStatusMenu = (index: any) => {
     setTickIcon(tickitIcon[index])
+    setTooltip('Status updayted Successfully !!!')
+  }
+
+  const onOpenToolTip = () => {
+    setTimeout(function () {
+      tooltipRef.current.toggleTooltip()
+    }, 3000)
   }
 
   return (
@@ -141,7 +154,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                     name="smile-o"
                     size={15}
                     onPress={() => {
-                      console.log('icon')
+                      setTooltip('Sentiment updated successfully')
                     }}
                     color={hovered ? 'green' : 'grey'}
                   />
@@ -155,7 +168,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                     name="meh-o"
                     size={15}
                     onPress={() => {
-                      console.log('meh-o')
+                      setTooltip('Sentiment updated successfully')
                     }}
                     color={hovered ? '#dbab16' : 'grey'}
                   />
@@ -169,7 +182,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                   name="frown-o"
                   size={15}
                   onPress={() => {
-                    console.log('frown-o')
+                    setTooltip('Sentiment updated successfully')
                   }}
                   color={hovered ? 'red' : 'grey'}
                 />
@@ -187,10 +200,6 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                 : 'yellow'
             }
           />
-
-          {/* <MenuProvider>
- <Icon name="navicon" size={15} color="black" />
-  </MenuProvider> */}
           <View>
             <Icon name="navicon" size={15} color="gray" />
             <Text style={styles.threadCount}>{tickitItems.thread_count}</Text>
@@ -231,30 +240,39 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
             </Menu>
           </View>
 
-          {/* <Icon name="times-rectangle" size={15} color="gray" /> */}
-
-          {/* <Button title="Open Overlay"  /> */}
-
           <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
             <Text>Hello from Overlay!</Text>
           </Overlay>
-          <Tooltip popover={<Text>Info here</Text>}>
-            <View>
-              <Icon name="hourglass-half" size={15} color="gray" />
-            </View>
-          </Tooltip>
-          {/* <Tooltip  /> */}
 
-          {/* <View
-            style={[
-              styles.square,
-              {
-                backgroundColor: colors[item.priority_id]
-                  ? colors[item.priority_id]
-                  : 'yellow',
-              },
-            ]}
-          /> */}
+          <Tooltip
+            containerStyle={{
+              backgroundColor: '#d7fcd4',
+              height: '10%',
+              marginTop: 2,
+              borderRadius: 4,
+            }}
+            ref={tooltipRef}
+            withOverlay={false}
+            onOpen={onOpenToolTip}
+            // toggleOnPress={true}
+            // pointerColor="none"
+            // closeOnlyOnBackdropPress={false}
+            popover={
+              <View style={{ flexDirection: 'row' }}>
+                <Icon
+                  style={{ paddingHorizontal: 1 }}
+                  name="check-circle"
+                  size={10}
+                  color="#268748"
+                />
+                <Text
+                  style={{ fontSize: 8, color: '#268748', fontWeight: 'bold' }}
+                >
+                  {message}
+                </Text>
+              </View>
+            }
+          />
         </View>
       </View>
     </View>
@@ -324,13 +342,6 @@ const styles = StyleSheet.create({
   postLink: {
     fontSize: 8,
     color: '#337ab7',
-  },
-  square: {
-    width: 10,
-    height: 10,
-    position: 'absolute',
-    right: '20%',
-    bottom: '10%',
   },
   ovalShape: {
     padding: 1,

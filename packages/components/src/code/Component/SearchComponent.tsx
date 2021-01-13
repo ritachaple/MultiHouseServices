@@ -10,6 +10,7 @@ import { MenuProvider } from 'react-native-popup-menu'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import ListComponent from './ListComponent'
+// import Demo2 from './Demo2'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -85,6 +86,7 @@ const SearchComplaints = () => {
               console.log('renderItem item: ', item)
 
               return <ListComponent tickitItems={item} />
+              // return <Demo2 />
             }}
             keyExtractor={(index: any) => index.toString()}
           />
