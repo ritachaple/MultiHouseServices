@@ -18,7 +18,7 @@ const linking = {
 
 const Stack = createStackNavigator()
 
-const Navigation = () => {
+const Navigation = (props: any) => {
   return (
     <NavigationContainer linking={linking}>
       <Stack.Navigator

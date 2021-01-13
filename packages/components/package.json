@@ -10,14 +10,19 @@
     "@react-navigation/stack": "*",
     "@types/react": "*",
     "@types/react-native": "*",
-    "react": "*",
-    "react-native": "*",
-    "react-native-gesture-handler": "*",
     "axios": "*",
     "moment": "*",
+    "react": "*",
+    "react-native": "*",
     "react-native-elements": "*",
-    "react-native-web-hover": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-popup-menu": "*",
     "react-native-vector-icons": "*",
-    "react-native-popup-menu": "*"
+    "react-native-web-hover": "*",
+    "react-redux": "*",
+    "redux-logger": "*",
+    "redux": "*",
+    "redux-persist":"*",
+    "@react-native-community/async-storage": "*"
   }
 }
