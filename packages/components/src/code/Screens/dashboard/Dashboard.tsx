@@ -9,10 +9,15 @@ import SearchComplaints from '../../Component/SearchComponent'
 const Dashboard = (props: any) => {
   const { navigation } = props
 
-  useEffect(() => {
-    // console.log('props', props)
-    // props.companyListData()
-  }, [])
+  // useEffect(() => {
+  //   // console.log('props', props)
+  //   // props.companyListData()
+  //   checkReduxData()
+  // }, [])
+
+  const checkReduxData = () => {
+    props.companyListData()
+  }
 
   return (
     <View style={styles.container}>
