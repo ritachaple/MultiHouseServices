@@ -267,7 +267,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
           <>
             <Modal
               animationType="slide"
-              // transparent={true}
+              transparent={modalVisible}
               visible={modalVisible}
               onRequestClose={() => {
                 Alert.alert('Modal has been closed.')
@@ -284,7 +284,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                     }}
                   >
                     <Text style={styles.textStyle}>Hide Modal</Text>
-                    <ChatScreen />
+                    {/* <ChatScreen /> */}
                   </TouchableHighlight>
                 </View>
               </View>
