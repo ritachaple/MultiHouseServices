@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, CheckBox } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Hoverable } from 'react-native-web-hover'
-import { Overlay, Tooltip } from 'react-native-elements'
+import { Overlay, Tooltip, Button } from 'react-native-elements'
 
 import {
   Menu,
@@ -242,6 +242,17 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
 
           <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
             <Text>Hello from Overlay!</Text>
+            {/* <View>
+              <Button 
+              icon={
+                <CheckBox value={checkbox} style={styles.checkbox} />
+              }
+              style={{padding:1,backgroundColor:'#fff', height:'9',
+                                 
+                 }} title="influencer"  type="clear"  
+                 titleStyle={{ color: 'black', borderColor:'black',
+                 fontSize: 10,borderWidth: 1,padding:9, borderRadius:3, width:100}}/>
+          </View> */}
           </Overlay>
 
           <Tooltip
