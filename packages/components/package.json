@@ -22,7 +22,7 @@
     "react-redux": "*",
     "redux-logger": "*",
     "redux": "*",
-    "redux-persist":"*",
+    "redux-persist": "*",
     "@react-native-community/async-storage": "*"
   }
 }

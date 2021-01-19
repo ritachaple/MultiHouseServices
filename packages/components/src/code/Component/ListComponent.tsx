@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, CheckBox } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  CheckBox,
+  Modal,
+  Alert,
+  TouchableHighlight,
+} from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Hoverable } from 'react-native-web-hover'
@@ -11,6 +20,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu'
+import ChatScreen from './ChatScreen'
 
 const colors = ['red', 'green', 'blue', 'black']
 const tickitStatus = [
@@ -39,13 +49,15 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
   const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
   const [message, setMessage] = useState('')
+  const [language, setLanguage] = useState('java')
+  const [modalVisible, setModalVisible] = useState(false)
 
   const tooltipRef: any = React.useRef(null)
 
   useEffect(() => {})
 
   const toggleOverlay = () => {
-    setVisible(!visible)
+    setModalVisible(!modalVisible)
   }
 
   const setTooltip = (msg: any) => {
@@ -239,10 +251,45 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
               </MenuOptions>
             </Menu>
           </View>
-
-          <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+          <>
+            {/* <Picker
+  selectedValue={language}
+  style={{height: 50, width: 100}}
+  onValueChange={(itemValue:any, itemIndex) =>setLanguage(itemValue)}>
+  <Picker.Item label="Java" value="java" />
+  <Picker.Item label="JavaScript" value="js" />
+</Picker> */}
+          </>
+          {/* <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
             <Text>Hello from Overlay!</Text>
-          </Overlay>
+          </Overlay> */}
+
+          <>
+            <Modal
+              animationType="slide"
+              transparent={modalVisible}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert('Modal has been closed.')
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>Hello World!</Text>
+
+                  <TouchableHighlight
+                    style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
+                    onPress={() => {
+                      setModalVisible(!modalVisible)
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Hide Modal</Text>
+                    {/* <ChatScreen /> */}
+                  </TouchableHighlight>
+                </View>
+              </View>
+            </Modal>
+          </>
 
           <Tooltip
             containerStyle={{
@@ -373,6 +420,45 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '-5%',
     right: '-50%',
+  },
+
+  //  modal style
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: '#F194FF',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 })
 
