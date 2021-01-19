@@ -8,6 +8,8 @@ import {
   Modal,
   Alert,
   TouchableHighlight,
+  TouchableOpacity,
+  TextInput,
 } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -20,7 +22,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu'
-import ChatScreen from './ChatScreen'
+// import ChatScreen from './ChatScreen'
 
 const colors = ['red', 'green', 'blue', 'black']
 const tickitStatus = [
@@ -33,6 +35,7 @@ const tickitStatus = [
   'Blocked',
   'Qwerty3',
 ]
+
 const tickitIcon = [
   'hourglass-half',
   'user',
@@ -45,12 +48,11 @@ const tickitIcon = [
 ]
 
 const List = ({ tickitItems }: { tickitItems: any }) => {
-  const [visible, setVisible] = useState(false)
   const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
   const [message, setMessage] = useState('')
-  const [language, setLanguage] = useState('java')
   const [modalVisible, setModalVisible] = useState(false)
+  const [dropdown, setDropdown] = useState('Select Value')
 
   const tooltipRef: any = React.useRef(null)
 
@@ -58,6 +60,10 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
 
   const toggleOverlay = () => {
     setModalVisible(!modalVisible)
+  }
+
+  const setDropdownData = (index: any) => {
+    setDropdown(tickitStatus[index])
   }
 
   const setTooltip = (msg: any) => {
@@ -155,6 +161,52 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
             </View>
           </View>
         </View>
+
+        <View>
+          <Menu style={{ paddingTop: '3%' }}>
+            <MenuTrigger>
+              <View style={{ flexDirection: 'row' }}>
+                <TextInput
+                  // style={{borderColor: 'gray'}}
+                  // value={dropdown}
+                  style={styles.input}
+                  placeholder={dropdown}
+                />
+
+                {/* <Icon name="angle-up" size={10} color="gray" /> */}
+              </View>
+            </MenuTrigger>
+            <MenuOptions
+              customStyles={{
+                optionWrapper: {},
+                optionsContainer: {
+                  width: '8%',
+                  height: 'fitContent',
+                  zIndex: 1,
+                  position: 'absolute',
+                  top: '10%',
+                  left: '10%',
+                },
+                optionText: { fontSize: 10, zIndex: 100 },
+              }}
+            >
+              <FlatList
+                style={{ flex: 1 }}
+                data={tickitStatus}
+                renderItem={({ item, index }) => {
+                  return (
+                    <MenuOption
+                      text={item}
+                      onSelect={() => setDropdownData(index)}
+                    />
+                  )
+                }}
+                keyExtractor={(index: any) => index.toString()}
+              />
+            </MenuOptions>
+          </Menu>
+        </View>
+
         <View style={styles.iconStyle}>
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
@@ -216,6 +268,21 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
             <Icon name="navicon" size={15} color="gray" />
             <Text style={styles.threadCount}>{tickitItems.thread_count}</Text>
           </View>
+
+          <>
+            <View>
+              {/* <TouchableOpacity
+                style={styles.dropdownButton}
+                onPress={() => {
+                  toggleOverlay()
+                }}
+              > */}
+              {/* <Text>Dropdown list</Text> */}
+              {/* <Icon name="angle-up" size={10} color="gray" />
+              </TouchableOpacity> */}
+            </View>
+          </>
+
           <View>
             <Menu>
               <MenuTrigger>
@@ -251,15 +318,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
               </MenuOptions>
             </Menu>
           </View>
-          <>
-            {/* <Picker
-  selectedValue={language}
-  style={{height: 50, width: 100}}
-  onValueChange={(itemValue:any, itemIndex) =>setLanguage(itemValue)}>
-  <Picker.Item label="Java" value="java" />
-  <Picker.Item label="JavaScript" value="js" />
-</Picker> */}
-          </>
+          <></>
           {/* <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
             <Text>Hello from Overlay!</Text>
           </Overlay> */}
@@ -284,7 +343,6 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                     }}
                   >
                     <Text style={styles.textStyle}>Hide Modal</Text>
-                    {/* <ChatScreen /> */}
                   </TouchableHighlight>
                 </View>
               </View>
@@ -459,6 +517,22 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+
+  // dropdown style
+
+  input: {
+    flex: 1,
+    // paddingTop: 10,
+    // paddingRight: 10,
+    // paddingBottom: 10,
+    paddingLeft: 0,
+    // backgroundColor: '#fff',
+    color: '#424242',
+    borderRadius: 5,
+    borderColor: 'gray',
+    borderWidth: 1,
+    width: '10%',
   },
 })
 
