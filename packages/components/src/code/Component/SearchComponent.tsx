@@ -5,6 +5,7 @@ import {
   FlatList,
   ScrollView,
   StyleSheet,
+  Picker,
 } from 'react-native'
 import { MenuProvider } from 'react-native-popup-menu'
 import Api from '../provider/api/Api'

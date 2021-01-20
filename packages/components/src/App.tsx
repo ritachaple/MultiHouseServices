@@ -7,10 +7,19 @@ import {
   Text,
   View,
 } from 'react-native'
+import { PersistGate } from 'redux-persist/integration/react'
+import { Provider } from 'react-redux'
 import Navigation from './code/provider/navigation/Navigation'
+import { store, persistor } from './code/provider/store'
 
-export function App() {
-  return <Navigation />
+export function App(props: any) {
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Navigation />
+      </PersistGate>
+    </Provider>
+  )
 }
 
 const styles = StyleSheet.create({
