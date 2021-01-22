@@ -23,6 +23,7 @@
     "redux-logger": "*",
     "redux": "*",
     "redux-persist": "*",
-    "@react-native-community/async-storage": "*"
+    "@react-native-community/async-storage": "*",
+    "react-native-modal-datetime-picker": "*"
   }
 }
