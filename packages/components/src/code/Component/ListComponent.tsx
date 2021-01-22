@@ -85,7 +85,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
 
   const onSentimetIconClick = async (sentiment: string) => {
     // setTooltip('Sentiment updated successfully')
-    setSentiment(sentiment)
+
     const data = {
       assigned_to: [5889],
       created_on: '2020-10-02 06:30:33.000000',
