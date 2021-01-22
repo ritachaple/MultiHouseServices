@@ -85,6 +85,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
 
   const onSentimetIconClick = async (sentiment: string) => {
     // setTooltip('Sentiment updated successfully')
+    setSentiment(sentiment)
     const data = {
       assigned_to: [5889],
       created_on: '2020-10-02 06:30:33.000000',
@@ -313,7 +314,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                     name="meh-o"
                     size={15}
                     onPress={() => {
-                      onSentimetIconClick('')
+                      onSentimetIconClick('Neutral')
                     }}
                     color={hovered ? '#dbab16' : 'grey'}
                   />
@@ -327,7 +328,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                   name="frown-o"
                   size={15}
                   onPress={() => {
-                    onSentimetIconClick('')
+                    onSentimetIconClick('Negative')
                   }}
                   color={hovered ? 'red' : 'grey'}
                 />
