@@ -15,14 +15,15 @@ import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Hoverable } from 'react-native-web-hover'
 import { Overlay, Tooltip, Button } from 'react-native-elements'
-import DateTimePickerModal from 'react-native-modal-datetime-picker'
-
+// import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import {
   Menu,
   MenuOptions,
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu'
+import Api from '../provider/api/Api'
+import { configs } from '../provider/api/ApiUrl'
 // import ChatScreen from './ChatScreen'
 
 const colors = ['red', 'green', 'blue', 'black']
@@ -80,6 +81,85 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
     setTimeout(function () {
       tooltipRef.current.toggleTooltip()
     }, 3000)
+  }
+
+  const onSentimetIconClick = async (sentiment: string) => {
+    // setTooltip('Sentiment updated successfully')
+    const data = {
+      assigned_to: [5889],
+      created_on: '2020-10-02 06:30:33.000000',
+      custom_column: { due_date: null, policy_number: '1234' },
+      user_name: 'uno ',
+      customer_responded: true,
+      is_dm: false,
+      department_id: null,
+      response_allowed: false,
+      blocked_by: null,
+      medium_id: 2,
+      sentiment_name: sentiment,
+      last_modified_on: '2021-01-07 16:49:21.007326',
+      fake_factor: null,
+      priority_id: null,
+      user_profile_picture_url: null,
+      user_type: null,
+      client_id: 39,
+      medium_username: 'uno80261966',
+      sentiment: 1,
+      cust_location: null,
+      complaint_text: '@s_merilent unoligo',
+      post_url: 'https://twitter.com/uno80261966/status/1311916460441169921',
+      user_id: 5889,
+      thread_count: 2,
+      complaint_id: 325769,
+      verified: false,
+      is_parent_missing: false,
+      follower_count: null,
+      status_id: '2',
+      issue_id: null,
+      state_id: null,
+      is_spam: false,
+      is_read: true,
+      fake_tagged_by: 5889,
+      fake_news_type: null,
+      district: null,
+      is_deleted: false,
+      resolution_text: null,
+      activity_id: null,
+      conversation_text: 'Complaint has been assigned',
+      created_by: 'system',
+      is_internal_user: true,
+      is_internal: true,
+      is_system_generated: true,
+      is_user_reply: false,
+      status_name: 'Assigned',
+      division_id: null,
+    }
+
+    const headers = {
+      headers: {
+        Accept: 'application/json, text/plain',
+        'Accept-Language': 'en,en-US;q=0.9,en-GB;q=0.8',
+        Connection: 'keep-alive',
+        'Content-Type': 'application/json;charset=UTF-8',
+        Cookie:
+          'ARRAffinity=7a2d82d3e8632b22a3a102b4349fdda715ee7ac9651d369119133a1f1b3957a2; ARRAffinitySameSite=7a2d82d3e8632b22a3a102b4349fdda715ee7ac9651d369119133a1f1b3957a2',
+        Origin: 'https://cxpdev.merilent.com',
+        Referer: 'https://cxpdev.merilent.com/',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+      },
+    }
+
+    const res: any = await Api.post(configs.update_sentiment, data, headers)
+    if (res.status === 200) {
+      setTooltip('Sentiment updated successfully')
+    }
+    console.log('====================================')
+    console.log('sentiment Icon Res', res)
+    console.log('====================================')
   }
 
   return (
@@ -163,7 +243,9 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
           </View>
         </View>
 
-        <View>
+        {/* DropDown  */}
+
+        {/* <View>
           <Menu style={{ paddingTop: '3%' }}>
             <MenuTrigger>
               <View style={{ flexDirection: 'row' }}>
@@ -173,8 +255,6 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                   style={styles.input}
                   placeholder={dropdown}
                 />
-
-                {/* <Icon name="angle-up" size={10} color="gray" /> */}
               </View>
             </MenuTrigger>
             <MenuOptions
@@ -206,7 +286,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
               />
             </MenuOptions>
           </Menu>
-        </View>
+        </View> */}
 
         <View style={styles.iconStyle}>
           <View
@@ -219,7 +299,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                     name="smile-o"
                     size={15}
                     onPress={() => {
-                      setTooltip('Sentiment updated successfully')
+                      onSentimetIconClick('Positive')
                     }}
                     color={hovered ? 'green' : 'grey'}
                   />
@@ -233,7 +313,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                     name="meh-o"
                     size={15}
                     onPress={() => {
-                      setTooltip('Sentiment updated successfully')
+                      onSentimetIconClick('')
                     }}
                     color={hovered ? '#dbab16' : 'grey'}
                   />
@@ -247,7 +327,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                   name="frown-o"
                   size={15}
                   onPress={() => {
-                    setTooltip('Sentiment updated successfully')
+                    onSentimetIconClick('')
                   }}
                   color={hovered ? 'red' : 'grey'}
                 />
