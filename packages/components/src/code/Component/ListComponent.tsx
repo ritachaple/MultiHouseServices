@@ -84,20 +84,8 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
     setMessage(msg)
     tooltipRef.current.toggleTooltip()
   }
-  const tickitStatusMenu = (index: any) => {
+  const tickitStatusMenu = async (index: any, statusName: string) => {
     setTickIcon(tickitIcon[index])
-    setTooltip('Status updayted Successfully !!!')
-  }
-
-  const onOpenToolTip = () => {
-    setTimeout(function () {
-      tooltipRef.current.toggleTooltip()
-    }, 3000)
-  }
-
-  const onSentimetIconClick = async (sentiment: string) => {
-    // setTooltip('Sentiment updated successfully')
-
     const data = {
       assigned_to: [5889],
       created_on: '2020-10-02 06:30:33.000000',
@@ -109,7 +97,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
       response_allowed: false,
       blocked_by: null,
       medium_id: 2,
-      sentiment_name: sentiment,
+      sentiment_name: 'Positive',
       last_modified_on: '2021-01-07 16:49:21.007326',
       fake_factor: null,
       priority_id: null,
@@ -144,8 +132,71 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
       is_internal: true,
       is_system_generated: true,
       is_user_reply: false,
-      status_name: 'Assigned',
+      status_name: statusName,
       division_id: null,
+    }
+    const res: any = await Api.post(configs.update_sentiment, data)
+    if (res.status === 200) {
+      setTooltip('Status updayted Successfully !!!')
+    }
+  }
+
+  const onOpenToolTip = () => {
+    setTimeout(function () {
+      tooltipRef.current.toggleTooltip()
+    }, 3000)
+  }
+
+  const onSentimetIconClick = async (sentiment: string) => {
+    // setTooltip('Sentiment updated successfully')
+
+    const data = {
+      assigned_to: null,
+      created_on: '2020-10-02 06:30:33.000000',
+      custom_column: { due_date: null, policy_number: '1234' },
+      user_name: 'uno ',
+      customer_responded: true,
+      is_dm: false,
+      department_id: null,
+      response_allowed: false,
+      blocked_by: null,
+      medium_id: 2,
+      sentiment_name: sentiment,
+      last_modified_on: '2021-01-07 16:49:21.007326',
+      fake_factor: null,
+      priority_id: null,
+      user_profile_picture_url: null,
+      user_type: null,
+      client_id: 39,
+      medium_username: 'uno80261966',
+      sentiment: 1,
+      cust_location: null,
+      complaint_text: '@s_merilent unoligo',
+      post_url: 'https://twitter.com/uno80261966/status/1311916460441169921',
+      user_id: 5889,
+      thread_count: 2,
+      complaint_id: 325769,
+      verified: false,
+      is_parent_missing: false,
+      follower_count: null,
+      status_id: 1,
+      issue_id: null,
+      state_id: null,
+      is_spam: false,
+      is_read: true,
+      fake_tagged_by: 5889,
+      fake_news_type: null,
+      district: null,
+      is_deleted: false,
+      resolution_text: null,
+      activity_id: null,
+      conversation_text: 'Sentiment has been changed to Positive',
+      created_by: 'system',
+      is_internal_user: true,
+      is_internal: true,
+      is_system_generated: true,
+      is_user_reply: false,
+      status_name: 'Pending',
     }
     const res: any = await Api.post(configs.update_sentiment, data)
     if (res.status === 200) {
@@ -384,7 +435,9 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                     return (
                       <MenuOption
                         text={item.status_name}
-                        onSelect={() => tickitStatusMenu(index)}
+                        onSelect={() =>
+                          tickitStatusMenu(index, item.status_name)
+                        }
                       />
                     )
                   }}
