@@ -9,6 +9,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
+    "babel-plugin-syntax-jsx": "^6.18.0",
     "customize-cra": "^1.0.0",
     "moment": "^2.29.1",
     "react": "17.0.1",
