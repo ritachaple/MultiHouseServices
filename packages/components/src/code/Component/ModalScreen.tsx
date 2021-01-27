@@ -1,31 +1,52 @@
 import React, { useState } from 'react'
-import { View, TouchableHighlight, StyleSheet, Text } from 'react-native'
+import {
+  View,
+  TouchableHighlight,
+  StyleSheet,
+  Text,
+  TextInput,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Divider } from 'react-native-elements'
 import Chat from './Chat'
+import Dropdown from './Dropdown'
 
 const ModalScreen = (props: any) => {
-  const { closeModal } = props
+  const { closeModal, complaintId } = props
   return (
     <View style={styles.centeredView}>
       <View style={styles.modalView}>
-        <View
-          style={{
-            flex: 1,
-            padding: '1%',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            borderBottomColor: '#dce3de',
-            borderBottomWidth: 0.1,
-          }}
-        >
-          <Icon name="window-close" size={20} onPress={closeModal} />
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flex: 1,
+              padding: '1%',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              borderBottomColor: '#dce3de',
+              borderBottomWidth: 0.1,
+            }}
+          >
+            <Icon name="window-close" size={20} onPress={closeModal} />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              padding: '1%',
+            }}
+          >
+            #{complaintId}
+          </View>
         </View>
         <View style={{ flexDirection: 'row', flex: 15 }}>
-          <View style={{ flex: 1 }}>Dropdown</View>
+          <View style={{ flex: 1 }}>
+            <Dropdown />
+          </View>
           <View style={styles.verticleLine} />
           <View style={{ flex: 5 }}>
             <Chat />
+            {/* <Dropdown /> */}
           </View>
         </View>
       </View>

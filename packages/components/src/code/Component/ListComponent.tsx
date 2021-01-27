@@ -478,7 +478,10 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                 Alert.alert('Modal has been closed.')
               }}
             >
-              <ModalScreen closeModal={() => onCloseModal()} />
+              <ModalScreen
+                closeModal={() => onCloseModal()}
+                complaintId={tickitItems.complaint_id}
+              />
             </Modal>
           </>
 
