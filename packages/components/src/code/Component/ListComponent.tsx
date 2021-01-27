@@ -24,7 +24,8 @@ import {
 } from 'react-native-popup-menu'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
-// import ChatScreen from './ChatScreen'
+import Chat from './Chat'
+import ModalScreen from './ModalScreen'
 
 const colors = ['red', 'green', 'blue', 'black']
 const tickitStatus = [
@@ -54,7 +55,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
   const [checkbox, setCheckbox] = useState(false)
   const [message, setMessage] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
-  const [dropdown, setDropdown] = useState('Select Value')
+
   const [tickitStatusList, setTickitStatusList] = useState([])
 
   const tooltipRef: any = React.useRef(null)
@@ -76,9 +77,9 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
     setModalVisible(!modalVisible)
   }
 
-  const setDropdownData = (index: any) => {
-    setDropdown(tickitStatus[index])
-  }
+  // const setDropdownData = (index: any) => {
+  //   setDropdown(tickitStatus[index])
+  // }
 
   const setTooltip = (msg: any) => {
     setMessage(msg)
@@ -135,7 +136,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
       status_name: statusName,
       division_id: null,
     }
-    const res: any = await Api.post(configs.update_sentiment, data)
+    const res: any = await Api.post(configs.log_activity, data)
     if (res.status === 200) {
       setTooltip('Status updayted Successfully !!!')
     }
@@ -145,6 +146,10 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
     setTimeout(function () {
       tooltipRef.current.toggleTooltip()
     }, 3000)
+  }
+
+  const onCloseModal = () => {
+    setModalVisible(!modalVisible)
   }
 
   const onSentimetIconClick = async (sentiment: string) => {
@@ -198,7 +203,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
       is_user_reply: false,
       status_name: 'Pending',
     }
-    const res: any = await Api.post(configs.update_sentiment, data)
+    const res: any = await Api.post(configs.log_activity, data)
     if (res.status === 200) {
       setTooltip('Sentiment updated successfully')
     }
@@ -465,6 +470,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
 
           <>
             <Modal
+              style={{ flex: 1 }}
               animationType="slide"
               transparent={modalVisible}
               visible={modalVisible}
@@ -472,20 +478,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                 Alert.alert('Modal has been closed.')
               }}
             >
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  {/* <Text style={styles.modalText}>Hello World!</Text> */}
-
-                  <TouchableHighlight
-                    style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
-                    onPress={() => {
-                      setModalVisible(!modalVisible)
-                    }}
-                  >
-                    <Text style={styles.textStyle}>Hide Modal</Text>
-                  </TouchableHighlight>
-                </View>
-              </View>
+              <ModalScreen closeModal={() => onCloseModal()} />
             </Modal>
           </>
 
@@ -622,38 +615,6 @@ const styles = StyleSheet.create({
 
   //  modal style
 
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  openButton: {
-    backgroundColor: '#F194FF',
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',

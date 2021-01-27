@@ -14,6 +14,8 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import ListComponent from './ListComponent'
 import IconButton from './IconButton'
+// import { Icon } from 'react-native-elements'
+// import Icon from 'react-native-vector-icons/FontAwesome'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -75,11 +77,11 @@ const SearchComplaints = () => {
               justifyContent: 'space-evenly',
             }}
           >
-            <IconButton
-              name="archive"
-              // onPress={onDeletePress}
-            />
-            <IconButton name="arrow-circle-right" />
+            {/* <IconButton
+              name="archive" */}
+            {/* onPress={onDeletePress}
+            /> */}
+            {/* <IconButton name="arrow-circle-right" /> */}
           </View>
           <View style={{ flex: 2 }} />
         </View>
