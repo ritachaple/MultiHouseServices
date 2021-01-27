@@ -9,12 +9,13 @@ import {
   Text,
 } from 'react-native'
 import { MenuProvider } from 'react-native-popup-menu'
-import { Button } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Chat from './Chat'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import ListComponent from './ListComponent'
-// import Demo2 from './Demo2'
+import IconButton from './IconButton'
+// import { Icon } from 'react-native-elements'
+// import Icon from 'react-native-vector-icons/FontAwesome'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -60,29 +61,32 @@ const SearchComplaints = () => {
     }
   }
 
+  // const onDeletePress=()=>{
+
+  // }
+
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingTop: '1%',
-            justifyContent: 'space-evenly',
-          }}
-        >
-          {/* <Button
-            style={{ height: '5%', paddingTop: '1%' }}
-            icon={<Icon name="archive" size={10} color="white" />}
-          />
-          <Button
-            style={{ height: '4%', paddingTop: '1%' }}
-            icon={<Icon name="allergies" size={10} color="white" />}
-          />
-          <Button
-            style={{ height: '4%', paddingTop: '1%' }}
-            icon={<Icon name="arrow-circle-right" size={10} color="white" />}
-          /> */}
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flex: 3,
+              flexDirection: 'row',
+              paddingTop: '1%',
+              justifyContent: 'space-evenly',
+            }}
+          >
+            {/* <IconButton
+              name="archive" */}
+            {/* onPress={onDeletePress}
+            /> */}
+            {/* <IconButton name="arrow-circle-right" /> */}
+          </View>
+          <View style={{ flex: 2 }} />
         </View>
+
+        {/* <Chat/> */}
         <MenuProvider>
           <FlatList
             style={{ flex: 1 }}
@@ -92,7 +96,6 @@ const SearchComplaints = () => {
               console.log('renderItem item: ', item)
 
               return <ListComponent tickitItems={item} />
-              // return <Demo2 />
             }}
             keyExtractor={(index: any) => index.toString()}
           />
