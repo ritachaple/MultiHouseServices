@@ -395,6 +395,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
             }
           />
           <View>
+            {/* <Icon name="language" size={15} color="gray" /> */}
             <Icon name="navicon" size={15} color="gray" />
             <Text style={styles.threadCount}>{tickitItems.thread_count}</Text>
           </View>

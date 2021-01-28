@@ -11,6 +11,7 @@ import {
   FlatList,
 } from 'react-native'
 import moment from 'moment'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 
@@ -30,11 +31,13 @@ const Chat = (complaintId: any) => {
   const [message, setMessage] = useState('')
   const [logActivity, setLogActivity] = useState()
   const [chatData, setChatData] = useState([])
+  const [transalateData, setTransalateData] = useState([])
 
   useEffect(() => {
     const chatDetails = async () => {
       try {
-        const res: any = await Api.get(`${configs.get_activity}${Id}/2`)
+        const res: any = await Api.get(`${configs.get_activity}325952/2`)
+        // const res: any = await Api.get(`${configs.get_activity}${Id}/2`)
         console.log('chatDetails', res)
         if (res.status === 200) {
           setChatData(res.data.data)
@@ -61,7 +64,7 @@ const Chat = (complaintId: any) => {
           status_id: '1',
           fake_news_type: null,
           fake_factor: null,
-          complaint_id: 325906,
+          complaint_id: Id,
           activity_id: null,
           resolution_text: null,
           medium_id: 2,
@@ -90,6 +93,58 @@ const Chat = (complaintId: any) => {
     }
   }
 
+  const onReplyClick = async (replyData: any) => {
+    try {
+      const data = {
+        custom_column: {
+          policy_number: '',
+          due_date: null,
+        },
+        blocked_by: null,
+        department_id: '62',
+        assigned_to: null,
+        priority_id: null,
+        status_id: '4',
+        fake_news_type: null,
+        fake_factor: null,
+        complaint_id: replyData.complaint_id,
+        activity_id: null,
+        resolution_text: null,
+        medium_id: replyData.medium_id,
+        created_by: 'paytm',
+        is_internal_user: true,
+        is_internal: false,
+        user_id: replyData.user_id,
+        is_dm: false,
+        medium_name: replyData.created_by,
+        conversation_text: replyData.conversation_text,
+        parent_message_id: '1229740175414132736',
+        index: 21,
+        attachments: [],
+      }
+      const res: any = await Api.post(configs.log_activity, data)
+      console.log('replyApiRes', res)
+    } catch (error) {
+      console.log('ReplyApiError', error)
+    }
+  }
+
+  const translatePress = async (msg: any) => {
+    try {
+      const body = {
+        text: msg,
+        translateTo: 'en',
+      }
+      const res: any = await Api.post(configs.translate_text, body)
+      console.log('translateApiRes', res)
+      if (res.status === 200) {
+        setTransalateData(res.data.data)
+      }
+    } catch (error) {
+      console.log('translateApiError', error)
+    }
+  }
+
   return (
     // <ScrollView>
     <View style={styles.container}>
@@ -110,16 +165,37 @@ const Chat = (complaintId: any) => {
             )
 
             return (
-              <>
+              <View>
                 <View>
                   <Text style={[styles.time, itemStyle]}>{date}</Text>
                 </View>
-                <View style={[styles.item, itemStyle]}>
-                  <View style={[styles.balloon, bgcolor]}>
-                    <Text>{data.item.conversation_text}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={[styles.item, itemStyle]}>
+                    <View style={[styles.balloon, bgcolor]}>
+                      <Text>{data.item.conversation_text}</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row' }}>
+                      <Icon
+                        onPress={() => {
+                          onReplyClick(data.item)
+                        }}
+                        name="reply"
+                        size={15}
+                        color="#000"
+                      />
+                      <Icon
+                        onPress={() => {
+                          translatePress(data.item.conversation_text)
+                        }}
+                        name="language"
+                        size={15}
+                        color="#000"
+                      />
+                    </View>
                   </View>
                 </View>
-              </>
+              </View>
             )
           }}
         />
