@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { Overlay } from 'react-native-elements'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 
@@ -31,12 +32,13 @@ const Chat = (complaintId: any) => {
   const [message, setMessage] = useState('')
   const [logActivity, setLogActivity] = useState()
   const [chatData, setChatData] = useState([])
-  const [transalateData, setTransalateData] = useState([])
+  const [transalateData, setTransalateData] = useState([] as any)
+  const [isTranslate, setIsTranslate] = useState(false)
 
   useEffect(() => {
     const chatDetails = async () => {
       try {
-        const res: any = await Api.get(`${configs.get_activity}325952/2`)
+        const res: any = await Api.get(`${configs.get_activity}325940/2`)
         // const res: any = await Api.get(`${configs.get_activity}${Id}/2`)
         console.log('chatDetails', res)
         if (res.status === 200) {
@@ -138,11 +140,40 @@ const Chat = (complaintId: any) => {
       const res: any = await Api.post(configs.translate_text, body)
       console.log('translateApiRes', res)
       if (res.status === 200) {
-        setTransalateData(res.data.data)
+        setTransalateData(res.data)
+        setIsTranslate(!isTranslate)
       }
     } catch (error) {
       console.log('translateApiError', error)
     }
+  }
+
+  const msgIcon = (data: any) => {
+    return (
+      <>
+        <View
+          style={{ flexDirection: 'row', paddingLeft: '2%', paddingTop: '5%' }}
+        >
+          <Icon
+            onPress={() => {
+              onReplyClick(data.item)
+            }}
+            name="reply"
+            size={15}
+            color="#000"
+          />
+          <Icon
+            style={{ marginLeft: 5 }}
+            onPress={() => {
+              translatePress(data.conversation_text)
+            }}
+            name="language"
+            size={15}
+            color="#000"
+          />
+        </View>
+      </>
+    )
   }
 
   return (
@@ -169,31 +200,13 @@ const Chat = (complaintId: any) => {
                 <View>
                   <Text style={[styles.time, itemStyle]}>{date}</Text>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <View style={[styles.item, itemStyle]}>
-                    <View style={[styles.balloon, bgcolor]}>
-                      <Text>{data.item.conversation_text}</Text>
-                    </View>
 
-                    <View style={{ flexDirection: 'row' }}>
-                      <Icon
-                        onPress={() => {
-                          onReplyClick(data.item)
-                        }}
-                        name="reply"
-                        size={15}
-                        color="#000"
-                      />
-                      <Icon
-                        onPress={() => {
-                          translatePress(data.item.conversation_text)
-                        }}
-                        name="language"
-                        size={15}
-                        color="#000"
-                      />
-                    </View>
+                <View style={[styles.item, itemStyle]}>
+                  <View style={[styles.balloon, bgcolor]}>
+                    <Text>{data.item.conversation_text}</Text>
                   </View>
+
+                  {inMessage && msgIcon(data.item)}
                 </View>
               </View>
             )
@@ -221,6 +234,32 @@ const Chat = (complaintId: any) => {
           />
         </TouchableOpacity>
       </View>
+      <Overlay
+        isVisible={isTranslate}
+        onBackdropPress={() => setIsTranslate(!isTranslate)}
+      >
+        <>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ fontWeight: 'bold', color: '#000' }}>
+              Translated Text
+            </Text>
+            <Icon
+              style={{ marginLeft: '3%', marginTop: '2%' }}
+              name="language"
+              size={15}
+              color="#000"
+            />
+          </View>
+          <Text
+            style={{ paddingTop: '2%' }}
+            onPress={() => setIsTranslate(!isTranslate)}
+          >
+            {transalateData.translated_text
+              ? transalateData.translated_text
+              : ''}
+          </Text>
+        </>
+      </Overlay>
     </View>
   )
 }
@@ -273,7 +312,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   balloon: {
-    maxWidth: '90%',
+    maxWidth: '100%',
     padding: 10,
     borderRadius: 20,
   },
