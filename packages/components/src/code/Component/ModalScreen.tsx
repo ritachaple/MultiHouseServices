@@ -45,8 +45,7 @@ const ModalScreen = (props: any) => {
           </View>
           <View style={styles.verticleLine} />
           <View style={{ flex: 5 }}>
-            <Chat />
-            {/* <Dropdown /> */}
+            <Chat complaintId={complaintId} />
           </View>
         </View>
       </View>

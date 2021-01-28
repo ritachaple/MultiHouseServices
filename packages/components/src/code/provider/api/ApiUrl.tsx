@@ -5,4 +5,5 @@ export const configs = {
   search_complaints: `${BaseUrl}search_complaints`,
   log_activity: `${BaseUrl}log_activity`,
   get_status: `${BaseUrl}get_status/`,
+  get_activity: `${BaseUrl}get_activity/`,
 }

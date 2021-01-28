@@ -207,9 +207,8 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
     if (res.status === 200) {
       setTooltip('Sentiment updated successfully')
     }
-    console.log('====================================')
+
     console.log('sentiment Icon Res', res)
-    console.log('====================================')
   }
 
   return (
