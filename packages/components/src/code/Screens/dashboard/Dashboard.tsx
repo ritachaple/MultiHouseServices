@@ -4,6 +4,8 @@ import { View, Text, Button, StyleSheet } from 'react-native'
 import { Header } from 'react-native-elements'
 import GoBack from '../../Component/GoBack'
 import SearchComplaints from '../../Component/SearchComponent'
+import SelectIcon from '../../Component/SelectIcon'
+import LeftComponent from '../../Component/LeftComponent'
 import CenterComponent from '../../Component/CenterComponent'
 import RightComponent from '../../Component/RightComponent'
 
@@ -28,8 +30,10 @@ const Dashboard = (props: any) => {
       <Header
         containerStyle={{ backgroundColor: 'whitesmoke', height: '10%' }}
         placement="left"
-        leftComponent={{ icon: 'menu', color: '#000' }}
+        leftComponent={<LeftComponent />}
         centerComponent={<CenterComponent />}
+        // centerComponent={<SelectIcon />}
+        // rightComponent={<CenterComponent />}
         rightComponent={<RightComponent />}
       />
       <SearchComplaints />
