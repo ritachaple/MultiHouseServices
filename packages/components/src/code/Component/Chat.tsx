@@ -38,8 +38,8 @@ const Chat = (complaintId: any) => {
   useEffect(() => {
     const chatDetails = async () => {
       try {
-        const res: any = await Api.get(`${configs.get_activity}325940/2`)
-        // const res: any = await Api.get(`${configs.get_activity}${Id}/2`)
+        // const res: any = await Api.get(`${configs.get_activity}325940/2`)
+        const res: any = await Api.get(`${configs.get_activity}${Id}/2`)
         console.log('chatDetails', res)
         if (res.status === 200) {
           setChatData(res.data.data)

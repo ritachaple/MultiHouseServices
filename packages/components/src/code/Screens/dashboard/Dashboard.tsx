@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, Text, Button, StyleSheet } from 'react-native'
+import { Header } from 'react-native-elements'
 import GoBack from '../../Component/GoBack'
 import SearchComplaints from '../../Component/SearchComponent'
+import CenterComponent from '../../Component/CenterComponent'
+import RightComponent from '../../Component/RightComponent'
 
 // const Dashboard = ({ props }: { props: any}) => {
 // const Dashboard = ({navigation}: { navigation:any }) => {
@@ -21,9 +24,17 @@ const Dashboard = (props: any) => {
 
   return (
     <View style={styles.container}>
-      {/* <Text>Dashboard</Text> */}
+      <Header containerStyle={styles.header} />
+      <Header
+        containerStyle={{ backgroundColor: 'whitesmoke', height: '10%' }}
+        placement="left"
+        leftComponent={{ icon: 'menu', color: '#000' }}
+        centerComponent={<CenterComponent />}
+        rightComponent={<RightComponent />}
+      />
       <SearchComplaints />
       <GoBack navigation={navigation} />
+      <Header containerStyle={styles.header} />
     </View>
   )
 }
@@ -31,7 +42,13 @@ const Dashboard = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: '2%',
+    backgroundColor: '#fff',
+    // paddingHorizontal: '2%',
+  },
+  header: {
+    backgroundColor: '#018786',
+    height: '6%',
+    borderBottomColor: '#018786',
   },
 })
 
