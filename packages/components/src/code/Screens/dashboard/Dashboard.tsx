@@ -27,6 +27,7 @@ const Dashboard = (props: any) => {
 
   const onSelectIconPress = () => {
     setIsSelectClick(!isSelectClick)
+    props.headerSelect(!isSelectClick)
   }
 
   return (
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: any) => {
   return {
-    data: state.checkData,
+    isHeaderSelect: state.headerData.isHeaderSelect,
   }
 }
 
@@ -78,6 +79,8 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     companyListData: () =>
       dispatch({ type: 'CHECK_DATA', payload: 'check data' }),
+    headerSelect: (isSelectClick: any) =>
+      dispatch({ type: 'IS_HEADER_SELECT', payload: isSelectClick }),
   }
 }
 

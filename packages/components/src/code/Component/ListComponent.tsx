@@ -22,6 +22,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu'
+import { connect } from 'react-redux'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Chat from './Chat'
@@ -50,7 +51,12 @@ const tickitIcon = [
   'circle',
 ]
 
-const List = ({ tickitItems }: { tickitItems: any }) => {
+const List = (props: any) => {
+  // const List = ({ tickitItems, props }: { tickitItems: any, props:any }) => {
+
+  const { isHeaderSelect, tickitItems } = props
+  console.log('isHEader', isHeaderSelect)
+
   const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
   const [message, setMessage] = useState('')
@@ -218,14 +224,24 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
           {/* <Icon name="twitter" size={15} color="#000" /> */}
           {/* <Icon name="facebook-square" size={15} color="#000"/> */}
 
+          {/* {isHeaderSelect? 
+            <Icon name="square-o":"twitter"} size={13} color="#000" />
+          
+        } */}
           <Hoverable>
-            {({ hovered }) =>
-              hovered ? (
-                <CheckBox value={checkbox} style={styles.checkbox} />
-              ) : (
-                <Icon name="twitter" size={15} color="#000" />
-              )
-            }
+            {({ hovered }) => (
+              <Icon
+                name={
+                  isHeaderSelect
+                    ? 'check-square-o'
+                    : // : hovered
+                      // ? 'square-o'
+                      'twitter'
+                }
+                size={13}
+                color="#000"
+              />
+            )}
           </Hoverable>
           <Text>#{tickitItems.complaint_id}</Text>
         </View>
@@ -520,6 +536,12 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
   )
 }
 
+const mapStateToProps = (state: any) => {
+  return {
+    isHeaderSelect: state.headerData.isHeaderSelect,
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -640,4 +662,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default List
+export default connect(mapStateToProps)(List)

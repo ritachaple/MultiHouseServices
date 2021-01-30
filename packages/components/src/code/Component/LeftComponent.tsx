@@ -8,7 +8,9 @@ const LeftComponent = (props: any) => {
     <View style={{ flexDirection: 'row' }}>
       <Icon name="reorder" size={15} color="#000" />
       <View style={{ paddingLeft: '30%' }}>
-        <Text style={[styles.appButtonText]}>Select All</Text>
+        <Text style={[styles.appButtonText]}>
+          {isCheckboxSelect ? 'Selected All' : 'Select All'}
+        </Text>
         <Icon
           onPress={onSelectPress}
           style={{ alignSelf: 'center', paddingHorizontal: 2 }}
