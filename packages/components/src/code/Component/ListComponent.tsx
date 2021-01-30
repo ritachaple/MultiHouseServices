@@ -207,9 +207,8 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
     if (res.status === 200) {
       setTooltip('Sentiment updated successfully')
     }
-    console.log('====================================')
+
     console.log('sentiment Icon Res', res)
-    console.log('====================================')
   }
 
   return (
@@ -396,6 +395,7 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
             }
           />
           <View>
+            {/* <Icon name="language" size={15} color="gray" /> */}
             <Icon name="navicon" size={15} color="gray" />
             <Text style={styles.threadCount}>{tickitItems.thread_count}</Text>
           </View>
@@ -478,7 +478,10 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
                 Alert.alert('Modal has been closed.')
               }}
             >
-              <ModalScreen closeModal={() => onCloseModal()} />
+              <ModalScreen
+                closeModal={() => onCloseModal()}
+                complaintId={tickitItems.complaint_id}
+              />
             </Modal>
           </>
 

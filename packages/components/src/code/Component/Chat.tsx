@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -9,68 +9,12 @@ import {
   ScrollView,
   TextInput,
   FlatList,
-  Button,
 } from 'react-native'
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu'
+import moment from 'moment'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { Overlay } from 'react-native-elements'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
-
-const data = [
-  { id: 1, date: '9:50 am', type: 'in', message: 'Lorem ipsum dolor sit amet' },
-  {
-    id: 2,
-    date: '9:50 am',
-    type: 'out',
-    message: 'Lorem ipsum dolor sit amet',
-  },
-  {
-    id: 3,
-    date: '9:50 am',
-    type: 'in',
-    message: 'Lorem ipsum dolor sit a met',
-  },
-  {
-    id: 4,
-    date: '9:50 am',
-    type: 'in',
-    message: 'Lorem ipsum dolor sit a met',
-  },
-  {
-    id: 5,
-    date: '9:50 am',
-    type: 'out',
-    message: 'Lorem ipsum dolor sit a met',
-  },
-  {
-    id: 6,
-    date: '9:50 am',
-    type: 'out',
-    message: 'Lorem ipsum dolor sit a met',
-  },
-  {
-    id: 7,
-    date: '9:50 am',
-    type: 'in',
-    message: 'Lorem ipsum dolor sit a met',
-  },
-  {
-    id: 8,
-    date: '9:50 am',
-    type: 'in',
-    message: 'Lorem ipsum dolor sit a met',
-  },
-  {
-    id: 9,
-    date: '9:50 am',
-    type: 'in',
-    message: 'Lorem ipsum dolor sit a met',
-  },
-]
 
 const tickitStatus = [
   'Pending',
@@ -83,18 +27,29 @@ const tickitStatus = [
   'Qwerty3',
 ]
 
-const Chat = () => {
+const Chat = (complaintId: any) => {
+  const Id: any = complaintId.complaintId
   const [message, setMessage] = useState('')
-  const [dropdown, setDropdown] = useState('Select Value')
   const [logActivity, setLogActivity] = useState()
+  const [chatData, setChatData] = useState([])
+  const [transalateData, setTransalateData] = useState([] as any)
+  const [isTranslate, setIsTranslate] = useState(false)
 
-  const renderDate = (date: any) => {
-    return <Text style={styles.time}>{date}</Text>
-  }
-
-  const setDropdownData = (index: any) => {
-    setDropdown(tickitStatus[index])
-  }
+  useEffect(() => {
+    const chatDetails = async () => {
+      try {
+        // const res: any = await Api.get(`${configs.get_activity}325940/2`)
+        const res: any = await Api.get(`${configs.get_activity}${Id}/2`)
+        console.log('chatDetails', res)
+        if (res.status === 200) {
+          setChatData(res.data.data)
+        }
+      } catch (error) {
+        console.log('chatDetailsError', error)
+      }
+    }
+    chatDetails()
+  }, [Id])
 
   const onSendMessage = async () => {
     try {
@@ -111,7 +66,7 @@ const Chat = () => {
           status_id: '1',
           fake_news_type: null,
           fake_factor: null,
-          complaint_id: 325906,
+          complaint_id: Id,
           activity_id: null,
           resolution_text: null,
           medium_id: 2,
@@ -140,74 +95,125 @@ const Chat = () => {
     }
   }
 
+  const onReplyClick = async (replyData: any) => {
+    try {
+      const data = {
+        custom_column: {
+          policy_number: '',
+          due_date: null,
+        },
+        blocked_by: null,
+        department_id: '62',
+        assigned_to: null,
+        priority_id: null,
+        status_id: '4',
+        fake_news_type: null,
+        fake_factor: null,
+        complaint_id: replyData.complaint_id,
+        activity_id: null,
+        resolution_text: null,
+        medium_id: replyData.medium_id,
+        created_by: 'paytm',
+        is_internal_user: true,
+        is_internal: false,
+        user_id: replyData.user_id,
+        is_dm: false,
+        medium_name: replyData.created_by,
+        conversation_text: replyData.conversation_text,
+        parent_message_id: '1229740175414132736',
+        index: 21,
+        attachments: [],
+      }
+      const res: any = await Api.post(configs.log_activity, data)
+      console.log('replyApiRes', res)
+    } catch (error) {
+      console.log('ReplyApiError', error)
+    }
+  }
+
+  const translatePress = async (msg: any) => {
+    try {
+      const body = {
+        text: msg,
+        translateTo: 'en',
+      }
+      const res: any = await Api.post(configs.translate_text, body)
+      console.log('translateApiRes', res)
+      if (res.status === 200) {
+        setTransalateData(res.data)
+        setIsTranslate(!isTranslate)
+      }
+    } catch (error) {
+      console.log('translateApiError', error)
+    }
+  }
+
+  const msgIcon = (data: any) => {
+    return (
+      <>
+        <View
+          style={{ flexDirection: 'row', paddingLeft: '2%', paddingTop: '5%' }}
+        >
+          <Icon
+            onPress={() => {
+              onReplyClick(data.item)
+            }}
+            name="reply"
+            size={15}
+            color="#000"
+          />
+          <Icon
+            style={{ marginLeft: 5 }}
+            onPress={() => {
+              translatePress(data.conversation_text)
+            }}
+            name="language"
+            size={15}
+            color="#000"
+          />
+        </View>
+      </>
+    )
+  }
+
   return (
     // <ScrollView>
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
         <FlatList
           style={styles.list}
-          data={data}
-          keyExtractor={(item: any) => {
-            return item.id
+          data={chatData}
+          keyExtractor={(data: any) => {
+            return data.parent_message_id
           }}
-          renderItem={(message1: any) => {
-            const item = message1
-            const inMessage = item.item.type === 'in'
+          renderItem={(data: any) => {
+            // const data = chatData
+            const inMessage = data.item.is_user_reply === true
             const itemStyle = inMessage ? styles.itemIn : styles.itemOut
+            const bgcolor = inMessage ? styles.colorIn : styles.colorOut
+            const date: any = moment(data.item.created_on).format(
+              'DD MM YYYY HH:mm',
+            )
+
             return (
-              <View style={[styles.item, itemStyle]}>
-                {!inMessage && renderDate(item.item.date)}
-                <View style={[styles.balloon]}>
-                  <Text>{item.item.message}</Text>
+              <View>
+                <View>
+                  <Text style={[styles.time, itemStyle]}>{date}</Text>
                 </View>
-                {inMessage && renderDate(item.item.date)}
+
+                <View style={[styles.item, itemStyle]}>
+                  <View style={[styles.balloon, bgcolor]}>
+                    <Text>{data.item.conversation_text}</Text>
+                  </View>
+
+                  {inMessage && msgIcon(data.item)}
+                </View>
               </View>
             )
           }}
         />
       </ScrollView>
-      {/* <View>
-          <Menu style={{ paddingTop: '3%' }}>
-            <MenuTrigger>
-              <View style={{ flexDirection: 'row' }}>
-                <TextInput
-                  // style={{borderColor: 'gray'}}
-                  // value={dropdown}
-                  style={styles.input}
-                  placeholder={dropdown}
-                />
-              </View>
-            </MenuTrigger>
-            <MenuOptions
-              customStyles={{
-                optionWrapper: {},
-                optionsContainer: {
-                  width: '8%',
-                  height: 'fitContent',
-                  zIndex: 1,
-                  position: 'absolute',
-                  top: '10%',
-                  left: '10%',
-                },
-                optionText: { fontSize: 10, zIndex: 100 },
-              }}
-            >
-              <FlatList
-                style={{ flex: 1 }}
-                data={tickitStatus}
-                renderItem={({ item, index }) => {
-                  return (
-                    <MenuOption
-                      text={item}
-                      onSelect={() => setDropdownData(index)}
-                    />
-                  )
-                }}
-                keyExtractor={(index: any) => index.toString()}
-              />
-            </MenuOptions>
-          </Menu>
-        </View> */}
+
       <View style={styles.footer}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -228,6 +234,32 @@ const Chat = () => {
           />
         </TouchableOpacity>
       </View>
+      <Overlay
+        isVisible={isTranslate}
+        onBackdropPress={() => setIsTranslate(!isTranslate)}
+      >
+        <>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ fontWeight: 'bold', color: '#000' }}>
+              Translated Text
+            </Text>
+            <Icon
+              style={{ marginLeft: '3%', marginTop: '2%' }}
+              name="language"
+              size={15}
+              color="#000"
+            />
+          </View>
+          <Text
+            style={{ paddingTop: '2%' }}
+            onPress={() => setIsTranslate(!isTranslate)}
+          >
+            {transalateData.translated_text
+              ? transalateData.translated_text
+              : ''}
+          </Text>
+        </>
+      </Overlay>
     </View>
   )
 }
@@ -275,14 +307,13 @@ const styles = StyleSheet.create({
   inputs: {
     height: 40,
     marginLeft: 16,
-    // borderBottomColor: '#FFFFFF',
     borderColor: '#dce3de',
     border: 'none',
     flex: 1,
   },
   balloon: {
-    maxWidth: 250,
-    padding: 15,
+    maxWidth: '100%',
+    padding: 10,
     borderRadius: 20,
   },
   itemIn: {
@@ -291,27 +322,28 @@ const styles = StyleSheet.create({
   itemOut: {
     alignSelf: 'flex-end',
   },
+  colorIn: {
+    backgroundColor: '#eeeeee',
+  },
+  colorOut: {
+    backgroundColor: '#13eb4d',
+  },
   time: {
     alignSelf: 'flex-end',
-    margin: 15,
     fontSize: 12,
     color: '#808080',
   },
   item: {
-    marginVertical: 14,
+    marginBottom: '1%',
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#eeeeee',
+
     borderRadius: 300,
-    padding: 5,
+    padding: 1,
   },
   input: {
     flex: 1,
-    // paddingTop: 10,
-    // paddingRight: 10,
-    // paddingBottom: 10,
     paddingLeft: 0,
-    // backgroundColor: '#fff',
     color: '#424242',
     borderRadius: 5,
     borderColor: 'gray',
