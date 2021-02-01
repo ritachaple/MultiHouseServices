@@ -11,17 +11,22 @@ import { Header } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import BatchEditComplaints from './BatchEditComplaints'
+import ForwardExternalAgent from './ForwardExternalAgent'
 import IconButton from './IconButton'
 
 const SelectIcon = () => {
   const onEditClick = () => {
     setModalVisible(!modalVisible)
+    setEditModalVisible(!editModalVisible)
   }
 
   const [modalVisible, setModalVisible] = useState(false)
+  const [editModalVisible, setEditModalVisible] = useState(false)
+  const [shareModalVisible, setShareModalVisible] = useState(false)
 
-  const onCloseIconModal = () => {
+  const onShareClick = () => {
     setModalVisible(!modalVisible)
+    setShareModalVisible(!shareModalVisible)
   }
 
   return (
@@ -35,7 +40,12 @@ const SelectIcon = () => {
         />
       </View>
       <View style={{ paddingLeft: '4%' }}>
-        <IconButton name="share" />
+        <IconButton
+          name="share"
+          onPress={() => {
+            onShareClick()
+          }}
+        />
       </View>
       <View style={{ paddingLeft: '4%' }}>
         <IconButton name="trash" />
@@ -67,11 +77,21 @@ const SelectIcon = () => {
           Alert.alert('Modal has been closed.')
         }}
       >
-        <BatchEditComplaints
-          onPress={() => {
-            onCloseIconModal()
-          }}
-        />
+        {editModalVisible ? (
+          <BatchEditComplaints
+            onPress={() => {
+              onEditClick()
+            }}
+          />
+        ) : null}
+
+        {shareModalVisible ? (
+          <ForwardExternalAgent
+            onPress={() => {
+              onShareClick()
+            }}
+          />
+        ) : null}
       </Modal>
     </View>
   )
