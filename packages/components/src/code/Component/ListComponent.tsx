@@ -221,28 +221,19 @@ const List = (props: any) => {
     <View style={styles.container}>
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.complaintId}>
-          {/* <Icon name="twitter" size={15} color="#000" /> */}
-          {/* <Icon name="facebook-square" size={15} color="#000"/> */}
-
-          {/* {isHeaderSelect? 
-            <Icon name="square-o":"twitter"} size={13} color="#000" />
-          
-        } */}
-          <Hoverable>
-            {({ hovered }) => (
-              <Icon
-                name={
-                  isHeaderSelect
-                    ? 'check-square-o'
-                    : // : hovered
-                      // ? 'square-o'
-                      'twitter'
-                }
-                size={13}
-                color="#000"
-              />
-            )}
-          </Hoverable>
+          {isHeaderSelect ? (
+            <Icon name="check-square-o" size={13} color="#000" />
+          ) : (
+            <Hoverable>
+              {({ hovered }) => (
+                <Icon
+                  name={hovered ? 'square-o' : 'twitter'}
+                  size={13}
+                  color="#000"
+                />
+              )}
+            </Hoverable>
+          )}
           <Text>#{tickitItems.complaint_id}</Text>
         </View>
 
