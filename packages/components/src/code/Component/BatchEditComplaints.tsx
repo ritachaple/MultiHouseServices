@@ -5,11 +5,16 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
+import Dropdown from './Dropdown'
 
 const BatchEditComplaints = (props: any) => {
   const { onPress } = props
 
   const [controlOption, setControlOption] = useState([])
+  const [statusOption, setStatusOption] = useState({} as any)
+  const [assignToOption, setAssignToOption] = useState({} as any)
+  const [priorityOption, setPriorityOption] = useState({} as any)
+  const [dueDate, setDueDate] = useState([])
 
   useEffect(() => {
     batchUpdateControlOption()
@@ -20,10 +25,44 @@ const BatchEditComplaints = (props: any) => {
       const res: any = await Api.get(configs.batch_update_control_option)
       console.log('batchUpdateOptionRes', res)
       if (res.status) {
-        setControlOption(res.data)
+        // setControlOption(res.data);
+        setStatusOption(res.data.controls[0])
+        setAssignToOption(res.data.controls[1])
+        setPriorityOption(res.data.controls[2])
+        setDueDate(res.data.controls[3])
+
+        // console.log("statusOption",res.data.controls[1].lookup_data);
       }
     } catch (error) {
       console.log('batchUpdateControlOptionError', error)
+    }
+  }
+
+  const selectedStatusItem = (item: any) => {
+    console.log('item', item)
+  }
+
+  const selectedAssignOption = (item: any) => {
+    console.log('optionitem', item)
+  }
+
+  const selectedPriorityOption = (item: any) => {
+    console.log('priorityitem', item)
+  }
+
+  const onSavePress = async () => {
+    try {
+      const body = {
+        static_field: { status_id: '1', priority_id: '1' },
+        dynamic_field: {},
+        complaint_id: [310747, 325938],
+      }
+      const res: any = await Api.post(configs.batch_complaint_update, body)
+      if (res.status === 200) {
+        console.log('EditComplaintsRes', res)
+      }
+    } catch (error) {
+      console.log('editComplaintsError', error)
     }
   }
 
@@ -49,7 +88,73 @@ const BatchEditComplaints = (props: any) => {
             <Icon name="close" color="#fff" size={10} onPress={onPress} />
           }
         />
-
+        <View>
+          <View style={{ flexDirection: 'row' }}>
+            <View>
+              <Text
+                style={{
+                  alignSelf: 'flex-start',
+                  fontSize: 10,
+                  paddingLeft: '2%',
+                }}
+              >
+                assign
+              </Text>
+              <Dropdown
+                dropdownList={statusOption.lookup_data}
+                selectedItem={selectedStatusItem}
+              />
+            </View>
+            <View>
+              <Text
+                style={{
+                  alignSelf: 'flex-start',
+                  fontSize: 10,
+                  paddingLeft: '2%',
+                }}
+              >
+                Assigned To
+              </Text>
+              <Dropdown
+                dropdownList={statusOption.lookup_data}
+                selectedItem={selectedAssignOption}
+              />
+            </View>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <View>
+              <Text
+                style={{
+                  alignSelf: 'flex-start',
+                  fontSize: 10,
+                  paddingLeft: '2%',
+                }}
+              >
+                Priority
+              </Text>
+              <Dropdown
+                dropdownList={priorityOption.lookup_data}
+                selectedItem={selectedPriorityOption}
+              />
+            </View>
+            <View>
+              <Text
+                style={{
+                  alignSelf: 'flex-start',
+                  fontSize: 10,
+                  paddingLeft: '2%',
+                }}
+              >
+                Due Date
+              </Text>
+              <Dropdown
+                dropdownList={priorityOption.lookup_data}
+                selectedItem={selectedPriorityOption}
+              />
+            </View>
+            {/* <Dropdown /> */}
+          </View>
+        </View>
         <TouchableOpacity
           style={{
             backgroundColor: '#286090',
@@ -63,7 +168,9 @@ const BatchEditComplaints = (props: any) => {
             justifyContent: 'center',
           }}
         >
-          <Text style={[styles.appButtonText]}>save</Text>
+          <Text onPress={() => onSavePress()} style={[styles.appButtonText]}>
+            save
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
