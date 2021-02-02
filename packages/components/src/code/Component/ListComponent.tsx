@@ -55,7 +55,7 @@ const List = (props: any) => {
   // const List = ({ tickitItems, props }: { tickitItems: any, props:any }) => {
 
   const { isHeaderSelect, tickitItems } = props
-  console.log('isHEader', isHeaderSelect)
+  console.log('isHeader', isHeaderSelect)
 
   const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
@@ -407,20 +407,6 @@ const List = (props: any) => {
             <Text style={styles.threadCount}>{tickitItems.thread_count}</Text>
           </View>
 
-          <>
-            <View>
-              {/* <TouchableOpacity
-                style={styles.dropdownButton}
-                onPress={() => {
-                  toggleOverlay()
-                }}
-              > */}
-              {/* <Text>Dropdown list</Text> */}
-              {/* <Icon name="angle-up" size={10} color="gray" />
-              </TouchableOpacity> */}
-            </View>
-          </>
-
           <View>
             <Menu>
               <MenuTrigger>
@@ -458,22 +444,6 @@ const List = (props: any) => {
               </MenuOptions>
             </Menu>
           </View>
-          <></>
-          {/* <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-            <Text>Hello from Overlay!</Text>
-
- {/* <View>
-              <Button 
-              icon={
-                <CheckBox value={checkbox} style={styles.checkbox} />
-              }
-              style={{padding:1,backgroundColor:'#fff', height:'9',
-                                 
-                 }} title="influencer"  type="clear"  
-                 titleStyle={{ color: 'black', borderColor:'black',
-                 fontSize: 10,borderWidth: 1,padding:9, borderRadius:3, width:100}}/>
-          </View> */}
-          {/* </Overlay> */}
 
           <>
             <Modal

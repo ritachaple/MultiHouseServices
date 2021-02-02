@@ -10,9 +10,13 @@ import {
 import { Header } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Api from '../provider/api/Api'
+import { configs } from '../provider/api/ApiUrl'
+import AlertModal from './AlertModal'
 import BatchEditComplaints from './BatchEditComplaints'
 import ForwardExternalAgent from './ForwardExternalAgent'
 import IconButton from './IconButton'
+import NotificationModal from './NotificationModal'
 
 const SelectIcon = () => {
   const onEditClick = () => {
@@ -23,10 +27,76 @@ const SelectIcon = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [editModalVisible, setEditModalVisible] = useState(false)
   const [shareModalVisible, setShareModalVisible] = useState(false)
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false)
+  const [blockModalVisible, setBlockModalVisible] = useState(false)
+  const [mergeModalVisible, setMergeModalVisible] = useState(false)
 
   const onShareClick = () => {
     setModalVisible(!modalVisible)
     setShareModalVisible(!shareModalVisible)
+  }
+
+  const onDeleteClick = () => {
+    setModalVisible(!modalVisible)
+    setDeleteModalVisible(!deleteModalVisible)
+  }
+
+  const onBlockClick = () => {
+    setModalVisible(!modalVisible)
+    setBlockModalVisible(!blockModalVisible)
+  }
+
+  const onMergePress = () => {
+    setModalVisible(!modalVisible)
+    setMergeModalVisible(!mergeModalVisible)
+  }
+
+  const onDeleteOk = async () => {
+    onDeleteClick()
+    try {
+      const body = {
+        complaint_id: [325833],
+        user_id: 5889,
+        is_delete: true,
+      }
+      const res: any = await Api.post(configs.delete_complaints, body)
+      console.log('deleteRes', res)
+      // if(res.status===200){
+      // }
+      //  onDeleteClick()
+    } catch (error) {
+      console.log('Delete Complainte Error')
+    }
+  }
+
+  const onBlockOk = async () => {
+    onBlockClick()
+    try {
+      const body = {
+        complaint_id: [325871],
+        client_id: 39,
+      }
+      const res: any = await Api.post(configs.block_user, body)
+      console.log('blockRes', res)
+      // if(res.status===200){
+      // }
+    } catch (error) {
+      console.log('Block Complainte Error')
+    }
+  }
+
+  const onMergeOk = async () => {
+    onMergePress()
+    try {
+      const body = ['325938']
+
+      const res: any = await Api.post(configs.mark_complaint_unread, body)
+      console.log('Mark Complaint', res)
+      // if(res.status===200){
+      // }
+    } catch (error) {
+      console.log('Mark Complaint Error', error)
+    }
   }
 
   return (
@@ -48,13 +118,28 @@ const SelectIcon = () => {
         />
       </View>
       <View style={{ paddingLeft: '4%' }}>
-        <IconButton name="trash" />
+        <IconButton
+          name="trash"
+          onPress={() => {
+            onDeleteClick()
+          }}
+        />
       </View>
       <View style={{ paddingLeft: '4%' }}>
-        <IconButton name="hand-paper-o" />
+        <IconButton
+          name="hand-paper-o"
+          onPress={() => {
+            onBlockClick()
+          }}
+        />
       </View>
       <View style={{ paddingLeft: '4%' }}>
-        <IconButton name="chain" />
+        <IconButton
+          name="chain"
+          onPress={() => {
+            onMergePress()
+          }}
+        />
       </View>
       <View style={{ paddingLeft: '4%' }}>
         <IconButton name="envelope-open-o" />
@@ -90,6 +175,45 @@ const SelectIcon = () => {
             onPress={() => {
               onShareClick()
             }}
+          />
+        ) : null}
+
+        {deleteModalVisible ? (
+          <AlertModal
+            message="Are you sure you want to delete these tickets?"
+            onPress={() => {
+              onDeleteClick()
+            }}
+            onSaveClick={() => {
+              onDeleteOk()
+            }}
+          />
+        ) : null}
+
+        {blockModalVisible ? (
+          <AlertModal
+            message="Are you sure you want to block these user?"
+            onPress={() => {
+              onBlockClick()
+            }}
+            onSaveClick={() => {
+              onBlockOk()
+            }}
+          />
+        ) : null}
+
+        {mergeModalVisible ? (
+          <NotificationModal
+            onCancelPress={() => {
+              onMergePress()
+            }}
+            onOkPress={() => {
+              onMergeOk()
+            }}
+            okBtnName="Merge"
+            cancelBtnName="Skip Merge"
+            message="Selected complaints will be merged. Proceed with merge?"
+            title="Merge Notification"
           />
         ) : null}
       </Modal>
