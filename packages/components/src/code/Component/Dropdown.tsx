@@ -9,7 +9,7 @@ import {
   Text,
 } from 'react-native'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
-import { Button, Overlay } from 'react-native-elements'
+import { Button, Overlay, Divider } from 'react-native-elements'
 
 const tickitStatus = [
   'Pending',
@@ -22,33 +22,88 @@ const tickitStatus = [
   'Qwerty3',
 ]
 
-const Dropdown = () => {
+const Dropdown = (props: any) => {
+  const { dropdownList } = props
   const [displayList, setDisplayList] = useState(false)
   const [textField, setTextField] = useState('')
+  const [multipleTextField, setMultipleTextField] = useState('')
 
   const onInputPress = () => {
     setDisplayList(!displayList)
   }
 
   const onDropdownSelect = (item: any) => {
-    setTextField(item)
+    setTextField(item.text)
     setDisplayList(!displayList)
+    props.selectedItem(item)
   }
 
   return (
     <View style={{ flex: 1, padding: '4%' }}>
       <TouchableOpacity onPress={onInputPress}>
         <TextInput
-          // style={{borderColor: 'gray'}}
-          // value={dropdown}
           style={styles.input}
           placeholder="SelectData"
           value={textField}
         />
       </TouchableOpacity>
-      {/* {displayList? */}
+
       <View style={{ backgroundColor: 'gray' }}>
-        <Overlay
+        <Modal
+          style={{ flex: 1 }}
+          animationType="none"
+          transparent={displayList}
+          visible={displayList}
+        >
+          <View
+            style={{
+              flex: 1,
+              width: '50%',
+              height: '50%',
+              marginHorizontal: '40%',
+              marginTop: '15%',
+              alignSelf: 'center',
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: 'white',
+                // borderRadius: 5,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+              }}
+            >
+              <FlatList
+                style={{ paddingHorizontal: '2%' }}
+                data={dropdownList}
+                renderItem={({ item, index }) => {
+                  return (
+                    <View
+                      style={{
+                        justifyContent: 'flex-start',
+                        padding: '1%',
+                        borderBottomWidth: 0.2,
+                        borderBottomColor: 'gray',
+                      }}
+                    >
+                      <Text onPress={() => onDropdownSelect(item)}>
+                        {item.text}
+                      </Text>
+                    </View>
+                  )
+                }}
+                keyExtractor={(index: any) => index.toString()}
+              />
+            </View>
+          </View>
+        </Modal>
+        {/* <Overlay
           style={{ flex: 1 }}
           isVisible={displayList}
           onBackdropPress={onInputPress}
@@ -65,7 +120,7 @@ const Dropdown = () => {
             }}
             keyExtractor={(index: any) => index.toString()}
           />
-        </Overlay>
+        </Overlay> */}
       </View>
 
       {/* :""
@@ -83,7 +138,7 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     // backgroundColor: '#fff',
     color: '#424242',
-    borderRadius: 5,
+    // borderRadius: 5,
     borderColor: 'gray',
     borderWidth: 1,
     // width: '10%',

@@ -9,6 +9,7 @@ import {
   Text,
 } from 'react-native'
 import { MenuProvider } from 'react-native-popup-menu'
+import { connect } from 'react-redux'
 import Chat from './Chat'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
@@ -20,12 +21,16 @@ import IconButton from './IconButton'
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 
-const SearchComplaints = () => {
+const SearchComplaints = (props: any) => {
   const [tickit, setTickit] = useState([])
 
   useEffect(() => {
+    const clearData = async () => {
+      props.clearHeaderData()
+    }
     searchComplaintsApi()
-  }, [])
+    clearData()
+  }, [props])
 
   const searchComplaintsApi = async () => {
     try {
@@ -35,8 +40,8 @@ const SearchComplaints = () => {
         department: [],
         is_deleted: false,
         is_spam: false,
-        to_date: '2021-01-07T07:48:16.916Z',
-        from_date: '2020-12-24T07:48:16.916Z',
+        to_date: '2021-01-25T05:10:00.000Z',
+        from_date: '2020-12-07T05:10:00.000Z',
         custom_filter: null,
         customer_responded: null,
         page_size: 50,
@@ -60,10 +65,6 @@ const SearchComplaints = () => {
       console.log('error: ', error)
     }
   }
-
-  // const onDeletePress=()=>{
-
-  // }
 
   return (
     <View style={styles.container}>
@@ -105,6 +106,14 @@ const SearchComplaints = () => {
   )
 }
 
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    clearHeaderData: () => {
+      dispatch({ type: 'CLEAR_HEADER' })
+    },
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -123,4 +132,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default SearchComplaints
+export default connect(null, mapDispatchToProps)(SearchComplaints)

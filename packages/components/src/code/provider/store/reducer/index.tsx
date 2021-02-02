@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import checkData from './CheckData'
+import headerData from './HeaderData'
 
 export default combineReducers({
-  checkData,
+  headerData,
 })

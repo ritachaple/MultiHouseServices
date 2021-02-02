@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { View, Text, Button, StyleSheet } from 'react-native'
 import { Header } from 'react-native-elements'
@@ -14,6 +14,7 @@ import RightComponent from '../../Component/RightComponent'
 const Dashboard = (props: any) => {
   const { navigation } = props
 
+  const [isSelectClick, setIsSelectClick] = useState(false)
   // useEffect(() => {
   //   // console.log('props', props)
   //   // props.companyListData()
@@ -24,14 +25,26 @@ const Dashboard = (props: any) => {
     props.companyListData()
   }
 
+  const onSelectIconPress = () => {
+    setIsSelectClick(!isSelectClick)
+    props.headerSelect(!isSelectClick)
+  }
+
   return (
     <View style={styles.container}>
       <Header containerStyle={styles.header} />
       <Header
         containerStyle={{ backgroundColor: 'whitesmoke', height: '10%' }}
         placement="left"
-        leftComponent={<LeftComponent />}
-        centerComponent={<CenterComponent />}
+        leftComponent={
+          <LeftComponent
+            isCheckboxSelect={isSelectClick}
+            onSelectPress={() => {
+              onSelectIconPress()
+            }}
+          />
+        }
+        centerComponent={isSelectClick ? <SelectIcon /> : <CenterComponent />}
         // centerComponent={<SelectIcon />}
         // rightComponent={<CenterComponent />}
         rightComponent={<RightComponent />}
@@ -58,7 +71,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: any) => {
   return {
-    data: state.checkData,
+    isHeaderSelect: state.headerData.isHeaderSelect,
   }
 }
 
@@ -66,6 +79,8 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     companyListData: () =>
       dispatch({ type: 'CHECK_DATA', payload: 'check data' }),
+    headerSelect: (isSelectClick: any) =>
+      dispatch({ type: 'IS_HEADER_SELECT', payload: isSelectClick }),
   }
 }
 

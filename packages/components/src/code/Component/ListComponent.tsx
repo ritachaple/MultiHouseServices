@@ -22,6 +22,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu'
+import { connect } from 'react-redux'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Chat from './Chat'
@@ -50,7 +51,12 @@ const tickitIcon = [
   'circle',
 ]
 
-const List = ({ tickitItems }: { tickitItems: any }) => {
+const List = (props: any) => {
+  // const List = ({ tickitItems, props }: { tickitItems: any, props:any }) => {
+
+  const { isHeaderSelect, tickitItems } = props
+  console.log('isHeader', isHeaderSelect)
+
   const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
   const [message, setMessage] = useState('')
@@ -215,18 +221,19 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
     <View style={styles.container}>
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.complaintId}>
-          {/* <Icon name="twitter" size={15} color="#000" /> */}
-          {/* <Icon name="facebook-square" size={15} color="#000"/> */}
-
-          <Hoverable>
-            {({ hovered }) =>
-              hovered ? (
-                <CheckBox value={checkbox} style={styles.checkbox} />
-              ) : (
-                <Icon name="twitter" size={15} color="#000" />
-              )
-            }
-          </Hoverable>
+          {isHeaderSelect ? (
+            <Icon name="check-square-o" size={13} color="#000" />
+          ) : (
+            <Hoverable>
+              {({ hovered }) => (
+                <Icon
+                  name={hovered ? 'square-o' : 'twitter'}
+                  size={13}
+                  color="#000"
+                />
+              )}
+            </Hoverable>
+          )}
           <Text>#{tickitItems.complaint_id}</Text>
         </View>
 
@@ -400,20 +407,6 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
             <Text style={styles.threadCount}>{tickitItems.thread_count}</Text>
           </View>
 
-          <>
-            <View>
-              {/* <TouchableOpacity
-                style={styles.dropdownButton}
-                onPress={() => {
-                  toggleOverlay()
-                }}
-              > */}
-              {/* <Text>Dropdown list</Text> */}
-              {/* <Icon name="angle-up" size={10} color="gray" />
-              </TouchableOpacity> */}
-            </View>
-          </>
-
           <View>
             <Menu>
               <MenuTrigger>
@@ -451,22 +444,6 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
               </MenuOptions>
             </Menu>
           </View>
-          <></>
-          {/* <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-            <Text>Hello from Overlay!</Text>
-
- {/* <View>
-              <Button 
-              icon={
-                <CheckBox value={checkbox} style={styles.checkbox} />
-              }
-              style={{padding:1,backgroundColor:'#fff', height:'9',
-                                 
-                 }} title="influencer"  type="clear"  
-                 titleStyle={{ color: 'black', borderColor:'black',
-                 fontSize: 10,borderWidth: 1,padding:9, borderRadius:3, width:100}}/>
-          </View> */}
-          {/* </Overlay> */}
 
           <>
             <Modal
@@ -518,6 +495,12 @@ const List = ({ tickitItems }: { tickitItems: any }) => {
       </View>
     </View>
   )
+}
+
+const mapStateToProps = (state: any) => {
+  return {
+    isHeaderSelect: state.headerData.isHeaderSelect,
+  }
 }
 
 const styles = StyleSheet.create({
@@ -640,4 +623,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default List
+export default connect(mapStateToProps)(List)
