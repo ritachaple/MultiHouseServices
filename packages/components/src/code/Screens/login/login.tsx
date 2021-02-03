@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native'
-
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Api from '../../provider/api/Api'
 import { configs } from '../../provider/api/ApiUrl'
+import SideBar from '../../Component/SideBar'
 
 const Login = (props: any) => {
   // const Login = ({ navigation }: { navigation: any }) => {
@@ -43,34 +43,36 @@ const Login = (props: any) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Input
-        placeholder="Enter Email"
-        onChangeText={(value) => {
-          onInputChange(value, 'username')
-        }}
-        leftIcon={<Icon name="user" size={24} color="black" />}
-      />
+    <View style={{ flexDirection: 'row' }}>
+      <View style={styles.container}>
+        <Input
+          placeholder="Enter Email"
+          onChangeText={(value) => {
+            onInputChange(value, 'username')
+          }}
+          leftIcon={<Icon name="user" size={24} color="black" />}
+        />
 
-      <Input
-        onChangeText={(value) => {
-          onInputChange(value, 'password')
-        }}
-        placeholder="Enter Password"
-        leftIcon={<Icon name="user" size={24} color="black" />}
-      />
+        <Input
+          onChangeText={(value) => {
+            onInputChange(value, 'password')
+          }}
+          placeholder="Enter Password"
+          leftIcon={<Icon name="user" size={24} color="black" />}
+        />
 
-      <TouchableOpacity
-        onPress={() => {
-          onLoginPress()
-        }}
-        style={[
-          styles.modalButton,
-          { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
-        ]}
-      >
-        <Text style={[styles.buttonText, { color: '#fff' }]}>Login</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            onLoginPress()
+          }}
+          style={[
+            styles.modalButton,
+            { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
+          ]}
+        >
+          <Text style={[styles.buttonText, { color: '#fff' }]}>Login</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }

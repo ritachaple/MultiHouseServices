@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, Button, StyleSheet } from 'react-native'
+import { View, Text, Button, StyleSheet, Modal } from 'react-native'
 import { Header } from 'react-native-elements'
 import GoBack from '../../Component/GoBack'
 import SearchComplaints from '../../Component/SearchComponent'
@@ -8,18 +8,23 @@ import SelectIcon from '../../Component/SelectIcon'
 import LeftComponent from '../../Component/LeftComponent'
 import CenterComponent from '../../Component/CenterComponent'
 import RightComponent from '../../Component/RightComponent'
+import SideBar from '../../Component/SideBar'
 
-// const Dashboard = ({ props }: { props: any}) => {
 // const Dashboard = ({navigation}: { navigation:any }) => {
 const Dashboard = (props: any) => {
   const { navigation } = props
 
   const [isSelectClick, setIsSelectClick] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   // useEffect(() => {
   //   // console.log('props', props)
   //   // props.companyListData()
   //   checkReduxData()
   // }, [])
+
+  const onFilterPress = () => {
+    setIsSidebarOpen(!isSidebarOpen)
+  }
 
   const checkReduxData = () => {
     props.companyListData()
@@ -45,13 +50,30 @@ const Dashboard = (props: any) => {
           />
         }
         centerComponent={isSelectClick ? <SelectIcon /> : <CenterComponent />}
-        // centerComponent={<SelectIcon />}
-        // rightComponent={<CenterComponent />}
-        rightComponent={<RightComponent />}
+        rightComponent={
+          <RightComponent
+            onFilterPress={() => {
+              onFilterPress()
+            }}
+          />
+        }
       />
       <SearchComplaints />
+
       <GoBack navigation={navigation} />
       <Header containerStyle={styles.header} />
+      <Modal
+        style={{ flex: 1 }}
+        animationType="none"
+        transparent={isSidebarOpen}
+        visible={isSidebarOpen}
+      >
+        <SideBar
+          onClosePress={() => {
+            onFilterPress()
+          }}
+        />
+      </Modal>
     </View>
   )
 }
@@ -85,4 +107,3 @@ const mapDispatchToProps = (dispatch: any) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
-// export default Dashboard

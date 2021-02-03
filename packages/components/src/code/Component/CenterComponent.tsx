@@ -23,7 +23,7 @@ const OutlineButton = (props: any) => {
   )
 }
 
-const RightComponent = () => {
+const CenterComponent = () => {
   const [isPendingButtonClick, setIsPendingButtonClick] = useState(false)
   const [isAwaitingButtonClick, setIsAwaitingClick] = useState(false)
   const [isEscalatedButtonClick, setIsEscalatedClick] = useState(false)
@@ -103,7 +103,7 @@ const RightComponent = () => {
   )
 }
 
-export default RightComponent
+export default CenterComponent
 
 const styles = StyleSheet.create({
   // ...
