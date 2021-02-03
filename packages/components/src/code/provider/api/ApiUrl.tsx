@@ -3,7 +3,7 @@ const ticket = 'ticket/'
 const transalate = 'translation/'
 
 export const configs = {
-  loginApi: '',
+  loginApi: 'https://cxpdev.merilent.com/auth/api_token_obtain/',
   search_complaints: `${BaseUrl}${ticket}search_complaints`,
   log_activity: `${BaseUrl}${ticket}log_activity`,
   get_status: `${BaseUrl}${ticket}get_status/`,

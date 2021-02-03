@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     height: 40,
     marginLeft: 16,
     borderColor: '#dce3de',
-    border: 'none',
+    // border: 'none',
     flex: 1,
   },
   balloon: {
