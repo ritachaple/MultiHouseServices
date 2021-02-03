@@ -33,6 +33,7 @@ module.exports = function override(config, env) {
   config.module.rules[1].oneOf[2].options.plugins.push(
     require.resolve('babel-plugin-react-native-web'),
     require.resolve('@babel/plugin-proposal-class-properties'),
+    require.resolve('@babel/plugin-syntax-jsx'),
   )
 
   config.plugins.push(
