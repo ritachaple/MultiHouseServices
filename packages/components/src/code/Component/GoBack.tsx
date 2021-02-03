@@ -8,7 +8,6 @@ const GoBack = ({ navigation }: { navigation: any }) => {
     </View>
   )
 }
-
 const styles = StyleSheet.create({
   goBack: {
     padding: 1,
