@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { WebView } from 'react-native-webview'
-// import  {WebView}  from 'react-native-web-webview'
 
 const Webview = () => {
   return (
     <WebView
+    originWhitelist={['*']}
       source={{
         html: `<script>
         (function (w, d, s, o, f, js, fjs) {

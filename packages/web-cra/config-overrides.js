@@ -33,12 +33,29 @@ module.exports = function override(config, env) {
   config.module.rules[1].oneOf[2].options.plugins.push(
     require.resolve('babel-plugin-react-native-web'),
     require.resolve('@babel/plugin-proposal-class-properties'),
-    require.resolve('@babel/plugin-syntax-jsx'),
   )
 
   config.plugins.push(
     new webpack.DefinePlugin({ __DEV__: env !== 'production' }),
   )
+
+  // config.resolve = {
+  //   alias: {
+  // 'react-native$': 'react-native-web',
+  // 'react-native-webview$': 'react-native-web-webview',
+  //     'react-native-web': 'react-native-web-webview',
+  //     'react-native': 'react-native-webview',
+  //   },
+  // }
+
+  // config.resolve.alias = {
+  //   // ...(config.resolve.alias || {}),
+  //   // Transform all direct `react-native` imports to `react-native-web`
+  //   'react-native$': 'react-native-web',
+  //   'react-native-webview$': 'react-native-web-webview',
+  // }
+
+  // config.module.strictExportPresence = false
 
   return config
 }
