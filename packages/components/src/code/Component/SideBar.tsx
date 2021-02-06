@@ -2,9 +2,21 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import { Header, Divider } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import DropdownStaticData from './DropdownStaticData'
 
 const SideBar = (props: any) => {
   const { onClosePress } = props
+
+  const dropdownList = [
+    'Select Type',
+    'Pending',
+    'Escalated',
+    'Not Responded',
+    'Awaiting',
+  ]
+
+  const setMediumValue = (value: any) => {}
+
   return (
     <View
       style={{
@@ -41,6 +53,12 @@ const SideBar = (props: any) => {
       <Divider />
       <View style={{ marginVertical: '10%', marginHorizontal: '5%' }}>
         <Text style={{ fontSize: 13 }}>Medium</Text>
+        {/* <DropdownStaticData 
+    //  style={{flexDirection: 'row'}}
+     list={dropdownList} setType={setMediumValue}
+     defaultValue="Select Brand"
+     dropdownName="Medium"
+     /> */}
       </View>
     </View>
   )

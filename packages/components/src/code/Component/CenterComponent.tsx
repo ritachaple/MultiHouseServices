@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IconButton from './IconButton'
+import DropdownStaticData from './DropdownStaticData'
 
 const OutlineButton = (props: any) => {
   const { isButtonClick, onPress, title } = props
@@ -45,7 +46,7 @@ const CenterComponent = (props: any) => {
   const [isEscalatedButtonClick, setIsEscalatedClick] = useState(false)
   const [isNotRespondedButtonClick, setIsNotRespondedClick] = useState(false)
   const [isDropdownShow, setIsDropdownShow] = useState(false)
-  const [DropdownType, setDropdownType] = useState('Select Type')
+  const [DropdownType, setDropdownType] = useState('Select')
   const [DropdownBrandType, setDropdownBrandType] = useState('Select Brand')
 
   const onAwaitingPress = () => {
@@ -63,14 +64,8 @@ const CenterComponent = (props: any) => {
     setIsNotRespondedClick(!isNotRespondedButtonClick)
   }
 
-  const onDropdownSelect = (item: any) => {
-    setDropdownType(item)
+  const setTIckitValue = (item: any) => {
     props.setDisplayTickitType(item)
-    setDropdownShow()
-  }
-
-  const setDropdownShow = () => {
-    setIsDropdownShow(!isDropdownShow)
   }
 
   return (
@@ -78,38 +73,26 @@ const CenterComponent = (props: any) => {
       style={{
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        paddingLeft: '20%',
+        paddingLeft: '70%',
       }}
     >
       {/* <View>Hello World</View> */}
 
-      <TouchableOpacity
-        style={{ flexDirection: 'row' }}
-        // onPress={()=>{setDropdownShow()}}
-      >
-        <Text style={styles.dropdownText}>Brand: {DropdownBrandType}</Text>
-        <Icon
-          style={{ paddingVertical: '2%' }}
-          name="angle-down"
-          size={15}
-          color="#909091"
-        />
-      </TouchableOpacity>
+      <DropdownStaticData
+        //  style={{flexDirection: 'row'}}
+        list={dropdownList}
+        setType={setTIckitValue}
+        defaultValue="Select Brand"
+        dropdownName="Brand"
+      />
 
-      <TouchableOpacity
-        style={{ flexDirection: 'row', marginLeft: '10%' }}
-        onPress={() => {
-          setDropdownShow()
-        }}
-      >
-        <Text style={styles.dropdownText}>Type: {DropdownType}</Text>
-        <Icon
-          style={{ paddingVertical: '2%' }}
-          name="angle-down"
-          size={15}
-          color="#909091"
-        />
-      </TouchableOpacity>
+      <DropdownStaticData
+        //  style={{ paddingLeft:"1%"}}
+        list={dropdownList}
+        setType={setTIckitValue}
+        defaultValue="Select Type"
+        dropdownName="Type"
+      />
 
       {/* <View style={{ flexDirection: 'row' }}>
         <OutlineButton
@@ -147,63 +130,6 @@ const CenterComponent = (props: any) => {
           title="Awaiting"
         />
       </View> */}
-
-      <View style={{ backgroundColor: 'gray' }}>
-        <Modal
-          style={{ flex: 1 }}
-          animationType="none"
-          transparent={isDropdownShow}
-          visible={isDropdownShow}
-        >
-          <View
-            style={{
-              flex: 1,
-              width: '100%',
-              height: '50%',
-              marginHorizontal: '40%',
-              marginTop: '30%',
-              marginBottom: 0,
-              alignSelf: 'center',
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: 'white',
-                // borderRadius: 5,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                flex: 1,
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 5,
-              }}
-            >
-              <FlatList
-                style={{ paddingHorizontal: '2%' }}
-                data={dropdownList}
-                renderItem={({ item, index }) => {
-                  return (
-                    <View
-                      style={{
-                        justifyContent: 'flex-start',
-                        padding: '1%',
-                        borderBottomWidth: 0.2,
-                        borderBottomColor: 'gray',
-                      }}
-                    >
-                      <Text onPress={() => onDropdownSelect(item)}>{item}</Text>
-                    </View>
-                  )
-                }}
-                keyExtractor={(index: any) => index.toString()}
-              />
-            </View>
-          </View>
-        </Modal>
-      </View>
     </View>
   )
 }
@@ -248,10 +174,5 @@ const styles = StyleSheet.create({
   },
   textClickColor: {
     color: '#fff',
-  },
-  dropdownText: {
-    fontSize: 12,
-    color: '#909091',
-    fontWeight: '600',
   },
 })
