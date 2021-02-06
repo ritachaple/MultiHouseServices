@@ -1,5 +1,6 @@
 const initialState = {
   isHeaderSelect: false,
+  tickitType: '',
 }
 
 const checkData = (state = { initialState }, action: any) => {
@@ -19,6 +20,13 @@ const checkData = (state = { initialState }, action: any) => {
         initialState,
       }
       break
+    case 'SET_TICKIT_TYPE':
+      return {
+        ...state,
+        tickitType: action.payload,
+      }
+      break
+
     default:
       return state
       break

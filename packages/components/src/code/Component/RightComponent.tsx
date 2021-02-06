@@ -7,6 +7,20 @@ const RightComponent = (props: any) => {
   return (
     <View style={{ flexDirection: 'row' }}>
       <Icon
+        // onPress={onFilterPress}
+        style={{ paddingHorizontal: 10 }}
+        name="server"
+        size={15}
+        color="#000"
+      />
+      <Icon
+        // onPress={onFilterPress}
+        style={{ paddingHorizontal: 10 }}
+        name="th"
+        size={15}
+        color="#000"
+      />
+      <Icon
         onPress={onFilterPress}
         style={{ paddingHorizontal: 10 }}
         name="filter"

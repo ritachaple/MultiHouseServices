@@ -5,7 +5,7 @@ import { WebView } from 'react-native-webview'
 const Webview = () => {
   return (
     <WebView
-    originWhitelist={['*']}
+      originWhitelist={['*']}
       source={{
         html: `<script>
         (function (w, d, s, o, f, js, fjs) {
