@@ -9,6 +9,7 @@ import LeftComponent from '../../Component/LeftComponent'
 import CenterComponent from '../../Component/CenterComponent'
 import RightComponent from '../../Component/RightComponent'
 import SideBar from '../../Component/SideBar'
+import LeftSideBar from '../../Component/LeftSideBar'
 
 // const Dashboard = ({navigation}: { navigation:any }) => {
 const Dashboard = (props: any) => {
@@ -37,43 +38,57 @@ const Dashboard = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Header containerStyle={styles.header} />
-      <Header
-        containerStyle={{ backgroundColor: 'whitesmoke', height: '10%' }}
-        placement="left"
-        leftComponent={
-          <LeftComponent
-            isCheckboxSelect={isSelectClick}
-            onSelectPress={() => {
-              onSelectIconPress()
-            }}
-          />
-        }
-        centerComponent={isSelectClick ? <SelectIcon /> : <CenterComponent />}
-        rightComponent={
-          <RightComponent
-            onFilterPress={() => {
-              onFilterPress()
-            }}
-          />
-        }
-      />
-      <SearchComplaints />
-
-      <GoBack navigation={navigation} />
-      <Header containerStyle={styles.header} />
-      <Modal
-        style={{ flex: 1 }}
-        animationType="none"
-        transparent={isSidebarOpen}
-        visible={isSidebarOpen}
+      <Header containerStyle={[styles.header]} />
+      <View
+        style={{
+          // backgroundColor: 'red',
+          flex: 1,
+          flexDirection: 'row',
+          // alignItems: 'stretch',
+        }}
       >
-        <SideBar
-          onClosePress={() => {
-            onFilterPress()
-          }}
-        />
-      </Modal>
+        <LeftSideBar />
+        <View style={{ flex: 1 }}>
+          <Header
+            containerStyle={{ backgroundColor: 'whitesmoke', height: '8%' }}
+            placement="left"
+            leftComponent={
+              <LeftComponent
+                isCheckboxSelect={isSelectClick}
+                onSelectPress={() => {
+                  onSelectIconPress()
+                }}
+              />
+            }
+            centerComponent={
+              isSelectClick ? <SelectIcon /> : <CenterComponent />
+            }
+            rightComponent={
+              <RightComponent
+                onFilterPress={() => {
+                  onFilterPress()
+                }}
+              />
+            }
+          />
+          <SearchComplaints />
+
+          <GoBack navigation={navigation} />
+          <Header containerStyle={styles.header} />
+          <Modal
+            style={{ flex: 1 }}
+            animationType="none"
+            transparent={isSidebarOpen}
+            visible={isSidebarOpen}
+          >
+            <SideBar
+              onClosePress={() => {
+                onFilterPress()
+              }}
+            />
+          </Modal>
+        </View>
+      </View>
     </View>
   )
 }
@@ -81,7 +96,7 @@ const Dashboard = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'whitesmoke',
     // paddingHorizontal: '2%',
   },
   header: {

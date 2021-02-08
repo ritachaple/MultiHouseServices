@@ -510,7 +510,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#dce3de',
     borderBottomWidth: 0.1,
     zIndex: 0,
-    // flexDirection:"row"
+    backgroundColor: '#fff',
+    marginHorizontal: '2%',
+    borderRadius: 3,
   },
   complaintId: {
     flex: 1,
