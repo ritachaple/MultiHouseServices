@@ -10,16 +10,94 @@ import {
 } from 'react-native'
 import { MenuProvider } from 'react-native-popup-menu'
 import { connect } from 'react-redux'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Chat from './Chat'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import ListComponent from './ListComponent'
-import IconButton from './IconButton'
+// import IconButton from './IconButton'
 // import { Icon } from 'react-native-elements'
-// import Icon from 'react-native-vector-icons/FontAwesome'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
+
+const ListHeader = () => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        borderBottomColor: '#dce3de',
+        borderBottomWidth: 0.1,
+        paddingHorizontal: '1%',
+        paddingVertical: '1%',
+      }}
+    >
+      <Icon
+        style={{
+          paddingTop: 2,
+          flex: 1,
+        }}
+        name="square-o"
+        size={15}
+        color="grey"
+      />
+      <Text
+        style={{
+          paddingLeft: '1%',
+          flex: 2,
+        }}
+      >
+        Tickit Id
+      </Text>
+      <Text
+        style={{
+          paddingLeft: '2%',
+          flex: 2,
+        }}
+      >
+        Medium
+      </Text>
+      <Text
+        style={{
+          paddingLeft: '6%',
+          flex: 6,
+        }}
+      >
+        Subject
+      </Text>
+      {/* <Text
+        style={{
+          // paddingLeft: '9%',
+          flex: 2,
+        }}
+      >
+        from
+      </Text> */}
+      {/* <Text style={{ paddingLeft: ',flex:120%' }}> From</Text> */}
+      <Text
+        style={{
+          paddingRight: '3%',
+          flex: 3,
+        }}
+      >
+        Created Date
+      </Text>
+      <Text
+        style={{
+          paddingRight: '4%',
+          flex: 3,
+        }}
+      >
+        Updated Date
+      </Text>
+      <Text style={{ flex: 2, paddingRight: '5%' }}> Sentiment</Text>
+      <Text style={{ paddingRight: '2%', flex: 2 }}> Status</Text>
+      <Text style={{ flex: 2 }}> Count</Text>
+      <Text style={{ flex: 3 }}> Assigned To</Text>
+    </View>
+  )
+}
 
 const SearchComplaints = (props: any) => {
   const [tickit, setTickit] = useState([])
@@ -69,37 +147,45 @@ const SearchComplaints = (props: any) => {
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
-        <View style={{ flexDirection: 'row' }}>
+        {/* <View style={{ flexDirection: 'row' }}>
           <View
             style={{
               flex: 3,
               flexDirection: 'row',
-              paddingTop: '1%',
+              // paddingTop: '1%',
               justifyContent: 'space-evenly',
+             
             }}
           >
-            {/* <IconButton
-              name="archive" */}
-            {/* onPress={onDeletePress}
-            /> */}
-            {/* <IconButton name="arrow-circle-right" /> */}
           </View>
-          <View style={{ flex: 2 }} />
-        </View>
+        </View> */}
 
         {/* <Chat/> */}
         <MenuProvider>
-          <FlatList
-            style={{ flex: 1 }}
-            data={tickit}
-            // renderItem={({ item={user_name:""} }) => <ListComponent user_name={item.user_name} />}
-            renderItem={({ item }) => {
-              console.log('renderItem item: ', item)
-
-              return <ListComponent tickitItems={item} />
+          <View
+            style={{
+              marginHorizontal: '2%',
+              borderRadius: 3,
+              backgroundColor: '#fff',
             }}
-            keyExtractor={(index: any) => index.toString()}
-          />
+          >
+            <FlatList
+              style={{
+                flex: 1,
+                // marginHorizontal: '2%',
+                // borderRadius: 3,
+              }}
+              data={tickit}
+              // renderItem={({ item={user_name:""} }) => <ListComponent user_name={item.user_name} />}
+              renderItem={({ item }) => {
+                console.log('renderItem item: ', item)
+
+                return <ListComponent tickitItems={item} />
+              }}
+              ListHeaderComponent={() => <ListHeader />}
+              keyExtractor={(index: any) => index.toString()}
+            />
+          </View>
         </MenuProvider>
       </ScrollView>
     </View>

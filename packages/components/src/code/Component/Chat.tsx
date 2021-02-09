@@ -12,9 +12,11 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { Overlay } from 'react-native-elements'
+import { Overlay, Divider, Input } from 'react-native-elements'
+
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
+import Toggle2 from './ToggleButton'
 
 const tickitStatus = [
   'Pending',
@@ -27,19 +29,28 @@ const tickitStatus = [
   'Qwerty3',
 ]
 
-const Chat = (complaintId: any) => {
-  const Id: any = complaintId.complaintId
+// const Chat = (complaintId: any) => {
+const Chat = (props: any) => {
+  const { complaintId, clientId } = props
+  console.log('checkCID', complaintId)
+  console.log('clientId', clientId)
+
+  // const Id: any = complaintId.complaintId
   const [message, setMessage] = useState('')
   const [logActivity, setLogActivity] = useState()
   const [chatData, setChatData] = useState([])
   const [transalateData, setTransalateData] = useState([] as any)
   const [isTranslate, setIsTranslate] = useState(false)
 
+  const bodercolor = '#acb3bf'
+
   useEffect(() => {
     const chatDetails = async () => {
       try {
         // const res: any = await Api.get(`${configs.get_activity}325940/2`)
-        const res: any = await Api.get(`${configs.get_activity}${Id}/2`)
+        const res: any = await Api.get(
+          `${configs.get_activity}${complaintId}/2`,
+        )
         console.log('chatDetails', res)
         if (res.status === 200) {
           setChatData(res.data.data)
@@ -49,7 +60,7 @@ const Chat = (complaintId: any) => {
       }
     }
     chatDetails()
-  }, [Id])
+  }, [complaintId])
 
   const onSendMessage = async () => {
     try {
@@ -66,7 +77,7 @@ const Chat = (complaintId: any) => {
           status_id: '1',
           fake_news_type: null,
           fake_factor: null,
-          complaint_id: Id,
+          complaint_id: complaintId,
           activity_id: null,
           resolution_text: null,
           medium_id: 2,
@@ -176,6 +187,37 @@ const Chat = (complaintId: any) => {
     )
   }
 
+  const onForwardPress = async () => {
+    try {
+      const body = {
+        complaint_id: [complaintId],
+        forward_to: ['nchandivade@unoligo.com'],
+        clientId: { complaintId },
+        email_template_id: 2,
+      }
+      const res: any = await Api.post(`${configs.tickit_forward}`, body)
+      if (res.status === 200) {
+        console.log(res.data.message)
+      }
+      console.log('ForwardApiRes', res)
+    } catch (error) {
+      console.log('ForwardApiError', error)
+    }
+  }
+
+  const onCrmPress = async () => {
+    try {
+      const body = {
+        queue_name: 'outgoing_message_queue',
+        // "queue_message": "{"response_mode":"CRM","complaint_id":325906}"
+      }
+      const res: any = await Api.post(`${configs.add_message_to_queue}`, body)
+      console.log('ResponseCodeRes', res)
+    } catch (error) {
+      console.log('AddtoQueueError', error)
+    }
+  }
+
   return (
     // <ScrollView>
     <View style={styles.container}>
@@ -213,6 +255,219 @@ const Chat = (complaintId: any) => {
           }}
         />
       </ScrollView>
+      <Divider style={{ backgroundColor: bodercolor }} />
+
+      <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
+        {/* <View style={{}}> */}
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#eeeeeeed',
+            borderRadius: 3,
+            borderColor: bodercolor,
+            borderWidth: 1,
+            paddingVertical: '0.5%',
+            // paddingHorizontal: "1%",
+            flexDirection: 'row',
+            width: '30%',
+          }}
+        >
+          <View
+            style={{
+              width: '10%',
+              justifyContent: 'center',
+            }}
+          >
+            <Icon
+              style={{ alignSelf: 'center' }}
+              name="envelope"
+              size={10}
+              color="#000"
+            />
+          </View>
+          {/* <View style={{ paddingHorizontal: '3%' }}> */}
+          {/* <Text>Enter Email Address(separated with ",")</Text> */}
+          {/* </View> */}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#eeeeeeed',
+            borderRadius: 3,
+            borderColor: bodercolor,
+            borderWidth: 1,
+            paddingVertical: '0.5%',
+            marginHorizontal: '0.5%',
+            // paddingHorizontal: "1%",
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: '10%',
+          }}
+        >
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{}}>Default </Text>
+            <Icon
+              style={{ paddingTop: '7%' }}
+              name="caret-down"
+              size={10}
+              color="#000"
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#5b5b5b',
+            borderRadius: 3,
+            borderColor: bodercolor,
+            borderWidth: 1,
+            paddingVertical: '0.5%',
+            marginLeft: '0.5%',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            width: '10%',
+          }}
+          onPress={() => {
+            onForwardPress()
+          }}
+        >
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ color: '#fff' }}>Forward </Text>
+            <Icon
+              style={{ paddingTop: '7%' }}
+              name="share"
+              size={10}
+              color="#fff"
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#5b5b5b',
+            borderRadius: 3,
+            borderColor: bodercolor,
+            borderWidth: 1,
+            paddingVertical: '0.5%',
+            // marginHorizontal:"0.5%",
+            justifyContent: 'center',
+            flexDirection: 'row',
+            width: '3%',
+          }}
+        >
+          {/* <View style={{ flexDirection:"row"  }}> */}
+          {/* <Text style={{color:"#fff"}}>Forward </Text> */}
+          <Icon
+            style={{ paddingTop: '7%' }}
+            name="caret-down"
+            size={10}
+            color="#fff"
+          />
+          {/* </View> */}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'red',
+            borderRadius: 3,
+            borderColor: bodercolor,
+            borderWidth: 1,
+            paddingVertical: '0.5%',
+            marginHorizontal: '0.5%',
+            // paddingHorizontal: "1%",
+            justifyContent: 'center',
+            flexDirection: 'row',
+            width: '8%',
+          }}
+          onPress={() => onCrmPress()}
+        >
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ color: '#fff' }}>CRM </Text>
+            <Icon
+              style={{ paddingTop: '7%' }}
+              name="share"
+              size={10}
+              color="#fff"
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <Divider style={{ backgroundColor: bodercolor }} />
+
+      <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
+        {/* <Toggle2 /> */}
+        {/* <ToggleBtn /> */}
+        <View
+          style={{
+            paddingVertical: '0.5%',
+            marginHorizontal: '0.5%',
+          }}
+        >
+          <Text>Send To External</Text>
+        </View>
+        <View
+          style={{
+            paddingVertical: '0.5%',
+            marginHorizontal: '0.5%',
+          }}
+        >
+          <Toggle2 />
+          {/* <ToggleBtn /> */}
+        </View>
+        <View
+          style={{
+            paddingVertical: '0.5%',
+            marginHorizontal: '0.5%',
+          }}
+        >
+          <Text>Credential not configured</Text>
+        </View>
+        <View
+          style={{
+            paddingVertical: '0.5%',
+            marginHorizontal: '0.5%',
+          }}
+        >
+          <Text>Reply To :</Text>
+        </View>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#eeeeeeed',
+            borderRadius: 3,
+            borderColor: bodercolor,
+            borderWidth: 1,
+            paddingVertical: '0.5%',
+            marginHorizontal: '0.5%',
+            // paddingHorizontal: "1%",
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: '10%',
+          }}
+        >
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{}}>Twitter </Text>
+            <Icon
+              style={{ paddingTop: '7%' }}
+              name="caret-down"
+              size={10}
+              color="#000"
+            />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#eeeeeeed',
+            borderRadius: 3,
+            borderColor: bodercolor,
+            borderWidth: 1,
+            paddingVertical: '0.5%',
+            marginHorizontal: '0.5%',
+            // paddingHorizontal: "1%",
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: '50%',
+          }}
+        />
+      </View>
 
       <View style={styles.footer}>
         <View style={styles.inputContainer}>
@@ -235,16 +490,17 @@ const Chat = (complaintId: any) => {
         </TouchableOpacity>
       </View>
       <Overlay
+        overlayStyle={{ marginHorizontal: '3%' }}
         isVisible={isTranslate}
         onBackdropPress={() => setIsTranslate(!isTranslate)}
       >
-        <>
+        <View>
           <View style={{ flexDirection: 'row' }}>
             <Text style={{ fontWeight: 'bold', color: '#000' }}>
               Translated Text
             </Text>
             <Icon
-              style={{ marginLeft: '3%', marginTop: '2%' }}
+              style={{ marginLeft: '3%', marginTop: '0.5%' }}
               name="language"
               size={15}
               color="#000"
@@ -258,7 +514,7 @@ const Chat = (complaintId: any) => {
               ? transalateData.translated_text
               : ''}
           </Text>
-        </>
+        </View>
       </Overlay>
     </View>
   )
@@ -269,6 +525,7 @@ export default Chat
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: '2%',
   },
   list: {
     paddingHorizontal: 17,
@@ -312,7 +569,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   balloon: {
-    maxWidth: '100%',
+    maxWidth: '90%',
     padding: 10,
     borderRadius: 20,
   },

@@ -12,7 +12,7 @@ import Chat from './Chat'
 import Dropdown from './Dropdown'
 
 const ModalScreen = (props: any) => {
-  const { closeModal, complaintId } = props
+  const { closeModal, complaintId, clientId } = props
   return (
     <View style={styles.centeredView}>
       <View style={styles.modalView}>
@@ -45,7 +45,7 @@ const ModalScreen = (props: any) => {
           </View>
           <View style={styles.verticleLine} />
           <View style={{ flex: 5 }}>
-            <Chat complaintId={complaintId} />
+            <Chat complaintId={complaintId} clientId={clientId} />
           </View>
         </View>
       </View>

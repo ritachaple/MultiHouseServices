@@ -50,7 +50,7 @@ const Dashboard = (props: any) => {
         <LeftSideBar />
         <View style={{ flex: 1 }}>
           <Header
-            containerStyle={{ backgroundColor: 'whitesmoke', height: '8%' }}
+            containerStyle={{ backgroundColor: 'whitesmoke', height: '7%' }}
             placement="left"
             leftComponent={
               <LeftComponent
