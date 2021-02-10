@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   FlatList,
+  Modal,
 } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -17,6 +18,7 @@ import { Overlay, Divider, Input } from 'react-native-elements'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
+import Dropdown from './Dropdown'
 
 const tickitStatus = [
   'Pending',
@@ -41,6 +43,9 @@ const Chat = (props: any) => {
   const [chatData, setChatData] = useState([])
   const [transalateData, setTransalateData] = useState([] as any)
   const [isTranslate, setIsTranslate] = useState(false)
+  const [DynamicCannedRes, setDynamicCannedRes] = useState([] as any)
+  const [SelectedDynamicCanned, setSelectedDynamicCanned] = useState('')
+  const [displayList, setdisplayList] = useState(false)
 
   const bodercolor = '#acb3bf'
 
@@ -59,8 +64,29 @@ const Chat = (props: any) => {
         console.log('chatDetailsError', error)
       }
     }
+
+    const channedResponse = async () => {
+      try {
+        const body = {
+          client_id: clientId,
+          params: { address_book: {}, email_template: {}, canned_response: {} },
+        }
+        const res: any = await Api.post(
+          `${configs.dynamic_canned_response}`,
+          body,
+        )
+        console.log('dynamic canned Res', res)
+        if (res.status === 200) {
+          setDynamicCannedRes(res.data.data[0].val)
+        }
+      } catch (error) {
+        console.log('dynamic Canned Error', error)
+      }
+    }
+
     chatDetails()
-  }, [complaintId])
+    channedResponse()
+  }, [complaintId, clientId])
 
   const onSendMessage = async () => {
     try {
@@ -159,6 +185,17 @@ const Chat = (props: any) => {
     }
   }
 
+  const selectedDynamicCanned = (value: any) => {
+    console.log('selectedCanned', value.template_response_text)
+
+    setSelectedDynamicCanned(value.template_response_text)
+    onDynamicCannedPress()
+  }
+
+  const onDynamicCannedPress = () => {
+    setdisplayList(!displayList)
+  }
+
   const msgIcon = (data: any) => {
     return (
       <>
@@ -192,7 +229,7 @@ const Chat = (props: any) => {
       const body = {
         complaint_id: [complaintId],
         forward_to: ['nchandivade@unoligo.com'],
-        clientId: { complaintId },
+        clientId: { clientId },
         email_template_id: 2,
       }
       const res: any = await Api.post(`${configs.tickit_forward}`, body)
@@ -466,7 +503,10 @@ const Chat = (props: any) => {
             justifyContent: 'center',
             width: '50%',
           }}
-        />
+          onPress={() => onDynamicCannedPress()}
+        >
+          {SelectedDynamicCanned}
+        </TouchableOpacity>
       </View>
 
       <View style={styles.footer}>
@@ -516,6 +556,66 @@ const Chat = (props: any) => {
           </Text>
         </View>
       </Overlay>
+      {/* <View style={{ backgroundColor: 'gray'}}> */}
+      <Modal
+        style={{ flex: 1 }}
+        animationType="none"
+        transparent={displayList}
+        visible={displayList}
+      >
+        <View
+          style={{
+            flex: 1,
+            width: '100%',
+            height: '50%',
+            marginHorizontal: '40%',
+            marginTop: '33%',
+            marginBottom: 0,
+            alignSelf: 'center',
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'white',
+              // borderRadius: 5,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}
+          >
+            <ScrollView>
+              <FlatList
+                style={{ paddingHorizontal: '2%' }}
+                data={DynamicCannedRes}
+                renderItem={({ item, index }) => {
+                  return (
+                    <View
+                      style={{
+                        justifyContent: 'flex-start',
+                        padding: '1%',
+                        borderBottomWidth: 0.2,
+                        borderBottomColor: 'gray',
+                      }}
+                    >
+                      <Text onPress={() => selectedDynamicCanned(item)}>
+                        {item.template_response_text}
+                      </Text>
+                    </View>
+                  )
+                }}
+                keyExtractor={(index: any) => index.toString()}
+              />
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+      {/* </View> */}
     </View>
   )
 }

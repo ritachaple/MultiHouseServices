@@ -39,11 +39,12 @@ const Dropdown = (props: any) => {
   }
 
   return (
-    <View style={{ flex: 1, padding: '4%' }}>
+    <View style={{ flex: 1, paddingLeft: '10%' }}>
       <TouchableOpacity onPress={onInputPress}>
+        {textField}
         <TextInput
           style={styles.input}
-          placeholder="SelectData"
+          placeholder="Select Data"
           value={textField}
         />
       </TouchableOpacity>
@@ -58,10 +59,10 @@ const Dropdown = (props: any) => {
           <View
             style={{
               flex: 1,
-              width: '50%',
+              width: '100%',
               height: '50%',
               marginHorizontal: '40%',
-              marginTop: '15%',
+              marginTop: '30%',
               alignSelf: 'center',
             }}
           >
@@ -103,24 +104,6 @@ const Dropdown = (props: any) => {
             </View>
           </View>
         </Modal>
-        {/* <Overlay
-          style={{ flex: 1 }}
-          isVisible={displayList}
-          onBackdropPress={onInputPress}
-        >
-          <FlatList
-            style={{ paddingHorizontal: '2%' }}
-            data={tickitStatus}
-            renderItem={({ item, index }) => {
-              return (
-                //    <View>
-                <Text onPress={() => onDropdownSelect(item)}>{item}</Text>
-                //   </View>
-              )
-            }}
-            keyExtractor={(index: any) => index.toString()}
-          />
-        </Overlay> */}
       </View>
 
       {/* :""

@@ -36,6 +36,8 @@ const Api = {
       }
 
       res = await axios.post(url, data, header)
+      // res = await axios.post("https://cxpdev.merilent.com/api/ticket/get_dynamic_canned_response/",
+      // {"client_id":39,"params":{"address_book":{},"email_template":{},"canned_response":{}}}, header)
       console.log('resapi1', res)
     } catch (error) {
       console.log('error', error)

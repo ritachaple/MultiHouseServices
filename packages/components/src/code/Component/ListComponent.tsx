@@ -483,7 +483,7 @@ const List = (props: any) => {
             <ModalScreen
               closeModal={() => onCloseModal()}
               complaintId={tickitItems.complaint_id}
-              client_id={tickitItems.client_id}
+              clientId={tickitItems.client_id}
             />
           </Modal>
         </>

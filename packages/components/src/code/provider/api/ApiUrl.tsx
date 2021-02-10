@@ -4,7 +4,7 @@ const ticket = 'ticket/'
 const transalate = 'translation/'
 
 export const configs = {
-  loginApi: 'https://cxpdev.merilent.com/auth/api_token_obtain/',
+  loginApi: `${BaseUrl}auth/api_token_obtain/`,
   search_complaints: `${BaseUrl}${Api}${ticket}search_complaints`,
   log_activity: `${BaseUrl}${Api}${ticket}log_activity`,
   get_status: `${BaseUrl}${Api}${ticket}get_status/`,
@@ -18,4 +18,5 @@ export const configs = {
   mark_complaint_unread: `${BaseUrl}${Api}${ticket}mark_complaint_unread`,
   tickit_forward: `${BaseUrl}${Api}${ticket}forward_to_external_agent`,
   add_message_to_queue: `${BaseUrl}queuemanager/add_message_to_queue`,
+  dynamic_canned_response: `${BaseUrl}${Api}${ticket}get_dynamic_canned_response/`,
 }
