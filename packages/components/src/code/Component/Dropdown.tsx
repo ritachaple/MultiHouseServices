@@ -6,6 +6,7 @@ import {
   TextInput,
   Modal,
   TouchableOpacity,
+  ScrollView,
   Text,
 } from 'react-native'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -29,7 +30,9 @@ const Dropdown = (props: any) => {
   const [multipleTextField, setMultipleTextField] = useState('')
 
   const onInputPress = () => {
-    setDisplayList(!displayList)
+    if (dropdownList.length > 0) {
+      setDisplayList(!displayList)
+    }
   }
 
   const onDropdownSelect = (item: any) => {
@@ -39,9 +42,13 @@ const Dropdown = (props: any) => {
   }
 
   return (
-    <View style={{ flex: 1, paddingLeft: '10%' }}>
+    <View
+      style={{
+        flex: 1,
+        // paddingLeft: '10%'
+      }}
+    >
       <TouchableOpacity onPress={onInputPress}>
-        {textField}
         <TextInput
           style={styles.input}
           placeholder="Select Data"
@@ -68,6 +75,7 @@ const Dropdown = (props: any) => {
           >
             <View
               style={{
+                flex: 1,
                 backgroundColor: 'white',
                 // borderRadius: 5,
                 shadowColor: '#000',
@@ -80,27 +88,29 @@ const Dropdown = (props: any) => {
                 elevation: 5,
               }}
             >
-              <FlatList
-                style={{ paddingHorizontal: '2%' }}
-                data={dropdownList}
-                renderItem={({ item, index }) => {
-                  return (
-                    <View
-                      style={{
-                        justifyContent: 'flex-start',
-                        padding: '1%',
-                        borderBottomWidth: 0.2,
-                        borderBottomColor: 'gray',
-                      }}
-                    >
-                      <Text onPress={() => onDropdownSelect(item)}>
-                        {item.text}
-                      </Text>
-                    </View>
-                  )
-                }}
-                keyExtractor={(index: any) => index.toString()}
-              />
+              <ScrollView>
+                <FlatList
+                  style={{ flex: 1, paddingHorizontal: '2%' }}
+                  data={dropdownList}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View
+                        style={{
+                          justifyContent: 'flex-start',
+                          padding: '1%',
+                          borderBottomWidth: 0.2,
+                          borderBottomColor: 'gray',
+                        }}
+                      >
+                        <Text onPress={() => onDropdownSelect(item)}>
+                          {item.text}
+                        </Text>
+                      </View>
+                    )
+                  }}
+                  keyExtractor={(index: any) => index.toString()}
+                />
+              </ScrollView>
             </View>
           </View>
         </Modal>
@@ -124,6 +134,8 @@ const styles = StyleSheet.create({
     // borderRadius: 5,
     borderColor: 'gray',
     borderWidth: 1,
+    borderRadius: 4,
+    paddingVertical: '1%',
     // width: '10%',
     // height:"10%"
   },
