@@ -15,6 +15,7 @@ const DropDownList = (props: any) => {
         marginTop: '33%',
         marginBottom: 0,
         alignSelf: 'center',
+        elevation: 8,
       }}
     >
       <View

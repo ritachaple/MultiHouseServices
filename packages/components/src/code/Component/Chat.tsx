@@ -44,10 +44,18 @@ const Chat = (props: any) => {
   const [chatData, setChatData] = useState([])
   const [transalateData, setTransalateData] = useState([] as any)
   const [isTranslate, setIsTranslate] = useState(false)
+  const [IsCannedResponse, setIsCannedResponse] = useState(false)
   const [DynamicCannedRes, setDynamicCannedRes] = useState([] as any)
   const [SelectedDynamicCanned, setSelectedDynamicCanned] = useState('')
   const [displayList, setdisplayList] = useState(false)
   const [AddressBook, setAddressBook] = useState([] as any)
+  const [IsAddressBook, setIsAddressBook] = useState(false)
+  const [SelectedAddressBook, setSelectedAddressBook] = useState(
+    'Enter Email Address',
+  )
+  const [EmailTemplate, setEmailTemplate] = useState([] as any)
+  const [IsEmailTemplate, setIsEmailTemplate] = useState(false)
+  const [SelectedEmailTemplate, setSelectedEmailTemplate] = useState('Default')
 
   const bodercolor = '#acb3bf'
 
@@ -80,6 +88,7 @@ const Chat = (props: any) => {
         console.log('dynamic canned Res', res)
         if (res.status === 200) {
           setDynamicCannedRes(res.data.data[0].val)
+          setEmailTemplate(res.data.data[1].val)
           setAddressBook(res.data.data[2].val)
         }
       } catch (error) {
@@ -134,12 +143,6 @@ const Chat = (props: any) => {
       console.log('sendMessageError', error)
     }
   }
-
-  // const flatListData=()=>{
-  //   return (
-
-  //   )
-  // }
 
   const onReplyClick = async (replyData: any) => {
     try {
@@ -196,13 +199,34 @@ const Chat = (props: any) => {
 
   const selectedDynamicCanned = (value: any) => {
     console.log('selectedCanned', value.template_response_text)
-
+    setMessage(value.template_response_text)
     setSelectedDynamicCanned(value.template_response_text)
     onDynamicCannedPress()
   }
 
+  const onSelectedAddressBook = (value: any) => {
+    setSelectedAddressBook(value.email_group_name)
+    onAddressBookPress()
+  }
+
+  const onSelectedEmailTemplateClick = (value: any) => {
+    setSelectedEmailTemplate(value.template_name)
+    onEmailTemplatePress()
+  }
+
   const onDynamicCannedPress = () => {
     setdisplayList(!displayList)
+    setIsCannedResponse(!IsCannedResponse)
+  }
+
+  const onAddressBookPress = () => {
+    setdisplayList(!displayList)
+    setIsAddressBook(!IsAddressBook)
+  }
+
+  const onEmailTemplatePress = () => {
+    setdisplayList(!displayList)
+    setIsEmailTemplate(!IsEmailTemplate)
   }
 
   const msgIcon = (data: any) => {
@@ -317,6 +341,9 @@ const Chat = (props: any) => {
             flexDirection: 'row',
             width: '30%',
           }}
+          onPress={() => {
+            onAddressBookPress()
+          }}
         >
           <View
             style={{
@@ -331,6 +358,8 @@ const Chat = (props: any) => {
               color="#000"
             />
           </View>
+          <Text>{SelectedAddressBook}</Text>
+
           {/* <View style={{ paddingHorizontal: '3%' }}> */}
           {/* <Text>Enter Email Address(separated with ",")</Text> */}
           {/* </View> */}
@@ -349,9 +378,12 @@ const Chat = (props: any) => {
             justifyContent: 'center',
             width: '10%',
           }}
+          onPress={() => {
+            onEmailTemplatePress()
+          }}
         >
           <View style={{ flexDirection: 'row' }}>
-            <Text style={{}}>Default </Text>
+            <Text style={{}}>{SelectedEmailTemplate} </Text>
             <Icon
               style={{ paddingTop: '7%' }}
               name="caret-down"
@@ -572,27 +604,75 @@ const Chat = (props: any) => {
         visible={displayList}
       >
         <DropDownList>
-          <FlatList
-            style={{ paddingHorizontal: '2%' }}
-            data={DynamicCannedRes}
-            renderItem={({ item, index }) => {
-              return (
-                <View
-                  style={{
-                    justifyContent: 'flex-start',
-                    padding: '1%',
-                    borderBottomWidth: 0.2,
-                    borderBottomColor: 'gray',
-                  }}
-                >
-                  <Text onPress={() => selectedDynamicCanned(item)}>
-                    {item.template_response_text}
-                  </Text>
-                </View>
-              )
-            }}
-            keyExtractor={(index: any) => index.toString()}
-          />
+          {IsCannedResponse ? (
+            <FlatList
+              style={{ paddingHorizontal: '2%' }}
+              data={DynamicCannedRes}
+              renderItem={({ item, index }) => {
+                return (
+                  <View
+                    style={{
+                      justifyContent: 'flex-start',
+                      padding: '1%',
+                      borderBottomWidth: 0.2,
+                      borderBottomColor: 'gray',
+                    }}
+                  >
+                    <Text onPress={() => selectedDynamicCanned(item)}>
+                      {item.template_response_text}
+                    </Text>
+                  </View>
+                )
+              }}
+              keyExtractor={(index: any) => index.toString()}
+            />
+          ) : null}
+          {IsAddressBook ? (
+            <FlatList
+              style={{ paddingHorizontal: '2%' }}
+              data={AddressBook}
+              renderItem={({ item, index }) => {
+                return (
+                  <View
+                    style={{
+                      justifyContent: 'flex-start',
+                      padding: '1%',
+                      borderBottomWidth: 0.2,
+                      borderBottomColor: 'gray',
+                    }}
+                  >
+                    <Text onPress={() => onSelectedAddressBook(item)}>
+                      {item.email_group_name}
+                    </Text>
+                  </View>
+                )
+              }}
+              keyExtractor={(index: any) => index.toString()}
+            />
+          ) : null}
+          {IsEmailTemplate ? (
+            <FlatList
+              style={{ paddingHorizontal: '2%' }}
+              data={EmailTemplate}
+              renderItem={({ item, index }) => {
+                return (
+                  <View
+                    style={{
+                      justifyContent: 'flex-start',
+                      padding: '1%',
+                      borderBottomWidth: 0.2,
+                      borderBottomColor: 'gray',
+                    }}
+                  >
+                    <Text onPress={() => onSelectedEmailTemplateClick(item)}>
+                      {item.template_name}
+                    </Text>
+                  </View>
+                )
+              }}
+              keyExtractor={(index: any) => index.toString()}
+            />
+          ) : null}
         </DropDownList>
       </Modal>
     </View>
