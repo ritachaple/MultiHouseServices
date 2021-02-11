@@ -14,23 +14,10 @@ import {
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Overlay, Divider, Input } from 'react-native-elements'
-
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
-import Dropdown from './Dropdown'
 import DropDownList from './DropDownList'
-
-const tickitStatus = [
-  'Pending',
-  'Assigned',
-  'Resolve',
-  'Closed',
-  'Escalated',
-  'Reopened',
-  'Blocked',
-  'Qwerty3',
-]
 
 // const Chat = (complaintId: any) => {
 const Chat = (props: any) => {
@@ -39,30 +26,29 @@ const Chat = (props: any) => {
   console.log('clientId', clientId)
 
   // const Id: any = complaintId.complaintId
+  const [logActivity, setLogActivity] = useState([] as any)
   const [message, setMessage] = useState('')
-  const [logActivity, setLogActivity] = useState()
   const [chatData, setChatData] = useState([])
   const [transalateData, setTransalateData] = useState([] as any)
   const [isTranslate, setIsTranslate] = useState(false)
   const [IsCannedResponse, setIsCannedResponse] = useState(false)
   const [DynamicCannedRes, setDynamicCannedRes] = useState([] as any)
-  const [SelectedDynamicCanned, setSelectedDynamicCanned] = useState('')
   const [displayList, setdisplayList] = useState(false)
   const [AddressBook, setAddressBook] = useState([] as any)
   const [IsAddressBook, setIsAddressBook] = useState(false)
-  const [SelectedAddressBook, setSelectedAddressBook] = useState(
-    'Enter Email Address',
-  )
   const [EmailTemplate, setEmailTemplate] = useState([] as any)
   const [IsEmailTemplate, setIsEmailTemplate] = useState(false)
-  const [SelectedEmailTemplate, setSelectedEmailTemplate] = useState('Default')
-
+  const [DropdownList, setDropdownList] = useState([] as any)
+  const [SelectedDropdownData, setSelectedDropdownData] = useState({
+    "DynamicCanned":"", 
+    "AddressBook":"Enter Email Address",
+    "EmailTemplate":"Default" 
+  })
   const bodercolor = '#acb3bf'
 
   useEffect(() => {
     const chatDetails = async () => {
       try {
-        // const res: any = await Api.get(`${configs.get_activity}325940/2`)
         const res: any = await Api.get(
           `${configs.get_activity}${complaintId}/2`,
         )
@@ -197,36 +183,56 @@ const Chat = (props: any) => {
     }
   }
 
-  const selectedDynamicCanned = (value: any) => {
-    console.log('selectedCanned', value.template_response_text)
-    setMessage(value.template_response_text)
-    setSelectedDynamicCanned(value.template_response_text)
-    onDynamicCannedPress()
+  const selectedDropdownValue = (key:any,value: any) => {
+    const data: any = { ...SelectedDropdownData }
+    data[key] = value
+    setSelectedDropdownData(data)
+    if(IsCannedResponse){
+      setMessage(value)
+      onDynamicCannedPress()
+    }else if(IsAddressBook){
+      onAddressBookPress()
+    }else{
+      onEmailTemplatePress()
+    }
   }
 
-  const onSelectedAddressBook = (value: any) => {
-    setSelectedAddressBook(value.email_group_name)
-    onAddressBookPress()
-  }
-
-  const onSelectedEmailTemplateClick = (value: any) => {
-    setSelectedEmailTemplate(value.template_name)
-    onEmailTemplatePress()
-  }
-
-  const onDynamicCannedPress = () => {
+  const onDynamicCannedPress = async() => {
     setdisplayList(!displayList)
-    setIsCannedResponse(!IsCannedResponse)
+     setIsCannedResponse(!IsCannedResponse)
+    setDropdownList(DynamicCannedRes)
   }
 
   const onAddressBookPress = () => {
     setdisplayList(!displayList)
     setIsAddressBook(!IsAddressBook)
+    setDropdownList(AddressBook)
   }
 
   const onEmailTemplatePress = () => {
+    setDropdownList(EmailTemplate)
     setdisplayList(!displayList)
     setIsEmailTemplate(!IsEmailTemplate)
+  }
+
+  const displayDropdownText = (item: any) => {
+    let textValue = {}
+    let key = ""
+    if(IsEmailTemplate) {
+      key="EmailTemplate"
+      textValue = item.template_name
+    }else if(IsAddressBook){
+      key="AddressBook"
+      textValue = item.email_group_name
+    }else{
+      key="DynamicCanned"
+      textValue = item.template_response_text
+    }
+    return (
+      <Text onPress={() => selectedDropdownValue(key,textValue)}>
+        {textValue}
+      </Text>
+    )
   }
 
   const msgIcon = (data: any) => {
@@ -288,6 +294,16 @@ const Chat = (props: any) => {
     }
   }
 
+  const onCheckListData = () => {
+    if (IsCannedResponse) {
+      setDropdownList(DynamicCannedRes)
+    } else if (IsAddressBook) {
+      setDropdownList(AddressBook)
+    } else {
+      setDropdownList(EmailTemplate)
+    }
+  }
+
   return (
     // <ScrollView>
     <View style={styles.container}>
@@ -299,7 +315,6 @@ const Chat = (props: any) => {
             return data.parent_message_id
           }}
           renderItem={(data: any) => {
-            // const data = chatData
             const inMessage = data.item.is_user_reply === true
             const itemStyle = inMessage ? styles.itemIn : styles.itemOut
             const bgcolor = inMessage ? styles.colorIn : styles.colorOut
@@ -328,8 +343,6 @@ const Chat = (props: any) => {
       <Divider style={{ backgroundColor: bodercolor }} />
 
       <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
-        {/* <View style={{}}> */}
-
         <TouchableOpacity
           style={{
             backgroundColor: '#eeeeeeed',
@@ -358,11 +371,7 @@ const Chat = (props: any) => {
               color="#000"
             />
           </View>
-          <Text>{SelectedAddressBook}</Text>
-
-          {/* <View style={{ paddingHorizontal: '3%' }}> */}
-          {/* <Text>Enter Email Address(separated with ",")</Text> */}
-          {/* </View> */}
+          <Text>{SelectedDropdownData.AddressBook}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -383,7 +392,7 @@ const Chat = (props: any) => {
           }}
         >
           <View style={{ flexDirection: 'row' }}>
-            <Text style={{}}>{SelectedEmailTemplate} </Text>
+            <Text style={{}}>{SelectedDropdownData.EmailTemplate} </Text>
             <Icon
               style={{ paddingTop: '7%' }}
               name="caret-down"
@@ -431,15 +440,12 @@ const Chat = (props: any) => {
             width: '3%',
           }}
         >
-          {/* <View style={{ flexDirection:"row"  }}> */}
-          {/* <Text style={{color:"#fff"}}>Forward </Text> */}
           <Icon
             style={{ paddingTop: '7%' }}
             name="caret-down"
             size={10}
             color="#fff"
           />
-          {/* </View> */}
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -471,8 +477,6 @@ const Chat = (props: any) => {
       <Divider style={{ backgroundColor: bodercolor }} />
 
       <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
-        {/* <Toggle2 /> */}
-        {/* <ToggleBtn /> */}
         <View
           style={{
             paddingVertical: '0.5%',
@@ -546,7 +550,7 @@ const Chat = (props: any) => {
           }}
           onPress={() => onDynamicCannedPress()}
         >
-          {SelectedDynamicCanned}
+          {SelectedDropdownData.DynamicCanned}
         </TouchableOpacity>
       </View>
 
@@ -604,75 +608,25 @@ const Chat = (props: any) => {
         visible={displayList}
       >
         <DropDownList>
-          {IsCannedResponse ? (
-            <FlatList
-              style={{ paddingHorizontal: '2%' }}
-              data={DynamicCannedRes}
-              renderItem={({ item, index }) => {
-                return (
-                  <View
-                    style={{
-                      justifyContent: 'flex-start',
-                      padding: '1%',
-                      borderBottomWidth: 0.2,
-                      borderBottomColor: 'gray',
-                    }}
-                  >
-                    <Text onPress={() => selectedDynamicCanned(item)}>
-                      {item.template_response_text}
-                    </Text>
-                  </View>
-                )
-              }}
-              keyExtractor={(index: any) => index.toString()}
-            />
-          ) : null}
-          {IsAddressBook ? (
-            <FlatList
-              style={{ paddingHorizontal: '2%' }}
-              data={AddressBook}
-              renderItem={({ item, index }) => {
-                return (
-                  <View
-                    style={{
-                      justifyContent: 'flex-start',
-                      padding: '1%',
-                      borderBottomWidth: 0.2,
-                      borderBottomColor: 'gray',
-                    }}
-                  >
-                    <Text onPress={() => onSelectedAddressBook(item)}>
-                      {item.email_group_name}
-                    </Text>
-                  </View>
-                )
-              }}
-              keyExtractor={(index: any) => index.toString()}
-            />
-          ) : null}
-          {IsEmailTemplate ? (
-            <FlatList
-              style={{ paddingHorizontal: '2%' }}
-              data={EmailTemplate}
-              renderItem={({ item, index }) => {
-                return (
-                  <View
-                    style={{
-                      justifyContent: 'flex-start',
-                      padding: '1%',
-                      borderBottomWidth: 0.2,
-                      borderBottomColor: 'gray',
-                    }}
-                  >
-                    <Text onPress={() => onSelectedEmailTemplateClick(item)}>
-                      {item.template_name}
-                    </Text>
-                  </View>
-                )
-              }}
-              keyExtractor={(index: any) => index.toString()}
-            />
-          ) : null}
+          <FlatList
+            style={{ paddingHorizontal: '2%' }}
+            data={DropdownList}
+            renderItem={({ item, index }) => {
+              return (
+                <View
+                  style={{
+                    justifyContent: 'flex-start',
+                    padding: '1%',
+                    borderBottomWidth: 0.2,
+                    borderBottomColor: 'gray',
+                  }}
+                >
+                  {displayDropdownText(item)}
+                </View>
+              )
+            }}
+            keyExtractor={(index: any) => index.toString()}
+          />
         </DropDownList>
       </Modal>
     </View>
