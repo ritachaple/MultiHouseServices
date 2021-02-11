@@ -14,6 +14,7 @@ import {
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Overlay, Divider, Input } from 'react-native-elements'
+import { Hoverable } from 'react-native-web-hover'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
@@ -40,9 +41,9 @@ const Chat = (props: any) => {
   const [IsEmailTemplate, setIsEmailTemplate] = useState(false)
   const [DropdownList, setDropdownList] = useState([] as any)
   const [SelectedDropdownData, setSelectedDropdownData] = useState({
-    "DynamicCanned":"", 
-    "AddressBook":"Enter Email Address",
-    "EmailTemplate":"Default" 
+    DynamicCanned: '',
+    AddressBook: 'Enter Email Address',
+    EmailTemplate: 'Default',
   })
   const bodercolor = '#acb3bf'
 
@@ -183,23 +184,23 @@ const Chat = (props: any) => {
     }
   }
 
-  const selectedDropdownValue = (key:any,value: any) => {
+  const selectedDropdownValue = (key: any, value: any) => {
     const data: any = { ...SelectedDropdownData }
     data[key] = value
     setSelectedDropdownData(data)
-    if(IsCannedResponse){
+    if (IsCannedResponse) {
       setMessage(value)
       onDynamicCannedPress()
-    }else if(IsAddressBook){
+    } else if (IsAddressBook) {
       onAddressBookPress()
-    }else{
+    } else {
       onEmailTemplatePress()
     }
   }
 
-  const onDynamicCannedPress = async() => {
+  const onDynamicCannedPress = async () => {
     setdisplayList(!displayList)
-     setIsCannedResponse(!IsCannedResponse)
+    setIsCannedResponse(!IsCannedResponse)
     setDropdownList(DynamicCannedRes)
   }
 
@@ -217,19 +218,22 @@ const Chat = (props: any) => {
 
   const displayDropdownText = (item: any) => {
     let textValue = {}
-    let key = ""
-    if(IsEmailTemplate) {
-      key="EmailTemplate"
+    let key = ''
+    if (IsEmailTemplate) {
+      key = 'EmailTemplate'
       textValue = item.template_name
-    }else if(IsAddressBook){
-      key="AddressBook"
+    } else if (IsAddressBook) {
+      key = 'AddressBook'
       textValue = item.email_group_name
-    }else{
-      key="DynamicCanned"
+    } else {
+      key = 'DynamicCanned'
       textValue = item.template_response_text
     }
     return (
-      <Text onPress={() => selectedDropdownValue(key,textValue)}>
+      <Text
+        style={{ paddingLeft: '1%' }}
+        onPress={() => selectedDropdownValue(key, textValue)}
+      >
         {textValue}
       </Text>
     )
@@ -291,16 +295,6 @@ const Chat = (props: any) => {
       console.log('ResponseCodeRes', res)
     } catch (error) {
       console.log('AddtoQueueError', error)
-    }
-  }
-
-  const onCheckListData = () => {
-    if (IsCannedResponse) {
-      setDropdownList(DynamicCannedRes)
-    } else if (IsAddressBook) {
-      setDropdownList(AddressBook)
-    } else {
-      setDropdownList(EmailTemplate)
     }
   }
 
@@ -492,16 +486,15 @@ const Chat = (props: any) => {
           }}
         >
           <Toggle2 />
-          {/* <ToggleBtn /> */}
         </View>
-        <View
+        {/* <View
           style={{
             paddingVertical: '0.5%',
             marginHorizontal: '0.5%',
           }}
         >
           <Text>Credential not configured</Text>
-        </View>
+        </View> */}
         <View
           style={{
             paddingVertical: '0.5%',
@@ -613,16 +606,21 @@ const Chat = (props: any) => {
             data={DropdownList}
             renderItem={({ item, index }) => {
               return (
-                <View
-                  style={{
-                    justifyContent: 'flex-start',
-                    padding: '1%',
-                    borderBottomWidth: 0.2,
-                    borderBottomColor: 'gray',
-                  }}
-                >
-                  {displayDropdownText(item)}
-                </View>
+                <Hoverable>
+                  {({ hovered }) => (
+                    <View
+                      style={{
+                        justifyContent: 'flex-start',
+                        paddingVertical: '0.5%',
+                        borderBottomWidth: 0.2,
+                        borderBottomColor: 'gray',
+                        backgroundColor: hovered ? 'red' : '#fff',
+                      }}
+                    >
+                      {displayDropdownText(item)}
+                    </View>
+                  )}
+                </Hoverable>
               )
             }}
             keyExtractor={(index: any) => index.toString()}

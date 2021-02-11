@@ -16,6 +16,7 @@ const Toggle2 = () => {
           borderWidth: 1,
           borderRadius: 30,
           overflow: 'hidden',
+          // backgroundColor:"#0000"
         }}
       >
         <TouchableOpacity
@@ -25,8 +26,9 @@ const Toggle2 = () => {
             width: 20,
             alignContent: 'center',
             paddingVertical: '5%',
-            // backgroundColor:active?"red":"green",
-            backgroundColor: '#acb3bf',
+            backgroundColor: active ? '#2479a3' : '#acb3bf',
+            // backgroundColor: '#acb3bf',
+            // backgroundColor: '#fff',
             alignItems: 'center',
             justifyContent: 'center',
             left: active ? 20 : 0,
