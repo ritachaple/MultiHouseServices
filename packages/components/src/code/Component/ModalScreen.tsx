@@ -8,14 +8,15 @@ import {
   ScrollView,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { Divider } from 'react-native-elements'
+import { connect } from 'react-redux'
 import Chat from './Chat'
 import Dropdown from './Dropdown'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
+import UsersDetails from './UsersDetails'
 
 const ModalScreen = (props: any) => {
-  const { closeModal, complaintId, clientId } = props
+  const { closeModal, complaintId, clientId, token } = props
 
   const [PendingWithDropdown, setPendingWithDropdown] = useState([] as any)
   const [Department, setDepartment] = useState([] as any)
@@ -30,7 +31,7 @@ const ModalScreen = (props: any) => {
   useEffect(() => {
     const dynamicControls = async () => {
       try {
-        const res: any = await Api.get(`${configs.dynamic_get_controls}`)
+        const res: any = await Api.get(`${configs.dynamic_get_controls}`, token)
         console.log('dynamic control res', res)
         if (res.status === 200 && res.data.controls !== null) {
           setPendingWithDropdown(res.data.controls[0])
@@ -49,7 +50,7 @@ const ModalScreen = (props: any) => {
     }
 
     dynamicControls()
-  }, [])
+  }, [token])
 
   const selectedPendingItem = (item: any) => {
     console.log('selectedPendingItem', item)
@@ -158,7 +159,8 @@ const ModalScreen = (props: any) => {
           </View>
           <View style={styles.verticleLine} />
           <View style={{ flex: 5 }}>
-            <Chat complaintId={complaintId} clientId={clientId} />
+            <UsersDetails />
+            {/* <Chat complaintId={complaintId} clientId={clientId} /> */}
           </View>
         </View>
       </View>
@@ -166,7 +168,13 @@ const ModalScreen = (props: any) => {
   )
 }
 
-export default ModalScreen
+const mapStateToProps = (state: any) => {
+  return {
+    token: state.loginReducer.token,
+  }
+}
+
+export default connect(mapStateToProps)(ModalScreen)
 
 const styles = StyleSheet.create({
   centeredView: {
