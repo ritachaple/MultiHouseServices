@@ -103,46 +103,50 @@ const SearchComplaints = (props: any) => {
   const [tickit, setTickit] = useState([])
 
   useEffect(() => {
+    const searchComplaintsApi = async () => {
+      try {
+        const data = {
+          client_id: 39,
+          status: [],
+          department: [],
+          is_deleted: false,
+          is_spam: false,
+          to_date: '2021-02-08T07:52:06.919Z',
+          from_date: '2021-01-25T07:52:06.920Z',
+          custom_filter: null,
+          customer_responded: null,
+          page_size: 50,
+          assigned_to: [],
+          order_by: '1',
+          sort_order: 'DESC',
+          search_text: '',
+          page_index: 1,
+          agent_id: 5889,
+        }
+        console.log('search_complaintsRes1')
+
+        const res: any = await Api.post(
+          configs.search_complaints,
+          data,
+          `${props.token}`,
+        )
+        console.log('searchcomplaintsRes', res)
+        if (res) {
+          setTickit(res.data.data)
+          //  const  data= JSON.stringify(res)
+          console.log('res.data', res.data.data)
+        }
+      } catch (error) {
+        console.log('error: ', error)
+      }
+    }
+
     const clearData = async () => {
       props.clearHeaderData()
     }
     searchComplaintsApi()
     clearData()
   }, [props])
-
-  const searchComplaintsApi = async () => {
-    try {
-      const data = {
-        client_id: 39,
-        status: [],
-        department: [],
-        is_deleted: false,
-        is_spam: false,
-        to_date: '2021-02-08T07:52:06.919Z',
-        from_date: '2021-01-25T07:52:06.920Z',
-        custom_filter: null,
-        customer_responded: null,
-        page_size: 50,
-        assigned_to: [],
-        order_by: '1',
-        sort_order: 'DESC',
-        search_text: '',
-        page_index: 1,
-        agent_id: 5889,
-      }
-      console.log('search_complaintsRes1')
-
-      const res: any = await Api.post(configs.search_complaints, data)
-      console.log('searchcomplaintsRes', res)
-      if (res) {
-        setTickit(res.data.data)
-        //  const  data= JSON.stringify(res)
-        console.log('res.data', res.data.data)
-      }
-    } catch (error) {
-      console.log('error: ', error)
-    }
-  }
 
   return (
     <View style={styles.container}>
@@ -192,6 +196,12 @@ const SearchComplaints = (props: any) => {
   )
 }
 
+const mapStateToProps = (state: any) => {
+  return {
+    token: state.loginReducer.token,
+  }
+}
+
 const mapDispatchToProps = (dispatch: any) => {
   return {
     clearHeaderData: () => {
@@ -199,6 +209,8 @@ const mapDispatchToProps = (dispatch: any) => {
     },
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchComplaints)
 
 const styles = StyleSheet.create({
   container: {
@@ -217,5 +229,3 @@ const styles = StyleSheet.create({
     height: '5%',
   },
 })
-
-export default connect(null, mapDispatchToProps)(SearchComplaints)

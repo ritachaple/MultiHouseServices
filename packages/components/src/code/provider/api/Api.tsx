@@ -1,10 +1,16 @@
 import axios from 'axios'
 
 const Api = {
-  get: async (url = '', params = {}) => {
+  get: async (url = '', token = '') => {
     let res = ''
+    const header = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
     try {
-      res = await axios.get(url, { params })
+      // res = await axios.get(url, { params }, header)
+      res = await axios.get(url, header)
       return res
     } catch (error) {
       console.log('error', error)
@@ -12,13 +18,14 @@ const Api = {
     return res
   },
 
-  post: async (url = '', data = {}) => {
+  post: async (url = '', data = {}, token = '') => {
     let res = ''
     try {
       console.log('url', url)
 
       const header = {
         headers: {
+          Authorization: `Bearer ${token}`,
           Accept: 'application/json, text/plain',
           'Accept-Language': 'en,en-US;q=0.9,en-GB;q=0.8',
           Connection: 'keep-alive',

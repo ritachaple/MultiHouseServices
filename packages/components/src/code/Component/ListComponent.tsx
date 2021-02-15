@@ -54,7 +54,7 @@ const tickitIcon = [
 const List = (props: any) => {
   // const List = ({ tickitItems, props }: { tickitItems: any, props:any }) => {
 
-  const { isHeaderSelect, tickitItems } = props
+  const { isHeaderSelect, tickitItems, token } = props
   console.log('isHeader', isHeaderSelect)
 
   const [tickIcon, setTickIcon] = useState('hourglass-half')
@@ -67,17 +67,20 @@ const List = (props: any) => {
   const tooltipRef: any = React.useRef(null)
 
   useEffect(() => {
-    getStatusDropdownData()
-  }, [])
+    const getStatusDropdownData = async () => {
+      const res: any = await Api.get(
+        `${configs.get_status}39`,
+        `${props.token}`,
+      )
+      console.log('tickitStatusRes', res)
 
-  const getStatusDropdownData = async () => {
-    const res: any = await Api.get(`${configs.get_status}39`)
-    console.log('tickitStatusRes', res)
-
-    if (res) {
-      setTickitStatusList(res.data)
+      if (res) {
+        setTickitStatusList(res.data)
+      }
     }
-  }
+
+    getStatusDropdownData()
+  }, [props])
 
   const toggleOverlay = () => {
     setModalVisible(!modalVisible)
@@ -523,6 +526,7 @@ const List = (props: any) => {
 const mapStateToProps = (state: any) => {
   return {
     isHeaderSelect: state.headerData.isHeaderSelect,
+    token: state.loginReducer.token,
   }
 }
 
