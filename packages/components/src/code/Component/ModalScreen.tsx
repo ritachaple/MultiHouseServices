@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
@@ -27,6 +28,8 @@ const ModalScreen = (props: any) => {
   const [Status, setStatus] = useState([] as any)
   const [FakeNewsType, setFakeNewsType] = useState([] as any)
   const [FakeFactor, setFakeFactor] = useState([] as any)
+  const [isConversation, setIsConversation] = useState(true)
+  const [isCRM, setIsCRM] = useState(false)
 
   useEffect(() => {
     const dynamicControls = async () => {
@@ -56,13 +59,22 @@ const ModalScreen = (props: any) => {
     console.log('selectedPendingItem', item)
   }
 
+  const pressConversation = () => {
+    return setIsCRM(false)
+    setIsConversation(true)
+  }
+  const pressCRM = () => {
+    return setIsCRM(true)
+    setIsConversation(false)
+  }
+
   return (
     <View style={styles.centeredView}>
       <View style={styles.modalView}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View
             style={{
-              flex: 1,
+              // flex: 1,
               padding: '1%',
               flexDirection: 'row',
               justifyContent: 'flex-start',
@@ -71,6 +83,34 @@ const ModalScreen = (props: any) => {
             }}
           >
             <Icon name="window-close" size={20} onPress={closeModal} />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              padding: '1%',
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => pressConversation()}
+              style={{ marginHorizontal: '5%' }}
+            >
+              <Text
+                style={{
+                  color: isConversation === true ? '#6b9ff2' : '#0a0a0a',
+                }}
+              >
+                Conversation
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => pressCRM()}
+              style={{ marginHorizontal: '5%' }}
+            >
+              <Text style={{ color: isCRM === true ? '#6b9ff2' : '#0a0a0a' }}>
+                CRM
+              </Text>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -159,8 +199,10 @@ const ModalScreen = (props: any) => {
           </View>
           <View style={styles.verticleLine} />
           <View style={{ flex: 5 }}>
-            <UsersDetails />
-            {/* <Chat complaintId={complaintId} clientId={clientId} /> */}
+            {isCRM ? <UsersDetails /> : null}
+            {isConversation ? (
+              <Chat complaintId={complaintId} clientId={clientId} />
+            ) : null}
           </View>
         </View>
       </View>
