@@ -20,5 +20,6 @@ export const configs = {
   add_message_to_queue: `${BaseUrl}queuemanager/add_message_to_queue`,
   dynamic_canned_response: `${BaseUrl}${Api}${ticket}get_dynamic_canned_response/`,
   dynamic_get_controls: `${BaseUrl}${Api}${ticket}get_controls_with_data?client_id=39&group_id=2`,
-  userDetails: `https://cxpdev.merilent.com/api/ticket/get_user_complaints/39/200360`,
+  userDetails: `${BaseUrl}${Api}${ticket}get_user_complaints/39/200360`,
+  userUpdate: `${BaseUrl}${Api}user/update_user_details`,
 }
