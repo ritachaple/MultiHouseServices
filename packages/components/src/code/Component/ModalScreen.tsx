@@ -15,6 +15,7 @@ import Dropdown from './Dropdown'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import UsersDetails from './UsersDetails'
+import UserData from './UserDetails_New'
 
 const ModalScreen = (props: any) => {
   const { closeModal, complaintId, clientId, token } = props
@@ -60,11 +61,11 @@ const ModalScreen = (props: any) => {
   }
 
   const pressConversation = () => {
-    return setIsCRM(false)
+    setIsCRM(false)
     setIsConversation(true)
   }
   const pressCRM = () => {
-    return setIsCRM(true)
+    setIsCRM(true)
     setIsConversation(false)
   }
 
@@ -199,7 +200,9 @@ const ModalScreen = (props: any) => {
           </View>
           <View style={styles.verticleLine} />
           <View style={{ flex: 5 }}>
-            {isCRM ? <UsersDetails /> : null}
+            {/* {isCRM ? <UsersDetails /> : null} */}
+            {isCRM ? <UserData /> : null}
+
             {isConversation ? (
               <Chat complaintId={complaintId} clientId={clientId} />
             ) : null}
