@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -9,12 +9,33 @@ import {
 } from 'react-native'
 import { State } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { connect } from 'react-redux'
+import { connect, useStore } from 'react-redux'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 
 const UserData = (props: any) => {
   const { token } = props
+
+  const [userData, SetUserData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    locaiton: '',
+    whatsappNumber: '',
+    fecebookID: '',
+    twitterID: '',
+    instgramID: '',
+    policyNumber: '',
+  } as any)
+
+  const storeDetails = (v: any, field: any) => {
+    console.log('field', v)
+    const str = { ...userData }
+    str[field] = v
+    console.log('details', str)
+    SetUserData(str)
+  }
 
   const onUpdateUser = async () => {
     try {
@@ -84,8 +105,14 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="First Name" />
-          <InputField label="Last Name" />
+          <InputField
+            label="First Name"
+            onChangeText={(v: any) => storeDetails(v, 'firstName')}
+          />
+          <InputField
+            label="Last Name"
+            onChangeText={(v: any) => storeDetails(v, 'lastName')}
+          />
         </View>
         <View
           style={{
@@ -95,8 +122,14 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="Email" />
-          <InputField label="Phone Number" />
+          <InputField
+            label="Email"
+            onChangeText={(v: any) => storeDetails(v, 'email')}
+          />
+          <InputField
+            label="Phone Number"
+            onChangeText={(v: any) => storeDetails(v, 'phoneNumber')}
+          />
         </View>
         <View
           style={{
@@ -106,8 +139,14 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="Location" />
-          <InputField label="Whatsapp Number" />
+          <InputField
+            label="Location"
+            onChangeText={(v: any) => storeDetails(v, 'location')}
+          />
+          <InputField
+            label="Whatsapp Number"
+            onChangeText={(v: any) => storeDetails(v, 'whatsappNumber')}
+          />
         </View>
         <View
           style={{
@@ -117,8 +156,14 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="Facebook ID" />
-          <InputField label="Twitter ID" />
+          <InputField
+            label="Facebook ID"
+            onChangeText={(v: any) => storeDetails(v, 'fecebookID')}
+          />
+          <InputField
+            label="Twitter ID"
+            onChangeText={(v: any) => storeDetails(v, 'twitterID')}
+          />
         </View>
         <View
           style={{
@@ -128,8 +173,14 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="Instagram ID" />
-          <InputField label="Policy Number" />
+          <InputField
+            label="Instagram ID"
+            onChangeText={(v: any) => storeDetails(v, 'instgramID')}
+          />
+          <InputField
+            label="Policy Number"
+            onChangeText={(v: any) => storeDetails(v, 'policyNumber')}
+          />
         </View>
         <View style={{ flex: 1, marginLeft: '53%', justifyContent: 'center' }}>
           <Text>Gender</Text>
@@ -151,6 +202,7 @@ const UserData = (props: any) => {
       </View>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <TouchableOpacity
+          // onPress={()=>console.log('userDetails:',userData)}
           onPress={onUpdateUser}
           style={{
             backgroundColor: '#6056b8',
