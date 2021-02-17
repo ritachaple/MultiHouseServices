@@ -61,10 +61,11 @@ const UserData = (props: any) => {
           flex: 1,
           flexDirection: 'row',
           justifyContent: 'space-between',
+          paddingHorizontal: '3%',
         }}
       >
-        <Text>User Details</Text>
-        <Icon onPress={onUpdateUser} name="window-close" size={20} />
+        <Text style={{ fontSize: 22 }}>User Details</Text>
+        <Icon name="window-close" size={20} />
       </View>
       <View
         style={{
@@ -83,8 +84,8 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="First Name" placeholder="First Name" />
-          <InputField label="Last Name" placeholder="Last Name" />
+          <InputField label="First Name" />
+          <InputField label="Last Name" />
         </View>
         <View
           style={{
@@ -94,8 +95,8 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="Email" placeholder="Email" />
-          <InputField label="Phone Number" placeholder="Phone Number" />
+          <InputField label="Email" />
+          <InputField label="Phone Number" />
         </View>
         <View
           style={{
@@ -105,8 +106,8 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="Location" placeholder="Location" />
-          <InputField label="Whatsapp Number" placeholder="Whatsapp Number" />
+          <InputField label="Location" />
+          <InputField label="Whatsapp Number" />
         </View>
         <View
           style={{
@@ -116,8 +117,8 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="Facebook ID" placeholder="Facebook ID" />
-          <InputField label="Twitter ID" placeholder="Twitter ID" />
+          <InputField label="Facebook ID" />
+          <InputField label="Twitter ID" />
         </View>
         <View
           style={{
@@ -127,13 +128,46 @@ const UserData = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InputField label="Instagram ID" placeholder="Instagram ID" />
-          <InputField label="Policy Number" placeholder="Policy Number" />
+          <InputField label="Instagram ID" />
+          <InputField label="Policy Number" />
         </View>
-        {/* <View style={{flexDirection:'row',flex:1 ,justifyContent: 'space-between', alignItems:"center" }}>
-            </View> */}
+        <View style={{ flex: 1, marginLeft: '53%', justifyContent: 'center' }}>
+          <Text>Gender</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', marginRight: '5%' }}>
+              <Icon name="circle-o" size={16} />
+              <Text style={{ paddingLeft: '10%' }}>Male</Text>
+            </View>
+            <View style={{ flexDirection: 'row', marginRight: '5%' }}>
+              <Icon name="circle-o" size={16} />
+              <Text style={{ paddingLeft: '10%' }}>Female</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Icon name="circle-o" size={16} />
+              <Text style={{ paddingLeft: '10%' }}>Other</Text>
+            </View>
+          </View>
+        </View>
       </View>
-      <View style={{ flex: 1 }} />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <TouchableOpacity
+          onPress={onUpdateUser}
+          style={{
+            backgroundColor: '#6056b8',
+            borderRadius: 3,
+            borderColor: '#000',
+            borderWidth: 1,
+            paddingVertical: '0.5%',
+            paddingHorizontal: '2%',
+            flexDirection: 'row',
+            // width: '9%'
+          }}
+        >
+          <Text style={{ fontSize: 15, alignSelf: 'center', color: '#fff' }}>
+            Update
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -147,7 +181,7 @@ const mapStateToProps = (state: any) => {
 export default connect(mapStateToProps)(UserData)
 
 export const InputField = (props: any) => {
-  const { label, placeholder } = props
+  const { label, placeholder, onChangeText } = props
   return (
     <View style={{ flex: 1, padding: '3%' }}>
       <Text>{label}</Text>
@@ -159,6 +193,7 @@ export const InputField = (props: any) => {
           width: '100%',
           // backgroundColor:
         }}
+        onChangeText={onChangeText}
         placeholder={placeholder}
       />
     </View>
