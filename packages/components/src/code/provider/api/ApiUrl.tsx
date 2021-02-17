@@ -22,4 +22,6 @@ export const configs = {
   dynamic_get_controls: `${BaseUrl}${Api}${ticket}get_controls_with_data?client_id=39&group_id=2`,
   userDetails: `${BaseUrl}${Api}${ticket}get_user_complaints/39/200360`,
   userUpdate: `${BaseUrl}${Api}user/update_user_details`,
+  mark_influencer_detractor: `${BaseUrl}${Api}user/mark_user?user_id=200360`,
+  ratingLink: `${BaseUrl}${Api}get_ratings_url`,
 }

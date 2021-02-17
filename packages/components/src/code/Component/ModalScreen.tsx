@@ -69,6 +69,85 @@ const ModalScreen = (props: any) => {
     setIsConversation(false)
   }
 
+  const fetchActivity = async () => {
+    try {
+      const res: any = await Api.get(
+        `${configs.get_activity}${complaintId}/2`,
+        token,
+      )
+      console.log('fetch activity', res)
+      if (res.status === 200) {
+        // setChatData(res.data.data)
+        console.log('fetch activity api success')
+      }
+    } catch (error) {
+      console.log('fetch activityError', error)
+    }
+  }
+
+  const onMarkSpam = async () => {
+    try {
+      const body = {
+        activity_id: null,
+        conversation_text: 'Marked as Spam !',
+        created_by: 'system',
+        is_internal_user: true,
+        is_internal: true,
+        is_system_generated: true,
+        user_id: 5889,
+        is_user_reply: false,
+        department_id: 59,
+        complaint_id: complaintId,
+        medium_id: 2,
+        status_id: 1,
+        is_spam: true,
+      }
+      const res: any = await Api.post(`${configs.log_activity}`, body, token)
+      console.log('spam res', res)
+      if (res.status === 200) {
+        console.log('spam api success')
+      }
+    } catch (error) {
+      console.error('spam api error', error)
+    }
+  }
+
+  const onMarkInfluencer = async (type: any) => {
+    try {
+      const body = {
+        client_id: clientId,
+        user_type: type,
+        // "user_type": "influencer"
+      }
+      const res: any = await Api.put(
+        `${configs.mark_influencer_detractor}`,
+        body,
+        token,
+      )
+      console.log('mark influence res', res)
+      if (res.status === 200) {
+        console.log(`mark ${type} success`)
+      }
+    } catch (error) {
+      console.error('mark enfluencer error', error)
+    }
+  }
+
+  const onRatingLink = async () => {
+    try {
+      const param: any = {
+        complaint_id: complaintId,
+      }
+      const res: any = await Api.get(`${configs.ratingLink}`, token, param)
+      console.log('rating link api res', res)
+      if (res.status === 200) {
+        console.log('rating link api success')
+      }
+    } catch (error) {
+      console.error('rating api error', error)
+    }
+  }
+
   return (
     <View style={styles.centeredView}>
       <View style={styles.modalView}>
@@ -78,12 +157,97 @@ const ModalScreen = (props: any) => {
               // flex: 1,
               padding: '1%',
               flexDirection: 'row',
-              justifyContent: 'flex-start',
+              justifyContent: 'space-between',
               borderBottomColor: '#dce3de',
               borderBottomWidth: 0.1,
+              width: '30%',
             }}
           >
-            <Icon name="window-close" size={20} onPress={closeModal} />
+            <Icon name="remove" size={20} onPress={closeModal} />
+            <Icon name="refresh" size={20} onPress={fetchActivity} />
+            <Icon name="ban" size={20} onPress={onMarkSpam} />
+            <Icon name="eye" size={20} />
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#fff ',
+                borderRadius: 3,
+                borderColor: '#000',
+                borderWidth: 1,
+                paddingVertical: '0.5%',
+                paddingHorizontal: 5,
+                flexDirection: 'row',
+                width: '20%',
+              }}
+              onPress={() => {
+                onMarkInfluencer('influencer')
+              }}
+            >
+              <Icon
+                style={{ alignSelf: 'center', paddingHorizontal: '10%' }}
+                name="square-o"
+                size={10}
+                color="#000"
+              />
+              <Text
+                style={{ fontSize: 10, alignSelf: 'center', color: '#000' }}
+              >
+                Influencer
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#fff',
+                borderRadius: 3,
+                borderColor: '#000',
+                borderWidth: 1,
+                paddingVertical: '0.5%',
+                paddingHorizontal: 5,
+                flexDirection: 'row',
+                width: '20%',
+              }}
+              onPress={() => {
+                onMarkInfluencer('detractor')
+              }}
+            >
+              <Icon
+                style={{ alignSelf: 'center', paddingHorizontal: '10%' }}
+                name="check-square-o"
+                size={10}
+                color="#000"
+              />
+              <Text
+                style={{ fontSize: 10, alignSelf: 'center', color: '#000' }}
+              >
+                Detractor
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#fff',
+                borderRadius: 3,
+                borderColor: '#000',
+                borderWidth: 1,
+                paddingVertical: '0.5%',
+                paddingHorizontal: 5,
+                flexDirection: 'row',
+                width: '20%',
+              }}
+              onPress={() => {
+                onRatingLink()
+              }}
+            >
+              <Icon
+                style={{ alignSelf: 'center', paddingHorizontal: '10%' }}
+                name="star-half-o"
+                size={10}
+                color="#000"
+              />
+              <Text
+                style={{ fontSize: 10, alignSelf: 'center', color: '#000' }}
+              >
+                Rating
+              </Text>
+            </TouchableOpacity>
           </View>
           <View
             style={{
