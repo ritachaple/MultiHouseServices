@@ -92,21 +92,25 @@ const ModalScreen = (props: any) => {
               padding: '1%',
             }}
           >
-            <TouchableOpacity
-              onPress={() => pressConversation()}
-              style={{ marginHorizontal: '5%' }}
-            >
-              <Text
-                style={{
-                  color: isConversation === true ? '#6b9ff2' : '#0a0a0a',
-                }}
+            <View style={{ flexDirection: 'row', marginHorizontal: '8%' }}>
+              <Icon name="arrow-left" size={15} />
+              <TouchableOpacity
+                onPress={() => pressConversation()}
+                style={{ marginHorizontal: '7%' }}
               >
-                Conversation
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: isConversation === true ? '#6b9ff2' : '#0a0a0a',
+                  }}
+                >
+                  Conversation
+                </Text>
+              </TouchableOpacity>
+              <Icon name="arrow-right" size={15} />
+            </View>
             <TouchableOpacity
               onPress={() => pressCRM()}
-              style={{ marginHorizontal: '5%' }}
+              style={{ marginHorizontal: '8%' }}
             >
               <Text style={{ color: isCRM === true ? '#6b9ff2' : '#0a0a0a' }}>
                 CRM
