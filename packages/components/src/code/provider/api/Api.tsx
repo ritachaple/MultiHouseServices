@@ -1,16 +1,16 @@
 import axios from 'axios'
 
 const Api = {
-  get: async (url = '', token = '') => {
+  get: async (url = '', token = '', params = {}) => {
     let res = ''
-    const header = {
+    const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params,
     }
     try {
-      // res = await axios.get(url, { params }, header)
-      res = await axios.get(url, header)
+      res = await axios.get(url, config)
       return res
     } catch (error) {
       console.log('error', error)
