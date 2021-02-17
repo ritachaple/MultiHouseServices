@@ -7,9 +7,42 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native'
+import { State } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { connect } from 'react-redux'
+import Api from '../provider/api/Api'
+import { configs } from '../provider/api/ApiUrl'
 
-const UserData = () => {
+const UserData = (props: any) => {
+  const { token } = props
+
+  const onUpdateUser = async () => {
+    try {
+      const body = {
+        gender: 'F',
+        twitter_id: 'KashyapGargee',
+        user_id: 200360,
+        email_id: '',
+        location: 'Guwahati, India',
+        facebook_id: '',
+        first_name: 'Gargee',
+        instagram_id: '',
+        phone_number: '',
+        whatsapp_number: '',
+        last_name: 'Kashyap',
+        custom_column: {
+          policy_number: '',
+        },
+      }
+      const res: any = await Api.put(`${configs.userUpdate}`, body, token)
+      console.log('update user Res', res)
+      if (res.status === 200) {
+        console.log('user update successfully')
+      }
+    } catch (error) {
+      console.error('update user Error', error)
+    }
+  }
   return (
     <View
       style={{
@@ -31,7 +64,7 @@ const UserData = () => {
         }}
       >
         <Text>User Details</Text>
-        <Icon name="window-close" size={20} />
+        <Icon onPress={onUpdateUser} name="window-close" size={20} />
       </View>
       <View
         style={{
@@ -105,7 +138,13 @@ const UserData = () => {
   )
 }
 
-export default UserData
+const mapStateToProps = (state: any) => {
+  return {
+    token: state.loginReducer.token,
+  }
+}
+
+export default connect(mapStateToProps)(UserData)
 
 export const InputField = (props: any) => {
   const { label, placeholder } = props
