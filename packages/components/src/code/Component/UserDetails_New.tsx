@@ -13,12 +13,12 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 
 const UserData = (props: any) => {
-  const { token } = props
+  const { token, userId } = props
 
   const [userData, SetUserData] = useState({
     gender: '',
     twitter_id: '',
-    user_id: '',
+    user_id: userId,
     email_id: '',
     location: '',
     facebook_id: '',
@@ -53,7 +53,10 @@ const UserData = (props: any) => {
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        const res: any = await Api.get(`${configs.getUserDetails}`, token)
+        const res: any = await Api.get(
+          `${configs.getUserDetails}${userId}`,
+          token,
+        )
         if (res.status === 200) {
           console.log('user details success', res)
           SetUserData(res.data.data)
@@ -65,7 +68,7 @@ const UserData = (props: any) => {
     }
 
     getUserDetails()
-  }, [token])
+  }, [token, userId])
 
   const storeDetails = (v: any, field: any) => {
     console.log('field', v)
@@ -271,7 +274,6 @@ const UserData = (props: any) => {
       </View>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <TouchableOpacity
-          // onPress={()=>console.log('userDetails:',userData)}
           onPress={onUpdateUser}
           style={{
             backgroundColor: '#6056b8',

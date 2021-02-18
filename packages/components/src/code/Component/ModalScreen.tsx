@@ -18,7 +18,7 @@ import UsersDetails from './UsersDetails'
 import UserData from './UserDetails_New'
 
 const ModalScreen = (props: any) => {
-  const { closeModal, complaintId, clientId, token } = props
+  const { closeModal, complaintId, clientId, token, userId } = props
 
   const [PendingWithDropdown, setPendingWithDropdown] = useState([] as any)
   const [Department, setDepartment] = useState([] as any)
@@ -369,7 +369,7 @@ const ModalScreen = (props: any) => {
           <View style={styles.verticleLine} />
           <View style={{ flex: 5 }}>
             {/* {isCRM ? <UsersDetails /> : null} */}
-            {isCRM ? <UserData /> : null}
+            {isCRM ? <UserData userId={userId} /> : null}
 
             {isConversation ? (
               <Chat complaintId={complaintId} clientId={clientId} />

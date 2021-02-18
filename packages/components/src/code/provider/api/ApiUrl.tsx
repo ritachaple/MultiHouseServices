@@ -24,5 +24,5 @@ export const configs = {
   userUpdate: `${BaseUrl}${Api}user/update_user_details`,
   mark_influencer_detractor: `${BaseUrl}${Api}user/mark_user?user_id=200360`,
   ratingLink: `${BaseUrl}${Api}get_ratings_url`,
-  getUserDetails: `${BaseUrl}${Api}user/get_user_details/200360`,
+  getUserDetails: `${BaseUrl}${Api}user/get_user_details/`,
 }
