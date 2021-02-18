@@ -57,6 +57,7 @@ const UserData = (props: any) => {
         if (res.status === 200) {
           console.log('user details success', res)
           SetUserData(res.data.data)
+          setselected(res.data.data.gender)
         }
       } catch (error) {
         console.error('user details error', error)
@@ -98,6 +99,11 @@ const UserData = (props: any) => {
     } catch (error) {
       console.error('update user Error', error)
     }
+  }
+
+  const onGenderChange = (v: any, field: any) => {
+    setselected(v)
+    storeDetails(v, field)
   }
 
   return (
@@ -252,7 +258,7 @@ const UserData = (props: any) => {
                     name={selected === item.type ? 'dot-circle-o' : 'circle-o'}
                     size={16}
                     key={item.type}
-                    onPress={() => setselected(item.type)}
+                    onPress={() => onGenderChange(item.type, 'gender')}
                   />
                   <Text style={{ paddingLeft: '10%' }}>{item.name}</Text>
                 </View>
