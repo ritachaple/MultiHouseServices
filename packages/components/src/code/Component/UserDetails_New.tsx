@@ -27,7 +27,28 @@ const UserData = (props: any) => {
     twitterID: '',
     instgramID: '',
     policyNumber: '',
+    gender: '',
   } as any)
+
+  const [selected, setselected] = useState(userData.gender)
+
+  const selectGender = [
+    {
+      id: 1,
+      type: 'M',
+      name: 'Male',
+    },
+    {
+      id: 2,
+      type: 'F',
+      name: 'Female',
+    },
+    {
+      id: 3,
+      type: 'O',
+      name: 'Other',
+    },
+  ]
 
   const storeDetails = (v: any, field: any) => {
     console.log('field', v)
@@ -70,11 +91,11 @@ const UserData = (props: any) => {
         flex: 1,
         // backgroundColor:"steelblue",
         // padding: '1%',
-        paddingVertical: '5%',
+        paddingVertical: '2%',
         paddingHorizontal: '10%',
         borderWidth: 1,
         borderRadius: 10,
-        margin: 20,
+        margin: '3%',
       }}
     >
       <View
@@ -90,7 +111,7 @@ const UserData = (props: any) => {
       </View>
       <View
         style={{
-          flex: 5,
+          flex: 9,
           // justifyContent:"center",
           // alignItems:"center"
           // backgroundColor:"green"
@@ -197,18 +218,21 @@ const UserData = (props: any) => {
         >
           <Text>Gender</Text>
           <View style={{ flexDirection: 'row' }}>
-            <View style={{ flexDirection: 'row', marginRight: '5%' }}>
-              <Icon name="circle-o" size={16} />
-              <Text style={{ paddingLeft: '10%' }}>Male</Text>
-            </View>
-            <View style={{ flexDirection: 'row', marginRight: '5%' }}>
-              <Icon name="circle-o" size={16} />
-              <Text style={{ paddingLeft: '10%' }}>Female</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Icon name="circle-o" size={16} />
-              <Text style={{ paddingLeft: '10%' }}>Other</Text>
-            </View>
+            {selectGender.length > 0 ? (
+              selectGender.map((item) => (
+                <View style={{ flexDirection: 'row', marginRight: '5%' }}>
+                  <Icon
+                    name={selected === item.type ? 'dot-circle-o' : 'circle-o'}
+                    size={16}
+                    key={item.type}
+                    onPress={() => setselected(item.type)}
+                  />
+                  <Text style={{ paddingLeft: '10%' }}>{item.name}</Text>
+                </View>
+              ))
+            ) : (
+              <></>
+            )}
           </View>
         </View>
       </View>
