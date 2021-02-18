@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native'
-import { State } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect, useStore } from 'react-redux'
 import Api from '../provider/api/Api'
@@ -17,17 +16,35 @@ const UserData = (props: any) => {
   const { token } = props
 
   const [userData, SetUserData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    locaiton: '',
-    whatsappNumber: '',
-    fecebookID: '',
-    twitterID: '',
-    instgramID: '',
-    policyNumber: '',
+    gender: '',
+    twitter_id: '',
+    user_id: '',
+    email_id: '',
+    location: '',
+    facebook_id: '',
+    first_name: '',
+    instagram_id: '',
+    phone_number: '',
+    whatsapp_number: '',
+    last_name: '',
+    custom_column: {},
   } as any)
+
+  useEffect(() => {
+    const getUserDetails = async () => {
+      try {
+        const res: any = await Api.get(`${configs.getUserDetails}`, token)
+        if (res.status === 200) {
+          console.log('user details success', res)
+          SetUserData(res.data.data)
+        }
+      } catch (error) {
+        console.error('user details error', error)
+      }
+    }
+
+    getUserDetails()
+  }, [token])
 
   const storeDetails = (v: any, field: any) => {
     console.log('field', v)
@@ -40,20 +57,33 @@ const UserData = (props: any) => {
   const onUpdateUser = async () => {
     try {
       const body = {
-        gender: 'F',
-        twitter_id: 'KashyapGargee',
-        user_id: 200360,
-        email_id: '',
-        location: 'Guwahati, India',
-        facebook_id: '',
-        first_name: 'Gargee',
-        instagram_id: '',
-        phone_number: '',
-        whatsapp_number: '',
-        last_name: 'Kashyap',
-        custom_column: {
-          policy_number: '',
-        },
+        gender: userData.gender,
+        twitter_id: userData.twitter_id,
+        user_id: userData.user_id,
+        email_id: userData.email_id,
+        location: userData.location,
+        facebook_id: userData.facebook_id,
+        first_name: userData.first_name,
+        instagram_id: userData.instagram_id,
+        phone_number: userData.phone_number,
+        whatsapp_number: userData.whatsapp_number,
+        last_name: userData.last_name,
+        custom_column: userData.custom_column,
+        // gender: 'F',
+        // twitter_id: 'KashyapGargee',
+        // user_id: 200360,
+        // email_id: '',
+        // location: 'Guwahati, India',
+        // facebook_id: '',
+        // first_name: 'Gargee',
+        // instagram_id: '',
+        // phone_number: '',
+        // whatsapp_number: '',
+        // last_name: 'Kashyapp',
+        // custom_column: {
+        //   policy_number: '',
+        // },
+        // userData
       }
       const res: any = await Api.put(`${configs.userUpdate}`, body, token)
       console.log('update user Res', res)
@@ -64,17 +94,20 @@ const UserData = (props: any) => {
       console.error('update user Error', error)
     }
   }
+
   return (
     <View
       style={{
         flex: 1,
         // backgroundColor:"steelblue",
         // padding: '1%',
-        paddingVertical: '5%',
+        paddingVertical: '2%',
         paddingHorizontal: '10%',
         borderWidth: 1,
         borderRadius: 10,
-        margin: 20,
+        margin: '3%',
+        // marginHorizontal:"3%",
+        // marginVertical:"1%"
       }}
     >
       <View
@@ -90,7 +123,7 @@ const UserData = (props: any) => {
       </View>
       <View
         style={{
-          flex: 5,
+          flex: 9,
           // justifyContent:"center",
           // alignItems:"center"
           // backgroundColor:"green"
@@ -108,11 +141,13 @@ const UserData = (props: any) => {
         >
           <InputField
             label="First Name"
-            onChangeText={(v: any) => storeDetails(v, 'firstName')}
+            defaultValue={userData.first_name ? userData.first_name : ''}
+            onChangeText={(v: any) => storeDetails(v, 'first_name')}
           />
           <InputField
             label="Last Name"
-            onChangeText={(v: any) => storeDetails(v, 'lastName')}
+            defaultValue={userData.last_name ? userData.last_name : ''}
+            onChangeText={(v: any) => storeDetails(v, 'last_name')}
           />
         </View>
         <View
@@ -126,11 +161,13 @@ const UserData = (props: any) => {
         >
           <InputField
             label="Email"
-            onChangeText={(v: any) => storeDetails(v, 'email')}
+            defaultValue={userData.email_id ? userData.email_id : ''}
+            onChangeText={(v: any) => storeDetails(v, 'email_id')}
           />
           <InputField
             label="Phone Number"
-            onChangeText={(v: any) => storeDetails(v, 'phoneNumber')}
+            defaultValue={userData.phone_number ? userData.phone_number : ''}
+            onChangeText={(v: any) => storeDetails(v, 'phone_number')}
           />
         </View>
         <View
@@ -144,11 +181,15 @@ const UserData = (props: any) => {
         >
           <InputField
             label="Location"
+            defaultValue={userData.location ? userData.location : ''}
             onChangeText={(v: any) => storeDetails(v, 'location')}
           />
           <InputField
             label="Whatsapp Number"
-            onChangeText={(v: any) => storeDetails(v, 'whatsappNumber')}
+            defaultValue={
+              userData.whatsapp_number ? userData.whatsapp_number : ''
+            }
+            onChangeText={(v: any) => storeDetails(v, 'whatsapp_number')}
           />
         </View>
         <View
@@ -162,11 +203,13 @@ const UserData = (props: any) => {
         >
           <InputField
             label="Facebook ID"
-            onChangeText={(v: any) => storeDetails(v, 'fecebookID')}
+            defaultValue={userData.facebook_id ? userData.facebook_id : ''}
+            onChangeText={(v: any) => storeDetails(v, 'facebook_id')}
           />
           <InputField
             label="Twitter ID"
-            onChangeText={(v: any) => storeDetails(v, 'twitterID')}
+            defaultValue={userData.twitter_id ? userData.twitter_id : ''}
+            onChangeText={(v: any) => storeDetails(v, 'twitter_id')}
           />
         </View>
         <View
@@ -180,10 +223,12 @@ const UserData = (props: any) => {
         >
           <InputField
             label="Instagram ID"
-            onChangeText={(v: any) => storeDetails(v, 'instgramID')}
+            defaultValue={userData.instagram_id ? userData.instagram_id : ''}
+            onChangeText={(v: any) => storeDetails(v, 'instagram_id')}
           />
           <InputField
             label="Policy Number"
+            defaultValue={userData.policyNumber ? userData.policyNumber : ''}
             onChangeText={(v: any) => storeDetails(v, 'policyNumber')}
           />
         </View>
@@ -245,7 +290,7 @@ const mapStateToProps = (state: any) => {
 export default connect(mapStateToProps)(UserData)
 
 export const InputField = (props: any) => {
-  const { label, placeholder, onChangeText } = props
+  const { label, placeholder, onChangeText, defaultValue } = props
   return (
     <View style={{ flex: 1, padding: '3%' }}>
       <Text>{label}</Text>
@@ -257,6 +302,7 @@ export const InputField = (props: any) => {
           width: '100%',
           // backgroundColor:
         }}
+        defaultValue={defaultValue}
         onChangeText={onChangeText}
         placeholder={placeholder}
       />
