@@ -103,6 +103,7 @@ const UserData = (props: any) => {
             flex: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
+            paddingVertical: '2%',
           }}
         >
           <InputField
@@ -120,6 +121,7 @@ const UserData = (props: any) => {
             flex: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
+            paddingVertical: '2%',
           }}
         >
           <InputField
@@ -137,6 +139,7 @@ const UserData = (props: any) => {
             flex: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
+            paddingVertical: '2%',
           }}
         >
           <InputField
@@ -154,6 +157,7 @@ const UserData = (props: any) => {
             flex: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
+            paddingVertical: '2%',
           }}
         >
           <InputField
@@ -171,6 +175,7 @@ const UserData = (props: any) => {
             flex: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
+            paddingVertical: '2%',
           }}
         >
           <InputField
@@ -182,7 +187,14 @@ const UserData = (props: any) => {
             onChangeText={(v: any) => storeDetails(v, 'policyNumber')}
           />
         </View>
-        <View style={{ flex: 1, marginLeft: '53%', justifyContent: 'center' }}>
+        <View
+          style={{
+            flex: 1,
+            marginLeft: '53%',
+            justifyContent: 'center',
+            paddingVertical: '2%',
+          }}
+        >
           <Text>Gender</Text>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flexDirection: 'row', marginRight: '5%' }}>
