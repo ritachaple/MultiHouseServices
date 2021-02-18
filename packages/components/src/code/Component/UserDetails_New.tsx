@@ -30,6 +30,26 @@ const UserData = (props: any) => {
     custom_column: {},
   } as any)
 
+  const [selected, setselected] = useState(userData.gender)
+
+  const selectGender = [
+    {
+      id: 1,
+      type: 'M',
+      name: 'Male',
+    },
+    {
+      id: 2,
+      type: 'F',
+      name: 'Female',
+    },
+    {
+      id: 3,
+      type: 'O',
+      name: 'Other',
+    },
+  ]
+
   useEffect(() => {
     const getUserDetails = async () => {
       try {
@@ -69,21 +89,6 @@ const UserData = (props: any) => {
         whatsapp_number: userData.whatsapp_number,
         last_name: userData.last_name,
         custom_column: userData.custom_column,
-        // gender: 'F',
-        // twitter_id: 'KashyapGargee',
-        // user_id: 200360,
-        // email_id: '',
-        // location: 'Guwahati, India',
-        // facebook_id: '',
-        // first_name: 'Gargee',
-        // instagram_id: '',
-        // phone_number: '',
-        // whatsapp_number: '',
-        // last_name: 'Kashyapp',
-        // custom_column: {
-        //   policy_number: '',
-        // },
-        // userData
       }
       const res: any = await Api.put(`${configs.userUpdate}`, body, token)
       console.log('update user Res', res)
@@ -106,8 +111,6 @@ const UserData = (props: any) => {
         borderWidth: 1,
         borderRadius: 10,
         margin: '3%',
-        // marginHorizontal:"3%",
-        // marginVertical:"1%"
       }}
     >
       <View
@@ -242,18 +245,21 @@ const UserData = (props: any) => {
         >
           <Text>Gender</Text>
           <View style={{ flexDirection: 'row' }}>
-            <View style={{ flexDirection: 'row', marginRight: '5%' }}>
-              <Icon name="circle-o" size={16} />
-              <Text style={{ paddingLeft: '10%' }}>Male</Text>
-            </View>
-            <View style={{ flexDirection: 'row', marginRight: '5%' }}>
-              <Icon name="circle-o" size={16} />
-              <Text style={{ paddingLeft: '10%' }}>Female</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Icon name="circle-o" size={16} />
-              <Text style={{ paddingLeft: '10%' }}>Other</Text>
-            </View>
+            {selectGender.length > 0 ? (
+              selectGender.map((item) => (
+                <View style={{ flexDirection: 'row', marginRight: '5%' }}>
+                  <Icon
+                    name={selected === item.type ? 'dot-circle-o' : 'circle-o'}
+                    size={16}
+                    key={item.type}
+                    onPress={() => setselected(item.type)}
+                  />
+                  <Text style={{ paddingLeft: '10%' }}>{item.name}</Text>
+                </View>
+              ))
+            ) : (
+              <></>
+            )}
           </View>
         </View>
       </View>
