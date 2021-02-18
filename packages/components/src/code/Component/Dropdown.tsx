@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Button, Overlay, Divider } from 'react-native-elements'
+import DropDownList from './DropDownList'
 
 const tickitStatus = [
   'Pending',
@@ -45,7 +46,6 @@ const Dropdown = (props: any) => {
     <View
       style={{
         flex: 1,
-        // paddingLeft: '10%'
       }}
     >
       <TouchableOpacity onPress={onInputPress}>
@@ -63,71 +63,40 @@ const Dropdown = (props: any) => {
           transparent={displayList}
           visible={displayList}
         >
-          <View
-            style={{
-              flex: 1,
-              width: '100%',
-              height: '50%',
-              marginHorizontal: '40%',
-              marginTop: '30%',
-              alignSelf: 'center',
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'white',
-                // borderRadius: 5,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 5,
+          <DropDownList>
+            <FlatList
+              style={{ flex: 1, paddingHorizontal: '2%' }}
+              data={dropdownList}
+              renderItem={({ item, index }) => {
+                return (
+                  <View
+                    style={{
+                      justifyContent: 'flex-start',
+                      padding: '1%',
+                      borderBottomWidth: 0.2,
+                      borderBottomColor: 'gray',
+                    }}
+                  >
+                    <Text onPress={() => onDropdownSelect(item)}>
+                      {item.text}
+                    </Text>
+                  </View>
+                )
               }}
-            >
-              <ScrollView>
-                <FlatList
-                  style={{ flex: 1, paddingHorizontal: '2%' }}
-                  data={dropdownList}
-                  renderItem={({ item, index }) => {
-                    return (
-                      <View
-                        style={{
-                          justifyContent: 'flex-start',
-                          padding: '1%',
-                          borderBottomWidth: 0.2,
-                          borderBottomColor: 'gray',
-                        }}
-                      >
-                        <Text onPress={() => onDropdownSelect(item)}>
-                          {item.text}
-                        </Text>
-                      </View>
-                    )
-                  }}
-                  keyExtractor={(index: any) => index.toString()}
-                />
-              </ScrollView>
+              keyExtractor={(index: any) => index.toString()}
+            />
+          </DropDownList>
+          {/* </ScrollView>
             </View>
-          </View>
+          </View> */}
         </Modal>
       </View>
-
-      {/* :""
-            } */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   input: {
-    // flex: 1,
-    // paddingTop: 10,
-    // paddingRight: 10,
-    // paddingBottom: 10,
     paddingLeft: 0,
     // backgroundColor: '#fff',
     color: '#424242',
@@ -136,8 +105,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     paddingVertical: '1%',
-    // width: '10%',
-    // height:"10%"
   },
 })
 
