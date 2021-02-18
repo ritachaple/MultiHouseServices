@@ -1,0 +1,21 @@
+diff --git a/node_modules/react-native-vector-icons/lib/tab-bar-item-ios.js b/node_modules/react-native-vector-icons/lib/tab-bar-item-ios.js
+index fb53b6d..f96a4fb 100644
+--- a/node_modules/react-native-vector-icons/lib/tab-bar-item-ios.js
++++ b/node_modules/react-native-vector-icons/lib/tab-bar-item-ios.js
+@@ -3,7 +3,6 @@ import isEqual from 'lodash.isequal';
+ import pick from 'lodash.pick';
+ import React, { PureComponent } from 'react';
+ import PropTypes from 'prop-types';
+-import { TabBarIOS } from './react-native';
+ 
+ const ICON_PROP_NAMES = ['iconName', 'iconSize', 'iconColor'];
+ const SELECTED_ICON_PROP_NAMES = [
+@@ -87,7 +86,7 @@ export default function createTabBarItemIOSComponent(
+     }
+ 
+     render() {
+-      return <TabBarIOS.Item {...this.state} {...this.props} />;
++      return <></>;
+     }
+   };
+ }

@@ -25,6 +25,7 @@
     "redux-persist": "*",
     "@react-native-community/async-storage": "*",
     "react-native-modal-datetime-picker": "*",
-    "react-native-webview": "*"
+    "react-native-webview": "*",
+    "prop-types": "*"
   }
 }
