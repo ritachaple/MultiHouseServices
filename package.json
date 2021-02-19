@@ -9,6 +9,7 @@
   },
   "scripts": {
     "android": "yarn workspace mobile android",
+    "web": "yarn workspace web-cra start",
     "format": "prettier --write .",
     "ios": "yarn workspace mobile ios",
     "lint": "eslint .",

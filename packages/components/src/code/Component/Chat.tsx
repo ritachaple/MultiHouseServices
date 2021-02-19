@@ -15,6 +15,7 @@ import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Overlay, Divider, Input } from 'react-native-elements'
 import { Hoverable } from 'react-native-web-hover'
+import { connect } from 'react-redux'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
@@ -22,7 +23,7 @@ import DropDownList from './DropDownList'
 
 // const Chat = (complaintId: any) => {
 const Chat = (props: any) => {
-  const { complaintId, clientId } = props
+  const { complaintId, clientId, token } = props
   console.log('checkCID', complaintId)
   console.log('clientId', clientId)
 
@@ -45,6 +46,7 @@ const Chat = (props: any) => {
     AddressBook: 'Enter Email Address',
     EmailTemplate: 'Default',
   })
+
   const bodercolor = '#acb3bf'
 
   useEffect(() => {
@@ -71,6 +73,7 @@ const Chat = (props: any) => {
         const res: any = await Api.post(
           `${configs.dynamic_canned_response}`,
           body,
+          token,
         )
         console.log('dynamic canned Res', res)
         if (res.status === 200) {
@@ -85,7 +88,7 @@ const Chat = (props: any) => {
 
     chatDetails()
     channedResponse()
-  }, [complaintId, clientId])
+  }, [complaintId, clientId, token])
 
   const onSendMessage = async () => {
     try {
@@ -233,6 +236,7 @@ const Chat = (props: any) => {
       <Text
         style={{ paddingLeft: '1%' }}
         onPress={() => selectedDropdownValue(key, textValue)}
+        // onPress={() => onSelectDropdown(textValue)}
       >
         {textValue}
       </Text>
@@ -614,7 +618,7 @@ const Chat = (props: any) => {
                         paddingVertical: '0.5%',
                         borderBottomWidth: 0.2,
                         borderBottomColor: 'gray',
-                        backgroundColor: hovered ? 'red' : '#fff',
+                        backgroundColor: hovered ? '#3498DB' : '#fff',
                       }}
                     >
                       {displayDropdownText(item)}
@@ -631,7 +635,13 @@ const Chat = (props: any) => {
   )
 }
 
-export default Chat
+const mapStateToProps = (state: any) => {
+  return {
+    token: state.loginReducer.token,
+  }
+}
+
+export default connect(mapStateToProps)(Chat)
 
 const styles = StyleSheet.create({
   container: {

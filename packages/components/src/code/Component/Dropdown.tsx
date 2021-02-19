@@ -28,7 +28,6 @@ const Dropdown = (props: any) => {
   const { dropdownList } = props
   const [displayList, setDisplayList] = useState(false)
   const [textField, setTextField] = useState('')
-  const [multipleTextField, setMultipleTextField] = useState('')
 
   const onInputPress = () => {
     if (dropdownList.length > 0) {
@@ -86,9 +85,6 @@ const Dropdown = (props: any) => {
               keyExtractor={(index: any) => index.toString()}
             />
           </DropDownList>
-          {/* </ScrollView>
-            </View>
-          </View> */}
         </Modal>
       </View>
     </View>

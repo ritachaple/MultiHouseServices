@@ -16,6 +16,7 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import UsersDetails from './UsersDetails'
 import UserData from './UserDetails_New'
+import MultipleDropdown from './MultipleDropdown'
 
 const ModalScreen = (props: any) => {
   const { closeModal, complaintId, clientId, token, userId } = props
@@ -31,6 +32,7 @@ const ModalScreen = (props: any) => {
   const [FakeFactor, setFakeFactor] = useState([] as any)
   const [isConversation, setIsConversation] = useState(true)
   const [isCRM, setIsCRM] = useState(false)
+  const [assignToData, setAssignToData] = useState([] as any)
 
   useEffect(() => {
     const dynamicControls = async () => {
@@ -324,7 +326,28 @@ const ModalScreen = (props: any) => {
               </View>
               <View style={{ paddingTop: '7%' }}>
                 <Text>Assign To</Text>
-                <Dropdown
+                {/* <Dropdown
+                  dropdownList={AssignTo.lookup_data}
+                  selectedItem={selectedPendingItem}
+                /> */}
+                {/* <TouchableOpacity 
+                      // onPress={onInputPress}
+                      >
+        <TextInput
+          style={{    paddingLeft: 0,
+            // backgroundColor: '#fff',
+            color: '#424242',
+            // borderRadius: 5,
+            borderColor: 'gray',
+            borderWidth: 1,
+            borderRadius: 4,
+            paddingVertical: '1%',}}
+          placeholder="Select Data"
+          // value={textField}
+        />
+      </TouchableOpacity> */}
+
+                <MultipleDropdown
                   dropdownList={AssignTo.lookup_data}
                   selectedItem={selectedPendingItem}
                 />
