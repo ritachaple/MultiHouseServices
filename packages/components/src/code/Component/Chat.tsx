@@ -54,6 +54,7 @@ const Chat = (props: any) => {
       try {
         const res: any = await Api.get(
           `${configs.get_activity}${complaintId}/2`,
+          token,
         )
         console.log('chatDetails', res)
         if (res.status === 200) {
@@ -507,6 +508,7 @@ const Chat = (props: any) => {
         >
           <Text>Reply To :</Text>
         </View>
+
         <TouchableOpacity
           style={{
             backgroundColor: '#eeeeeeed',

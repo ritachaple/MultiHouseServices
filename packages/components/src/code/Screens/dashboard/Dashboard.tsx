@@ -13,7 +13,7 @@ import { Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import GoBack from '../../Component/GoBack'
+// import GoBack from '../../Component/GoBack'
 import SearchComplaints from '../../Component/SearchComponent'
 import SelectIcon from '../../Component/SelectIcon'
 import LeftComponent from '../../Component/LeftComponent'
@@ -85,7 +85,7 @@ const Dashboard = (props: any) => {
           />
           <SearchComplaints />
           {/* <Head/> */}
-          <GoBack navigation={navigation} />
+          {/* <GoBack navigation={navigation} /> */}
           <Header containerStyle={styles.header} />
           <Modal
             style={{ flex: 1 }}

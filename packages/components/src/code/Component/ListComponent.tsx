@@ -27,6 +27,7 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Chat from './Chat'
 import ModalScreen from './ModalScreen'
+import DatePicker from './DatePicker'
 
 const colors = ['red', 'green', 'blue', 'black']
 const tickitStatus = [
@@ -226,7 +227,7 @@ const List = (props: any) => {
         style={{
           flex: 1,
           flexDirection: 'row',
-          paddingTop: '0.5%',
+          paddingTop: '1%',
           // backgroundColor: 'gray',
         }}
       >
@@ -235,7 +236,7 @@ const List = (props: any) => {
             flex: 1,
             paddingLeft: '1%',
             // backgroundColor: 'red',
-            paddingTop: '0.5%',
+            paddingTop: '1%',
           }}
         >
           <Hoverable>
@@ -260,7 +261,7 @@ const List = (props: any) => {
         <View
           style={{
             flex: 2,
-            paddingTop: '0.5',
+            paddingTop: 1,
             // backgroundColor: 'red',
             // paddingLeft: '1%',
             alignItems: 'center',
@@ -350,9 +351,10 @@ const List = (props: any) => {
             // backgroundColor: 'red'
           }}
         >
-          <Text style={styles.complaintTimeZone}>
+          {/* <Text style={styles.complaintTimeZone}>
             {moment(tickitItems.created_on).format('DD MMM YYYY, h:mm a')}
-          </Text>
+          </Text> */}
+          <DatePicker />
         </View>
         <View
           style={{
@@ -360,9 +362,9 @@ const List = (props: any) => {
             // backgroundColor: 'green'
           }}
         >
-          <Text style={styles.complaintTimeZone}>
+          {/* <Text style={styles.complaintTimeZone}>
             {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')}
-          </Text>
+          </Text> */}
         </View>
 
         {/* <View style={[styles.iconStyle,{backgroundColor:"red",}]}> */}
