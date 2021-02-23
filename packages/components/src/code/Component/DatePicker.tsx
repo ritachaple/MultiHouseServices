@@ -7,7 +7,7 @@ import { Calendar } from 'react-native-calendars'
 const DatePicker = () => {
   //  let date= new Date()
   //   date = moment(date).format('YYYY-MM-DD')
-  const [dob, setdob] = useState('')
+  const [dob, setdob] = useState('2021-02-23')
   const [selectedYear, setselectedYear] = useState('')
   const [selected, setselected] = useState('')
   const [showBirthPicker, setshowBirthPicker] = useState(false)

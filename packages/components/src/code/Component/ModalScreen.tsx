@@ -17,6 +17,7 @@ import { configs } from '../provider/api/ApiUrl'
 import UsersDetails from './UsersDetails'
 import UserData from './UserDetails_New'
 import MultipleDropdown from './MultipleDropdown'
+import DatePicker from './DatePicker'
 
 const ModalScreen = (props: any) => {
   const { closeModal, complaintId, clientId, token, userId } = props
@@ -290,7 +291,7 @@ const ModalScreen = (props: any) => {
               padding: '1%',
             }}
           >
-            #{complaintId}
+            <Text>#{complaintId}</Text>
           </View>
         </View>
         <View style={{ flexDirection: 'row', flex: 15 }}>
@@ -368,10 +369,11 @@ const ModalScreen = (props: any) => {
               </View>
               <View style={{ paddingTop: '7%' }}>
                 <Text>Due Date</Text>
-                <Dropdown
+                {/* <Dropdown
                   dropdownList={PolicyNo.lookup_data}
                   selectedItem={selectedPendingItem}
-                />
+                /> */}
+                <DatePicker />
               </View>
               <View style={{ paddingTop: '7%' }}>
                 <Text>Fake new Type</Text>

@@ -549,7 +549,7 @@ const Chat = (props: any) => {
           }}
           onPress={() => onDynamicCannedPress()}
         >
-          {SelectedDropdownData.DynamicCanned}
+          <Text>{SelectedDropdownData.DynamicCanned}</Text>
         </TouchableOpacity>
       </View>
 

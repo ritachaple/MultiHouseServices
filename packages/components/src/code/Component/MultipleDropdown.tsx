@@ -88,13 +88,15 @@ const MultipleDropdown = (props: any) => {
                 }
         /> */}
       <TouchableOpacity style={styles.input} onPress={onInputPress}>
-        {multipleTextField.length > 0
-          ? multipleTextField.slice(0, 2).map((item: any, i: any) => {
-              console.log('textInput', item)
+        {multipleTextField.length > 0 ? (
+          multipleTextField.slice(0, 2).map((item: any, i: any) => {
+            console.log('textInput', item)
 
-              return <Text style={{ paddingHorizontal: '1%' }}>{item}</Text>
-            })
-          : 'Select Data'}
+            return <Text style={{ paddingHorizontal: '1%' }}>{item}</Text>
+          })
+        ) : (
+          <Text>Select Data</Text>
+        )}
       </TouchableOpacity>
 
       <View style={{ backgroundColor: 'gray' }}>
