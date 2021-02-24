@@ -244,15 +244,23 @@ const List = (props: any) => {
             paddingTop: '1%',
           }}
         >
-          <Hoverable>
-            {({ hovered }) => (
-              <Icon
-                name={hovered ? 'check-square-o' : 'square-o'}
-                size={13}
-                color="#000"
-              />
-            )}
-          </Hoverable>
+          {isHeaderSelect ? (
+            <Icon
+              name={isHeaderSelect ? 'check-square-o' : 'square-o'}
+              size={13}
+              color="#000"
+            />
+          ) : (
+            <Hoverable>
+              {({ hovered }) => (
+                <Icon
+                  name={hovered ? 'check-square-o' : 'square-o'}
+                  size={13}
+                  color="#000"
+                />
+              )}
+            </Hoverable>
+          )}
         </View>
         <View
           style={{

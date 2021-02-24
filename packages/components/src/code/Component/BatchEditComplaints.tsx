@@ -3,12 +3,13 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Header } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { connect } from 'react-redux'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Dropdown from './Dropdown'
 
 const BatchEditComplaints = (props: any) => {
-  const { onPress } = props
+  const { onPress, token } = props
 
   const [controlOption, setControlOption] = useState([])
   const [statusOption, setStatusOption] = useState({} as any)
@@ -17,26 +18,29 @@ const BatchEditComplaints = (props: any) => {
   const [dueDate, setDueDate] = useState([])
 
   useEffect(() => {
-    batchUpdateControlOption()
-  }, [])
+    const batchUpdateControlOption = async () => {
+      try {
+        const res: any = await Api.get(
+          configs.batch_update_control_option,
+          token,
+        )
+        console.log('batchUpdateOptionRes', res)
+        if (res.status) {
+          // setControlOption(res.data);
+          setStatusOption(res.data.controls[0])
+          setAssignToOption(res.data.controls[1])
+          setPriorityOption(res.data.controls[2])
+          setDueDate(res.data.controls[3])
 
-  const batchUpdateControlOption = async () => {
-    try {
-      const res: any = await Api.get(configs.batch_update_control_option)
-      console.log('batchUpdateOptionRes', res)
-      if (res.status) {
-        // setControlOption(res.data);
-        setStatusOption(res.data.controls[0])
-        setAssignToOption(res.data.controls[1])
-        setPriorityOption(res.data.controls[2])
-        setDueDate(res.data.controls[3])
-
-        // console.log("statusOption",res.data.controls[1].lookup_data);
+          // console.log("statusOption",res.data.controls[1].lookup_data);
+        }
+      } catch (error) {
+        console.log('batchUpdateControlOptionError', error)
       }
-    } catch (error) {
-      console.log('batchUpdateControlOptionError', error)
     }
-  }
+
+    batchUpdateControlOption()
+  }, [token])
 
   const selectedStatusItem = (item: any) => {
     console.log('item', item)
@@ -88,9 +92,9 @@ const BatchEditComplaints = (props: any) => {
             <Icon name="close" color="#fff" size={10} onPress={onPress} />
           }
         />
-        <View>
+        <View style={{ paddingHorizontal: '4%' }}>
           <View style={{ flexDirection: 'row' }}>
-            <View>
+            <View style={{ paddingHorizontal: '2%' }}>
               <Text
                 style={{
                   alignSelf: 'flex-start',
@@ -105,7 +109,7 @@ const BatchEditComplaints = (props: any) => {
                 selectedItem={selectedStatusItem}
               />
             </View>
-            <View>
+            <View style={{ paddingHorizontal: '2%' }}>
               <Text
                 style={{
                   alignSelf: 'flex-start',
@@ -122,7 +126,7 @@ const BatchEditComplaints = (props: any) => {
             </View>
           </View>
           <View style={{ flexDirection: 'row' }}>
-            <View>
+            <View style={{ paddingHorizontal: '2%' }}>
               <Text
                 style={{
                   alignSelf: 'flex-start',
@@ -137,7 +141,7 @@ const BatchEditComplaints = (props: any) => {
                 selectedItem={selectedPriorityOption}
               />
             </View>
-            <View>
+            <View style={{ paddingHorizontal: '2%' }}>
               <Text
                 style={{
                   alignSelf: 'flex-start',
@@ -177,13 +181,20 @@ const BatchEditComplaints = (props: any) => {
   )
 }
 
-export default BatchEditComplaints
+const mapStateToProps = (state: any) => {
+  return {
+    token: state.loginReducer.token,
+  }
+}
+
+export default connect(mapStateToProps)(BatchEditComplaints)
 
 const styles = StyleSheet.create({
   modalView: {
     // margin: 20,
     backgroundColor: 'white',
     borderRadius: 5,
+
     // padding: 1,
     // alignItems: "center",
     shadowColor: '#000',

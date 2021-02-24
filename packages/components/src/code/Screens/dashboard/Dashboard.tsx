@@ -24,7 +24,7 @@ import LeftSideBar from '../../Component/LeftSideBar'
 
 // const Dashboard = ({navigation}: { navigation:any }) => {
 const Dashboard = (props: any) => {
-  const { navigation } = props
+  const { navigation, isHeaderSelect } = props
 
   const [isSelectClick, setIsSelectClick] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -64,16 +64,16 @@ const Dashboard = (props: any) => {
           <Header
             containerStyle={{ backgroundColor: 'whitesmoke', height: '7%' }}
             placement="left"
-            leftComponent={
-              <LeftComponent
-                isCheckboxSelect={isSelectClick}
-                onSelectPress={() => {
-                  onSelectIconPress()
-                }}
-              />
-            }
+            // leftComponent={
+            //   <LeftComponent
+            //     isCheckboxSelect={isSelectClick}
+            //     onSelectPress={() => {
+            //       onSelectIconPress()
+            //     }}
+            //   />
+            // }
             centerComponent={
-              isSelectClick ? <SelectIcon /> : <CenterComponent />
+              isHeaderSelect ? <SelectIcon /> : <CenterComponent />
             }
             rightComponent={
               <RightComponent

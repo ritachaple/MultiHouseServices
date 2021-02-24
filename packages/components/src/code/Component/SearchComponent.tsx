@@ -21,7 +21,13 @@ import ListComponent from './ListComponent'
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 
-const ListHeader = () => {
+const ListHeader = (props: any) => {
+  const { isHeaderSelect } = props
+
+  const onCheckboxClick = () => {
+    props.onCheckBox()
+  }
+
   return (
     <View
       style={{
@@ -38,7 +44,8 @@ const ListHeader = () => {
           paddingTop: 2,
           flex: 1,
         }}
-        name="square-o"
+        onPress={() => onCheckboxClick()}
+        name={isHeaderSelect ? 'check-square-o' : 'square-o'}
         size={15}
         color="grey"
       />
@@ -100,7 +107,7 @@ const ListHeader = () => {
 }
 
 const SearchComplaints = (props: any) => {
-  const { tickitItems } = props
+  const { tickitItems, isHeaderSelect } = props
   const [tickit, setTickit] = useState([])
 
   useEffect(() => {
@@ -153,6 +160,10 @@ const SearchComplaints = (props: any) => {
     return unsubscribe
   }, [props])
 
+  const onCheckBox = () => {
+    props.headerSelect(!isHeaderSelect)
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
@@ -191,7 +202,12 @@ const SearchComplaints = (props: any) => {
 
                 return <ListComponent tickitItems={item} />
               }}
-              ListHeaderComponent={() => <ListHeader />}
+              ListHeaderComponent={() => (
+                <ListHeader
+                  onCheckBox={onCheckBox}
+                  isHeaderSelect={isHeaderSelect}
+                />
+              )}
               keyExtractor={(index: any) => index.toString()}
             />
           </View>
@@ -205,6 +221,7 @@ const mapStateToProps = (state: any) => {
   return {
     token: state.loginReducer.token,
     tickitItems: state.tickitListData.tickitList,
+    isHeaderSelect: state.headerData.isHeaderSelect,
   }
 }
 
@@ -216,6 +233,8 @@ const mapDispatchToProps = (dispatch: any) => {
     setTikitData: (data: any) => {
       dispatch({ type: 'TICKIT_LIST', payload: data })
     },
+    headerSelect: (isSelectClick: any) =>
+      dispatch({ type: 'IS_HEADER_SELECT', payload: isSelectClick }),
   }
 }
 
