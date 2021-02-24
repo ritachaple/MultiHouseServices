@@ -57,8 +57,9 @@ const Login = (props: any) => {
           onChangeText={(value) => {
             onInputChange(value, 'password')
           }}
+          secureTextEntry
           placeholder="Enter Password"
-          leftIcon={<Icon name="user" size={24} color="black" />}
+          leftIcon={<Icon name="lock" size={24} color="black" />}
         />
 
         <TouchableOpacity

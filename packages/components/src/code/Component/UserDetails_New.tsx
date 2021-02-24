@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect, useStore } from 'react-redux'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
+import InputField from './InputText'
 
 const UserData = (props: any) => {
   const { token, userId } = props
@@ -302,24 +303,3 @@ const mapStateToProps = (state: any) => {
 }
 
 export default connect(mapStateToProps)(UserData)
-
-export const InputField = (props: any) => {
-  const { label, placeholder, onChangeText, defaultValue } = props
-  return (
-    <View style={{ flex: 1, padding: '3%' }}>
-      <Text>{label}</Text>
-      <TextInput
-        style={{
-          borderWidth: 1,
-          borderRadius: 3,
-          padding: '2%',
-          width: '100%',
-          // backgroundColor:
-        }}
-        defaultValue={defaultValue}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-      />
-    </View>
-  )
-}
