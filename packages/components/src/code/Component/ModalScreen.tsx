@@ -20,11 +20,21 @@ import MultipleDropdown from './MultipleDropdown'
 // import DatePicker from './DatePicker'
 
 const ModalScreen = (props: any) => {
-  const { closeModal, complaintId, clientId, token, userId } = props
+  const {
+    closeModal,
+    complaintId,
+    clientId,
+    token,
+    userId,
+    selectedTickit,
+  } = props
+  console.log('selected tickit', selectedTickit.custom_column.policy_number)
 
   const [PendingWithDropdown, setPendingWithDropdown] = useState([] as any)
   const [Department, setDepartment] = useState([] as any)
-  const [PolicyNo, setPolicyNo] = useState([] as any)
+  const [PolicyNo, setPolicyNo] = useState(
+    selectedTickit.custom_column.policy_number,
+  )
   const [AssignTo, setAssignTo] = useState([] as any)
   const [Priority, setPriority] = useState([] as any)
   const [DueDate, setDueDate] = useState([] as any)
@@ -409,6 +419,7 @@ const ModalScreen = (props: any) => {
 const mapStateToProps = (state: any) => {
   return {
     token: state.loginReducer.token,
+    selectedTickit: state.tickitListData.selectedTickit,
   }
 }
 

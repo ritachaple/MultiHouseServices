@@ -24,7 +24,7 @@ import LeftSideBar from '../../Component/LeftSideBar'
 
 // const Dashboard = ({navigation}: { navigation:any }) => {
 const Dashboard = (props: any) => {
-  const { navigation, isHeaderSelect } = props
+  const { navigation, isHeaderSelect, selectedOneTickit } = props
 
   const [isSelectClick, setIsSelectClick] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -73,7 +73,11 @@ const Dashboard = (props: any) => {
             //   />
             // }
             centerComponent={
-              isHeaderSelect ? <SelectIcon /> : <CenterComponent />
+              isHeaderSelect || selectedOneTickit ? (
+                <SelectIcon />
+              ) : (
+                <CenterComponent />
+              )
             }
             rightComponent={
               <RightComponent
@@ -121,6 +125,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: any) => {
   return {
     isHeaderSelect: state.headerData.isHeaderSelect,
+    selectedOneTickit: state.headerData.oneTickitSelect,
   }
 }
 

@@ -121,7 +121,7 @@ const Chat = (props: any) => {
           index: 2,
           attachments: [],
         }
-        const res: any = await Api.post(`${configs.log_activity}`, body)
+        const res: any = await Api.post(`${configs.log_activity}`, body, token)
         console.log('messageRes', res)
         if (res.status === 200) {
           setMessage('')
@@ -136,6 +136,7 @@ const Chat = (props: any) => {
   }
 
   const onReplyClick = async (replyData: any) => {
+    console.log('msgIcn', replyData)
     try {
       const data = {
         custom_column: {
@@ -164,7 +165,7 @@ const Chat = (props: any) => {
         index: 21,
         attachments: [],
       }
-      const res: any = await Api.post(configs.log_activity, data)
+      const res: any = await Api.post(configs.log_activity, data, token)
       console.log('replyApiRes', res)
     } catch (error) {
       console.log('ReplyApiError', error)
@@ -177,7 +178,7 @@ const Chat = (props: any) => {
         text: msg,
         translateTo: 'en',
       }
-      const res: any = await Api.post(configs.translate_text, body)
+      const res: any = await Api.post(configs.translate_text, body, token)
       console.log('translateApiRes', res)
       if (res.status === 200) {
         setTransalateData(res.data)
@@ -245,6 +246,8 @@ const Chat = (props: any) => {
   }
 
   const msgIcon = (data: any) => {
+    console.log('msgIcn', data)
+
     return (
       <>
         <View
@@ -252,7 +255,7 @@ const Chat = (props: any) => {
         >
           <Icon
             onPress={() => {
-              onReplyClick(data.item)
+              onReplyClick(data)
             }}
             name="reply"
             size={15}

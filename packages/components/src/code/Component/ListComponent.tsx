@@ -56,7 +56,7 @@ const tickitIcon = [
 const List = (props: any) => {
   // const List = ({ tickitItems, props }: { tickitItems: any, props:any }) => {
 
-  const { isHeaderSelect, tickitItems, token } = props
+  const { isHeaderSelect, tickitItems, token, selectedOneTickit } = props
   console.log('isHeader', isHeaderSelect)
 
   const [tickIcon, setTickIcon] = useState('hourglass-half')
@@ -65,6 +65,7 @@ const List = (props: any) => {
   const [modalVisible, setModalVisible] = useState(false)
 
   const [tickitStatusList, setTickitStatusList] = useState([])
+  const [selectedTickits, setselectedTickits] = useState([] as any)
 
   const tooltipRef: any = React.useRef(null)
 
@@ -84,8 +85,9 @@ const List = (props: any) => {
     getStatusDropdownData()
   }, [props])
 
-  const toggleOverlay = () => {
+  const toggleOverlay = (tickit: any) => {
     setModalVisible(!modalVisible)
+    props.setTickit(tickit)
   }
 
   // const setDropdownData = (index: any) => {
@@ -226,6 +228,28 @@ const List = (props: any) => {
     console.log('sentiment Icon Res', res)
   }
 
+  const onCheckboxClick = (Id: any) => {
+    let tickits = [...selectedTickits]
+    // const checkId= Boolean(
+
+    tickits.find((value: any, index: number) => {
+      if (value !== Id) {
+        tickits = [...selectedTickits, Id]
+      } else {
+        tickits.slice(index, 1)
+      }
+      return tickits
+    })
+    setselectedTickits(tickits)
+    // )
+
+    // {
+    //   tickits.length > 0?
+    //   props.OneTickitSelect(!selectedOneTickit):
+    //   props.OneTickitSelect(!selectedOneTickit)
+    // }
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -233,14 +257,13 @@ const List = (props: any) => {
           flex: 1,
           flexDirection: 'row',
           paddingTop: '1%',
-          // backgroundColor: 'gray',
         }}
       >
         <View
           style={{
             flex: 1,
             paddingLeft: '1%',
-            // backgroundColor: 'red',
+
             paddingTop: '1%',
           }}
         >
@@ -248,12 +271,14 @@ const List = (props: any) => {
             <Icon
               name={isHeaderSelect ? 'check-square-o' : 'square-o'}
               size={13}
+              onPress={() => onCheckboxClick(tickitItems.complaint_id)}
               color="#000"
             />
           ) : (
             <Hoverable>
               {({ hovered }) => (
                 <Icon
+                  onPress={() => onCheckboxClick(tickitItems.complaint_id)}
                   name={hovered ? 'check-square-o' : 'square-o'}
                   size={13}
                   color="#000"
@@ -265,7 +290,6 @@ const List = (props: any) => {
         <View
           style={{
             flex: 2,
-            // backgroundColor: 'green'
           }}
         >
           <Text style={{ fontSize: 15 }}>#{tickitItems.complaint_id}</Text>
@@ -275,8 +299,7 @@ const List = (props: any) => {
           style={{
             flex: 2,
             paddingTop: 1,
-            // backgroundColor: 'red',
-            // paddingLeft: '1%',
+
             alignItems: 'center',
           }}
         >
@@ -290,8 +313,6 @@ const List = (props: any) => {
           >
             <Icon
               style={{ textAlign: 'center', paddingTop: '30%' }}
-              // iconStyle={{justifyContent:"center"}}
-
               name="whatsapp"
               size={13}
               color="#fff"
@@ -302,14 +323,12 @@ const List = (props: any) => {
         <View
           style={{
             flex: 6,
-            // paddingLeft: '3%' ,
-            // backgroundColor: 'green',
           }}
         >
           <Hoverable>
             {({ hovered }) => (
               <Text
-                onPress={toggleOverlay}
+                onPress={() => toggleOverlay(tickitItems)}
                 style={[
                   styles.complaintText,
                   { textDecorationLine: hovered ? 'underline' : 'none' },
@@ -361,7 +380,6 @@ const List = (props: any) => {
           style={{
             flex: 3,
             paddingLeft: '1%',
-            // backgroundColor: 'red'
           }}
         >
           <Text style={styles.complaintTimeZone}>
@@ -371,7 +389,6 @@ const List = (props: any) => {
         <View
           style={{
             flex: 3,
-            // backgroundColor: 'green'
           }}
         >
           <Text style={styles.complaintTimeZone}>
@@ -562,6 +579,7 @@ const mapStateToProps = (state: any) => {
   return {
     isHeaderSelect: state.headerData.isHeaderSelect,
     token: state.loginReducer.token,
+    selectedOneTickit: state.headerData.oneTickitSelect,
   }
 }
 
@@ -570,6 +588,11 @@ const mapDispatchToProps = (dispatch: any) => {
     setTikitData: (data: any) => {
       dispatch({ type: 'TICKIT_LIST', payload: data })
     },
+    setTickit: (data: any) => {
+      dispatch({ type: 'TICKIT_SELECT', payload: data })
+    },
+    OneTickitSelect: (data: any) =>
+      dispatch({ type: 'ONE_TICKIT_SELECT', payload: data }),
   }
 }
 
