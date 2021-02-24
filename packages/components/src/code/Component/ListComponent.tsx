@@ -27,6 +27,7 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Chat from './Chat'
 import ModalScreen from './ModalScreen'
+import TooltipMessage from './TooltipMessage'
 // import DatePicker from './DatePicker'
 
 const colors = ['red', 'green', 'blue', 'black']
@@ -146,7 +147,7 @@ const List = (props: any) => {
       status_name: statusName,
       division_id: null,
     }
-    const res: any = await Api.post(configs.log_activity, data)
+    const res: any = await Api.post(configs.log_activity, data, token)
     if (res.status === 200) {
       setTooltip('Status updayted Successfully !!!')
     }
@@ -162,50 +163,54 @@ const List = (props: any) => {
     setModalVisible(!modalVisible)
   }
 
-  const onSentimetIconClick = async (sentiment: string) => {
+  const onSentimetIconClick = async (
+    sentiment: string,
+    sentimentId: number,
+    tickit: any,
+  ) => {
     // setTooltip('Sentiment updated successfully')
 
     const data = {
       assigned_to: null,
-      created_on: '2020-10-02 06:30:33.000000',
+      created_on: tickit.created_on,
       custom_column: { due_date: null, policy_number: '1234' },
-      user_name: 'uno ',
-      customer_responded: true,
-      is_dm: false,
+      user_name: tickit.user_name,
+      customer_responded: tickit.customer_responded,
+      is_dm: tickit.is_dm,
       department_id: null,
       response_allowed: false,
       blocked_by: null,
-      medium_id: 2,
+      medium_id: tickit.medium_id,
       sentiment_name: sentiment,
-      last_modified_on: '2021-01-07 16:49:21.007326',
-      fake_factor: null,
-      priority_id: null,
+      last_modified_on: tickit.last_modified_on,
+      fake_factor: tickit.fake_factor,
+      priority_id: tickit.priority_id,
       user_profile_picture_url: null,
-      user_type: null,
-      client_id: 39,
-      medium_username: 'uno80261966',
-      sentiment: 1,
+      user_type: tickit.user_type,
+      client_id: tickit.client_id,
+      medium_username: tickit.medium_username,
+      sentiment: sentimentId,
       cust_location: null,
-      complaint_text: '@s_merilent unoligo',
-      post_url: 'https://twitter.com/uno80261966/status/1311916460441169921',
-      user_id: 5889,
-      thread_count: 2,
-      complaint_id: 325769,
+      complaint_text: tickit.complaint_text,
+      post_url: tickit.post_url,
+      user_id: tickit.user_id,
+      thread_count: tickit.thread_count,
+      complaint_id: tickit.complaint_id,
       verified: false,
       is_parent_missing: false,
-      follower_count: null,
-      status_id: 1,
+      follower_count: tickit.follower_count,
+      status_id: tickit.status_id,
       issue_id: null,
-      state_id: null,
+      state_id: tickit.status_id,
       is_spam: false,
       is_read: true,
-      fake_tagged_by: 5889,
+      fake_tagged_by: tickit.fake_tagged_by,
       fake_news_type: null,
       district: null,
       is_deleted: false,
       resolution_text: null,
       activity_id: null,
-      conversation_text: 'Sentiment has been changed to Positive',
+      conversation_text: `Sentiment has been changed to ${sentiment}`,
       created_by: 'system',
       is_internal_user: true,
       is_internal: true,
@@ -213,7 +218,7 @@ const List = (props: any) => {
       is_user_reply: false,
       status_name: 'Pending',
     }
-    const res: any = await Api.post(configs.log_activity, data)
+    const res: any = await Api.post(configs.log_activity, data, token)
     if (res.status === 200) {
       setTooltip('Sentiment updated successfully')
     }
@@ -378,46 +383,80 @@ const List = (props: any) => {
           }}
         >
           <View style={{ paddingRight: '2%' }}>
-            <Hoverable>
-              {({ hovered }) => (
-                <Icon
-                  name="smile-o"
-                  size={15}
-                  onPress={() => {
-                    onSentimetIconClick('Positive')
-                  }}
-                  color={hovered ? 'green' : 'grey'}
-                />
-              )}
-            </Hoverable>
-          </View>
-          <View style={{ paddingRight: '2%' }}>
-            <Hoverable>
-              {({ hovered }) => (
-                <Icon
-                  name="meh-o"
-                  size={15}
-                  onPress={() => {
-                    onSentimetIconClick('Neutral')
-                  }}
-                  color={hovered ? '#dbab16' : 'grey'}
-                />
-              )}
-            </Hoverable>
-          </View>
-          <Hoverable>
-            {({ hovered }) => (
+            {tickitItems.sentiment_name === 'Positive' ? (
               <Icon
-                // style={{ paddingRight: '10%' }}
-                name="frown-o"
+                name="smile-o"
                 size={15}
                 onPress={() => {
-                  onSentimetIconClick('Negative')
+                  onSentimetIconClick('Positive', 1, tickitItems)
                 }}
-                color={hovered ? 'red' : 'grey'}
+                color="green"
               />
+            ) : (
+              <Hoverable>
+                {({ hovered }) => (
+                  <Icon
+                    name="smile-o"
+                    size={15}
+                    onPress={() => {
+                      onSentimetIconClick('Positive', 1, tickitItems)
+                    }}
+                    color={hovered ? 'green' : 'grey'}
+                  />
+                )}
+              </Hoverable>
             )}
-          </Hoverable>
+          </View>
+          <View style={{ paddingRight: '2%' }}>
+            {tickitItems.sentiment_name === 'Neutral' ? (
+              <Icon
+                name="meh-o"
+                size={15}
+                onPress={() => {
+                  onSentimetIconClick('Neutral', 0, tickitItems)
+                }}
+                color="#dbab16"
+              />
+            ) : (
+              <Hoverable>
+                {({ hovered }) => (
+                  <Icon
+                    name="meh-o"
+                    size={15}
+                    onPress={() => {
+                      onSentimetIconClick('Neutral', 0, tickitItems)
+                    }}
+                    color={hovered ? '#dbab16' : 'grey'}
+                  />
+                )}
+              </Hoverable>
+            )}
+          </View>
+
+          {tickitItems.sentiment_name === 'Negative' ? (
+            <Icon
+              name="smile-o"
+              size={15}
+              onPress={() => {
+                onSentimetIconClick('Negative', -1, tickitItems)
+              }}
+              color="red"
+            />
+          ) : (
+            <Hoverable>
+              {({ hovered }) => (
+                <Icon
+                  // style={{ paddingRight: '10%' }}
+                  name="frown-o"
+                  size={15}
+                  onPress={() => {
+                    onSentimetIconClick('Negative', -1, tickitItems)
+                  }}
+                  color={hovered ? 'red' : 'grey'}
+                />
+              )}
+            </Hoverable>
+          )}
         </View>
         {/* <View style={{flex:1}}>
 
@@ -496,30 +535,16 @@ const List = (props: any) => {
         <Tooltip
           containerStyle={{
             backgroundColor: '#d7fcd4',
-            height: '10%',
+            height: '15%',
+            width: '13%',
             marginTop: 2,
             borderRadius: 4,
           }}
           ref={tooltipRef}
           withOverlay={false}
           onOpen={onOpenToolTip}
-          popover={
-            <View style={{ flexDirection: 'row' }}>
-              <Icon
-                style={{ paddingHorizontal: 1 }}
-                name="check-circle"
-                size={10}
-                color="#268748"
-              />
-              <Text
-                style={{ fontSize: 8, color: '#268748', fontWeight: 'bold' }}
-              >
-                {message}
-              </Text>
-            </View>
-          }
+          popover={<TooltipMessage message={message} />}
         />
-        {/* </View> */}
       </View>
     </View>
   )
@@ -529,6 +554,14 @@ const mapStateToProps = (state: any) => {
   return {
     isHeaderSelect: state.headerData.isHeaderSelect,
     token: state.loginReducer.token,
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setTikitData: (data: any) => {
+      dispatch({ type: 'TICKIT_LIST', payload: data })
+    },
   }
 }
 
@@ -646,4 +679,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps)(List)
+export default connect(mapStateToProps, mapDispatchToProps)(List)

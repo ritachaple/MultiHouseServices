@@ -83,7 +83,7 @@ const Dashboard = (props: any) => {
               />
             }
           />
-          <SearchComplaints />
+          <SearchComplaints navigation={navigation} />
           {/* <Head/> */}
           {/* <GoBack navigation={navigation} /> */}
           <Header containerStyle={styles.header} />
