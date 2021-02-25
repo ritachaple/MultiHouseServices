@@ -28,13 +28,11 @@ const ModalScreen = (props: any) => {
     userId,
     selectedTickit,
   } = props
-  console.log('selected tickit', selectedTickit.custom_column.policy_number)
+  // console.log('selected tickit', selectedTickit.custom_column.policy_number)
 
   const [PendingWithDropdown, setPendingWithDropdown] = useState([] as any)
   const [Department, setDepartment] = useState([] as any)
-  const [PolicyNo, setPolicyNo] = useState(
-    selectedTickit.custom_column.policy_number,
-  )
+  const [PolicyNo, setPolicyNo] = useState([] as any)
   const [AssignTo, setAssignTo] = useState([] as any)
   const [Priority, setPriority] = useState([] as any)
   const [DueDate, setDueDate] = useState([] as any)
