@@ -56,8 +56,13 @@ const tickitIcon = [
 const List = (props: any) => {
   // const List = ({ tickitItems, props }: { tickitItems: any, props:any }) => {
 
-  const { isHeaderSelect, tickitItems, token, selectedOneTickit } = props
-  console.log('isHeader', isHeaderSelect)
+  const {
+    isHeaderSelect,
+    tickitItems,
+    token,
+    selectedOneTickit,
+    storeSelectedTickits,
+  } = props
 
   const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
@@ -65,7 +70,6 @@ const List = (props: any) => {
   const [modalVisible, setModalVisible] = useState(false)
 
   const [tickitStatusList, setTickitStatusList] = useState([])
-  const [selectedTickits, setselectedTickits] = useState([] as any)
 
   const tooltipRef: any = React.useRef(null)
 
@@ -75,7 +79,7 @@ const List = (props: any) => {
         `${configs.get_status}39`,
         `${props.token}`,
       )
-      console.log('tickitStatusRes', res)
+      // console.log('tickitStatusRes', res)
 
       if (res) {
         setTickitStatusList(res.data)
@@ -229,25 +233,33 @@ const List = (props: any) => {
   }
 
   const onCheckboxClick = (Id: any) => {
-    let tickits = [...selectedTickits]
-    // const checkId= Boolean(
-
-    tickits.find((value: any, index: number) => {
-      if (value !== Id) {
-        tickits = [...selectedTickits, Id]
+    try {
+      let tickits = [...storeSelectedTickits]
+      const checkId = Boolean(
+        tickits.find((value: any, index: number) => {
+          return value === Id
+        }),
+      )
+      if (checkId) {
+        const index = tickits
+          .map(function (item) {
+            return item
+          })
+          .indexOf(Id)
+        tickits.splice(index, 1)
       } else {
-        tickits.slice(index, 1)
+        tickits = [Id, ...tickits]
       }
-      return tickits
-    })
-    setselectedTickits(tickits)
-    // )
-
-    // {
-    //   tickits.length > 0?
-    //   props.OneTickitSelect(!selectedOneTickit):
-    //   props.OneTickitSelect(!selectedOneTickit)
-    // }
+      console.log('selectCheckbox', tickits)
+      props.setSelectedTickit(tickits)
+      if (tickits.length > 0) {
+        props.OneTickitSelect(true)
+      } else {
+        props.OneTickitSelect(false)
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -267,9 +279,14 @@ const List = (props: any) => {
             paddingTop: '1%',
           }}
         >
-          {isHeaderSelect ? (
+          {isHeaderSelect ||
+          Boolean(
+            storeSelectedTickits.find((value: any) => {
+              return value === tickitItems.complaint_id
+            }),
+          ) ? (
             <Icon
-              name={isHeaderSelect ? 'check-square-o' : 'square-o'}
+              name="check-square-o"
               size={13}
               onPress={() => onCheckboxClick(tickitItems.complaint_id)}
               color="#000"
@@ -580,6 +597,9 @@ const mapStateToProps = (state: any) => {
     isHeaderSelect: state.headerData.isHeaderSelect,
     token: state.loginReducer.token,
     selectedOneTickit: state.headerData.oneTickitSelect,
+    storeSelectedTickits: state.tickitListData.storeSelectedTickits
+      ? state.tickitListData.storeSelectedTickits
+      : ([] as any),
   }
 }
 
@@ -591,8 +611,12 @@ const mapDispatchToProps = (dispatch: any) => {
     setTickit: (data: any) => {
       dispatch({ type: 'TICKIT_SELECT', payload: data })
     },
-    OneTickitSelect: (data: any) =>
-      dispatch({ type: 'ONE_TICKIT_SELECT', payload: data }),
+    OneTickitSelect: (data: any) => {
+      dispatch({ type: 'ONE_TICKIT_SELECT', payload: data })
+    },
+    setSelectedTickit: (data: any) => {
+      dispatch({ type: 'STORE_SELECTED_TICKIT', payload: data })
+    },
   }
 }
 
