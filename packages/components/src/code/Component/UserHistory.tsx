@@ -13,7 +13,7 @@ import { Divider, ListItem, Avatar } from 'react-native-elements'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 
-const UsersDetails = (props: any) => {
+const UserHistory = (props: any) => {
   const { token } = props
 
   const [userDetails, setUserDetails] = useState([] as any)
@@ -34,6 +34,10 @@ const UsersDetails = (props: any) => {
     usersDetailsApi()
   }, [token])
 
+  const onUserDetailsClick = () => {
+    props.showUserDetails()
+  }
+
   return (
     <View style={{ flex: 1, padding: '1%' }}>
       <TouchableOpacity
@@ -47,6 +51,7 @@ const UsersDetails = (props: any) => {
           flexDirection: 'row',
           width: '9%',
         }}
+        onPress={onUserDetailsClick}
       >
         <Text style={{ fontSize: 10, alignSelf: 'center', color: '#fff' }}>
           User Details
@@ -152,7 +157,7 @@ const mapStateToProps = (state: any) => {
   }
 }
 
-export default connect(mapStateToProps)(UsersDetails)
+export default connect(mapStateToProps)(UserHistory)
 
 const styles = StyleSheet.create({
   textSize: { fontSize: 12 },

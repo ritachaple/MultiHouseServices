@@ -14,7 +14,7 @@ import Chat from './Chat'
 import Dropdown from './Dropdown'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
-import UsersDetails from './UsersDetails'
+import UserHistory from './UserHistory'
 import UserData from './UserDetails_New'
 import MultipleDropdown from './MultipleDropdown'
 // import DatePicker from './DatePicker'
@@ -42,6 +42,7 @@ const ModalScreen = (props: any) => {
   const [isConversation, setIsConversation] = useState(true)
   const [isCRM, setIsCRM] = useState(false)
   const [assignToData, setAssignToData] = useState([] as any)
+  const [userDetails, setUserDetails] = useState(false)
 
   useEffect(() => {
     const dynamicControls = async () => {
@@ -157,6 +158,10 @@ const ModalScreen = (props: any) => {
     } catch (error) {
       console.error('rating api error', error)
     }
+  }
+
+  const showUserDetails = async () => {
+    setUserDetails(!userDetails)
   }
 
   return (
@@ -401,8 +406,13 @@ const ModalScreen = (props: any) => {
           </View>
           <View style={styles.verticleLine} />
           <View style={{ flex: 5 }}>
-            {/* {isCRM ? <UsersDetails /> : null} */}
-            {isCRM ? <UserData userId={userId} /> : null}
+            {isCRM &&
+              (userDetails ? (
+                <UserData userId={userId} onClose={showUserDetails} />
+              ) : (
+                <UserHistory showUserDetails={showUserDetails} />
+              ))}
+            {/* {isCRM ? <UserData userId={userId} onClose={showUserDetails}/> : null} */}
 
             {isConversation ? (
               <Chat complaintId={complaintId} clientId={clientId} />

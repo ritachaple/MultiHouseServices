@@ -15,6 +15,12 @@ const Pagination = () => {
         <View>
           <Text>Rows Per Page</Text>
         </View>
+        <View>
+          <Text>1</Text>
+        </View>
+        <View>
+          <Text>1</Text>
+        </View>
       </View>
     </View>
   )

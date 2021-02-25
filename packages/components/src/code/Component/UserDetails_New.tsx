@@ -110,6 +110,10 @@ const UserData = (props: any) => {
     storeDetails(v, field)
   }
 
+  const onClose = () => {
+    props.onClose()
+  }
+
   return (
     <View
       style={{
@@ -132,7 +136,7 @@ const UserData = (props: any) => {
         }}
       >
         <Text style={{ fontSize: 22 }}>User Details</Text>
-        <Icon name="window-close" size={20} />
+        <Icon name="window-close" onPress={onClose} size={20} />
       </View>
       <View
         style={{
