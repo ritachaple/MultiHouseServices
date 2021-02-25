@@ -74,8 +74,8 @@ const ListHeader = (props: any) => {
       </Text>
       {/* <Text
         style={{
-          // paddingLeft: '9%',
-          flex: 2,
+          // paddingRight: '1%',
+          flex: 1,
         }}
       >
         from
@@ -97,7 +97,7 @@ const ListHeader = (props: any) => {
       >
         Updated Date
       </Text>
-      <Text style={{ flex: 2, paddingRight: '5%' }}> Sentiment</Text>
+      <Text style={{ flex: 2, paddingRight: '1%' }}> Sentiment</Text>
       <Text style={{ paddingRight: '2%', flex: 2 }}> Status</Text>
       <Text style={{ flex: 2 }}> Count</Text>
       <Text style={{ flex: 3 }}> Assigned To</Text>
@@ -108,6 +108,7 @@ const ListHeader = (props: any) => {
 const SearchComplaints = (props: any) => {
   const { tickitItems, isHeaderSelect } = props
   const [tickit, setTickit] = useState([])
+  const [totalRecords, setTotalRecords] = useState(0)
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
@@ -142,6 +143,7 @@ const SearchComplaints = (props: any) => {
           if (res) {
             setTickit(res.data.data)
             props.setTikitData(res.data.data)
+            setTotalRecords(res.data.total_records)
             //  const  data= JSON.stringify(res)
             console.log('res.data', res.data.data)
           }
@@ -211,7 +213,7 @@ const SearchComplaints = (props: any) => {
           />
         </View>
       </ScrollView>
-      {/* <Pagination /> */}
+      <Pagination totalRecords={totalRecords} />
     </View>
   )
 }

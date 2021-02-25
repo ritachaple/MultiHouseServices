@@ -410,7 +410,14 @@ const List = (props: any) => {
             </View>
           </View>
         </View>
-
+        {/* <View
+          style={{
+            flex: 1,
+            paddingLeft: '1%',
+          }}
+        >
+<Text>name</Text>
+        </View> */}
         <View
           style={{
             flex: 3,
@@ -539,35 +546,6 @@ const List = (props: any) => {
             size={15}
             color="gray"
           />
-          {/* <Menu>
-            <MenuTrigger>
-            </MenuTrigger>
-            <MenuOptions
-              customStyles={{
-                optionWrapper: {},
-                optionsContainer: {
-                  width: '6%',
-                  height: 'fitContent',
-                  zIndex: 1,
-                  position: 'absolute',
-                  top: '10%',
-                  left: '10%',
-                },
-                optionText: { fontSize: 8, zIndex: 100 },
-              }}
-            > */}
-          {/* <View style={{ backgroundColor: 'gray' }}> */}
-          {/* <Modal
-          style={{ flex: 1 }}
-          animationType="none"
-          transparent={displayList}
-          visible={displayList}
-        >
-            
-              </Modal> */}
-          {/* </View> */}
-          {/* </MenuOptions>
-          </Menu> */}
         </View>
         <View style={{ flex: 2 }}>
           <Text style={{ marginLeft: '50%' }}>{tickitItems.thread_count}</Text>
