@@ -90,7 +90,7 @@ const Dashboard = (props: any) => {
           <SearchComplaints navigation={navigation} />
           {/* <Head/> */}
           {/* <GoBack navigation={navigation} /> */}
-          <Header containerStyle={styles.header} />
+          {/* <Header containerStyle={styles.header} /> */}
           <Modal
             style={{ flex: 1 }}
             animationType="none"

@@ -419,7 +419,9 @@ const ModalScreen = (props: any) => {
 const mapStateToProps = (state: any) => {
   return {
     token: state.loginReducer.token,
-    selectedTickit: state.tickitListData.selectedTickit,
+    selectedTickit: state.tickitListData.selectedTickit
+      ? state.tickitListData.selectedTickit
+      : {},
   }
 }
 

@@ -15,8 +15,7 @@ import Chat from './Chat'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import ListComponent from './ListComponent'
-// import IconButton from './IconButton'
-// import { Icon } from 'react-native-elements'
+import Pagination from './Pagination'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -181,38 +180,38 @@ const SearchComplaints = (props: any) => {
         </View> */}
 
         {/* <Chat/> */}
-        <MenuProvider>
-          <View
-            style={{
-              marginHorizontal: '2%',
-              borderRadius: 3,
-              backgroundColor: '#fff',
-            }}
-          >
-            <FlatList
-              style={{
-                flex: 1,
-                // marginHorizontal: '2%',
-                // borderRadius: 3,
-              }}
-              data={tickitItems}
-              // renderItem={({ item={user_name:""} }) => <ListComponent user_name={item.user_name} />}
-              renderItem={({ item }) => {
-                console.log('renderItem item: ', item)
 
-                return <ListComponent tickitItems={item} />
-              }}
-              ListHeaderComponent={() => (
-                <ListHeader
-                  onCheckBox={onCheckBox}
-                  isHeaderSelect={isHeaderSelect}
-                />
-              )}
-              keyExtractor={(index: any) => index.toString()}
-            />
-          </View>
-        </MenuProvider>
+        <View
+          style={{
+            marginHorizontal: '2%',
+            borderRadius: 3,
+            backgroundColor: '#fff',
+          }}
+        >
+          <FlatList
+            style={{
+              flex: 1,
+              // marginHorizontal: '2%',
+              // borderRadius: 3,
+            }}
+            data={tickitItems}
+            // renderItem={({ item={user_name:""} }) => <ListComponent user_name={item.user_name} />}
+            renderItem={({ item }) => {
+              console.log('renderItem item: ', item)
+
+              return <ListComponent tickitItems={item} />
+            }}
+            ListHeaderComponent={() => (
+              <ListHeader
+                onCheckBox={onCheckBox}
+                isHeaderSelect={isHeaderSelect}
+              />
+            )}
+            keyExtractor={(index: any) => index.toString()}
+          />
+        </View>
       </ScrollView>
+      {/* <Pagination /> */}
     </View>
   )
 }
