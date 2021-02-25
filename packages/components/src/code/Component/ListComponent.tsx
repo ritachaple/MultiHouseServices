@@ -28,6 +28,8 @@ import { configs } from '../provider/api/ApiUrl'
 import Chat from './Chat'
 import ModalScreen from './ModalScreen'
 import TooltipMessage from './TooltipMessage'
+import DropDownList from './DropDownList'
+
 // import DatePicker from './DatePicker'
 
 const colors = ['red', 'green', 'blue', 'black']
@@ -68,9 +70,9 @@ const List = (props: any) => {
   const [checkbox, setCheckbox] = useState(false)
   const [message, setMessage] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
-
+  const [isChatScreen, setIsChatScreen] = useState(false)
   const [tickitStatusList, setTickitStatusList] = useState([])
-
+  const [isDropdownList, setIsDropdownList] = useState(false)
   const tooltipRef: any = React.useRef(null)
 
   useEffect(() => {
@@ -91,6 +93,7 @@ const List = (props: any) => {
 
   const toggleOverlay = (tickit: any) => {
     setModalVisible(!modalVisible)
+    setIsChatScreen(true)
     props.setTickit(tickit)
   }
 
@@ -104,6 +107,7 @@ const List = (props: any) => {
   }
   const tickitStatusMenu = async (index: any, statusName: string) => {
     setTickIcon(tickitIcon[index])
+
     const data = {
       assigned_to: [5889],
       created_on: '2020-10-02 06:30:33.000000',
@@ -155,7 +159,10 @@ const List = (props: any) => {
     }
     const res: any = await Api.post(configs.log_activity, data, token)
     if (res.status === 200) {
-      setTooltip('Status updayted Successfully !!!')
+      // onStatusSelect()
+
+      setTooltip('Status updated Successfully !!!')
+      onCloseModal()
     }
   }
 
@@ -166,7 +173,9 @@ const List = (props: any) => {
   }
 
   const onCloseModal = () => {
-    setModalVisible(!modalVisible)
+    setModalVisible(false)
+    setIsChatScreen(false)
+    setIsDropdownList(false)
   }
 
   const onSentimetIconClick = async (
@@ -257,6 +266,15 @@ const List = (props: any) => {
       } else {
         props.OneTickitSelect(false)
       }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const onStatusSelect = () => {
+    try {
+      setModalVisible(true)
+      setIsDropdownList(true)
     } catch (error) {
       console.error(error)
     }
@@ -515,9 +533,14 @@ const List = (props: any) => {
                   </View> */}
 
         <View style={{ flex: 2, alignItems: 'center' }}>
-          <Menu>
+          <Icon
+            onPress={onStatusSelect}
+            name={tickIcon}
+            size={15}
+            color="gray"
+          />
+          {/* <Menu>
             <MenuTrigger>
-              <Icon name={tickIcon} size={15} color="gray" />
             </MenuTrigger>
             <MenuOptions
               customStyles={{
@@ -532,22 +555,19 @@ const List = (props: any) => {
                 },
                 optionText: { fontSize: 8, zIndex: 100 },
               }}
-            >
-              <FlatList
-                style={{ flex: 1 }}
-                data={tickitStatusList}
-                renderItem={({ item, index }) => {
-                  return (
-                    <MenuOption
-                      text={item.status_name}
-                      onSelect={() => tickitStatusMenu(index, item.status_name)}
-                    />
-                  )
-                }}
-                keyExtractor={(index: any) => index.toString()}
-              />
-            </MenuOptions>
-          </Menu>
+            > */}
+          {/* <View style={{ backgroundColor: 'gray' }}> */}
+          {/* <Modal
+          style={{ flex: 1 }}
+          animationType="none"
+          transparent={displayList}
+          visible={displayList}
+        >
+            
+              </Modal> */}
+          {/* </View> */}
+          {/* </MenuOptions>
+          </Menu> */}
         </View>
         <View style={{ flex: 2 }}>
           <Text style={{ marginLeft: '50%' }}>{tickitItems.thread_count}</Text>
@@ -558,19 +578,56 @@ const List = (props: any) => {
         <>
           <Modal
             style={{ flex: 1 }}
-            animationType="slide"
+            animationType="none"
             transparent={modalVisible}
             visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.')
-            }}
+            // onRequestClose={() => {
+            //   Alert.alert('Modal has been closed.')
+            // }}
           >
-            <ModalScreen
-              closeModal={() => onCloseModal()}
-              complaintId={tickitItems.complaint_id}
-              clientId={tickitItems.client_id}
-              userId={tickitItems.user_id}
-            />
+            {isDropdownList ? (
+              <DropDownList>
+                <FlatList
+                  style={{ flex: 1 }}
+                  data={tickitStatusList}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <Hoverable>
+                        {({ hovered }) => (
+                          <View
+                            style={{
+                              // justifyContent: 'flex-start'
+                              paddingHorizontal: '2%',
+                              paddingVertical: '0.5%',
+                              borderBottomWidth: 0.2,
+                              borderBottomColor: 'gray',
+                              backgroundColor: hovered ? '#3498DB' : '#fff',
+                            }}
+                          >
+                            <Text
+                              onPress={() =>
+                                tickitStatusMenu(index, item.status_name)
+                              }
+                            >
+                              {item.status_name && item.status_name}
+                            </Text>
+                          </View>
+                        )}
+                      </Hoverable>
+                    )
+                  }}
+                  keyExtractor={(index: any) => index.toString()}
+                />
+              </DropDownList>
+            ) : null}
+            {isChatScreen ? (
+              <ModalScreen
+                closeModal={() => onCloseModal()}
+                complaintId={tickitItems.complaint_id}
+                clientId={tickitItems.client_id}
+                userId={tickitItems.user_id}
+              />
+            ) : null}
           </Modal>
         </>
 
