@@ -11,6 +11,7 @@ const LeftSideBar = () => {
         paddingHorizontal: '1%',
         paddingVertical: '1%',
         flexDirection: 'column',
+        // flex:1
       }}
     >
       <View style={{ alignSelf: 'center', paddingTop: '10%' }}>
@@ -32,7 +33,7 @@ const LeftSideBar = () => {
           size={20}
           color="#fff"
         />
-        <Text style={{ color: '#fff', fontSize: 12 }}>Messages</Text>
+        <Text style={{ color: '#fff', fontSize: 12 }}>Interaction</Text>
       </View>
 
       <View style={{ alignSelf: 'center', paddingTop: '40%' }}>
