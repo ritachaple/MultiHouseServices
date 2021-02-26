@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
+  Modal,
 } from 'react-native'
 import { MenuProvider } from 'react-native-popup-menu'
 import { connect } from 'react-redux'
@@ -16,80 +17,30 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import ListComponent from './ListComponent'
 import Pagination from './Pagination'
+import DropDownList from './DropDownList'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 
-const ListHeader = (props: any) => {
-  const { isHeaderSelect } = props
-  const horizontalFlatlist = true
-
-  const headerName = [
-    'Id',
-    'subject',
-    'raise By',
-    'raise at',
-    'status',
-    'sentiment',
-    'priority',
-    'assignee',
-  ]
-  const onCheckboxClick = () => {
-    props.onCheckBox()
-  }
-
-  return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        borderBottomColor: '#dce3de',
-        borderBottomWidth: 0.1,
-        paddingHorizontal: '1%',
-        paddingVertical: '1%',
-      }}
-    >
-      <Icon
-        style={{
-          paddingTop: 2,
-        }}
-        onPress={() => onCheckboxClick()}
-        name={isHeaderSelect ? 'check-square-o' : 'square-o'}
-        size={15}
-        color="grey"
-      />
-      <FlatList
-        contentContainerStyle={{
-          flex: 1,
-          flexDirection: 'row',
-          paddingHorizontal: '1%',
-          alignContent: 'center',
-          justifyContent: 'space-between',
-        }}
-        horizontal={horizontalFlatlist}
-        data={headerName}
-        renderItem={({ item, index }) => {
-          return <Text style={{ flex: 1 }}>{item}</Text>
-        }}
-        keyExtractor={(index: any) => index.toString()}
-      />
-      <Icon
-        style={{
-          paddingTop: 3,
-        }}
-        // onPress={() => onCheckboxClick()}
-        name="plus"
-        size={15}
-        color="grey"
-      />
-    </View>
-  )
-}
+const headerName = [
+  'Id',
+  'subject',
+  'raise By',
+  'raise at',
+  'status',
+  'sentiment',
+  'priority',
+  'assignee',
+]
 
 const SearchComplaints = (props: any) => {
   const { tickitItems, isHeaderSelect } = props
   const [tickit, setTickit] = useState([])
   const [totalRecords, setTotalRecords] = useState(0)
+  const [showHeaderListModal, seHeaderListModal] = useState(false)
+
+  const [selectedHeader, setSelectedHeader] = useState([] as any)
+  const horizontalFlatlist = true
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
@@ -146,12 +97,89 @@ const SearchComplaints = (props: any) => {
     props.headerSelect(!isHeaderSelect)
   }
 
+  const onPlusClick = () => {
+    seHeaderListModal(!showHeaderListModal)
+  }
+
+  const onDropdownSelect = (item: any) => {
+    try {
+      const data = [...selectedHeader, item]
+      // data[item]
+      console.log(data)
+      setSelectedHeader(data)
+      props.selectedItem(item)
+    } catch (error) {
+      console.error('dropdown errro', error)
+    }
+  }
+
+  const removeItem = (item: any) => {
+    try {
+      const data = [...selectedHeader]
+      const index = data.indexOf(item)
+      // console.log("index",index);
+      data.splice(index, 1)
+      // console.log("after deleted data", data);
+      setSelectedHeader(data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const headerList = () => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          borderBottomColor: '#dce3de',
+          borderBottomWidth: 0.1,
+          paddingHorizontal: '1%',
+          paddingVertical: '1%',
+        }}
+      >
+        <Icon
+          style={{
+            paddingTop: 2,
+          }}
+          onPress={() => onCheckBox()}
+          name={isHeaderSelect ? 'check-square-o' : 'square-o'}
+          size={15}
+          color="grey"
+        />
+        <FlatList
+          contentContainerStyle={{
+            flex: 1,
+            flexDirection: 'row',
+            paddingHorizontal: '1%',
+            alignContent: 'center',
+            justifyContent: 'space-between',
+          }}
+          horizontal={horizontalFlatlist}
+          data={headerName}
+          renderItem={({ item, index }) => {
+            return <Text style={{ flex: 1 }}>{item}</Text>
+          }}
+          keyExtractor={(index: any) => index.toString()}
+        />
+        <Icon
+          style={{
+            paddingTop: 3,
+          }}
+          onPress={() => onPlusClick()}
+          name="plus"
+          size={15}
+          color="grey"
+        />
+      </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
         <View
           style={{
-            // marginHorizontal: '2%',
             borderRadius: 3,
             backgroundColor: '#fff',
           }}
@@ -165,17 +193,76 @@ const SearchComplaints = (props: any) => {
               // console.log('renderItem item: ', item)
               return <ListComponent tickitItems={item} />
             }}
-            ListHeaderComponent={() => (
-              <ListHeader
-                onCheckBox={onCheckBox}
-                isHeaderSelect={isHeaderSelect}
-              />
-            )}
+            ListHeaderComponent={() => headerList()}
             keyExtractor={(index: any) => index.toString()}
           />
         </View>
       </ScrollView>
       <Pagination totalRecords={totalRecords} />
+      <>
+        <Modal
+          style={{ flex: 1 }}
+          animationType="none"
+          transparent={showHeaderListModal}
+          visible={showHeaderListModal}
+        >
+          <DropDownList>
+            <Icon
+              name="remove"
+              onPress={onPlusClick}
+              style={{ marginLeft: '90%', paddingTop: '1%' }}
+              size={12}
+              color="#000"
+            />
+            <FlatList
+              style={{ flex: 1 }}
+              data={headerName}
+              renderItem={({ item, index }) => {
+                const isCheck = Boolean(
+                  selectedHeader.find((value: any) => {
+                    return value === item
+                  }),
+                )
+                return (
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      backgroundColor: isCheck ? '#3498DB' : '#fff',
+                      borderBottomWidth: 0.2,
+                      borderBottomColor: 'gray',
+                    }}
+                  >
+                    <View
+                      style={{
+                        flex: 7,
+                        justifyContent: 'flex-start',
+                        padding: '0.5%',
+                      }}
+                    >
+                      <Text onPress={() => onDropdownSelect(item)}>{item}</Text>
+                    </View>
+                    {isCheck && (
+                      <Icon
+                        name="remove"
+                        onPress={() => removeItem(item)}
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          paddingTop: '1%',
+                        }}
+                        size={12}
+                        color="#000"
+                      />
+                    )}
+                  </View>
+                )
+              }}
+              keyExtractor={(index: any) => index.toString()}
+            />
+          </DropDownList>
+        </Modal>
+      </>
     </View>
   )
 }

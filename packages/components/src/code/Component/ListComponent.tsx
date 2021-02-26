@@ -32,7 +32,8 @@ import DropDownList from './DropDownList'
 
 // import DatePicker from './DatePicker'
 
-const colors = ['red', 'green', 'blue', 'black']
+const colors = ['red', 'green', 'orange']
+
 const tickitStatus = [
   'Pending',
   'Assigned',
@@ -282,67 +283,72 @@ const List = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          paddingTop: '1%',
-          // alignContent:"center",
-          width: '100%',
-          justifyContent: 'space-between',
-        }}
-      >
-        <View
-          style={{
-            // flex: 1,
-            paddingLeft: '1%',
+      <Hoverable>
+        {({ hovered }) => (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              paddingTop: '1%',
+              // alignContent:"center",
+              // alignItems:"center",
+              paddingVertical: '1%',
+              backgroundColor: hovered ? 'whitesmoke' : 'none',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View
+              style={{
+                // flex: 1,
+                paddingLeft: '1%',
 
-            paddingTop: '0.2%',
-          }}
-        >
-          {isHeaderSelect ||
-          Boolean(
-            storeSelectedTickits.find((value: any) => {
-              return value === tickitItems.complaint_id
-            }),
-          ) ? (
-            <Icon
-              name="check-square-o"
-              size={13}
-              onPress={() => onCheckboxClick(tickitItems.complaint_id)}
-              color="#000"
-            />
-          ) : (
-            <Hoverable>
-              {({ hovered }) => (
+                paddingTop: '0.2%',
+              }}
+            >
+              {isHeaderSelect ||
+              Boolean(
+                storeSelectedTickits.find((value: any) => {
+                  return value === tickitItems.complaint_id
+                }),
+              ) ? (
                 <Icon
+                  style={{ paddingTop: '10%' }}
+                  name="check-square-o"
+                  size={13}
                   onPress={() => onCheckboxClick(tickitItems.complaint_id)}
-                  name={hovered ? 'check-square-o' : 'square-o'}
+                  color="#000"
+                />
+              ) : (
+                <Icon
+                  style={{ paddingTop: '10%' }}
+                  onPress={() => onCheckboxClick(tickitItems.complaint_id)}
+                  name="square-o"
                   size={13}
                   color="#000"
                 />
               )}
-            </Hoverable>
-          )}
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            // paddingHorizontal: '1%',
-            // backgroundColor:"pink"
-          }}
-        >
-          <Text style={{ fontSize: 15 }}>#{tickitItems.complaint_id}</Text>
-          {/* <Icon
-            style={{ textAlign: 'center' }}
-            name="whatsapp"
-            size={8}
-            color="#000"
-          /> */}
-        </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                // paddingHorizontal: '1%',
+                // backgroundColor:"pink"
+              }}
+            >
+              <Text style={{ fontSize: 15, paddingHorizontal: '2%' }}>
+                #{tickitItems.complaint_id}
+              </Text>
+              <Icon
+                style={{ paddingTop: '2%', textAlign: 'center' }}
+                name="whatsapp"
+                size={15}
+                color="#000"
+              />
+            </View>
 
-        {/* <View
+            {/* <View
           style={{
             flex: 2,
             paddingTop: 1,
@@ -367,71 +373,77 @@ const List = (props: any) => {
           </View>
         </View> */}
 
-        <View
-          style={{
-            flex: 1,
-            // backgroundColor: 'red',
-          }}
-        >
-          <Hoverable>
-            {({ hovered }) => (
+            <View
+              style={{
+                flex: 1,
+                // backgroundColor: 'red',
+              }}
+            >
+              {/* <Hoverable> */}
+              {/* {({ hovered }) => ( */}
               <Text
                 onPress={() => toggleOverlay(tickitItems)}
                 style={[
                   styles.complaintText,
-                  { textDecorationLine: hovered ? 'underline' : 'none' },
+                  {
+                    textDecorationLine:
+                      // hovered ? 'underline' :
+                      'none',
+                  },
                 ]}
                 numberOfLines={1}
               >
                 {tickitItems.complaint_text}
               </Text>
-            )}
-          </Hoverable>
-        </View>
+              {/* )} */}
+              {/* </Hoverable> */}
+            </View>
 
-        <View
-          style={{
-            flex: 1,
-            // backgroundColor: 'yellow'
-          }}
-        />
-        <View
-          style={{
-            flex: 1,
-            // backgroundColor:"gray"
-            // paddingLeft: '1%',
-          }}
-        >
-          <Text style={styles.complaintTimeZone}>
-            {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')}
-          </Text>
-          {/* <Text style={styles.complaintTimeZone}>
+            <View
+              style={{
+                flex: 1,
+                // backgroundColor: 'yellow'
+              }}
+            />
+            <View
+              style={{
+                flex: 1,
+                // backgroundColor:"gray"
+                // paddingLeft: '1%',
+              }}
+            >
+              <Text style={styles.complaintTimeZone}>
+                {moment(tickitItems.last_modified_on).format(
+                  'DD MMM YYYY, h:mm a',
+                )}
+              </Text>
+              {/* <Text style={styles.complaintTimeZone}>
             {moment(tickitItems.created_on).format('DD MMM YYYY, h:mm a')}
           </Text> */}
-        </View>
-        <View
-          style={{
-            flex: 1,
-            // backgroundColor: 'green',
-          }}
-        >
-          {/* <Text style={styles.complaintTimeZone}>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                // backgroundColor: 'green',
+              }}
+            >
+              {/* <Text style={styles.complaintTimeZone}>
             {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')}
           </Text> */}
-        </View>
+            </View>
 
-        {/* <View style={[styles.iconStyle,{backgroundColor:"red",}]}> */}
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            // justifyContent: 'space-between',
-            // paddingLeft: '4%',
-            justifyContent: 'center',
-            // backgroundColor: 'red',
-          }}
-        >
-          {/* <View style={{ paddingRight: '2%' }}>
+            {/* <View style={[styles.iconStyle,{backgroundColor:"red",}]}> */}
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                // justifyContent: 'space-between',
+                // paddingLeft: '4%',
+                // justifyContent: 'center',
+                // backgroundColor: 'red',
+              }}
+            >
+              {/* <View style={{ paddingRight: '2%' }}>
             {tickitItems.sentiment_name === 'Positive' ? (
               <Icon
                 name="smile-o"
@@ -482,17 +494,23 @@ const List = (props: any) => {
             )}
           </View> */}
 
-          {/* {tickitItems.sentiment_name === 'Negative' ? ( */}
-          <Icon
-            style={{}}
-            name="smile-o"
-            size={15}
-            onPress={() => {
-              onSentimetIconClick('Negative', -1, tickitItems)
-            }}
-            color="red"
-          />
-          {/* ) : (
+              {/* {tickitItems.sentiment_name === 'Negative' ? ( */}
+              <Icon
+                style={{ paddingLeft: '30%' }}
+                name="smile-o"
+                size={15}
+                onPress={() => {
+                  onSentimetIconClick('Negative', -1, tickitItems)
+                }}
+                // color="gray"
+                color={
+                  colors[tickitItems.sentiment]
+                    ? colors[tickitItems.sentiment]
+                    : 'gray'
+                }
+              />
+              {hovered && <Icon name="angle-down" size={15} />}
+              {/* ) : (
             <Hoverable>
               {({ hovered }) => (
                 <Icon
@@ -507,8 +525,8 @@ const List = (props: any) => {
               )}
             </Hoverable>
           )} */}
-        </View>
-        {/* <View style={{flex:1}}>
+            </View>
+            {/* <View style={{flex:1}}>
 
           <Icon
             name="square"
@@ -522,50 +540,50 @@ const List = (props: any) => {
           />
                   </View> */}
 
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            // backgroundColor: 'pink'
-          }}
-        >
-          {/* <Icon
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                // backgroundColor: 'pink'
+              }}
+            >
+              {/* <Icon
             onPress={onStatusSelect}
             name={tickIcon}
             size={15}
             color="gray"
           /> */}
-        </View>
-        <View
-          style={{
-            flex: 1,
-            // backgroundColor: 'red'
-          }}
-        >
-          {/* <Text style={{ marginLeft: '50%' }}>{tickitItems.thread_count}</Text> */}
-        </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                // backgroundColor: 'red'
+              }}
+            >
+              {/* <Text style={{ marginLeft: '50%' }}>{tickitItems.thread_count}</Text> */}
+            </View>
 
-        {/* <View style={{ flex: 3 }} /> */}
+            {/* <View style={{ flex: 3 }} /> */}
 
-        <>
-          <Modal
-            style={{ flex: 1 }}
-            animationType="none"
-            transparent={modalVisible}
-            visible={modalVisible}
-            // onRequestClose={() => {
-            //   Alert.alert('Modal has been closed.')
-            // }}
-          >
-            {isDropdownList ? (
-              <DropDownList>
-                <FlatList
-                  style={{ flex: 1 }}
-                  data={tickitStatusList}
-                  renderItem={({ item, index }) => {
-                    return (
-                      <Hoverable>
-                        {({ hovered }) => (
+            <>
+              <Modal
+                style={{ flex: 1 }}
+                animationType="none"
+                transparent={modalVisible}
+                visible={modalVisible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.')
+                // }}
+              >
+                {isDropdownList ? (
+                  <DropDownList>
+                    <FlatList
+                      style={{ flex: 1 }}
+                      data={tickitStatusList}
+                      renderItem={({ item, index }) => {
+                        return (
+                          // <Hoverable>
+                          //   {({ hovered }) => (
                           <View
                             style={{
                               // justifyContent: 'flex-start'
@@ -584,39 +602,41 @@ const List = (props: any) => {
                               {item.status_name && item.status_name}
                             </Text>
                           </View>
-                        )}
-                      </Hoverable>
-                    )
-                  }}
-                  keyExtractor={(index: any) => index.toString()}
-                />
-              </DropDownList>
-            ) : null}
-            {isChatScreen ? (
-              <ModalScreen
-                closeModal={() => onCloseModal()}
-                complaintId={tickitItems.complaint_id}
-                clientId={tickitItems.client_id}
-                userId={tickitItems.user_id}
-              />
-            ) : null}
-          </Modal>
-        </>
+                          //   )}
+                          // </Hoverable>
+                        )
+                      }}
+                      keyExtractor={(index: any) => index.toString()}
+                    />
+                  </DropDownList>
+                ) : null}
+                {isChatScreen ? (
+                  <ModalScreen
+                    closeModal={() => onCloseModal()}
+                    complaintId={tickitItems.complaint_id}
+                    clientId={tickitItems.client_id}
+                    userId={tickitItems.user_id}
+                  />
+                ) : null}
+              </Modal>
+            </>
 
-        <Tooltip
-          containerStyle={{
-            backgroundColor: '#d7fcd4',
-            height: '15%',
-            width: '13%',
-            marginTop: 2,
-            borderRadius: 4,
-          }}
-          ref={tooltipRef}
-          withOverlay={false}
-          onOpen={onOpenToolTip}
-          popover={<TooltipMessage message={message} />}
-        />
-      </View>
+            <Tooltip
+              containerStyle={{
+                backgroundColor: '#d7fcd4',
+                height: '15%',
+                width: '13%',
+                marginTop: 2,
+                borderRadius: 4,
+              }}
+              ref={tooltipRef}
+              withOverlay={false}
+              onOpen={onOpenToolTip}
+              popover={<TooltipMessage message={message} />}
+            />
+          </View>
+        )}
+      </Hoverable>
     </View>
   )
 }
@@ -652,7 +672,7 @@ const mapDispatchToProps = (dispatch: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: '1%',
+    // marginBottom: '1%',
     borderBottomColor: '#dce3de',
     borderBottomWidth: 0.1,
     // zIndex: 0,
