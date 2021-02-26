@@ -22,7 +22,18 @@ const windowHeight = Dimensions.get('window').height
 
 const ListHeader = (props: any) => {
   const { isHeaderSelect } = props
+  const horizontalFlatlist = true
 
+  const headerName = [
+    'Id',
+    'subject',
+    'raise By',
+    'raise at',
+    'status',
+    'sentiment',
+    'priority',
+    'assignee',
+  ]
   const onCheckboxClick = () => {
     props.onCheckBox()
   }
@@ -41,66 +52,36 @@ const ListHeader = (props: any) => {
       <Icon
         style={{
           paddingTop: 2,
-          flex: 1,
         }}
         onPress={() => onCheckboxClick()}
         name={isHeaderSelect ? 'check-square-o' : 'square-o'}
         size={15}
         color="grey"
       />
-      <Text
-        style={{
-          paddingLeft: '1%',
-          flex: 2,
-        }}
-      >
-        Tickit Id
-      </Text>
-      <Text
-        style={{
-          paddingLeft: '2%',
-          flex: 2,
-        }}
-      >
-        Medium
-      </Text>
-      <Text
-        style={{
-          paddingLeft: '6%',
-          flex: 6,
-        }}
-      >
-        Subject
-      </Text>
-      {/* <Text
-        style={{
-          // paddingRight: '1%',
+      <FlatList
+        contentContainerStyle={{
           flex: 1,
+          flexDirection: 'row',
+          paddingHorizontal: '1%',
+          alignContent: 'center',
+          justifyContent: 'space-between',
         }}
-      >
-        from
-      </Text> */}
-      {/* <Text style={{ paddingLeft: ',flex:120%' }}> From</Text> */}
-      <Text
+        horizontal={horizontalFlatlist}
+        data={headerName}
+        renderItem={({ item, index }) => {
+          return <Text style={{ flex: 1 }}>{item}</Text>
+        }}
+        keyExtractor={(index: any) => index.toString()}
+      />
+      <Icon
         style={{
-          paddingRight: '3%',
-          flex: 3,
+          paddingTop: 3,
         }}
-      >
-        Created Date
-      </Text>
-      <Text
-        style={{
-          paddingRight: '4%',
-          flex: 3,
-        }}
-      >
-        Updated Date
-      </Text>
-      <Text style={{ flex: 2, paddingRight: '1%' }}> Sentiment</Text>
-      <Text style={{ paddingRight: '2%', flex: 2 }}> Status</Text>
-      <Text style={{ flex: 2 }}> Count</Text>
-      <Text style={{ flex: 3 }}> Assigned To</Text>
+        // onPress={() => onCheckboxClick()}
+        name="plus"
+        size={15}
+        color="grey"
+      />
     </View>
   )
 }
@@ -168,24 +149,9 @@ const SearchComplaints = (props: any) => {
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
-        {/* <View style={{ flexDirection: 'row' }}>
-          <View
-            style={{
-              flex: 3,
-              flexDirection: 'row',
-              // paddingTop: '1%',
-              justifyContent: 'space-evenly',
-             
-            }}
-          >
-          </View>
-        </View> */}
-
-        {/* <Chat/> */}
-
         <View
           style={{
-            marginHorizontal: '2%',
+            // marginHorizontal: '2%',
             borderRadius: 3,
             backgroundColor: '#fff',
           }}
@@ -193,14 +159,10 @@ const SearchComplaints = (props: any) => {
           <FlatList
             style={{
               flex: 1,
-              // marginHorizontal: '2%',
-              // borderRadius: 3,
             }}
             data={tickitItems}
-            // renderItem={({ item={user_name:""} }) => <ListComponent user_name={item.user_name} />}
             renderItem={({ item }) => {
-              console.log('renderItem item: ', item)
-
+              // console.log('renderItem item: ', item)
               return <ListComponent tickitItems={item} />
             }}
             ListHeaderComponent={() => (

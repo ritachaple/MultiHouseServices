@@ -1,13 +1,13 @@
 import './GestureHandler'
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { View, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'
-import Dashboard from '../../Screens/dashboard/Dashboard'
+// import Dashboard from '../../Screens/dashboard/Dashboard'
 import Login from '../../Screens/login/login'
 import Default from '../../Default/Default'
 // import Webview from '../../Screens/webview/Webview'
+import Interaction from '../../Screens/Interaction/Interaction'
 
 const linking = {
   prefixes: [],
@@ -15,6 +15,7 @@ const linking = {
     screens: {
       Login: 'Login',
       Dashboard: 'Dashboard',
+      Interaction: 'Interaction',
       // Webview: 'Webview',
     },
   },
@@ -36,13 +37,14 @@ const AuthScreens = () => (
 const AppScreens = () => (
   <Default>
     <Stack.Navigator
-      initialRouteName="Dashboard"
+      initialRouteName="Interaction"
       headerMode="none"
       screenOptions={{ animationEnabled: true }}
     >
       {/* <Stack.Screen name="Login" component={Login} /> */}
 
-      <Stack.Screen name="Dashboard" component={Dashboard} />
+      <Stack.Screen name="Interaction" component={Interaction} />
+      {/* <Stack.Screen name="Dashboard" component={Dashboard} /> */}
       {/* <Stack.Screen name="Webview" component={Webview} /> */}
     </Stack.Navigator>
   </Default>

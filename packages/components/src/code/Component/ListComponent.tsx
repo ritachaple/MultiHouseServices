@@ -287,14 +287,17 @@ const List = (props: any) => {
           flex: 1,
           flexDirection: 'row',
           paddingTop: '1%',
+          // alignContent:"center",
+          width: '100%',
+          justifyContent: 'space-between',
         }}
       >
         <View
           style={{
-            flex: 1,
+            // flex: 1,
             paddingLeft: '1%',
 
-            paddingTop: '1%',
+            paddingTop: '0.2%',
           }}
         >
           {isHeaderSelect ||
@@ -324,13 +327,22 @@ const List = (props: any) => {
         </View>
         <View
           style={{
-            flex: 2,
+            flex: 1,
+            flexDirection: 'row',
+            // paddingHorizontal: '1%',
+            // backgroundColor:"pink"
           }}
         >
           <Text style={{ fontSize: 15 }}>#{tickitItems.complaint_id}</Text>
+          {/* <Icon
+            style={{ textAlign: 'center' }}
+            name="whatsapp"
+            size={8}
+            color="#000"
+          /> */}
         </View>
 
-        <View
+        {/* <View
           style={{
             flex: 2,
             paddingTop: 1,
@@ -353,11 +365,12 @@ const List = (props: any) => {
               color="#fff"
             />
           </View>
-        </View>
+        </View> */}
 
         <View
           style={{
-            flex: 6,
+            flex: 1,
+            // backgroundColor: 'red',
           }}
         >
           <Hoverable>
@@ -368,88 +381,57 @@ const List = (props: any) => {
                   styles.complaintText,
                   { textDecorationLine: hovered ? 'underline' : 'none' },
                 ]}
-                numberOfLines={2}
+                numberOfLines={1}
               >
                 {tickitItems.complaint_text}
               </Text>
             )}
           </Hoverable>
-          <View style={styles.moreDetails}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.username}>{tickitItems.user_name}</Text>
-              <Text style={styles.viewLink}>View</Text>
-            </View>
-
-            <View>
-              <Text style={styles.postLink}>Post</Text>
-            </View>
-
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.category}>Cartegory :</Text>
-              <View style={styles.ovalShape}>
-                <Text
-                  style={[styles.category, { color: 'white', fontSize: 7 }]}
-                >
-                  Acp name
-                </Text>
-              </View>
-              {tickitItems.fake_factor !== null ? (
-                <View style={{ flexDirection: 'row', paddingLeft: '1%' }}>
-                  <Text style={styles.category}>Fake Factor:</Text>
-                  <View style={styles.fakeFactorShape}>
-                    <Text
-                      style={[styles.category, { color: 'white', fontSize: 7 }]}
-                    >
-                      Half true
-                    </Text>
-                  </View>
-                </View>
-              ) : (
-                <></>
-              )}
-            </View>
-          </View>
         </View>
-        {/* <View
+
+        <View
           style={{
             flex: 1,
-            paddingLeft: '1%',
+            // backgroundColor: 'yellow'
           }}
-        >
-<Text>name</Text>
-        </View> */}
+        />
         <View
           style={{
-            flex: 3,
-            paddingLeft: '1%',
-          }}
-        >
-          <Text style={styles.complaintTimeZone}>
-            {moment(tickitItems.created_on).format('DD MMM YYYY, h:mm a')}
-          </Text>
-        </View>
-        <View
-          style={{
-            flex: 3,
+            flex: 1,
+            // backgroundColor:"gray"
+            // paddingLeft: '1%',
           }}
         >
           <Text style={styles.complaintTimeZone}>
             {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')}
           </Text>
+          {/* <Text style={styles.complaintTimeZone}>
+            {moment(tickitItems.created_on).format('DD MMM YYYY, h:mm a')}
+          </Text> */}
+        </View>
+        <View
+          style={{
+            flex: 1,
+            // backgroundColor: 'green',
+          }}
+        >
+          {/* <Text style={styles.complaintTimeZone}>
+            {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')}
+          </Text> */}
         </View>
 
         {/* <View style={[styles.iconStyle,{backgroundColor:"red",}]}> */}
         <View
           style={{
-            flex: 2,
+            flex: 1,
             flexDirection: 'row',
             // justifyContent: 'space-between',
-            paddingLeft: '4%',
-            // alignContent:"center"
+            // paddingLeft: '4%',
+            justifyContent: 'center',
             // backgroundColor: 'red',
           }}
         >
-          <View style={{ paddingRight: '2%' }}>
+          {/* <View style={{ paddingRight: '2%' }}>
             {tickitItems.sentiment_name === 'Positive' ? (
               <Icon
                 name="smile-o"
@@ -498,18 +480,19 @@ const List = (props: any) => {
                 )}
               </Hoverable>
             )}
-          </View>
+          </View> */}
 
-          {tickitItems.sentiment_name === 'Negative' ? (
-            <Icon
-              name="smile-o"
-              size={15}
-              onPress={() => {
-                onSentimetIconClick('Negative', -1, tickitItems)
-              }}
-              color="red"
-            />
-          ) : (
+          {/* {tickitItems.sentiment_name === 'Negative' ? ( */}
+          <Icon
+            style={{}}
+            name="smile-o"
+            size={15}
+            onPress={() => {
+              onSentimetIconClick('Negative', -1, tickitItems)
+            }}
+            color="red"
+          />
+          {/* ) : (
             <Hoverable>
               {({ hovered }) => (
                 <Icon
@@ -523,7 +506,7 @@ const List = (props: any) => {
                 />
               )}
             </Hoverable>
-          )}
+          )} */}
         </View>
         {/* <View style={{flex:1}}>
 
@@ -539,19 +522,30 @@ const List = (props: any) => {
           />
                   </View> */}
 
-        <View style={{ flex: 2, alignItems: 'center' }}>
-          <Icon
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            // backgroundColor: 'pink'
+          }}
+        >
+          {/* <Icon
             onPress={onStatusSelect}
             name={tickIcon}
             size={15}
             color="gray"
-          />
+          /> */}
         </View>
-        <View style={{ flex: 2 }}>
-          <Text style={{ marginLeft: '50%' }}>{tickitItems.thread_count}</Text>
+        <View
+          style={{
+            flex: 1,
+            // backgroundColor: 'red'
+          }}
+        >
+          {/* <Text style={{ marginLeft: '50%' }}>{tickitItems.thread_count}</Text> */}
         </View>
 
-        <View style={{ flex: 3 }} />
+        {/* <View style={{ flex: 3 }} /> */}
 
         <>
           <Modal
@@ -661,7 +655,8 @@ const styles = StyleSheet.create({
     paddingBottom: '1%',
     borderBottomColor: '#dce3de',
     borderBottomWidth: 0.1,
-    zIndex: 0,
+    // zIndex: 0,
+    // backgroundColor:"blue"
 
     // marginHorizontal: '2%',
     // borderRadius: 3,
