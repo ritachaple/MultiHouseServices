@@ -65,6 +65,7 @@ const List = (props: any) => {
     token,
     selectedOneTickit,
     storeSelectedTickits,
+    selectedHeader,
   } = props
 
   const [tickIcon, setTickIcon] = useState('hourglass-half')
@@ -372,160 +373,192 @@ const List = (props: any) => {
             />
           </View>
         </View> */}
-
-            <View
-              style={{
-                flex: 1,
-                // backgroundColor: 'red',
-              }}
-            >
-              {/* <Hoverable> */}
-              {/* {({ hovered }) => ( */}
-              <Text
-                onPress={() => toggleOverlay(tickitItems)}
-                style={[
-                  styles.complaintText,
-                  {
-                    textDecorationLine:
-                      // hovered ? 'underline' :
-                      'none',
-                  },
-                ]}
-                numberOfLines={1}
+            {Boolean(
+              selectedHeader.find((value: any) => {
+                return value === 'subject'
+              }),
+            ) && (
+              <View
+                style={{
+                  flex: 1,
+                  // backgroundColor: 'red',
+                }}
               >
-                {tickitItems.complaint_text}
-              </Text>
-              {/* )} */}
-              {/* </Hoverable> */}
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                // backgroundColor: 'yellow'
-              }}
-            />
-            <View
-              style={{
-                flex: 1,
-                // backgroundColor:"gray"
-                // paddingLeft: '1%',
-              }}
-            >
-              <Text style={styles.complaintTimeZone}>
-                {moment(tickitItems.last_modified_on).format(
-                  'DD MMM YYYY, h:mm a',
-                )}
-              </Text>
-              {/* <Text style={styles.complaintTimeZone}>
-            {moment(tickitItems.created_on).format('DD MMM YYYY, h:mm a')}
-          </Text> */}
-            </View>
-            <View
-              style={{
-                flex: 1,
-                // backgroundColor: 'green',
-              }}
-            >
-              {/* <Text style={styles.complaintTimeZone}>
-            {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')}
-          </Text> */}
-            </View>
-
-            {/* <View style={[styles.iconStyle,{backgroundColor:"red",}]}> */}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                // justifyContent: 'space-between',
-                // paddingLeft: '4%',
-                // justifyContent: 'center',
-                // backgroundColor: 'red',
-              }}
-            >
-              {/* <View style={{ paddingRight: '2%' }}>
-            {tickitItems.sentiment_name === 'Positive' ? (
-              <Icon
-                name="smile-o"
-                size={15}
-                onPress={() => {
-                  onSentimetIconClick('Positive', 1, tickitItems)
-                }}
-                color="green"
-              />
-            ) : (
-              <Hoverable>
-                {({ hovered }) => (
-                  <Icon
-                    name="smile-o"
-                    size={15}
-                    onPress={() => {
-                      onSentimetIconClick('Positive', 1, tickitItems)
-                    }}
-                    color={hovered ? 'green' : 'grey'}
-                  />
-                )}
-              </Hoverable>
+                {/* <Hoverable> */}
+                {/* {({ hovered }) => ( */}
+                <Text
+                  onPress={() => toggleOverlay(tickitItems)}
+                  style={[
+                    styles.complaintText,
+                    {
+                      textDecorationLine:
+                        // hovered ? 'underline' :
+                        'none',
+                    },
+                  ]}
+                  numberOfLines={1}
+                >
+                  {tickitItems.complaint_text}
+                </Text>
+                {/* )} */}
+                {/* </Hoverable> */}
+              </View>
             )}
-          </View>
-          <View style={{ paddingRight: '2%' }}>
-            {tickitItems.sentiment_name === 'Neutral' ? (
-              <Icon
-                name="meh-o"
-                size={15}
-                onPress={() => {
-                  onSentimetIconClick('Neutral', 0, tickitItems)
-                }}
-                color="#dbab16"
-              />
-            ) : (
-              <Hoverable>
-                {({ hovered }) => (
-                  <Icon
-                    name="meh-o"
-                    size={15}
-                    onPress={() => {
-                      onSentimetIconClick('Neutral', 0, tickitItems)
-                    }}
-                    color={hovered ? '#dbab16' : 'grey'}
-                  />
-                )}
-              </Hoverable>
-            )}
-          </View> */}
 
-              {/* {tickitItems.sentiment_name === 'Negative' ? ( */}
-              <Icon
-                style={{ paddingLeft: '30%' }}
-                name="smile-o"
-                size={15}
-                onPress={() => {
-                  onSentimetIconClick('Negative', -1, tickitItems)
+            {Boolean(
+              selectedHeader.find((value: any) => {
+                return value === 'raise By'
+              }),
+            ) && (
+              <View
+                style={{
+                  flex: 1,
+                  // backgroundColor: 'yellow'
                 }}
-                // color="gray"
-                color={
-                  colors[tickitItems.sentiment]
-                    ? colors[tickitItems.sentiment]
-                    : 'gray'
-                }
               />
-              {hovered && <Icon name="angle-down" size={15} />}
-              {/* ) : (
-            <Hoverable>
-              {({ hovered }) => (
+            )}
+
+            {Boolean(
+              selectedHeader.find((value: any) => {
+                return value === 'raise at'
+              }),
+            ) && (
+              <View
+                style={{
+                  flex: 1,
+                  // backgroundColor:"gray"
+                  // paddingLeft: '1%',
+                }}
+              >
+                <Text style={styles.complaintTimeZone}>
+                  {moment(tickitItems.last_modified_on).format(
+                    'DD MMM YYYY, h:mm a',
+                  )}
+                </Text>
+                {/* <Text style={styles.complaintTimeZone}>
+  {moment(tickitItems.created_on).format('DD MMM YYYY, h:mm a')}
+</Text> */}
+              </View>
+            )}
+
+            {Boolean(
+              selectedHeader.find((value: any) => {
+                return value === 'status'
+              }),
+            ) && (
+              <View
+                style={{
+                  flex: 1,
+                  // backgroundColor: 'green',
+                }}
+              >
+                {/* <Text style={styles.complaintTimeZone}>
+  {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')}
+</Text> */}
+              </View>
+            )}
+
+            {Boolean(
+              selectedHeader.find((value: any) => {
+                return value === 'sentiment'
+              }),
+            ) && (
+              /* <View style={[styles.iconStyle,{backgroundColor:"red",}]}> */
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  // justifyContent: 'space-between',
+                  // paddingLeft: '4%',
+                  // justifyContent: 'center',
+                  // backgroundColor: 'red',
+                }}
+              >
+                {/* <View style={{ paddingRight: '2%' }}>
+  {tickitItems.sentiment_name === 'Positive' ? (
+    <Icon
+      name="smile-o"
+      size={15}
+      onPress={() => {
+        onSentimetIconClick('Positive', 1, tickitItems)
+      }}
+      color="green"
+    />
+  ) : (
+    <Hoverable>
+      {({ hovered }) => (
+        <Icon
+          name="smile-o"
+          size={15}
+          onPress={() => {
+            onSentimetIconClick('Positive', 1, tickitItems)
+          }}
+          color={hovered ? 'green' : 'grey'}
+        />
+      )}
+    </Hoverable>
+  )}
+</View>
+<View style={{ paddingRight: '2%' }}>
+  {tickitItems.sentiment_name === 'Neutral' ? (
+    <Icon
+      name="meh-o"
+      size={15}
+      onPress={() => {
+        onSentimetIconClick('Neutral', 0, tickitItems)
+      }}
+      color="#dbab16"
+    />
+  ) : (
+    <Hoverable>
+      {({ hovered }) => (
+        <Icon
+          name="meh-o"
+          size={15}
+          onPress={() => {
+            onSentimetIconClick('Neutral', 0, tickitItems)
+          }}
+          color={hovered ? '#dbab16' : 'grey'}
+        />
+      )}
+    </Hoverable>
+  )}
+</View> */}
+
+                {/* {tickitItems.sentiment_name === 'Negative' ? ( */}
                 <Icon
-                  // style={{ paddingRight: '10%' }}
-                  name="frown-o"
+                  style={{ paddingLeft: '30%' }}
+                  name="smile-o"
                   size={15}
                   onPress={() => {
                     onSentimetIconClick('Negative', -1, tickitItems)
                   }}
-                  color={hovered ? 'red' : 'grey'}
+                  // color="gray"
+                  color={
+                    colors[tickitItems.sentiment]
+                      ? colors[tickitItems.sentiment]
+                      : 'gray'
+                  }
                 />
-              )}
-            </Hoverable>
-          )} */}
-            </View>
+                {hovered && <Icon name="angle-down" size={15} />}
+                {/* ) : (
+  <Hoverable>
+    {({ hovered }) => (
+      <Icon
+        // style={{ paddingRight: '10%' }}
+        name="frown-o"
+        size={15}
+        onPress={() => {
+          onSentimetIconClick('Negative', -1, tickitItems)
+        }}
+        color={hovered ? 'red' : 'grey'}
+      />
+    )}
+  </Hoverable>
+)} */}
+              </View>
+            )}
+
             {/* <View style={{flex:1}}>
 
           <Icon
@@ -540,28 +573,41 @@ const List = (props: any) => {
           />
                   </View> */}
 
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                // backgroundColor: 'pink'
-              }}
-            >
-              {/* <Icon
-            onPress={onStatusSelect}
-            name={tickIcon}
-            size={15}
-            color="gray"
-          /> */}
-            </View>
-            <View
-              style={{
-                flex: 1,
-                // backgroundColor: 'red'
-              }}
-            >
-              {/* <Text style={{ marginLeft: '50%' }}>{tickitItems.thread_count}</Text> */}
-            </View>
+            {Boolean(
+              selectedHeader.find((value: any) => {
+                return value === 'priority'
+              }),
+            ) && (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  // backgroundColor: 'pink'
+                }}
+              >
+                {/* <Icon
+  onPress={onStatusSelect}
+  name={tickIcon}
+  size={15}
+  color="gray"
+/> */}
+              </View>
+            )}
+
+            {Boolean(
+              selectedHeader.find((value: any) => {
+                return value === 'assignee'
+              }),
+            ) && (
+              <View
+                style={{
+                  flex: 1,
+                  // backgroundColor: 'red'
+                }}
+              >
+                {/* <Text style={{ marginLeft: '50%' }}>{tickitItems.thread_count}</Text> */}
+              </View>
+            )}
 
             {/* <View style={{ flex: 3 }} /> */}
 

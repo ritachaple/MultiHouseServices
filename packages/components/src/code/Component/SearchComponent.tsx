@@ -39,7 +39,7 @@ const SearchComplaints = (props: any) => {
   const [totalRecords, setTotalRecords] = useState(0)
   const [showHeaderListModal, seHeaderListModal] = useState(false)
 
-  const [selectedHeader, setSelectedHeader] = useState([] as any)
+  const [selectedHeader, setSelectedHeader] = useState(headerName)
   const horizontalFlatlist = true
 
   useEffect(() => {
@@ -64,20 +64,19 @@ const SearchComplaints = (props: any) => {
             page_index: 1,
             agent_id: 5889,
           }
-          console.log('search_complaintsRes1')
+          //// console.log('search_complaintsRes1')
 
           const res: any = await Api.post(
             configs.search_complaints,
             data,
             `${props.token}`,
           )
-          console.log('searchcomplaintsRes', res)
+          ////console.log('searchcomplaintsRes', res)
           if (res) {
             setTickit(res.data.data)
             props.setTikitData(res.data.data)
             setTotalRecords(res.data.total_records)
-            //  const  data= JSON.stringify(res)
-            console.log('res.data', res.data.data)
+            ////console.log('res.data', res.data.data)
           }
         } catch (error) {
           console.log('error: ', error)
@@ -101,11 +100,11 @@ const SearchComplaints = (props: any) => {
     seHeaderListModal(!showHeaderListModal)
   }
 
-  const onDropdownSelect = (item: any) => {
+  const onDropdownSelect = (item: any, index: any) => {
     try {
-      const data = [...selectedHeader, item]
-      // data[item]
-      console.log(data)
+      const data = [...selectedHeader]
+      data.splice(index, 0, item)
+      ////console.log(data)
       setSelectedHeader(data)
       props.selectedItem(item)
     } catch (error) {
@@ -117,9 +116,9 @@ const SearchComplaints = (props: any) => {
     try {
       const data = [...selectedHeader]
       const index = data.indexOf(item)
-      // console.log("index",index);
+      //// console.log("index",index);
       data.splice(index, 1)
-      // console.log("after deleted data", data);
+      //// console.log("after deleted data", data);
       setSelectedHeader(data)
     } catch (error) {
       console.error(error)
@@ -156,7 +155,7 @@ const SearchComplaints = (props: any) => {
             justifyContent: 'space-between',
           }}
           horizontal={horizontalFlatlist}
-          data={headerName}
+          data={selectedHeader}
           renderItem={({ item, index }) => {
             return <Text style={{ flex: 1 }}>{item}</Text>
           }}
@@ -190,8 +189,13 @@ const SearchComplaints = (props: any) => {
             }}
             data={tickitItems}
             renderItem={({ item }) => {
-              // console.log('renderItem item: ', item)
-              return <ListComponent tickitItems={item} />
+              // //console.log('renderItem item: ', item)
+              return (
+                <ListComponent
+                  tickitItems={item}
+                  selectedHeader={selectedHeader}
+                />
+              )
             }}
             ListHeaderComponent={() => headerList()}
             keyExtractor={(index: any) => index.toString()}
@@ -240,7 +244,9 @@ const SearchComplaints = (props: any) => {
                         padding: '0.5%',
                       }}
                     >
-                      <Text onPress={() => onDropdownSelect(item)}>{item}</Text>
+                      <Text onPress={() => onDropdownSelect(item, index)}>
+                        {item}
+                      </Text>
                     </View>
                     {isCheck && (
                       <Icon
