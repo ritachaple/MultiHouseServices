@@ -24,13 +24,13 @@ const windowHeight = Dimensions.get('window').height
 
 const headerName = [
   'Id',
-  'subject',
-  'raise By',
-  'raise at',
-  'status',
-  'sentiment',
-  'priority',
-  'assignee',
+  'Subject',
+  'Raise By',
+  'Raise at',
+  'Status',
+  'Sentiment',
+  'Priority',
+  'Assignee',
 ]
 
 const SearchComplaints = (props: any) => {
@@ -64,19 +64,21 @@ const SearchComplaints = (props: any) => {
             page_index: 1,
             agent_id: 5889,
           }
-          //// console.log('search_complaintsRes1')
+          // console.log('search_complaintsRes1')
 
           const res: any = await Api.post(
             configs.search_complaints,
             data,
             `${props.token}`,
           )
-          ////console.log('searchcomplaintsRes', res)
-          if (res) {
+          // console.log('searchcomplaintsRes', res)
+          if (res && res.status === 200) {
             setTickit(res.data.data)
             props.setTikitData(res.data.data)
             setTotalRecords(res.data.total_records)
-            ////console.log('res.data', res.data.data)
+            // console.log('res.data', res.data.data)
+          } else {
+            props.clearToken()
           }
         } catch (error) {
           console.log('error: ', error)
@@ -104,7 +106,7 @@ const SearchComplaints = (props: any) => {
     try {
       const data = [...selectedHeader]
       data.splice(index, 0, item)
-      ////console.log(data)
+      // console.log(data)
       setSelectedHeader(data)
       props.selectedItem(item)
     } catch (error) {
@@ -116,9 +118,9 @@ const SearchComplaints = (props: any) => {
     try {
       const data = [...selectedHeader]
       const index = data.indexOf(item)
-      //// console.log("index",index);
+      // console.log("index",index);
       data.splice(index, 1)
-      //// console.log("after deleted data", data);
+      // console.log("after deleted data", data);
       setSelectedHeader(data)
     } catch (error) {
       console.error(error)
@@ -289,8 +291,12 @@ const mapDispatchToProps = (dispatch: any) => {
     setTikitData: (data: any) => {
       dispatch({ type: 'TICKIT_LIST', payload: data })
     },
-    headerSelect: (isSelectClick: any) =>
-      dispatch({ type: 'IS_HEADER_SELECT', payload: isSelectClick }),
+    headerSelect: (isSelectClick: any) => {
+      dispatch({ type: 'IS_HEADER_SELECT', payload: isSelectClick })
+    },
+    clearToken: () => {
+      dispatch({ type: 'CLEAR_LOGIN_TOKEN' })
+    },
   }
 }
 

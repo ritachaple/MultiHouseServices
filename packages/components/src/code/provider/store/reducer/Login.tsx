@@ -8,6 +8,11 @@ const loginReducer = (state = { initialState }, action: any) => {
         ...state,
         token: action.payload,
       }
+    case 'CLEAR_LOGIN_TOKEN':
+      return {
+        ...state,
+        token: '',
+      }
       break
     default:
       return state
