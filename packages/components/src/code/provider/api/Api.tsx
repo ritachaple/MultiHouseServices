@@ -21,6 +21,7 @@ const Api = {
   post: async (url = '', data = {}, token = '') => {
     let res = ''
     try {
+      // token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InBheXRtIiwiZXhwIjoxNjE0Njg0ODIxLCJlbWFpbCI6IiIsIm9yaWdfaWF0IjoxNjE0NjY2ODIxLCJ1c2VyX2lkIjo1ODg5fQ.oos7ozFyMduVu3bBW9lDOYb4yoWvPGnC30z_J3IFEp4'
       console.log('url', url)
 
       const header = {
