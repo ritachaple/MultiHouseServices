@@ -375,7 +375,7 @@ const List = (props: any) => {
         </View> */}
             {Boolean(
               selectedHeader.find((value: any) => {
-                return value === 'subject'
+                return value === 'Subject'
               }),
             ) && (
               <View
@@ -407,7 +407,7 @@ const List = (props: any) => {
 
             {Boolean(
               selectedHeader.find((value: any) => {
-                return value === 'raise By'
+                return value === 'Raise By'
               }),
             ) && (
               <View
@@ -420,7 +420,7 @@ const List = (props: any) => {
 
             {Boolean(
               selectedHeader.find((value: any) => {
-                return value === 'raise at'
+                return value === 'Raise at'
               }),
             ) && (
               <View
@@ -443,7 +443,7 @@ const List = (props: any) => {
 
             {Boolean(
               selectedHeader.find((value: any) => {
-                return value === 'status'
+                return value === 'Status'
               }),
             ) && (
               <View
@@ -460,7 +460,7 @@ const List = (props: any) => {
 
             {Boolean(
               selectedHeader.find((value: any) => {
-                return value === 'sentiment'
+                return value === 'Sentiment'
               }),
             ) && (
               /* <View style={[styles.iconStyle,{backgroundColor:"red",}]}> */
@@ -575,7 +575,7 @@ const List = (props: any) => {
 
             {Boolean(
               selectedHeader.find((value: any) => {
-                return value === 'priority'
+                return value === 'Priority'
               }),
             ) && (
               <View
@@ -596,7 +596,7 @@ const List = (props: any) => {
 
             {Boolean(
               selectedHeader.find((value: any) => {
-                return value === 'assignee'
+                return value === 'Assignee'
               }),
             ) && (
               <View
