@@ -20,6 +20,7 @@ const appIncludes = [
   resolveApp('../../node_modules/react-navigation-tabs'),
   resolveApp('../../node_modules/react-native-elements'),
   resolveApp('../../node_modules/react-native-vector-icons'),
+  // resolveApp('../../node_modules/react-native-calendars'),
 ]
 
 module.exports = function override(config, env) {

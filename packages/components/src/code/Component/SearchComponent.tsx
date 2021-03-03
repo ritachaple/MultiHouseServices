@@ -15,9 +15,9 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Chat from './Chat'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
-import ListComponent from './ListComponent'
 import Pagination from './Pagination'
 import DropDownList from './DropDownList'
+import ListComponent from './ListComponent'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -25,8 +25,8 @@ const windowHeight = Dimensions.get('window').height
 const headerName = [
   'Id',
   'Subject',
-  'Raise By',
-  'Raise at',
+  'Raised By',
+  'Raised at',
   'Status',
   'Sentiment',
   'Priority',
@@ -104,13 +104,45 @@ const SearchComplaints = (props: any) => {
 
   const onDropdownSelect = (item: any, index: any) => {
     try {
-      const data = [...selectedHeader]
-      data.splice(index, 0, item)
-      // console.log(data)
-      setSelectedHeader(data)
-      props.selectedItem(item)
+      const check = Boolean(
+        selectedHeader.find((value: any) => {
+          return value !== item
+        }),
+      )
+      if (!check) {
+        const data = [...selectedHeader]
+        data.splice(index, 0, item)
+        // console.log(data)
+        setSelectedHeader(data)
+      }
     } catch (error) {
       console.error('dropdown errro', error)
+    }
+  }
+
+  const onSortPress = (item: any, sort: any, ind: any) => {
+    try {
+      const header = [...headerName]
+      const data = [...selectedHeader]
+      const index = data.indexOf(item)
+      data.splice(index, 1)
+      headerName.splice(ind, 1)
+      if (sort === '+') {
+        // await
+        data.splice(index - 1, 0, item)
+
+        headerName.splice(ind - 1, 0, item)
+      } else if (sort === '-') {
+        // data.splice(index, 1)
+        data.splice(index + 1, 0, item)
+        headerName.splice(ind + 1, 0, item)
+      }
+
+      console.log('sortingData', data)
+      setSelectedHeader(data)
+      // props.selectedItem(item)
+    } catch (error) {
+      console.error('sorting error')
     }
   }
 
@@ -148,21 +180,25 @@ const SearchComplaints = (props: any) => {
           size={15}
           color="grey"
         />
-        <FlatList
-          contentContainerStyle={{
-            flex: 1,
-            flexDirection: 'row',
-            paddingHorizontal: '1%',
-            alignContent: 'center',
-            justifyContent: 'space-between',
-          }}
-          horizontal={horizontalFlatlist}
-          data={selectedHeader}
-          renderItem={({ item, index }) => {
-            return <Text style={{ flex: 1 }}>{item}</Text>
-          }}
-          keyExtractor={(index: any) => index.toString()}
-        />
+        <View style={{ flex: 1, paddingLeft: '2%' }}>
+          <FlatList
+            contentContainerStyle={{
+              flex: 1,
+              flexDirection: 'row',
+              paddingHorizontal: '1%',
+              alignContent: 'center',
+              justifyContent: 'space-between',
+            }}
+            horizontal={horizontalFlatlist}
+            data={selectedHeader}
+            renderItem={({ item, index }) => {
+              return (
+                <Text style={{ flex: 1, textAlign: 'center' }}>{item}</Text>
+              )
+            }}
+            keyExtractor={(index: any) => index.toString()}
+          />
+        </View>
         <Icon
           style={{
             paddingTop: 3,
@@ -250,19 +286,60 @@ const SearchComplaints = (props: any) => {
                         {item}
                       </Text>
                     </View>
-                    {isCheck && (
-                      <Icon
-                        name="remove"
-                        onPress={() => removeItem(item)}
-                        style={{
-                          flex: 1,
-                          justifyContent: 'center',
-                          paddingTop: '1%',
-                        }}
-                        size={12}
-                        color="#000"
-                      />
-                    )}
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: '20%',
+                        justifyContent: 'space-around',
+                        paddingRight: '2%',
+                      }}
+                    >
+                      <View>
+                        {index > 1 && (
+                          <Icon
+                            name="arrow-up"
+                            onPress={() => onSortPress(item, '+', index)}
+                            style={{
+                              flex: 1,
+                              justifyContent: 'center',
+                              paddingTop: '1%',
+                            }}
+                            size={12}
+                            color="#000"
+                          />
+                        )}
+                      </View>
+                      <View>
+                        {selectedHeader.length - 1 !== index && index > 0 && (
+                          <Icon
+                            name="arrow-down"
+                            onPress={() => onSortPress(item, '-', index)}
+                            style={{
+                              flex: 1,
+                              justifyContent: 'center',
+                              paddingTop: '1%',
+                            }}
+                            size={12}
+                            color="#000"
+                          />
+                        )}
+                      </View>
+                      <View>
+                        {isCheck && index > 0 && (
+                          <Icon
+                            name="remove"
+                            onPress={() => removeItem(item)}
+                            style={{
+                              flex: 1,
+                              justifyContent: 'center',
+                              paddingTop: '1%',
+                            }}
+                            size={12}
+                            color="#000"
+                          />
+                        )}
+                      </View>
+                    </View>
                   </View>
                 )
               }}
