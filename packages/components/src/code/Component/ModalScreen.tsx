@@ -377,7 +377,7 @@ const ModalScreen = (props: any) => {
                 <Text>Status</Text>
                 <Dropdown
                   dropdownList={Status.lookup_data}
-                  selectedItem={selectedPendingItem}
+                  lseectedItem={selectedPendingItem}
                 />
               </View>
               <View style={{ paddingTop: '7%' }}>

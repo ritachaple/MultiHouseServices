@@ -3,6 +3,7 @@ const initialState = {
   tickitList: [],
   selectedTickit: {},
   selectedOneTickit: false,
+  statusDropdownList: [] as any,
 }
 
 const tickitListData = (state = { initialState }, action: any) => {
@@ -26,6 +27,11 @@ const tickitListData = (state = { initialState }, action: any) => {
       return {
         ...state,
         storeSelectedTickits: action.payload,
+      }
+    case 'SET_STATUS_DROPDOWN_LIST':
+      return {
+        ...state,
+        statusDropdownList: action.payload,
       }
     default:
       return state

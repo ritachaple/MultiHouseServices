@@ -167,7 +167,8 @@ const SearchComplaints = (props: any) => {
           flexDirection: 'row',
           borderBottomColor: '#dce3de',
           borderBottomWidth: 0.1,
-          paddingHorizontal: '1%',
+          // paddingHorizontal: '1%',
+          paddingLeft: '1%',
           paddingVertical: '1%',
         }}
       >
@@ -180,7 +181,12 @@ const SearchComplaints = (props: any) => {
           size={15}
           color="grey"
         />
-        <View style={{ flex: 1, paddingLeft: '2%' }}>
+        <View
+          style={{
+            flex: 1,
+            // paddingLeft: '2%'
+          }}
+        >
           <FlatList
             contentContainerStyle={{
               flex: 1,
@@ -192,8 +198,18 @@ const SearchComplaints = (props: any) => {
             horizontal={horizontalFlatlist}
             data={selectedHeader}
             renderItem={({ item, index }) => {
+              // let check = false
+              //  if( item === "Subject"){
+              //   check = true
+
+              //  }
+
               return (
-                <Text style={{ flex: 1, textAlign: 'center' }}>{item}</Text>
+                // { check?
+                // <Text style={{ flex: flex, textAlign: 'center' }}>{item}</Text>:
+                <Text style={{ flex: 1 }}>{item}</Text>
+
+                // }
               )
             }}
             keyExtractor={(index: any) => index.toString()}

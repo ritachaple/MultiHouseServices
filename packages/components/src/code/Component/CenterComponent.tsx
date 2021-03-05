@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -11,6 +11,8 @@ import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IconButton from './IconButton'
 import DropdownStaticData from './DropdownStaticData'
+import Api from '../provider/api/Api'
+import { configs } from '../provider/api/ApiUrl'
 
 const OutlineButton = (props: any) => {
   const { isButtonClick, onPress, title } = props
@@ -33,6 +35,22 @@ const OutlineButton = (props: any) => {
 }
 
 const CenterComponent = (props: any) => {
+  const { token } = props
+
+  const [status, setStatus] = useState([] as any)
+
+  useEffect(() => {
+    const getStatusDropdownData = async () => {
+      const res: any = await Api.get(`${configs.get_status}39`, `${token}`)
+      // console.log('tickitStatusRes', res)
+
+      if (res) {
+        props.setStatusDropdownList(res.data)
+      }
+    }
+    getStatusDropdownData()
+  }, [token, props])
+
   const dropdownList = [
     'Select Type',
     'Pending',
@@ -134,15 +152,24 @@ const CenterComponent = (props: any) => {
   )
 }
 
+const mapStateToProps = (state: any) => {
+  return {
+    token: state.loginReducer.token,
+  }
+}
+
 const mapDispatchToProps = (dispatch: any) => {
   return {
     setDisplayTickitType: (data: any) => {
       dispatch({ type: 'SET_TICKIT_TYPE', payload: data })
     },
+    setStatusDropdownList: (data: any) => {
+      dispatch({ type: 'SET_STATUS_DROPDOWN_LIST', payload: data })
+    },
   }
 }
 
-export default connect(null, mapDispatchToProps)(CenterComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(CenterComponent)
 
 const styles = StyleSheet.create({
   // ...
