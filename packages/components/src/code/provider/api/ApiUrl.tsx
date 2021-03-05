@@ -5,9 +5,9 @@ const transalate = 'translation/'
 
 export const configs = {
   loginApi: `${BaseUrl}auth/api_token_obtain/`,
-  search_complaints: `${BaseUrl}${Api}${ticket}search_complaints`,
+  search_complaints: `${BaseUrl}${Api}${ticket}search_complaints`, // searchComplaints
   log_activity: `${BaseUrl}${Api}${ticket}log_activity`,
-  get_status: `${BaseUrl}${Api}${ticket}get_status/`,
+  get_status: `${BaseUrl}${Api}${ticket}get_status/`, // To get status
   get_activity: `${BaseUrl}${Api}${ticket}get_activity/`,
   translate_text: `${BaseUrl}${Api}${transalate}translate_text`,
   batch_update_control_option: `${BaseUrl}${Api}${ticket}get_controls_with_data?client_id=39&group_id=3`,

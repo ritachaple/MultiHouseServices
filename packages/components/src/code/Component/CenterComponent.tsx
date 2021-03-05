@@ -46,6 +46,8 @@ const CenterComponent = (props: any) => {
 
       if (res) {
         props.setStatusDropdownList(res.data)
+      } else {
+        props.clearToken()
       }
     }
     getStatusDropdownData()
@@ -165,6 +167,9 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     setStatusDropdownList: (data: any) => {
       dispatch({ type: 'SET_STATUS_DROPDOWN_LIST', payload: data })
+    },
+    clearToken: () => {
+      dispatch({ type: 'CLEAR_LOGIN_TOKEN' })
     },
   }
 }
