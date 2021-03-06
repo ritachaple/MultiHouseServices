@@ -43,6 +43,23 @@ const SearchComplaints = (props: any) => {
   const horizontalFlatlist = true
 
   useEffect(() => {
+    const dynamicControls = async () => {
+      try {
+        const res: any = await Api.get(
+          `${configs.dynamic_get_controls}`,
+          props.token,
+        )
+        if (res.status === 200 && res.data.controls !== null) {
+          // console.log(' priority dropdown data', res.data.controls[4])
+          // setPriority(res.data.controls[4])
+          props.setAssigneeDropdownList(res.data.controls[4].lookup_data)
+          props.setpriorityDropdown(res.data.controls[5].lookup_data)
+        }
+      } catch (error) {
+        console.log('dynamic Control error', error)
+      }
+    }
+
     const unsubscribe = props.navigation.addListener('focus', () => {
       const searchComplaintsApi = async () => {
         try {
@@ -90,6 +107,7 @@ const SearchComplaints = (props: any) => {
       }
       searchComplaintsApi()
       clearData()
+      dynamicControls()
     })
     return unsubscribe
   }, [props])
@@ -106,10 +124,14 @@ const SearchComplaints = (props: any) => {
     try {
       const check = Boolean(
         selectedHeader.find((value: any) => {
-          return value !== item
+          return value === item
         }),
       )
+      console.log('checkHeader', check)
+      console.log('selectedHeader', selectedHeader)
+
       if (!check) {
+        console.log('false')
         const data = [...selectedHeader]
         data.splice(index, 0, item)
         // console.log(data)
@@ -167,8 +189,8 @@ const SearchComplaints = (props: any) => {
           flexDirection: 'row',
           borderBottomColor: '#dce3de',
           borderBottomWidth: 0.1,
-          // paddingHorizontal: '1%',
-          paddingLeft: '1%',
+          paddingHorizontal: '1%',
+          // paddingLeft: '1%',
           paddingVertical: '1%',
         }}
       >
@@ -389,6 +411,12 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     clearToken: () => {
       dispatch({ type: 'CLEAR_LOGIN_TOKEN' })
+    },
+    setpriorityDropdown: (data: any) => {
+      dispatch({ type: 'PRIORITY_LIST', payload: data })
+    },
+    setAssigneeDropdownList: (data: any) => {
+      dispatch({ type: 'ASSIGNEE_LIST', payload: data })
     },
   }
 }
