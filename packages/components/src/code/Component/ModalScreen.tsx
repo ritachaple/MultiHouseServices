@@ -17,7 +17,7 @@ import { configs } from '../provider/api/ApiUrl'
 import UserHistory from './UserHistory'
 import UserData from './UserDetails_New'
 import MultipleDropdown from './MultipleDropdown'
-// import DatePicker from './DatePicker'
+// import Datepicker from './DatePicker'
 
 const ModalScreen = (props: any) => {
   const {
@@ -308,9 +308,24 @@ const ModalScreen = (props: any) => {
           </View>
         </View>
         <View style={{ flexDirection: 'row', flex: 15 }}>
+          <View style={{ flex: 5 }}>
+            {isCRM &&
+              (userDetails ? (
+                <UserData userId={userId} onClose={showUserDetails} />
+              ) : (
+                <UserHistory showUserDetails={showUserDetails} />
+              ))}
+            {/* {isCRM ? <UserData userId={userId} onClose={showUserDetails}/> : null} */}
+
+            {isConversation ? (
+              <Chat complaintId={complaintId} clientId={clientId} />
+            ) : null}
+          </View>
+          <View style={styles.verticleLine} />
           <View
             style={{
               flex: 1,
+
               //  marginHorizontal: '1%', paddingVertical: '2%'
             }}
           >
@@ -386,7 +401,7 @@ const ModalScreen = (props: any) => {
                   dropdownList={PolicyNo.lookup_data}
                   selectedItem={selectedPendingItem}
                 /> */}
-                {/* <DatePicker /> */}
+                {/* <Datepicker /> */}
               </View>
               <View style={{ paddingTop: '7%' }}>
                 <Text>Fake new Type</Text>
@@ -403,20 +418,6 @@ const ModalScreen = (props: any) => {
                 />
               </View>
             </ScrollView>
-          </View>
-          <View style={styles.verticleLine} />
-          <View style={{ flex: 5 }}>
-            {isCRM &&
-              (userDetails ? (
-                <UserData userId={userId} onClose={showUserDetails} />
-              ) : (
-                <UserHistory showUserDetails={showUserDetails} />
-              ))}
-            {/* {isCRM ? <UserData userId={userId} onClose={showUserDetails}/> : null} */}
-
-            {isConversation ? (
-              <Chat complaintId={complaintId} clientId={clientId} />
-            ) : null}
           </View>
         </View>
       </View>

@@ -13,6 +13,9 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Feather from 'react-native-vector-icons/Feather'
+import Entypo from 'react-native-vector-icons/Entypo'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Overlay, Divider, Input } from 'react-native-elements'
 import { Hoverable } from 'react-native-web-hover'
 import { connect } from 'react-redux'
@@ -48,6 +51,21 @@ const Chat = (props: any) => {
   })
 
   const bodercolor = '#acb3bf'
+
+  // const bottomBtn = [
+  //   {
+  //     iocnName:'',
+  //     btnText:'Internal Note'
+  //   },
+  //   {
+  //     iocnName:'',
+  //     btnText:'Internal Note'
+  //   },
+  //   {
+  //     iocnName:'',
+  //     btnText:'Internal Note'
+  //   }
+  // ]
 
   useEffect(() => {
     const chatDetails = async () => {
@@ -309,6 +327,57 @@ const Chat = (props: any) => {
   return (
     // <ScrollView>
     <View style={styles.container}>
+      <View
+        style={{
+          // flex:0.1
+          padding: '1%',
+          flexDirection: 'row',
+        }}
+      >
+        <Text>Conversations :</Text>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', paddingHorizontal: '2%' }}
+          onPress={() => {}}
+        >
+          <View
+            style={{
+              padding: '5%',
+              paddingHorizontal: '7%',
+              marginHorizontal: '10%',
+              backgroundColor: '#b3b3ff',
+              borderRadius: 30,
+            }}
+          >
+            <Feather name="globe" size={18} color="#fff" />
+          </View>
+          <Text>All</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', paddingHorizontal: '2%' }}
+          onPress={() => {}}
+        >
+          <Entypo
+            style={{ marginHorizontal: '10%' }}
+            name="facebook-with-circle"
+            size={20}
+            color="#b3b3ff"
+          />
+          <Text>Facebook</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', paddingHorizontal: '2%' }}
+          onPress={() => {}}
+        >
+          <Entypo
+            style={{ marginHorizontal: '10%' }}
+            name="twitter-with-circle"
+            size={20}
+            color="#b3b3ff"
+          />
+          <Text>Twitter</Text>
+        </TouchableOpacity>
+      </View>
+      <Divider style={{ backgroundColor: bodercolor }} />
       <ScrollView style={{ flex: 1 }}>
         <FlatList
           style={styles.list}
@@ -342,9 +411,58 @@ const Chat = (props: any) => {
           }}
         />
       </ScrollView>
-      <Divider style={{ backgroundColor: bodercolor }} />
 
-      <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          borderRadius: 10,
+          backgroundColor: '#d9d9d9',
+          padding: '1%',
+          width: '95%',
+          alignSelf: 'center',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'white',
+            padding: '0.5%',
+            borderRadius: 20,
+            flexDirection: 'row',
+            marginRight: '1%',
+          }}
+        >
+          <Entypo name="reply" size={18} color="#595959" />
+          <Text style={{ fontSize: 12 }}>Reply</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'white',
+            padding: '0.5%',
+            borderRadius: 20,
+            flexDirection: 'row',
+            marginRight: '1%',
+          }}
+        >
+          <Entypo name="forward" size={18} color="#595959" />
+          <Text style={{ fontSize: 12 }}>Forward</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'white',
+            padding: '0.5%',
+            borderRadius: 20,
+            flexDirection: 'row',
+            marginRight: '1%',
+          }}
+        >
+          <MaterialIcons name="notes" size={18} color="#595959" />
+          <Text style={{ fontSize: 12 }}>Internal Note</Text>
+        </TouchableOpacity>
+      </View>
+      <Divider style={{ backgroundColor: bodercolor }} />
+      {/* <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
         <TouchableOpacity
           style={{
             backgroundColor: '#eeeeeeed',
@@ -495,14 +613,7 @@ const Chat = (props: any) => {
         >
           <Toggle2 />
         </View>
-        {/* <View
-          style={{
-            paddingVertical: '0.5%',
-            marginHorizontal: '0.5%',
-          }}
-        >
-          <Text>Credential not configured</Text>
-        </View> */}
+        
         <View
           style={{
             paddingVertical: '0.5%',
@@ -554,7 +665,7 @@ const Chat = (props: any) => {
         >
           <Text>{SelectedDropdownData.DynamicCanned}</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <View style={styles.footer}>
         <View style={styles.inputContainer}>
@@ -651,7 +762,7 @@ export default connect(mapStateToProps)(Chat)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: '2%',
+    // marginHorizontal: '2%',
   },
   list: {
     paddingHorizontal: 17,

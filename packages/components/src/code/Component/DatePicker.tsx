@@ -4,7 +4,7 @@ import moment from 'moment'
 // import I18n from 'react-native-i18n';
 import { Calendar } from 'react-native-calendars'
 
-const DatePicker = () => {
+const Datepicker = () => {
   //  let date= new Date()
   //   date = moment(date).format('YYYY-MM-DD')
   const [dob, setdob] = useState('2021-02-23')
@@ -100,4 +100,4 @@ const DatePicker = () => {
   )
 }
 
-export default DatePicker
+export default Datepicker

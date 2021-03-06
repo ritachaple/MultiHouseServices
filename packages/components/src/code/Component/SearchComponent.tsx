@@ -265,7 +265,7 @@ const SearchComplaints = (props: any) => {
             }}
             data={tickitItems}
             renderItem={({ item }) => {
-              // //console.log('renderItem item: ', item)
+              //  console.log('renderItem item: ', item)
               return (
                 <ListComponent
                   tickitItems={item}

@@ -21,8 +21,6 @@ const Api = {
   post: async (url = '', data = {}, token = '') => {
     let res = ''
     try {
-      console.log('url', url)
-
       const header = {
         headers: {
           Authorization: `Bearer ${token}`,
