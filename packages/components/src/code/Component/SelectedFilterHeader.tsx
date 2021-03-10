@@ -6,9 +6,10 @@ const SelectedFilterHeader = () => {
     <View
       style={{
         flexDirection: 'row',
-        backgroundColor: '#ebf4f5',
+        backgroundColor: '#E5E5E5',
         height: '7%',
         padding: '0.5',
+        borderTopColor: '#E5E5E5',
       }}
     >
       {/* <Text>SelectedFilterHeader</Text> */}

@@ -47,8 +47,20 @@ const Interaction = (props: any) => {
         }}
       >
         <View style={{ flex: 1 }}>
+          {/* <View style={{}}>
+        <RightComponent 
+                onFilterPress={() => {
+                  onFilterPress()
+                }}
+              />
+          </View> */}
           <Header
-            containerStyle={{ backgroundColor: 'whitesmoke', height: '7%' }}
+            containerStyle={{
+              backgroundColor: '#E5E5E5',
+              height: '9%',
+              paddingRight: '3%',
+              borderBottomColor: '#E5E5E5',
+            }}
             placement="left"
             centerComponent={
               isHeaderSelect || selectedOneTickit ? (

@@ -13,6 +13,7 @@ import IconButton from './IconButton'
 import DropdownStaticData from './DropdownStaticData'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
+import { Filter } from '../Images/Header'
 
 const OutlineButton = (props: any) => {
   const { isButtonClick, onPress, title } = props
@@ -114,41 +115,21 @@ const CenterComponent = (props: any) => {
         dropdownName="Type"
       />
 
-      {/* <View style={{ flexDirection: 'row' }}>
-        <OutlineButton
-          isButtonClick={isPendingButtonClick}
-          onPress={() => {
-            onPendingPress()
-          }}
-          title="Pending"
-        />
-      </View>
-      <View style={{ paddingLeft: '1%', flexDirection: 'row' }}>
-        <OutlineButton
-          isButtonClick={isEscalatedButtonClick}
-          onPress={() => {
-            onEscalatedPress()
-          }}
-          title="Escalated"
-        />
-      </View>
-      <View style={{ paddingLeft: '1%', flexDirection: 'row' }}>
-        <OutlineButton
-          isButtonClick={isNotRespondedButtonClick}
-          onPress={() => {
-            onNotRespondedPress()
-          }}
-          title="Not Responded"
-        />
-      </View>
-      <View style={{ paddingLeft: '1%', flexDirection: 'row' }}>
-        <OutlineButton
-          isButtonClick={isAwaitingButtonClick}
-          onPress={() => {
-            onAwaitingPress()
-          }}
-          title="Awaiting"
-        />
+      {/* <View
+        style={{
+          backgroundColor: '#fff',
+          width: '20%',
+          height: 39,
+          borderWidth: 1,
+          borderColor: '#D7D7D7',
+          borderRadius: 6,
+          justifyContent: 'center',
+          paddingHorizontal: '7%',
+          // marginLeft:"20%"
+          marginRight:"0%"
+        }}
+      >
+        <Filter />
       </View> */}
     </View>
   )
