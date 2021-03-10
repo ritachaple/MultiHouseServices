@@ -18,6 +18,7 @@ import { configs } from '../provider/api/ApiUrl'
 import Pagination from './Pagination'
 import DropDownList from './DropDownList'
 import ListComponent from './ListComponent'
+import { UnChecked, Checked } from '../Images/Checkbox'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -69,8 +70,8 @@ const SearchComplaints = (props: any) => {
             department: [],
             is_deleted: false,
             is_spam: false,
-            to_date: '2021-02-24T11:24:06.108Z',
-            from_date: '2021-02-10T09:24:06.108Z',
+            to_date: '2021-03-10T12:16:01.556Z',
+            from_date: '2021-02-24T12:16:01.556Z',
             custom_filter: null,
             customer_responded: null,
             page_size: 50,
@@ -194,15 +195,10 @@ const SearchComplaints = (props: any) => {
           paddingVertical: '1%',
         }}
       >
-        <Icon
-          style={{
-            paddingTop: 2,
-          }}
-          onPress={() => onCheckBox()}
-          name={isHeaderSelect ? 'check-square-o' : 'square-o'}
-          size={15}
-          color="grey"
-        />
+        <TouchableOpacity onPress={() => onCheckBox()}>
+          {isHeaderSelect ? <Checked /> : <UnChecked />}
+        </TouchableOpacity>
+
         <View
           style={{
             flex: 1,
@@ -220,18 +216,17 @@ const SearchComplaints = (props: any) => {
             horizontal={horizontalFlatlist}
             data={selectedHeader}
             renderItem={({ item, index }) => {
-              // let check = false
+              // let flex = 1
               //  if( item === "Subject"){
-              //   check = true
-
+              //   flex = 2
+              //  }else{
+              //   flex=1
               //  }
 
               return (
                 // { check?
                 // <Text style={{ flex: flex, textAlign: 'center' }}>{item}</Text>:
                 <Text style={{ flex: 1 }}>{item}</Text>
-
-                // }
               )
             }}
             keyExtractor={(index: any) => index.toString()}

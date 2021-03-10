@@ -29,6 +29,8 @@ import {
   PositiveSentiment,
   NeutralSentiment,
 } from '../../assets/Icon/Sentiment'
+import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
+import { UnChecked, Checked } from '../Images/Checkbox'
 
 // const colors = ['red', 'green', 'orange']
 
@@ -365,6 +367,33 @@ const List = (props: any) => {
     setSentimentList(true)
   }
 
+  const mediaIcon = (mediumId: any) => {
+    // console.log('mediumId', mediumId)
+
+    try {
+      switch (mediumId) {
+        case 1:
+          return <Facebook />
+          break
+        case 2:
+          return <Twitter />
+          break
+        case 4:
+          return <Email />
+          break
+        case 18:
+          return <WhatsApp />
+          break
+        default:
+          return null
+          break
+      }
+    } catch (error) {
+      console.error('media Icon Error', error)
+    }
+    return null
+  }
+
   const Subject = () => {
     return (
       <View
@@ -375,6 +404,13 @@ const List = (props: any) => {
           // backgroundColor: 'red',
         }}
       >
+        <View style={{ paddingRight: '5%' }}>
+          {/* <Facebook /> */}
+          {/* <Twitter /> */}
+          {/* <Email /> */}
+
+          {mediaIcon(tickitItems.medium_id)}
+        </View>
         <Text
           onPress={() => toggleOverlay(tickitItems)}
           style={[
@@ -455,16 +491,33 @@ const List = (props: any) => {
     )
   }
 
+  const sentiIcon = (Sentiment: any) => {
+    try {
+      switch (Sentiment) {
+        case 1:
+          return <PositiveSentiment />
+          break
+        case -1:
+          return <NegativeSentiment />
+          break
+        case 0:
+          return <NeutralSentiment />
+          break
+        default:
+          return <DefaultSentiment />
+      }
+    } catch (error) {
+      console.error(error)
+    }
+    return <DefaultSentiment />
+  }
+
   const Sentiment = (hovered: any) => {
     return (
-      /* <View style={[styles.iconStyle,{backgroundColor:"red",}]}> */
       <View
         style={{
           flex: 1,
           flexDirection: 'row',
-          // justifyContent: 'space-between',
-          // paddingLeft: '4%',
-          // backgroundColor: 'red',
         }}
       >
         <TouchableOpacity
@@ -473,113 +526,13 @@ const List = (props: any) => {
         >
           <View style={{ flex: 1 }} />
           <View style={{ flex: 1, justifyContent: 'center' }}>
-            {tickitItems.sentiment !== null ? (
-              <>
-                {tickitItems.sentiment_name === 'Negative' && (
-                  <NegativeSentiment />
-                )}
-                {tickitItems.sentiment_name === 'Positive' && (
-                  <PositiveSentiment />
-                )}
-                {tickitItems.sentiment_name === 'Neutral' && (
-                  <NeutralSentiment />
-                )}
-              </>
-            ) : (
-              <DefaultSentiment />
-            )}
-
-            {/* {displaySentimentIcon(tickitItems)} */}
+            {sentiIcon(tickitItems.sentiment)}
           </View>
           <View style={{ flex: 1 }}>
             {hovered && <Icon name="angle-down" size={15} />}
           </View>
         </TouchableOpacity>
-        {/* <View style={{ paddingRight: '2%' }}>
-{tickitItems.sentiment_name === 'Positive' ? (
-<Icon
-name="smile-o"
-size={15}
-onPress={() => {
-  onSentimetIconClick('Positive', 1, tickitItems)
-}}
-color="green"
-/>
-) : (
-<Hoverable>
-{({ hovered }) => (
-  <Icon
-    name="smile-o"
-    size={15}
-    onPress={() => {
-      onSentimetIconClick('Positive', 1, tickitItems)
-    }}
-    color={hovered ? 'green' : 'grey'}
-  />
-)}
-</Hoverable>
-)}
-</View>
-<View style={{ paddingRight: '2%' }}>
-{tickitItems.sentiment_name === 'Neutral' ? (
-<Icon
-name="meh-o"
-size={15}
-onPress={() => {
-  onSentimetIconClick('Neutral', 0, tickitItems)
-}}
-color="#dbab16"
-/>
-) : (
-<Hoverable>
-{({ hovered }) => (
-  <Icon
-    name="meh-o"
-    size={15}
-    onPress={() => {
-      onSentimetIconClick('Neutral', 0, tickitItems)
-    }}
-    color={hovered ? '#dbab16' : 'grey'}
-  />
-)}
-</Hoverable>
-)}
-</View> */}
-
-        {/* {tickitItems.sentiment_name === 'Negative' ? ( */}
-        {/* <Icon
-            style={{ paddingLeft: '30%' }}
-            name="smile-o"
-            size={15}
-            onPress={() => {
-              onSentimetIconClick('Negative', -1, tickitItems)
-            }}
-            // color="gray"
-            color={
-              colors[tickitItems.sentiment]
-                ? colors[tickitItems.sentiment]
-                : 'gray'
-            }
-          /> */}
-        {/* {hovered &&  */}
-
-        {/* ) : (
-<Hoverable>
-{({ hovered }) => (
-<Icon
-  // style={{ paddingRight: '10%' }}
-  name="frown-o"
-  size={15}
-  onPress={() => {
-    onSentimetIconClick('Negative', -1, tickitItems)
-  }}
-  color={hovered ? 'red' : 'grey'}
-/>
-)}
-</Hoverable>
-)} */}
       </View>
-      // )}
     )
   }
 
@@ -660,42 +613,22 @@ color="#dbab16"
               return value === tickitItems.complaint_id
             }),
           ) ? (
-            <Icon
-              style={{ paddingTop: '10%' }}
-              name="check-square-o"
-              size={13}
+            <TouchableOpacity
               onPress={() => onCheckboxClick(tickitItems.complaint_id)}
-              color="#000"
-            />
+            >
+              <Checked />
+            </TouchableOpacity>
           ) : (
-            <Icon
-              style={{ paddingTop: '10%' }}
+            <TouchableOpacity
               onPress={() => onCheckboxClick(tickitItems.complaint_id)}
-              name="square-o"
-              size={13}
-              color="#000"
-            />
+            >
+              <UnChecked />
+            </TouchableOpacity>
           )}
         </View>
-        {/* <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            // paddingHorizontal: '1%',
-            // backgroundColor:"pink"
-          }}
-        > */}
-        <Text style={{ fontSize: 15, paddingHorizontal: '2%' }}>
-          #{tickitItems.complaint_id}
-        </Text>
-        {/* <Icon
-            style={{ paddingTop: '2%', textAlign: 'center' }}
-            name="whatsapp"
-            size={15}
-            color="#000"
-          /> */}
-
-        {/* </View> */}
+        <View style={{ paddingLeft: '10%' }}>
+          <Text style={{ fontSize: 15 }}>#{tickitItems.complaint_id}</Text>
+        </View>
       </View>
     )
   }
@@ -784,74 +717,74 @@ color="#dbab16"
       />
     )
   }
-  const priorityDropdown = () => {
-    return (
-      <FlatList
-        style={{ flex: 1 }}
-        data={priorityDropdownList}
-        renderItem={({ item, index }) => {
-          return (
-            // <Hoverable>
-            //   {({ hovered }) => (
-            <View
-              style={{
-                // justifyContent: 'flex-start'
-                paddingHorizontal: '2%',
-                paddingVertical: '0.5%',
-                borderBottomWidth: 0.2,
-                borderBottomColor: 'gray',
-                // backgroundColor: hovered ? '#3498DB' : '#fff',
-                backgroundColor: '#fff',
-              }}
-            >
-              <Text
-              // onPress={() => tickitStatusMenu(index, item.status_name)}
-              >
-                {item.text && item.text}
-              </Text>
-            </View>
-            //   )}
-            // </Hoverable>
-          )
-        }}
-        keyExtractor={(index: any) => index.toString()}
-      />
-    )
-  }
-  const assigneeDropdown = () => {
-    return (
-      <FlatList
-        style={{ flex: 1 }}
-        data={assigneeDropdownList}
-        renderItem={({ item, index }) => {
-          return (
-            // <Hoverable>
-            //   {({ hovered }) => (
-            <View
-              style={{
-                // justifyContent: 'flex-start'
-                paddingHorizontal: '2%',
-                paddingVertical: '0.5%',
-                borderBottomWidth: 0.2,
-                borderBottomColor: 'gray',
-                // backgroundColor: hovered ? '#3498DB' : '#fff',
-                backgroundColor: '#fff',
-              }}
-            >
-              <Text
-              // onPress={() => tickitStatusMenu(index, item.status_name)}
-              >
-                {item.text && item.text}
-              </Text>
-            </View>
-            //   )}
-            // </Hoverable>
-          )
-        }}
-        keyExtractor={(index: any) => index.toString()}
-      />
-    )
-  }
+  // const priorityDropdown = () => {
+  //   return (
+  //     <FlatList
+  //       style={{ flex: 1 }}
+  //       data={priorityDropdownList}
+  //       renderItem={({ item, index }) => {
+  //         return (
+  //           // <Hoverable>
+  //           //   {({ hovered }) => (
+  //           <View
+  //             style={{
+  //               // justifyContent: 'flex-start'
+  //               paddingHorizontal: '2%',
+  //               paddingVertical: '0.5%',
+  //               borderBottomWidth: 0.2,
+  //               borderBottomColor: 'gray',
+  //               // backgroundColor: hovered ? '#3498DB' : '#fff',
+  //               backgroundColor: '#fff',
+  //             }}
+  //           >
+  //             <Text
+  //             // onPress={() => tickitStatusMenu(index, item.status_name)}
+  //             >
+  //               {item.text && item.text}
+  //             </Text>
+  //           </View>
+  //           //   )}
+  //           // </Hoverable>
+  //         )
+  //       }}
+  //       keyExtractor={(index: any) => index.toString()}
+  //     />
+  //   )
+  // // }
+  // const assigneeDropdown = () => {
+  //   return (
+  //     <FlatList
+  //       style={{ flex: 1 }}
+  //       data={assigneeDropdownList}
+  //       renderItem={({ item, index }) => {
+  //         return (
+  //           // <Hoverable>
+  //           //   {({ hovered }) => (
+  //           <View
+  //             style={{
+  //               // justifyContent: 'flex-start'
+  //               paddingHorizontal: '2%',
+  //               paddingVertical: '0.5%',
+  //               borderBottomWidth: 0.2,
+  //               borderBottomColor: 'gray',
+  //               // backgroundColor: hovered ? '#3498DB' : '#fff',
+  //               backgroundColor: '#fff',
+  //             }}
+  //           >
+  //             <Text
+  //             // onPress={() => tickitStatusMenu(index, item.status_name)}
+  //             >
+  //               {item.text && item.text}
+  //             </Text>
+  //           </View>
+  //           //   )}
+  //           // </Hoverable>
+  //         )
+  //       }}
+  //       keyExtractor={(index: any) => index.toString()}
+  //     />
+  //   )
+  // }
 
   return (
     <View style={styles.container}>
