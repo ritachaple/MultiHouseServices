@@ -15,6 +15,11 @@ import { connect } from 'react-redux'
 import Api from '../../provider/api/Api'
 import { configs } from '../../provider/api/ApiUrl'
 import SideBar from '../../Component/SideBar'
+import Whatsapp from '../../Component/ImageComponents/Whatsapp'
+import Facebook from '../../Component/ImageComponents/Facebook'
+import Twitter from '../../Component/ImageComponents/Twitter'
+import UnoBot from '../../Component/ImageComponents/UnoBot'
+import LinkedIn from '../../Component/ImageComponents/LinkedIn'
 
 const smIcons = [
   {
@@ -124,13 +129,13 @@ const Login = (props: any) => {
         <View style={[styles.container, { flex: 3, padding: '5%' }]}>
           <View
             style={{
-              backgroundColor: 'red',
+              // backgroundColor: 'red',
               height: '35%',
-              width: '40%',
+              // width: '40%',
               alignSelf: 'center',
             }}
           >
-            {/* <Image style={{height:"50%", width:"50%", }} source={require('../Images/crop_login_logo.png')}></Image> */}
+            <UnoBot />
           </View>
           <View>
             <Text>Email</Text>
@@ -176,7 +181,12 @@ const Login = (props: any) => {
                 marginVertical: '2%',
               }}
             >
-              {smIcons.length > 0 ? (
+              <Whatsapp />
+              <Twitter />
+              <Facebook />
+              <LinkedIn />
+              {/* <Facebook/> */}
+              {/* {smIcons.length > 0 ? (
                 smIcons.map((item) => (
                   // <View style={{flexDirection:"row"}}>
                   <TouchableOpacity onPress={() => {}}>
@@ -190,7 +200,7 @@ const Login = (props: any) => {
                 ))
               ) : (
                 <></>
-              )}
+              )} */}
             </View>
             <View
               style={{
