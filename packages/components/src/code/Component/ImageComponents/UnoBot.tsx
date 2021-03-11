@@ -4,7 +4,7 @@ function UnoBot() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="150"
+      width="110"
       height="75"
       x="0"
       y="0"

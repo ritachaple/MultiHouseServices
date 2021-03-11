@@ -99,49 +99,55 @@ const Login = (props: any) => {
         <View style={[styles.container, { flex: 3, paddingHorizontal: '5%' }]}>
           <View
             style={{
-              width: '',
+              width: '2%',
               alignSelf: 'center',
+              paddingTop: '2%',
             }}
           >
             <UnoBot />
           </View>
           {isNext ? (
-            <View>
-              <Text>Password</Text>
-              <TextInput
-                secureTextEntry
-                defaultValue=""
-                style={styles.input}
-                placeholder="Enter Password"
-                onChangeText={(value) => {
-                  onInputChange(value, 'password')
-                }}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  onLoginPress()
-                }}
-                style={[
-                  styles.modalButton,
-                  { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
-                ]}
-              >
-                <Text style={[styles.buttonText, { color: '#fff' }]}>
-                  Login
-                </Text>
-              </TouchableOpacity>
+            <View style={[styles.outerView]}>
+              <View style={[styles.innerView]}>
+                <Text style={[styles.textFont]}>Password</Text>
+                <TextInput
+                  secureTextEntry
+                  defaultValue=""
+                  style={[styles.input, styles.textFont]}
+                  placeholder="Enter Password"
+                  onChangeText={(value) => {
+                    onInputChange(value, 'password')
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    onLoginPress()
+                  }}
+                  style={[
+                    styles.modalButton,
+                    { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
+                  ]}
+                >
+                  <Text style={[styles.buttonText, { color: '#fff' }]}>
+                    Submit
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           ) : (
-            <View>
-              <Text>Email</Text>
-              <TextInput
-                defaultValue=""
-                style={styles.input}
-                placeholder="Enter Email"
-                onChangeText={(value) => {
-                  onInputChange(value, 'username')
-                }}
-              />
+            <View style={[styles.outerView]}>
+              {/* <View style={{flex:1}} /> */}
+              <View style={[styles.innerView]}>
+                <Text style={[styles.textFont]}>Email</Text>
+                <TextInput
+                  defaultValue=""
+                  style={[styles.input, styles.textFont]}
+                  placeholder="Enter Email"
+                  onChangeText={(value) => {
+                    onInputChange(value, 'username')
+                  }}
+                />
+              </View>
               <TouchableOpacity
                 onPress={() => setNext(true)}
                 style={[
@@ -205,15 +211,36 @@ const Login = (props: any) => {
               }}
             >
               <TouchableOpacity>
-                <Text>Privacy Policy</Text>
+                <Text style={[styles.textFont, styles.textFooter]}>
+                  Privacy Policy
+                </Text>
               </TouchableOpacity>
-              <Text style={{ marginHorizontal: '1%' }}>{'\u25CF'}</Text>
+              <Text
+                style={[
+                  styles.textFont,
+                  styles.textFooter,
+                  { marginHorizontal: '1%' },
+                ]}
+              >
+                {'\u25CF'}
+              </Text>
               <TouchableOpacity>
-                <Text>Terms of Service</Text>{' '}
+                <Text style={[styles.textFont, styles.textFooter]}>
+                  Terms of Service
+                </Text>{' '}
               </TouchableOpacity>
-              <Text style={{ marginHorizontal: '1%' }}>{'\u25CF'}</Text>
-              <TouchableOpacity>Copyright 2021.</TouchableOpacity>
-              <Text> All rights reserved</Text>
+              <Text style={[styles.textFont, { marginHorizontal: '1%' }]}>
+                {'\u25CF'}
+              </Text>
+              <TouchableOpacity>
+                <Text style={[styles.textFont, styles.textFooter]}>
+                  Copyright 2021.
+                </Text>
+              </TouchableOpacity>
+              <Text style={[styles.textFont, styles.textFooter]}>
+                {' '}
+                All rights reserved
+              </Text>
             </View>
           </View>
         </View>
@@ -245,11 +272,12 @@ const styles = StyleSheet.create({
     // backgroundColor:"white",
     // width: '100%',
     height: '140%',
+    // flex:1
     // borderWidth: 1,
     // marginHorizontal: '25%',
     // marginVertical: '10%',
     // borderRadius: 4,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     // paddingHorizontal: '2%',
     // paddingVertical: '2%',
   },
@@ -263,7 +291,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     paddingVertical: '2%',
     borderRadius: 4,
-    justifyContent: 'center',
+    marginLeft: '60%',
+    marginTop: '10%',
+    // justifyContent:"space-around"
+    // justifyContent: 'center',
   },
   buttonText: {
     fontSize: 13,
@@ -271,5 +302,20 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 2,
     borderColor: '#d9d9d9',
+  },
+  textFont: {
+    fontFamily: 'Poppins-Black',
+    fontSize: 12,
+    lineHeight: 28,
+  },
+  textFooter: {
+    color: 'gray',
+  },
+  outerView: {
+    paddingTop: '8%',
+    paddingHorizontal: '10%',
+  },
+  innerView: {
+    paddingLeft: '25%',
   },
 })
