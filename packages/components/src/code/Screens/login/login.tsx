@@ -54,6 +54,7 @@ const Login = (props: any) => {
 
   // const {navigation,}
   const [login, setLogin] = useState({ username: '', password: '' })
+  const [isNext, setNext] = useState(false)
 
   const onInputChange = (value: any, field: any) => {
     const data: any = { ...login }
@@ -85,79 +86,73 @@ const Login = (props: any) => {
   }
 
   return (
-    // <View style={{ flexDirection: 'row' }}>
-    //   <View style={styles.container}>
-    //     <Input
-    //       placeholder="Enter Email"
-    //       onChangeText={(value) => {
-    //         onInputChange(value, 'username')
-    //       }}
-    //       leftIcon={<Icon name="user" size={24} color="black" />}
-    //     />
-
-    //     <Input
-    //       onChangeText={(value) => {
-    //         onInputChange(value, 'password')
-    //       }}
-    //       secureTextEntry
-    //       placeholder="Enter Password"
-    //       leftIcon={<Icon name="lock" size={24} color="black" />}
-    //     />
-
-    //     <TouchableOpacity
-    //       onPress={() => {
-    //         onLoginPress()
-    //       }}
-    //       style={[
-    //         styles.modalButton,
-    //         { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
-    //       ]}
-    //     >
-    //       <Text style={[styles.buttonText, { color: '#fff' }]}>Login</Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // </View>
     <View
       style={{
         backgroundColor: 'white',
         flex: 1,
-        alignContent: 'center',
-        padding: '2%',
+        // alignContent: 'center',
+        paddingHorizontal: '2%',
+        paddingVertical: '1%',
       }}
     >
       <View style={{ flexDirection: 'row' }}>
-        <View style={[styles.container, { flex: 3, padding: '5%' }]}>
+        <View style={[styles.container, { flex: 3, paddingHorizontal: '5%' }]}>
           <View
             style={{
-              // backgroundColor: 'red',
-              height: '35%',
-              // width: '40%',
+              width: '',
               alignSelf: 'center',
             }}
           >
             <UnoBot />
           </View>
-          <View>
-            <Text>Email</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Email"
-              onChangeText={(value) => {
-                onInputChange(value, 'username')
-              }}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                onLoginPress()
-              }}
-              style={[
-                styles.modalButton,
-                { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
-              ]}
-            >
-              <Text style={[styles.buttonText, { color: '#fff' }]}>Next</Text>
-            </TouchableOpacity>
-          </View>
+          {isNext ? (
+            <View>
+              <Text>Password</Text>
+              <TextInput
+                secureTextEntry
+                defaultValue=""
+                style={styles.input}
+                placeholder="Enter Password"
+                onChangeText={(value) => {
+                  onInputChange(value, 'password')
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  onLoginPress()
+                }}
+                style={[
+                  styles.modalButton,
+                  { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
+                ]}
+              >
+                <Text style={[styles.buttonText, { color: '#fff' }]}>
+                  Login
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View>
+              <Text>Email</Text>
+              <TextInput
+                defaultValue=""
+                style={styles.input}
+                placeholder="Enter Email"
+                onChangeText={(value) => {
+                  onInputChange(value, 'username')
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => setNext(true)}
+                style={[
+                  styles.modalButton,
+                  { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
+                ]}
+              >
+                <Text style={[styles.buttonText, { color: '#fff' }]}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={{ marginTop: '10%' }}>
             <Text
               style={{

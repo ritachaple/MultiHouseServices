@@ -31,6 +31,8 @@ import {
 } from '../../assets/Icon/Sentiment'
 import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
 import { UnChecked, Checked } from '../Images/Checkbox'
+import { Urgent, Low, High, Medium, Default } from '../Images/Priority'
+import { AssignUser } from '../Images/AssignUser'
 
 // const colors = ['red', 'green', 'orange']
 
@@ -74,6 +76,7 @@ const List = (props: any) => {
     priorityDropdownList,
     assigneeDropdownList,
   } = props
+  console.log(tickitItems)
 
   const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
@@ -111,8 +114,9 @@ const List = (props: any) => {
     setMessage(msg)
     tooltipRef.current.toggleTooltip()
   }
+
   const tickitStatusMenu = async (index: any, statusName: string) => {
-    setTickIcon(tickitIcon[index])
+    // setTickIcon(tickitIcon[index])
 
     const data = {
       assigned_to: [5889],
@@ -405,20 +409,11 @@ const List = (props: any) => {
         }}
       >
         <View style={{ paddingRight: '5%' }}>
-          {/* <Facebook /> */}
-          {/* <Twitter /> */}
-          {/* <Email /> */}
-
           {mediaIcon(tickitItems.medium_id)}
         </View>
         <Text
           onPress={() => toggleOverlay(tickitItems)}
-          style={[
-            styles.complaintText,
-            {
-              textDecorationLine: 'none',
-            },
-          ]}
+          style={[styles.complaintText, styles.fontFamily]}
           numberOfLines={1}
         >
           {tickitItems.complaint_text}
@@ -435,7 +430,7 @@ const List = (props: any) => {
           // backgroundColor: 'yellow'
         }}
       >
-        <Text>{tickitItems.user_name}</Text>
+        <Text style={styles.fontFamily}>{tickitItems.user_name}</Text>
       </View>
     )
   }
@@ -449,7 +444,7 @@ const List = (props: any) => {
           // paddingLeft: '1%',
         }}
       >
-        <Text style={styles.complaintTimeZone}>
+        <Text style={[styles.complaintTimeZone, styles.fontFamily]}>
           {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')}
         </Text>
       </View>
@@ -475,7 +470,9 @@ const List = (props: any) => {
           onPress={() => onStatusSelect(hovered)}
           style={{ flexDirection: 'row', flex: 4 }}
         >
-          <Text style={{ flex: 2, textAlign: 'center' }}>{selectedStatus}</Text>
+          <Text style={[styles.fontFamily, { flex: 2, textAlign: 'center' }]}>
+            {selectedStatus}
+          </Text>
           <View style={{ flex: 1 }}>
             {hovered ? (
               <Icon
@@ -536,6 +533,26 @@ const List = (props: any) => {
     )
   }
 
+  const setPriority = (priorityId: any) => {
+    try {
+      switch (priorityId) {
+        case 1:
+          return <Urgent />
+        case 2:
+          return <High />
+        case 3:
+          return <Medium />
+        case 4:
+          return <Low />
+        default:
+          return <Default />
+      }
+    } catch (error) {
+      console.error(error)
+    }
+    return <Default />
+  }
+
   const Priority = (hovered: any) => {
     return (
       <View
@@ -552,19 +569,7 @@ const List = (props: any) => {
             style={{ flex: 1, flexDirection: 'row' }}
             onPress={() => onPriorityPress()}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="19"
-              height="20"
-              fill="none"
-              viewBox="0 0 19 20"
-            >
-              <path fill="#1877F2" d="M0 0H1.25V20H0z" />
-              <path
-                fill="#1877F2"
-                d="M18.75 0H0v11.25h18.75l-5.114-5.625L18.75 0z"
-              />
-            </svg>
+            {setPriority(tickitItems.priority_id)}
             {hovered && <Icon name="angle-down" size={15} />}
           </Pressable>
         </View>
@@ -588,7 +593,8 @@ const List = (props: any) => {
             style={{ flex: 1, flexDirection: 'row' }}
             onPress={onAssigneePress}
           >
-            <Icon style={{ flex: 3 }} name="user-circle" size={15} />
+            {/* <Icon style={{ flex: 3 }} name="user-circle" size={15} /> */}
+            <AssignUser />
             {hovered && (
               <Icon style={{ flex: 1 }} name="angle-down" size={15} />
             )}
@@ -627,7 +633,9 @@ const List = (props: any) => {
           )}
         </View>
         <View style={{ paddingLeft: '10%' }}>
-          <Text style={{ fontSize: 15 }}>#{tickitItems.complaint_id}</Text>
+          <Text style={[styles.fontFamily, { fontSize: 15 }]}>
+            #{tickitItems.complaint_id}
+          </Text>
         </View>
       </View>
     )
@@ -694,19 +702,28 @@ const List = (props: any) => {
               }}
             >
               {isStatusDropdown && (
-                <Text onPress={() => tickitStatusMenu(index, item.status_name)}>
+                <Text
+                  style={styles.fontFamily}
+                  onPress={() => tickitStatusMenu(index, item.status_name)}
+                >
                   {item.status_name && item.status_name}
                 </Text>
               )}
 
               {isPriorityDropdown && <Text>{item.text && item.text}</Text>}
               {isAssigneeList && (
-                <Text onPress={() => onAssigneeClick(item)}>
+                <Text
+                  style={styles.fontFamily}
+                  onPress={() => onAssigneeClick(item)}
+                >
                   {item.text && item.text}
                 </Text>
               )}
               {isSentimentList && (
-                <Text onPress={() => onSentimetIconClick(item)}>
+                <Text
+                  style={styles.fontFamily}
+                  onPress={() => onSentimetIconClick(item)}
+                >
                   {item.text && item.text}
                 </Text>
               )}
@@ -717,74 +734,6 @@ const List = (props: any) => {
       />
     )
   }
-  // const priorityDropdown = () => {
-  //   return (
-  //     <FlatList
-  //       style={{ flex: 1 }}
-  //       data={priorityDropdownList}
-  //       renderItem={({ item, index }) => {
-  //         return (
-  //           // <Hoverable>
-  //           //   {({ hovered }) => (
-  //           <View
-  //             style={{
-  //               // justifyContent: 'flex-start'
-  //               paddingHorizontal: '2%',
-  //               paddingVertical: '0.5%',
-  //               borderBottomWidth: 0.2,
-  //               borderBottomColor: 'gray',
-  //               // backgroundColor: hovered ? '#3498DB' : '#fff',
-  //               backgroundColor: '#fff',
-  //             }}
-  //           >
-  //             <Text
-  //             // onPress={() => tickitStatusMenu(index, item.status_name)}
-  //             >
-  //               {item.text && item.text}
-  //             </Text>
-  //           </View>
-  //           //   )}
-  //           // </Hoverable>
-  //         )
-  //       }}
-  //       keyExtractor={(index: any) => index.toString()}
-  //     />
-  //   )
-  // // }
-  // const assigneeDropdown = () => {
-  //   return (
-  //     <FlatList
-  //       style={{ flex: 1 }}
-  //       data={assigneeDropdownList}
-  //       renderItem={({ item, index }) => {
-  //         return (
-  //           // <Hoverable>
-  //           //   {({ hovered }) => (
-  //           <View
-  //             style={{
-  //               // justifyContent: 'flex-start'
-  //               paddingHorizontal: '2%',
-  //               paddingVertical: '0.5%',
-  //               borderBottomWidth: 0.2,
-  //               borderBottomColor: 'gray',
-  //               // backgroundColor: hovered ? '#3498DB' : '#fff',
-  //               backgroundColor: '#fff',
-  //             }}
-  //           >
-  //             <Text
-  //             // onPress={() => tickitStatusMenu(index, item.status_name)}
-  //             >
-  //               {item.text && item.text}
-  //             </Text>
-  //           </View>
-  //           //   )}
-  //           // </Hoverable>
-  //         )
-  //       }}
-  //       keyExtractor={(index: any) => index.toString()}
-  //     />
-  //   )
-  // }
 
   return (
     <View style={styles.container}>
@@ -1023,6 +972,10 @@ const styles = StyleSheet.create({
   iconSize: {
     height: '100',
     width: '100',
+  },
+  fontFamily: {
+    fontFamily: 'Poppins-Black',
+    fontSize: 12,
   },
 })
 

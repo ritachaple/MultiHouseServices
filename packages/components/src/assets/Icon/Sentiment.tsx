@@ -5,12 +5,15 @@ export const DefaultSentiment = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="2"
-      height="2"
+      width="24"
+      height="24"
       fill="none"
-      viewBox="0 0 2 2"
+      viewBox="0 0 24 24"
     >
-      <circle cx="1" cy="1" r="1" fill="#C4C4C4" />
+      <circle cx="12" cy="12" r="11.5" stroke="#B6B6B6" strokeDasharray="2 2" />
+      <circle cx="9" cy="10" r="1" fill="#C4C4C4" />
+      <path stroke="#BCBCBC" d="M8 14c1.333 1.51 4.5 3 8 0" />
+      <circle cx="15" cy="10" r="1" fill="#C4C4C4" />
     </svg>
   )
 }

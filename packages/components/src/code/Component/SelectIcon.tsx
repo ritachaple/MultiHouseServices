@@ -10,6 +10,15 @@ import {
 import { Header } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import {
+  SpamUser,
+  Forward,
+  EditUser,
+  DeleteUser,
+  BlockUser,
+  MarkUnread,
+  MarkUndelete,
+} from '../Images/SelectCBoxIcon'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import AlertModal from './AlertModal'
@@ -100,40 +109,95 @@ const SelectIcon = () => {
   }
 
   return (
-    <View style={{ paddingLeft: '8%', flexDirection: 'row' }}>
-      <View>
-        <IconButton
+    <View
+      style={{
+        paddingLeft: '8%',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+      }}
+    >
+      <View style={styles.borderBox}>
+        {/* <IconButton
           name="pencil"
           onPress={() => {
             onEditClick()
           }}
-        />
+        /> */}
+        <TouchableOpacity
+          onPress={() => {
+            onEditClick()
+          }}
+        >
+          <EditUser />
+        </TouchableOpacity>
       </View>
-      <View style={{ paddingLeft: '4%' }}>
-        <IconButton
+      <View style={[styles.borderBox, { marginLeft: '8%' }]}>
+        {/* <IconButton
           name="share"
           onPress={() => {
             onShareClick()
           }}
-        />
+        /> */}
+        <TouchableOpacity
+          onPress={() => {
+            onShareClick()
+          }}
+        >
+          <Forward />
+        </TouchableOpacity>
       </View>
-      <View style={{ paddingLeft: '4%' }}>
-        <IconButton
+      <View style={[styles.borderBox, { marginLeft: '8%' }]}>
+        {/* <IconButton
           name="trash"
           onPress={() => {
             onDeleteClick()
           }}
-        />
+        /> */}
+        <TouchableOpacity
+          onPress={() => {
+            onDeleteClick()
+          }}
+        >
+          <DeleteUser />
+        </TouchableOpacity>
       </View>
-      <View style={{ paddingLeft: '4%' }}>
-        <IconButton
-          name="hand-paper-o"
+      <View style={[styles.borderBox, { marginLeft: '8%' }]}>
+        <TouchableOpacity
           onPress={() => {
             onBlockClick()
           }}
-        />
+        >
+          <BlockUser />
+        </TouchableOpacity>
       </View>
-      <View style={{ paddingLeft: '4%' }}>
+      <View style={[styles.borderBox, { marginLeft: '8%' }]}>
+        <TouchableOpacity
+        // onPress={() => {
+        //     onBlockClick()
+        //   }}
+        >
+          <MarkUnread />
+        </TouchableOpacity>
+      </View>
+      <View style={[styles.borderBox, { marginLeft: '8%' }]}>
+        <TouchableOpacity
+        // onPress={() => {
+        //     onBlockClick()
+        //   }}
+        >
+          <SpamUser />
+        </TouchableOpacity>
+      </View>
+      <View style={[styles.borderBox, { marginLeft: '8%' }]}>
+        <TouchableOpacity
+        // onPress={() => {
+        //     onBlockClick()
+        //   }}
+        >
+          <MarkUndelete />
+        </TouchableOpacity>
+      </View>
+      {/* <View style={[styles.borderBox,{ marginLeft:"8%" }]}>
         <IconButton
           name="chain"
           onPress={() => {
@@ -152,7 +216,7 @@ const SelectIcon = () => {
       </View>
       <View style={{ paddingLeft: '4%' }}>
         <IconButton name="lastfm" />
-      </View>
+      </View> */}
 
       <Modal
         animationType="fade"
@@ -253,5 +317,15 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  borderBox: {
+    backgroundColor: '#fff',
+    width: '25%',
+    height: 39,
+    borderWidth: 1,
+    borderColor: '#D7D7D7',
+    borderRadius: 6,
+    justifyContent: 'center',
+    paddingHorizontal: '5%',
   },
 })

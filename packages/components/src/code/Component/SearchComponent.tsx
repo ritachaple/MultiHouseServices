@@ -226,7 +226,18 @@ const SearchComplaints = (props: any) => {
               return (
                 // { check?
                 // <Text style={{ flex: flex, textAlign: 'center' }}>{item}</Text>:
-                <Text style={{ flex: 1 }}>{item}</Text>
+                <Text
+                  style={[
+                    {
+                      flex: 1,
+                      fontSize: 12,
+                      fontFamily: 'Poppins-Light',
+                      color: '#5A607F',
+                    },
+                  ]}
+                >
+                  {item}
+                </Text>
               )
             }}
             keyExtractor={(index: any) => index.toString()}
