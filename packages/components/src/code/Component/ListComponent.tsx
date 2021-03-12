@@ -80,7 +80,7 @@ const List = (props: any) => {
     assigneeDropdownList,
     navigation,
   } = props
-  console.log(tickitItems)
+  // console.log(tickitItems)
 
   const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
@@ -96,20 +96,10 @@ const List = (props: any) => {
 
   const tooltipRef: any = React.useRef(null)
 
-  const toggleOverlay = (tickit: any) => {
-    setModalVisible(!modalVisible)
-    setIsChatScreen(true)
-    props.setTickit(tickit)
-  }
-
   const onSubjectTextPress = () => {
+    props.setTickit(tickitItems)
     navigation.navigate('ChatScreen')
-    // this.props.navigation.navigate('Login');
   }
-
-  // const onStatusDropdown=()=>{
-  //   setStatusDropdown(!isStatusDropdown)
-  // }
 
   const SelectedStatus = (data: any) => {
     console.log('statusSelected', data)

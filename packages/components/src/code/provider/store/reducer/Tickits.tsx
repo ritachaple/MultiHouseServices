@@ -12,7 +12,7 @@ const tickitListData = (state = { initialState }, action: any) => {
         ...state,
         tickitList: action.payload,
       }
-    case 'SELECT_TICKIT':
+    case 'TICKIT_SELECT':
       return {
         ...state,
         selectedTickit: action.payload,

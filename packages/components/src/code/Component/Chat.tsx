@@ -667,7 +667,7 @@ const Chat = (props: any) => {
         </TouchableOpacity>
       </View> */}
 
-      <View style={styles.footer}>
+      {/* <View style={styles.footer}>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.inputs}
@@ -686,7 +686,7 @@ const Chat = (props: any) => {
             style={styles.iconSend}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
       <Overlay
         overlayStyle={{ marginHorizontal: '3%' }}
         isVisible={isTranslate}

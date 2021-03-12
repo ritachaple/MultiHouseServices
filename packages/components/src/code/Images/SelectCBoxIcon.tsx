@@ -220,3 +220,120 @@ export const OpenPost = () => {
     </svg>
   )
 }
+
+export const MoveVerticle = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="4"
+      height="16"
+      fill="none"
+      viewBox="0 0 4 16"
+    >
+      <path
+        fill="#5A607F"
+        d="M4 2a2 2 0 11-4 0 2 2 0 014 0zM4 8a2 2 0 11-4 0 2 2 0 014 0zM4 14a2 2 0 11-4 0 2 2 0 014 0z"
+      />
+    </svg>
+  )
+}
+
+export const LeftArrow = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="74"
+      height="74"
+      fill="none"
+      viewBox="0 0 74 74"
+    >
+      <g filter="url(#filter0_d)">
+        <rect width="34" height="34" x="19" y="19" fill="#fff" rx="6" />
+        <rect
+          width="33"
+          height="33"
+          x="19.5"
+          y="19.5"
+          stroke="#DCDCDC"
+          rx="5.5"
+        />
+      </g>
+      <path
+        fill="#585353"
+        d="M38.842 32.175L35.025 36l3.817 3.825L37.667 41l-5-5 5-5 1.175 1.175z"
+      />
+      <defs>
+        <filter
+          id="filter0_d"
+          width="74"
+          height="74"
+          x="0"
+          y="0"
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          />
+          <feOffset dx="1" dy="1" />
+          <feGaussianBlur stdDeviation="10" />
+          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" />
+          <feBlend in2="BackgroundImageFix" result="effect1_dropShadow" />
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+        </filter>
+      </defs>
+    </svg>
+  )
+}
+
+export const RightArrow = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="74"
+      height="74"
+      fill="none"
+      viewBox="0 0 74 74"
+    >
+      <g filter="url(#filter0_d)">
+        <rect width="34" height="34" x="19" y="19" fill="#fff" rx="6" />
+        <rect
+          width="33"
+          height="33"
+          x="19.5"
+          y="19.5"
+          stroke="#DCDCDC"
+          rx="5.5"
+        />
+      </g>
+      <path
+        fill="#585353"
+        d="M33.158 39.825L36.975 36l-3.817-3.825L34.333 31l5 5-5 5-1.175-1.175z"
+      />
+      <defs>
+        <filter
+          id="filter0_d"
+          width="74"
+          height="74"
+          x="0"
+          y="0"
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          />
+          <feOffset dx="1" dy="1" />
+          <feGaussianBlur stdDeviation="10" />
+          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" />
+          <feBlend in2="BackgroundImageFix" result="effect1_dropShadow" />
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+        </filter>
+      </defs>
+    </svg>
+  )
+}

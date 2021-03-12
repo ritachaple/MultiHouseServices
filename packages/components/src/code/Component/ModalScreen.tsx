@@ -304,7 +304,7 @@ const ModalScreen = (props: any) => {
               padding: '1%',
             }}
           >
-            <Text>#{complaintId}</Text>
+            {/* <Text>#{complaintId}</Text> */}
           </View>
         </View>
         <View style={{ flexDirection: 'row', flex: 15 }}>
