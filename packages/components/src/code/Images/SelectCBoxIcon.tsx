@@ -93,6 +93,26 @@ export const SpamUser = () => {
     </svg>
   )
 }
+export const Spam = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="15"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="#8A92BB"
+        d="M20.71 7.98L16.03 3.3c-.19-.19-.45-.3-.71-.3H8.68c-.26 0-.52.11-.7.29L3.29 7.98c-.18.18-.29.44-.29.7v6.63c0 .27.11.52.29.71l4.68 4.68c.19.19.45.3.71.3h6.63c.27 0 .52-.11.71-.29l4.68-4.68a.99.99 0 00.29-.71V8.68c.01-.26-.1-.52-.28-.7zM19 14.9L14.9 19H9.1L5 14.9V9.1L9.1 5h5.8L19 9.1v5.8z"
+      />
+      <path
+        fill="#8A92BB"
+        d="M12 17a1 1 0 100-2 1 1 0 000 2zM12 7c-.55 0-1 .45-1 1v5c0 .55.45 1 1 1s1-.45 1-1V8c0-.55-.45-1-1-1z"
+      />
+    </svg>
+  )
+}
 
 export const MarkUnread = () => {
   return (
@@ -127,6 +147,75 @@ export const MarkUndelete = () => {
       <path
         fill="#8A92BB"
         d="M15.5 4l-1-1h-5l-1 1H5v2h14V4h-3.5zM6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2-5V9h8v10H8v-5zm2 4h4v-4h2l-4-4-4 4h2v4z"
+      />
+    </svg>
+  )
+}
+
+export const Refresh = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="15"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="#8A92BB"
+        d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+      />
+    </svg>
+  )
+}
+
+export const RadioUnchecked = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="15"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="#5A607F"
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+      />
+    </svg>
+  )
+}
+
+export const RadioChecked = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="15"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="#FE46D5"
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+      />
+      <path fill="#FE46D5" d="M12 17a5 5 0 100-10 5 5 0 000 10z" />
+    </svg>
+  )
+}
+
+export const OpenPost = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="15"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="#8A92BB"
+        d="M18.222 18.222H5.778V5.778H12V4H5.778C4.79 4 4 4.8 4 5.778v12.444C4 19.2 4.791 20 5.778 20h12.444C19.2 20 20 19.2 20 18.222V12h-1.778v6.222zM13.778 4v1.778h3.19l-8.737 8.738 1.253 1.253 8.738-8.738v3.191H20V4h-6.222z"
       />
     </svg>
   )

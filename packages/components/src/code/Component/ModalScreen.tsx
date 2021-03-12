@@ -168,7 +168,7 @@ const ModalScreen = (props: any) => {
     <View style={styles.centeredView}>
       <View style={styles.modalView}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <View
+          {/* <View
             style={{
               // flex: 1,
               padding: '1%',
@@ -178,8 +178,8 @@ const ModalScreen = (props: any) => {
               borderBottomWidth: 0.1,
               width: '30%',
             }}
-          >
-            <Icon name="remove" size={20} onPress={closeModal} />
+          > */}
+          {/* <Icon name="remove" size={20} onPress={closeModal} />
             <Icon name="refresh" size={20} onPress={fetchActivity} />
             <Icon name="ban" size={20} onPress={onMarkSpam} />
             <Icon name="eye" size={20} />
@@ -295,8 +295,8 @@ const ModalScreen = (props: any) => {
               <Text style={{ color: isCRM === true ? '#6b9ff2' : '#0a0a0a' }}>
                 CRM
               </Text>
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity> */}
+          {/* </View> */}
           <View
             style={{
               flexDirection: 'row',
@@ -441,12 +441,12 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    marginTop: 22,
-    width: '100%',
+    // marginTop: 22,
+    // width: '100%',
   },
   modalView: {
     flex: 1,
-    margin: 20,
+    // margin: 20,
     backgroundColor: 'white',
     // borderRadius: 20,
     // padding: 35,

@@ -62,19 +62,6 @@ const Interaction = (props: any) => {
               borderBottomColor: '#E5E5E5',
             }}
             placement="left"
-            // centerComponent={
-            //   (isHeaderSelect || selectedOneTickit) && (
-            //     <SelectIcon />
-            //   )
-
-            // }
-            // centerComponent={
-            //   isHeaderSelect || selectedOneTickit ? (
-            //     <SelectIcon />
-            //   ) : (
-            //     <CenterComponent />
-            //   )
-            // }
             rightComponent={
               <RightComponent
                 onFilterPress={() => {
