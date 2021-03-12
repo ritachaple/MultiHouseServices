@@ -23,6 +23,9 @@ import DropDownList from './DropDownList'
 import { configs } from '../provider/api/ApiUrl'
 import Dropdown from './Dropdown'
 
+// DropDownPicker
+// import DropDownPicker from "react-native-dropdown-picker";
+
 import {
   DefaultSentiment,
   NegativeSentiment,
@@ -484,6 +487,17 @@ const List = (props: any) => {
           </View>
           <View style={{ flex: 1 }} />
         </TouchableOpacity>
+        {/* <DropDownPicker
+          items={[
+            { label: 'UK', value: 'uk' },
+            { label: 'France', value: 'france' },
+            { label: 'Germany', value: 'germany' },
+          ]}
+          placeholder="Select a country"
+          containerStyle={{height: 40}}
+          style={{ backgroundColor: '#ffffff' }}
+          dropDownStyle={{ backgroundColor: 'white' }}
+        /> */}
       </View>
     )
   }

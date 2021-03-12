@@ -60,7 +60,7 @@ const Header = () => {
               borderWidth: 1,
               borderRadius: 36,
               borderColor: '#DFDFDF',
-              backgroundColor: '#E5E5E5',
+              backgroundColor: '#FAFAFA',
               paddingHorizontal: '3%',
             }}
           >
