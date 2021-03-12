@@ -78,6 +78,7 @@ const List = (props: any) => {
     statusDropdownList,
     priorityDropdownList,
     assigneeDropdownList,
+    navigation,
   } = props
   console.log(tickitItems)
 
@@ -99,6 +100,11 @@ const List = (props: any) => {
     setModalVisible(!modalVisible)
     setIsChatScreen(true)
     props.setTickit(tickit)
+  }
+
+  const onSubjectTextPress = () => {
+    navigation.navigate('ChatScreen')
+    // this.props.navigation.navigate('Login');
   }
 
   // const onStatusDropdown=()=>{
@@ -415,7 +421,8 @@ const List = (props: any) => {
           {mediaIcon(tickitItems.medium_id)}
         </View>
         <Text
-          onPress={() => toggleOverlay(tickitItems)}
+          // onPress={() => toggleOverlay(tickitItems)}
+          onPress={() => onSubjectTextPress()}
           style={[styles.complaintText, styles.fontFamily]}
           numberOfLines={1}
         >

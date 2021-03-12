@@ -8,6 +8,7 @@ import Login from '../../Screens/login/login'
 import Default from '../../Default/Default'
 // import Webview from '../../Screens/webview/Webview'
 import Interaction from '../../Screens/Interaction/Interaction'
+import ChatScreen from '../../Screens/Interaction/Chat'
 
 const linking = {
   prefixes: [],
@@ -16,6 +17,7 @@ const linking = {
       Login: 'Login',
       Dashboard: 'Dashboard',
       Interaction: 'Interaction',
+      ChatScreen: 'ChatScreen',
       // Webview: 'Webview',
     },
   },
@@ -44,6 +46,7 @@ const AppScreens = () => (
       {/* <Stack.Screen name="Login" component={Login} /> */}
 
       <Stack.Screen name="Interaction" component={Interaction} />
+      <Stack.Screen name="ChatScreen" component={ChatScreen} />
       {/* <Stack.Screen name="Dashboard" component={Dashboard} /> */}
       {/* <Stack.Screen name="Webview" component={Webview} /> */}
     </Stack.Navigator>
