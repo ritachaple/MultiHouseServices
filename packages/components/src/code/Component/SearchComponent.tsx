@@ -43,6 +43,8 @@ const SearchComplaints = (props: any) => {
   const [selectedHeader, setSelectedHeader] = useState(headerName)
   const horizontalFlatlist = true
 
+  const { navigation } = props
+
   useEffect(() => {
     const dynamicControls = async () => {
       try {
@@ -276,6 +278,7 @@ const SearchComplaints = (props: any) => {
                 <ListComponent
                   tickitItems={item}
                   selectedHeader={selectedHeader}
+                  navigation={navigation}
                 />
               )
             }}
