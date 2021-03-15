@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Template, ViewList } from '../Images/FilterHeader'
 import { Filter } from '../Images/Header'
@@ -27,7 +27,9 @@ const RightComponent = (props: any) => {
             paddingHorizontal: '35%',
           }}
         >
-          <Filter />
+          <TouchableOpacity onPress={onFilterPress}>
+            <Filter />
+          </TouchableOpacity>
         </View>
       </View>
       <View

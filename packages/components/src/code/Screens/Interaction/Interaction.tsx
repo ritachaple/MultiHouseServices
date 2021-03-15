@@ -24,6 +24,8 @@ const Interaction = (props: any) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const onFilterPress = () => {
+    console.log('filter press')
+
     setIsSidebarOpen(!isSidebarOpen)
   }
 

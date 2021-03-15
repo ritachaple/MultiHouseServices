@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import dropdownListData from './DropdownList'
 import headerData from './HeaderData'
 import loginReducer from './Login'
+import Pagination from './Pagination'
 import tickitListData from './Tickits'
 
 export default combineReducers({
@@ -9,4 +10,5 @@ export default combineReducers({
   loginReducer,
   tickitListData,
   dropdownListData,
+  Pagination,
 })

@@ -816,7 +816,7 @@ const List = (props: any) => {
               </Modal>
             </>
 
-            <Tooltip
+            {/* <Tooltip
               containerStyle={{
                 backgroundColor: '#d7fcd4',
                 height: '15%',
@@ -828,7 +828,7 @@ const List = (props: any) => {
               withOverlay={false}
               onOpen={onOpenToolTip}
               popover={<TooltipMessage message={message} />}
-            />
+            /> */}
           </View>
         )}
       </Hoverable>

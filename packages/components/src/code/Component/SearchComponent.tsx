@@ -19,6 +19,7 @@ import Pagination from './Pagination'
 import DropDownList from './DropDownList'
 import ListComponent from './ListComponent'
 import { UnChecked, Checked } from '../Images/Checkbox'
+import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -37,13 +38,13 @@ const headerName = [
 const SearchComplaints = (props: any) => {
   const { tickitItems, isHeaderSelect } = props
   const [tickit, setTickit] = useState([])
-  const [totalRecords, setTotalRecords] = useState(0)
+  // const [totalRecords, setTotalRecords] = useState(0)
   const [showHeaderListModal, seHeaderListModal] = useState(false)
 
   const [selectedHeader, setSelectedHeader] = useState(headerName)
   const horizontalFlatlist = true
 
-  const { navigation } = props
+  const { navigation, token, pageIndex, pageSize } = props
 
   useEffect(() => {
     const dynamicControls = async () => {
@@ -64,56 +65,29 @@ const SearchComplaints = (props: any) => {
     }
 
     const unsubscribe = props.navigation.addListener('focus', () => {
-      const searchComplaintsApi = async () => {
-        try {
-          const data = {
-            client_id: 39,
-            status: [],
-            department: [],
-            is_deleted: false,
-            is_spam: false,
-            to_date: '2021-03-10T12:16:01.556Z',
-            from_date: '2021-02-24T12:16:01.556Z',
-            custom_filter: null,
-            customer_responded: null,
-            page_size: 50,
-            assigned_to: [],
-            order_by: '1',
-            sort_order: 'DESC',
-            search_text: '',
-            page_index: 1,
-            agent_id: 5889,
-          }
-          // console.log('search_complaintsRes1')
-
-          const res: any = await Api.post(
-            configs.search_complaints,
-            data,
-            `${props.token}`,
-          )
-          // console.log('searchcomplaintsRes', res)
-          if (res && res.status === 200) {
-            setTickit(res.data.data)
-            props.setTikitData(res.data.data)
-            setTotalRecords(res.data.total_records)
-            // console.log('res.data', res.data.data)
-          } else {
-            props.clearToken()
-          }
-        } catch (error) {
-          console.log('error: ', error)
+      const searchComplaints = async () => {
+        const res: any = await searchComplaintsApi(token, pageSize, pageIndex)
+        if (res && res.status === 200) {
+          setTickit(res.data.data)
+          props.setTikitData(res.data.data)
+          props.setTotalRecords(res.data.total_records)
+          props.setPageIndex(pageIndex)
+          props.setPageSize(pageSize)
+          console.log('res.data', res.data.data)
+        } else {
+          props.clearToken()
         }
       }
 
       const clearData = async () => {
         props.clearHeaderData()
       }
-      searchComplaintsApi()
+      searchComplaints()
       clearData()
       dynamicControls()
     })
     return unsubscribe
-  }, [props])
+  }, [props, pageIndex, pageSize, token])
 
   const onCheckBox = () => {
     props.headerSelect(!isHeaderSelect)
@@ -287,7 +261,7 @@ const SearchComplaints = (props: any) => {
           />
         </View>
       </ScrollView>
-      <Pagination totalRecords={totalRecords} />
+      <Pagination navigation={navigation} />
       <>
         <Modal
           style={{ flex: 1 }}
@@ -404,6 +378,8 @@ const mapStateToProps = (state: any) => {
     token: state.loginReducer.token,
     tickitItems: state.tickitListData.tickitList,
     isHeaderSelect: state.headerData.isHeaderSelect,
+    pageSize: state.Pagination.initialState.pageSize,
+    pageIndex: state.Pagination.initialState.pageIndex,
   }
 }
 
@@ -426,6 +402,15 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     setAssigneeDropdownList: (data: any) => {
       dispatch({ type: 'ASSIGNEE_LIST', payload: data })
+    },
+    setTotalRecords: (data: number) => {
+      dispatch({ type: 'TOTAL_RECORDS', payload: data })
+    },
+    setPageIndex: (pageIndex: number) => {
+      dispatch({ type: 'PAGE_INDEX', payload: pageIndex })
+    },
+    setPageSize: (pageSize: number) => {
+      dispatch({ type: 'PAGE_SIZE', payload: pageSize })
     },
   }
 }
