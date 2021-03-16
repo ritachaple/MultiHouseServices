@@ -26,13 +26,23 @@ const LeftSideBar = () => {
       </View>
 
       <View style={{ alignSelf: 'center', paddingTop: '40%' }}>
-        <Icon
-          // onPress={onFilterPress}
-          style={{ alignSelf: 'center' }}
-          name="wpforms"
-          size={20}
-          color="#fff"
-        />
+        <View
+          style={{
+            backgroundColor: '#fff',
+            borderRadius: 30,
+            paddingVertical: '12%',
+            paddingHorizontal: '15%',
+            alignSelf: 'center',
+          }}
+        >
+          <Icon
+            // onPress={onFilterPress}
+            style={{ alignSelf: 'center' }}
+            name="wpforms"
+            size={20}
+            color="#000"
+          />
+        </View>
         <Text style={{ color: '#fff', fontSize: 12 }}>Interaction</Text>
       </View>
 

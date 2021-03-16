@@ -23,6 +23,7 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
 import DropDownList from './DropDownList'
+import ChatModal from './ChatModal'
 
 // const Chat = (complaintId: any) => {
 const Chat = (props: any) => {
@@ -49,6 +50,7 @@ const Chat = (props: any) => {
     AddressBook: 'Enter Email Address',
     EmailTemplate: 'Default',
   })
+  const [msgModal, setMsgModel] = useState(false)
 
   const bodercolor = '#acb3bf'
 
@@ -436,6 +438,9 @@ const Chat = (props: any) => {
         </TouchableOpacity>
 
         <TouchableOpacity
+          onPress={() => {
+            setMsgModel(true)
+          }}
           style={{
             backgroundColor: 'white',
             padding: '0.5%',
@@ -462,6 +467,20 @@ const Chat = (props: any) => {
         </TouchableOpacity>
       </View>
       <Divider style={{ backgroundColor: bodercolor }} />
+      <Overlay
+        overlayStyle={{ marginHorizontal: '3%' }}
+        isVisible={msgModal}
+        onBackdropPress={() => setMsgModel(!msgModal)}
+      >
+        <Modal
+          style={{ position: 'absolute', top: 50 }}
+          animationType="slide"
+          transparent={msgModal}
+          visible={msgModal}
+        >
+          <ChatModal />
+        </Modal>
+      </Overlay>
       {/* <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
         <TouchableOpacity
           style={{
