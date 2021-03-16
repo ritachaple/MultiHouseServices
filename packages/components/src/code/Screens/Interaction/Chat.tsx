@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -18,7 +18,26 @@ import Api from '../../provider/api/Api'
 import { configs } from '../../provider/api/ApiUrl'
 
 const ChatScreen = (props: any) => {
-  const { token, clientId, complaintId, selectedTickit } = props
+  const { token, clientId, complaintId, selectedTickit, tickitList } = props
+
+  const [index, setIndex] = useState()
+
+  useEffect(() => {
+    const findIndexOfTickit = () => {
+      const ind = tickitList
+        .map(function (item: any) {
+          return item.complaint_id
+        })
+        .indexOf(complaintId)
+      setIndex(ind)
+    }
+
+    findIndexOfTickit()
+
+    return () => {
+      props.clearSelectedTickit()
+    }
+  }, [props, complaintId, tickitList])
 
   const onMarkInfluencer = async (type: any) => {
     try {
@@ -83,6 +102,28 @@ const ChatScreen = (props: any) => {
     }
   }
 
+  const findIndexOfTickit = () => {
+    const ind = tickitList
+      .map(function (item: any) {
+        return item.complaint_id
+      })
+      .indexOf(complaintId)
+    setIndex(ind)
+    return ind
+  }
+
+  const onPreviousTickit = async () => {
+    const ind = await findIndexOfTickit()
+    // console.log('index', ind)
+    props.setTickit(tickitList[ind - 1])
+  }
+
+  const onNextTickit = async () => {
+    const ind = await findIndexOfTickit()
+    // console.log('index', ind)
+    props.setTickit(tickitList[ind + 1])
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -90,10 +131,10 @@ const ChatScreen = (props: any) => {
           flexDirection: 'row',
           backgroundColor: '#E5E5E5',
           height: '10%',
-          paddingRight: '1%',
+          paddingRight: '2%',
         }}
       >
-        <View style={{ flex: 7 }}>
+        <View style={{ flex: 12 }}>
           <View
             style={{
               justifyContent: 'space-between',
@@ -164,26 +205,44 @@ const ChatScreen = (props: any) => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '10%',
+            flex: 1,
+            justifyContent: 'space-evenly',
           }}
         >
-          <View>
-            <LeftArrow />
+          <View style={styles.ArrowIcon}>
+            {index === 0 ? (
+              <Icon
+                style={{ opacity: 0.2 }}
+                name="angle-left"
+                color="#585353"
+                size={20}
+              />
+            ) : (
+              <Icon
+                name="angle-left"
+                color="#585353"
+                onPress={() => onPreviousTickit()}
+                size={20}
+              />
+            )}
           </View>
-          <View>
-            <RightArrow />
+          <View style={styles.ArrowIcon}>
+            {index === tickitList.length - 1 ? (
+              <Icon
+                style={{ opacity: 0.2 }}
+                name="angle-right"
+                color="#585353"
+                size={20}
+              />
+            ) : (
+              <Icon
+                name="angle-right"
+                color="#585353"
+                onPress={() => onNextTickit()}
+                size={20}
+              />
+            )}
           </View>
-          {/* <Icon
-              name="angle-left"
-            //   onPress={() => onPageChanged('-')}
-              size={20}
-            />
-             <Icon
-              name="angle-right"
-            //   onPress={() => onPageChanged('+')}
-              size={20}
-            /> */}
         </View>
       </View>
       <ModalScreen />
@@ -199,10 +258,22 @@ const mapStateToProps = (state: any) => {
       : {},
     clientId: state.tickitListData.selectedTickit.client_id,
     complaintId: state.tickitListData.selectedTickit.complaint_id,
+    tickitList: state.tickitListData.tickitList,
   }
 }
 
-export default connect(mapStateToProps)(ChatScreen)
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setTickit: (data: any) => {
+      dispatch({ type: 'TICKIT_SELECT', payload: data })
+    },
+    clearSelectedTickit: () => {
+      dispatch({ type: 'CLEAR_SELECTED_TICKIT' })
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen)
 
 const styles = StyleSheet.create({
   headerButton: {
@@ -224,5 +295,16 @@ const styles = StyleSheet.create({
   Icon: {
     paddingRight: '6%',
     paddingTop: '4%',
+  },
+  ArrowIcon: {
+    borderColor: '#DCDCDC',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    paddingHorizontal: '15%',
+    paddingVertical: '5%',
+    marginVertical: '10%',
+    marginHorizontal: '10%',
+    elevation: 7,
+    borderRadius: 6,
   },
 })

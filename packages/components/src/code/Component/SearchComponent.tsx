@@ -261,7 +261,7 @@ const SearchComplaints = (props: any) => {
           />
         </View>
       </ScrollView>
-      <Pagination navigation={navigation} />
+      {/* <Pagination navigation={navigation} /> */}
       <>
         <Modal
           style={{ flex: 1 }}
@@ -291,7 +291,8 @@ const SearchComplaints = (props: any) => {
                     style={{
                       flex: 1,
                       flexDirection: 'row',
-                      backgroundColor: isCheck ? '#3498DB' : '#fff',
+                      // backgroundColor: isCheck ? '#3498DB' : '#fff',
+                      backgroundColor: '#fff',
                       borderBottomWidth: 0.2,
                       borderBottomColor: 'gray',
                     }}
@@ -301,8 +302,13 @@ const SearchComplaints = (props: any) => {
                         flex: 7,
                         justifyContent: 'flex-start',
                         padding: '0.5%',
+                        flexDirection: 'row',
                       }}
                     >
+                      <View style={{ paddingHorizontal: '1%' }}>
+                        {' '}
+                        {isCheck ? <Checked /> : <UnChecked />}
+                      </View>
                       <Text onPress={() => onDropdownSelect(item, index)}>
                         {item}
                       </Text>

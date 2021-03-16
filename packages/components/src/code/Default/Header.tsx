@@ -3,10 +3,13 @@ import { View, Text, TextInput } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { connect } from 'react-redux'
 import Unobot from '../Images/Unobot'
 import UnobotText from '../Images/UnobotText'
 
-const Header = () => {
+const Header = (props: any) => {
+  const { selectedTickit } = props
+
   return (
     <View
       style={{
@@ -45,12 +48,42 @@ const Header = () => {
       >
         <View
           style={{
-            justifyContent: 'center',
+            // justifyContent: 'center',
+            flexDirection: 'row',
+            paddingVertical: '1%',
           }}
         >
-          <Text style={{ fontFamily: 'Poppins-Black', fontSize: 18 }}>
+          <Text
+            style={{
+              fontFamily: 'Poppins-Black',
+              fontSize: 18,
+              color:
+                selectedTickit && selectedTickit.complaint_id
+                  ? '#FE46D5'
+                  : 'none',
+            }}
+          >
             Interactions
           </Text>
+          {selectedTickit && selectedTickit.complaint_id ? (
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ color: '#5A607F' }}> /</Text>
+              <Text
+                style={{
+                  color: '#5A607F',
+                  paddingTop: '1%',
+                  fontFamily: 'Poppins-Black',
+                  fontSize: 16,
+                }}
+              >
+                {' '}
+                #
+                {selectedTickit &&
+                  selectedTickit.complaint_id &&
+                  selectedTickit.complaint_id}
+              </Text>
+            </View>
+          ) : null}
         </View>
 
         <View style={{ width: '20%', justifyContent: 'center' }}>
@@ -117,4 +150,11 @@ const Header = () => {
   )
 }
 
-export default Header
+const mapStateToProps = (state: any) => {
+  return {
+    token: state.loginReducer.token,
+    selectedTickit: state.tickitListData.selectedTickit,
+  }
+}
+
+export default connect(mapStateToProps)(Header)

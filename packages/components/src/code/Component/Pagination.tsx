@@ -21,23 +21,22 @@ const Pagination = (props: any) => {
   const [noOfPages, setNoOfPages] = useState([] as any)
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', () => {
-      const totalPages = () => {
-        const noOfPage: number = Math.ceil(totalRecords / pageSize)
-        console.log('nonoOfPage', noOfPage)
-        const count = []
-        for (let itr = 1; itr < noOfPage + 1; itr + 1) {
-          count.push(itr)
-        }
-        setNoOfPages(count)
-        // console.log("count", count);
-
-        setTotalPageCount(noOfPage)
+    // const unsubscribe = props.navigation.addListener('focus', () => {
+    const totalPages = () => {
+      const noOfPage: number = Math.ceil(totalRecords / pageSize)
+      console.log('nonoOfPage', noOfPage)
+      const count = []
+      for (let itr = 1; itr < noOfPage + 1; itr + 1) {
+        count.push(itr)
       }
+      setNoOfPages(count)
 
-      totalPages()
-    })
-    return unsubscribe
+      setTotalPageCount(noOfPage)
+    }
+
+    totalPages()
+    // })
+    // return unsubscribe
   }, [props, totalRecords, pageSize])
 
   const searchComplaints = async (pageInd: number, pgSize: number) => {
@@ -159,21 +158,21 @@ const Pagination = (props: any) => {
               )}
             </View>
             <View style={styles.ArrowStyle}>
-              {pageIndex === totalPageCount ? (
+              {/* {pageIndex === totalPageCount ? (
                 <Icon
                   style={{ opacity: 0.2 }}
                   name="angle-right"
                   color="#585353"
                   size={20}
                 />
-              ) : (
-                <Icon
-                  name="angle-right"
-                  color="#585353"
-                  onPress={() => onNextPage()}
-                  size={20}
-                />
-              )}
+              ) : ( */}
+              <Icon
+                name="angle-right"
+                color="#585353"
+                onPress={() => onNextPage()}
+                size={20}
+              />
+              {/* )} */}
             </View>
           </View>
         </View>

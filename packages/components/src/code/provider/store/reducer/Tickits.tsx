@@ -1,7 +1,7 @@
 const initialState = {
   storeSelectedTickits: [] as any,
   tickitList: [],
-  selectedTickit: {},
+  selectedTickit: null,
   selectedOneTickit: false,
 }
 
@@ -16,6 +16,11 @@ const tickitListData = (state = { initialState }, action: any) => {
       return {
         ...state,
         selectedTickit: action.payload,
+      }
+    case 'CLEAR_SELECTED_TICKIT':
+      return {
+        ...state,
+        selectedTickit: null,
       }
     case 'SELECT_ALL_TICKIT':
       return {
