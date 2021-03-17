@@ -14,8 +14,7 @@ import DropdownStaticData from './DropdownStaticData'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import { Filter } from '../Images/Header'
-import Example from './Date.web'
-import Example2 from './Date2.web'
+import DatePicker from './Date.web'
 
 const OutlineButton = (props: any) => {
   const { isButtonClick, onPress, title } = props
@@ -104,11 +103,8 @@ const CenterComponent = (props: any) => {
       {/* <View>Hello World</View> */}
 
       <View style={{ paddingHorizontal: '1%' }}>
-        <Example />
+        <DatePicker />
       </View>
-      {/* <View style={{paddingHorizontal:"1%"}}>
-      <Example2 />
-     </View> */}
 
       {/* <DropdownStaticData
         //  style={{flexDirection: 'row'}}

@@ -36,7 +36,6 @@ import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
 import { UnChecked, Checked } from '../Images/Checkbox'
 import { Urgent, Low, High, Medium, Default } from '../Images/Priority'
 import { AssignUser } from '../Images/AssignUser'
-import Example2 from './Date2.web'
 
 // const colors = ['red', 'green', 'orange']
 
@@ -418,7 +417,6 @@ const List = (props: any) => {
           numberOfLines={1}
         >
           {tickitItems.complaint_text}
-          {/* <Example2 /> */}
         </Text>
       </View>
     )
@@ -447,7 +445,8 @@ const List = (props: any) => {
         }}
       >
         <Text style={[styles.complaintTimeZone, styles.fontFamily]}>
-          {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')}
+          {/* {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')} */}
+          {moment(tickitItems.created_on).format('DD MMM YYYY, h:mm a')}
         </Text>
       </View>
     )
