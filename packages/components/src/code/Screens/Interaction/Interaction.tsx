@@ -16,6 +16,7 @@ import CenterComponent from '../../Component/CenterComponent'
 import RightComponent from '../../Component/RightComponent'
 import SideBar from '../../Component/SideBar'
 import SelectedFilterHeader from '../../Component/SelectedFilterHeader'
+import Default from '../../Default/Default'
 
 const Interaction = (props: any) => {
   const { navigation, isHeaderSelect, selectedOneTickit } = props
@@ -39,56 +40,58 @@ const Interaction = (props: any) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          // backgroundColor: 'red',
-          flex: 1,
-          flexDirection: 'row',
-          // alignItems: 'stretch',
-        }}
-      >
-        <View style={{ flex: 1 }}>
-          {/* <View style={{}}>
+    <Default navigation={navigation}>
+      <View style={styles.container}>
+        <View
+          style={{
+            // backgroundColor: 'red',
+            flex: 1,
+            flexDirection: 'row',
+            // alignItems: 'stretch',
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            {/* <View style={{}}>
         <RightComponent 
                 onFilterPress={() => {
                   onFilterPress()
                 }}
               />
           </View> */}
-          <Header
-            containerStyle={{
-              backgroundColor: '#E5E5E5',
-              height: '9%',
-              paddingRight: '3%',
-              borderBottomColor: '#E5E5E5',
-            }}
-            placement="left"
-            rightComponent={
-              <RightComponent
-                onFilterPress={() => {
+            <Header
+              containerStyle={{
+                backgroundColor: '#E5E5E5',
+                height: '9%',
+                paddingRight: '3%',
+                borderBottomColor: '#E5E5E5',
+              }}
+              placement="left"
+              rightComponent={
+                <RightComponent
+                  onFilterPress={() => {
+                    onFilterPress()
+                  }}
+                />
+              }
+            />
+            <SelectedFilterHeader />
+            <SearchComplaints navigation={navigation} />
+            <Modal
+              style={{ flex: 1 }}
+              animationType="none"
+              transparent={isSidebarOpen}
+              visible={isSidebarOpen}
+            >
+              <SideBar
+                onClosePress={() => {
                   onFilterPress()
                 }}
               />
-            }
-          />
-          <SelectedFilterHeader />
-          <SearchComplaints navigation={navigation} />
-          <Modal
-            style={{ flex: 1 }}
-            animationType="none"
-            transparent={isSidebarOpen}
-            visible={isSidebarOpen}
-          >
-            <SideBar
-              onClosePress={() => {
-                onFilterPress()
-              }}
-            />
-          </Modal>
+            </Modal>
+          </View>
         </View>
       </View>
-    </View>
+    </Default>
   )
 }
 

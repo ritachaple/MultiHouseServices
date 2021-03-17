@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 import ModalScreen from '../../Component/ModalScreen'
+import Default from '../../Default/Default'
 import {
   RadioChecked,
   RadioUnchecked,
@@ -18,7 +19,14 @@ import Api from '../../provider/api/Api'
 import { configs } from '../../provider/api/ApiUrl'
 
 const ChatScreen = (props: any) => {
-  const { token, clientId, complaintId, selectedTickit, tickitList } = props
+  const {
+    token,
+    clientId,
+    complaintId,
+    selectedTickit,
+    tickitList,
+    navigation,
+  } = props
 
   const [index, setIndex] = useState()
 
@@ -33,11 +41,19 @@ const ChatScreen = (props: any) => {
     }
 
     findIndexOfTickit()
-
-    return () => {
-      props.clearSelectedTickit()
-    }
   }, [props, complaintId, tickitList])
+
+  // useEffect(() => {
+  //   const { clearSelectedTickit } = props
+
+  //   const clearTickit = () => {
+  //     clearSelectedTickit()
+  //   }
+
+  //   return () => {
+  //     clearTickit()
+  //   }
+  // }, [])
 
   const onMarkInfluencer = async (type: any) => {
     try {
@@ -125,128 +141,130 @@ const ChatScreen = (props: any) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          backgroundColor: '#E5E5E5',
-          height: '10%',
-          paddingRight: '2%',
-        }}
-      >
-        <View style={{ flex: 12 }}>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              width: '50%',
-              paddingLeft: '2%',
-            }}
-          >
-            <View style={styles.headerButton}>
-              <TouchableOpacity
-                style={{ flexDirection: 'row' }}
-                onPress={() => {
-                  onMarkInfluencer('detractor')
-                }}
-              >
-                <View style={styles.Icon}>
-                  <RadioChecked />
-                </View>
-                <Text style={styles.ButtonText}>Detractor</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.headerButton}>
-              <TouchableOpacity
-                style={{ flexDirection: 'row' }}
-                onPress={() => {
-                  onMarkInfluencer('influencer')
-                }}
-              >
-                <View style={styles.Icon}>
-                  <RadioUnchecked />
-                </View>
-                <Text style={styles.ButtonText}>Influencer</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.headerButton}>
-              <TouchableOpacity
-                style={{ flexDirection: 'row' }}
-                onPress={fetchActivity}
-              >
-                <View style={styles.Icon}>
-                  <Refresh />
-                </View>
-                <Text style={styles.ButtonText}>Refresh</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.headerButton, { width: '20%' }]}>
-              <View style={styles.Icon}>
-                <OpenPost />
-              </View>
-              <Text style={styles.ButtonText}>View Post</Text>
-            </View>
-            <View style={styles.headerButton}>
-              <TouchableOpacity
-                style={{ flexDirection: 'row' }}
-                onPress={onMarkSpam}
-              >
-                <View style={styles.Icon}>
-                  <Spam />
-                </View>
-                <Text style={styles.ButtonText}>Spam</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ paddingTop: '3%' }}>
-              <MoveVerticle />
-            </View>
-          </View>
-        </View>
+    <Default navigation={navigation}>
+      <View style={{ flex: 1 }}>
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
-            justifyContent: 'space-evenly',
+            backgroundColor: '#E5E5E5',
+            height: '10%',
+            paddingRight: '2%',
           }}
         >
-          <View style={styles.ArrowIcon}>
-            {index === 0 ? (
-              <Icon
-                style={{ opacity: 0.2 }}
-                name="angle-left"
-                color="#585353"
-                size={20}
-              />
-            ) : (
-              <Icon
-                name="angle-left"
-                color="#585353"
-                onPress={() => onPreviousTickit()}
-                size={20}
-              />
-            )}
+          <View style={{ flex: 12 }}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                width: '50%',
+                paddingLeft: '2%',
+              }}
+            >
+              <View style={styles.headerButton}>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row' }}
+                  onPress={() => {
+                    onMarkInfluencer('detractor')
+                  }}
+                >
+                  <View style={styles.Icon}>
+                    <RadioChecked />
+                  </View>
+                  <Text style={styles.ButtonText}>Detractor</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.headerButton}>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row' }}
+                  onPress={() => {
+                    onMarkInfluencer('influencer')
+                  }}
+                >
+                  <View style={styles.Icon}>
+                    <RadioUnchecked />
+                  </View>
+                  <Text style={styles.ButtonText}>Influencer</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.headerButton}>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row' }}
+                  onPress={fetchActivity}
+                >
+                  <View style={styles.Icon}>
+                    <Refresh />
+                  </View>
+                  <Text style={styles.ButtonText}>Refresh</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={[styles.headerButton, { width: '20%' }]}>
+                <View style={styles.Icon}>
+                  <OpenPost />
+                </View>
+                <Text style={styles.ButtonText}>View Post</Text>
+              </View>
+              <View style={styles.headerButton}>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row' }}
+                  onPress={onMarkSpam}
+                >
+                  <View style={styles.Icon}>
+                    <Spam />
+                  </View>
+                  <Text style={styles.ButtonText}>Spam</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ paddingTop: '3%' }}>
+                <MoveVerticle />
+              </View>
+            </View>
           </View>
-          <View style={styles.ArrowIcon}>
-            {index === tickitList.length - 1 ? (
-              <Icon
-                style={{ opacity: 0.2 }}
-                name="angle-right"
-                color="#585353"
-                size={20}
-              />
-            ) : (
-              <Icon
-                name="angle-right"
-                color="#585353"
-                onPress={() => onNextTickit()}
-                size={20}
-              />
-            )}
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+              justifyContent: 'space-evenly',
+            }}
+          >
+            <View style={styles.ArrowIcon}>
+              {index === 0 ? (
+                <Icon
+                  style={{ opacity: 0.2 }}
+                  name="angle-left"
+                  color="#585353"
+                  size={20}
+                />
+              ) : (
+                <Icon
+                  name="angle-left"
+                  color="#585353"
+                  onPress={() => onPreviousTickit()}
+                  size={20}
+                />
+              )}
+            </View>
+            <View style={styles.ArrowIcon}>
+              {index === tickitList.length - 1 ? (
+                <Icon
+                  style={{ opacity: 0.2 }}
+                  name="angle-right"
+                  color="#585353"
+                  size={20}
+                />
+              ) : (
+                <Icon
+                  name="angle-right"
+                  color="#585353"
+                  onPress={() => onNextTickit()}
+                  size={20}
+                />
+              )}
+            </View>
           </View>
         </View>
+        <ModalScreen />
       </View>
-      <ModalScreen />
-    </View>
+    </Default>
   )
 }
 
@@ -256,8 +274,12 @@ const mapStateToProps = (state: any) => {
     selectedTickit: state.tickitListData.selectedTickit
       ? state.tickitListData.selectedTickit
       : {},
-    clientId: state.tickitListData.selectedTickit.client_id,
-    complaintId: state.tickitListData.selectedTickit.complaint_id,
+    clientId:
+      state.tickitListData.selectedTickit &&
+      state.tickitListData.selectedTickit.client_id,
+    complaintId:
+      state.tickitListData.selectedTickit &&
+      state.tickitListData.selectedTickit.complaint_id,
     tickitList: state.tickitListData.tickitList,
   }
 }

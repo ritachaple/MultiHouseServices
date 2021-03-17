@@ -28,6 +28,27 @@ export const Interactions = () => {
       viewBox="0 0 20 20"
     >
       <path
+        fill="#fff"
+        d="M0 2v14l4.8-3.6c.346-.26.767-.4 1.2-.4h8a2 2 0 002-2V2a2 2 0 00-2-2H2a2 2 0 00-2 2zm2 10V2h12v8H5.334a1.984 1.984 0 00-1.2.4L2 12z"
+      />
+      <path
+        fill="#fff"
+        d="M20 20V7a2 2 0 00-2-2v11l-2.134-1.6a1.984 1.984 0 00-1.2-.4H5a2 2 0 002 2h7c.433 0 .854.14 1.2.4L20 20z"
+      />
+    </svg>
+  )
+}
+
+export const ActiveInteractions = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      fill="none"
+      viewBox="0 0 20 20"
+    >
+      <path
         fill="#29356F"
         d="M0 2v14l4.8-3.6c.346-.26.767-.4 1.2-.4h8a2 2 0 002-2V2a2 2 0 00-2-2H2a2 2 0 00-2 2zm2 10V2h12v8H5.334a1.984 1.984 0 00-1.2.4L2 12z"
       />

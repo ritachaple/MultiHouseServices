@@ -1,9 +1,28 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { Dashboard, Interactions, Reports, Channels } from '../Images/SideBar'
+import { useRoute } from '@react-navigation/native'
+import {
+  Dashboard,
+  Interactions,
+  Reports,
+  Channels,
+  ActiveInteractions,
+} from '../Images/SideBar'
 
-const LeftSideBar = () => {
+const LeftSideBar = (props: any) => {
+  // const {navigation } = navigation
+  // console.log("navigationn",navigation.navigation.state.routeName);
+
+  const route = useRoute()
+  console.log('route', route.name)
+
+  const { navigation } = props
+
+  const onDashboard = () => {
+    navigation.navigate('ChatScreen')
+  }
+
   return (
     <View
       style={{
@@ -16,31 +35,61 @@ const LeftSideBar = () => {
       }}
     >
       <View style={{ paddingTop: '10%', alignSelf: 'center' }}>
-        <View style={{ paddingHorizontal: '30%' }}>
+        <View style={styles.defaultScreen}>
+          {/* <Pressable onPress={()=>onDashboard()}> */}
           <Dashboard />
+          {/* </ Pressable> */}
         </View>
-        {/* <Icon
-          // onPress={onFilterPress}
-          style={{ alignSelf: 'center' }}
-          name="building-o"
-          size={20}
-          color="#fff"
-        /> */}
+
         <Text style={styles.textStyle}>Dashboard</Text>
       </View>
 
       <View style={{ paddingTop: '40%', alignSelf: 'center' }}>
-        {/* <Icon
-          // onPress={onFilterPress}
-          style={{ alignSelf: 'center' }}
-          name="wpforms"
-          size={20}
-          color="#fff"
-        /> */}
-        <View style={{ paddingHorizontal: '30%' }}>
-          <Interactions />
-        </View>
+        {route.name === 'Interaction' ? (
+          <View
+            // style={{ paddingHorizontal: '30%' }}
+            style={styles.activeScreen}
+          >
+            <Pressable
+              onPress={() => {
+                navigation.navigate('Interaction')
+              }}
+            >
+              <ActiveInteractions />
+            </Pressable>
+          </View>
+        ) : (
+          <View style={styles.defaultScreen}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('Interaction')
+              }}
+            >
+              <Interactions />
+            </Pressable>
+          </View>
+        )}
         <Text style={styles.textStyle}>Interaction</Text>
+        {/* mayur changes */}
+        {/* <View style={{ alignSelf: 'center', paddingTop: '40%' }}>
+        <View432 
+          style={{
+            backgroundColor: '#fff',
+            borderRadius: 30,
+            paddingVertical: '12%',
+            paddingHorizontal: '15%',
+            alignSelf: 'center',
+          }}
+        >
+          <Icon
+            // onPress={onFilterPress}
+            style={{ alignSelf: 'center' }}
+            name="wpforms"
+            size={20}
+            color="#000"
+          />
+        </View>
+        <Text style={{ color: '#fff', fontSize: 12 }}>Interaction</Text> */}
       </View>
 
       <View style={{ alignSelf: 'center', paddingTop: '40%' }}>
@@ -81,6 +130,16 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 12,
     paddingTop: '20%',
+  },
+  activeScreen: {
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    paddingVertical: '12%',
+    paddingHorizontal: '15%',
+    alignSelf: 'center',
+  },
+  defaultScreen: {
+    paddingHorizontal: '30%',
   },
 })
 

@@ -5,12 +5,13 @@ import Header from './Header'
 import LeftSideBar from './LeftSideBar'
 
 const Default = (props: any) => {
-  const { children } = props
+  const { children, navigation } = props
+
   return (
     <View style={{ flex: 1 }}>
       <Header />
       <View style={{ flex: 1, flexDirection: 'row' }}>
-        <LeftSideBar />
+        <LeftSideBar navigation={navigation} />
         <View style={{ flex: 1 }}>{children}</View>
       </View>
     </View>

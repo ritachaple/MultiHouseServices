@@ -20,6 +20,7 @@ import DropDownList from './DropDownList'
 import ListComponent from './ListComponent'
 import { UnChecked, Checked } from '../Images/Checkbox'
 import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
+import Example from './Date.web'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -219,6 +220,7 @@ const SearchComplaints = (props: any) => {
             keyExtractor={(index: any) => index.toString()}
           />
         </View>
+        {/* <Example /> */}
         <Icon
           style={{
             paddingTop: 3,

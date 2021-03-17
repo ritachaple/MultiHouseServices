@@ -27,6 +27,7 @@
     "react-native-modal-datetime-picker": "*",
     "react-native-webview": "*",
     "prop-types": "*",
-    "react-native-calendars": "*"
+    "react-native-calendars": "*",
+    "react-datepicker":"*"
   }
 }
