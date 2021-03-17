@@ -24,6 +24,13 @@ const Interaction = (props: any) => {
   const [isSelectClick, setIsSelectClick] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      props.clearSelectedTickit()
+    })
+    return unsubscribe
+  }, [props, navigation])
+
   const onFilterPress = () => {
     console.log('filter press')
 
@@ -58,22 +65,45 @@ const Interaction = (props: any) => {
                 }}
               />
           </View> */}
-            <Header
-              containerStyle={{
+            <View
+              style={{
                 backgroundColor: '#E5E5E5',
                 height: '9%',
                 paddingRight: '3%',
                 borderBottomColor: '#E5E5E5',
+                zIndex: 999,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                paddingVertical: '1%',
               }}
-              placement="left"
-              rightComponent={
+              // centerComponent={<CenterComponent />}
+              // placement="left"
+              // rightComponent={
+              //   <RightComponent
+              //     onFilterPress={() => {
+              //       onFilterPress()
+              //     }}
+              //   />
+              // }
+            >
+              <View
+              // style={{paddingVertical:"1%"}}
+              >
+                <CenterComponent />
+              </View>
+              <View
+                style={{
+                  paddingLeft: '50%',
+                  // paddingVertical:"1%"
+                }}
+              >
                 <RightComponent
                   onFilterPress={() => {
                     onFilterPress()
                   }}
                 />
-              }
-            />
+              </View>
+            </View>
             <SelectedFilterHeader />
             <SearchComplaints navigation={navigation} />
             <Modal
@@ -121,6 +151,9 @@ const mapDispatchToProps = (dispatch: any) => {
       dispatch({ type: 'CHECK_DATA', payload: 'check data' }),
     headerSelect: (isSelectClick: any) =>
       dispatch({ type: 'IS_HEADER_SELECT', payload: isSelectClick }),
+    clearSelectedTickit: () => {
+      dispatch({ type: 'CLEAR_SELECTED_TICKIT' })
+    },
   }
 }
 

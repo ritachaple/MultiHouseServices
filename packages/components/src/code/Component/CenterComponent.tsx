@@ -14,6 +14,8 @@ import DropdownStaticData from './DropdownStaticData'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import { Filter } from '../Images/Header'
+import Example from './Date.web'
+import Example2 from './Date2.web'
 
 const OutlineButton = (props: any) => {
   const { isButtonClick, onPress, title } = props
@@ -93,27 +95,36 @@ const CenterComponent = (props: any) => {
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'flex-end',
-        paddingLeft: '70%',
+        justifyContent: 'space-around',
+        paddingLeft: '1%',
+        // flex:1
+        // zIndex: 999
       }}
     >
       {/* <View>Hello World</View> */}
 
-      <DropdownStaticData
+      <View style={{ paddingHorizontal: '1%' }}>
+        <Example />
+      </View>
+      {/* <View style={{paddingHorizontal:"1%"}}>
+      <Example2 />
+     </View> */}
+
+      {/* <DropdownStaticData
         //  style={{flexDirection: 'row'}}
         list={dropdownList}
         setType={setTIckitValue}
         defaultValue="Select Brand"
         dropdownName="Brand"
-      />
+      /> */}
 
-      <DropdownStaticData
+      {/* <DropdownStaticData
         //  style={{ paddingLeft:"1%"}}
         list={dropdownList}
         setType={setTIckitValue}
         defaultValue="Select Type"
         dropdownName="Type"
-      />
+      /> */}
 
       {/* <View
         style={{

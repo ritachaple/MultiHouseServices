@@ -1,9 +1,18 @@
+const date = new Date()
+const sdate = new Date()
+sdate.setDate(date.getDate() - 15)
+
 const initialState = {
   storeSelectedTickits: [] as any,
   tickitList: [],
   selectedTickit: null,
   selectedOneTickit: false,
+  endDate: date.toISOString(),
+  startDate: sdate.toISOString(),
 }
+
+const startDate = new Date()
+startDate.setDate(startDate.getDate() - 15)
 
 const tickitListData = (state = { initialState }, action: any) => {
   switch (action.type) {
@@ -31,6 +40,16 @@ const tickitListData = (state = { initialState }, action: any) => {
       return {
         ...state,
         storeSelectedTickits: action.payload,
+      }
+    case 'START_DATE':
+      return {
+        ...state,
+        startDate: action.payload,
+      }
+    case 'END_DATE':
+      return {
+        ...state,
+        endDate: action.payload,
       }
     default:
       return state

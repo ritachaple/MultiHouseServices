@@ -20,7 +20,6 @@ import DropDownList from './DropDownList'
 import ListComponent from './ListComponent'
 import { UnChecked, Checked } from '../Images/Checkbox'
 import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
-import Example from './Date.web'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -37,15 +36,23 @@ const headerName = [
 ]
 
 const SearchComplaints = (props: any) => {
-  const { tickitItems, isHeaderSelect } = props
+  const {
+    tickitItems,
+    isHeaderSelect,
+    startDate,
+    endDate,
+    navigation,
+    token,
+    pageIndex,
+    pageSize,
+  } = props
+
   const [tickit, setTickit] = useState([])
   // const [totalRecords, setTotalRecords] = useState(0)
   const [showHeaderListModal, seHeaderListModal] = useState(false)
 
   const [selectedHeader, setSelectedHeader] = useState(headerName)
   const horizontalFlatlist = true
-
-  const { navigation, token, pageIndex, pageSize } = props
 
   useEffect(() => {
     const dynamicControls = async () => {
@@ -67,7 +74,13 @@ const SearchComplaints = (props: any) => {
 
     const unsubscribe = props.navigation.addListener('focus', () => {
       const searchComplaints = async () => {
-        const res: any = await searchComplaintsApi(token, pageSize, pageIndex)
+        const res: any = await searchComplaintsApi(
+          token,
+          pageSize,
+          pageIndex,
+          startDate,
+          endDate,
+        )
         if (res && res.status === 200) {
           setTickit(res.data.data)
           props.setTikitData(res.data.data)
@@ -88,7 +101,7 @@ const SearchComplaints = (props: any) => {
       dynamicControls()
     })
     return unsubscribe
-  }, [props, pageIndex, pageSize, token])
+  }, [props, pageIndex, pageSize, token, endDate, startDate])
 
   const onCheckBox = () => {
     props.headerSelect(!isHeaderSelect)
@@ -220,7 +233,7 @@ const SearchComplaints = (props: any) => {
             keyExtractor={(index: any) => index.toString()}
           />
         </View>
-        {/* <Example /> */}
+
         <Icon
           style={{
             paddingTop: 3,
@@ -388,6 +401,8 @@ const mapStateToProps = (state: any) => {
     isHeaderSelect: state.headerData.isHeaderSelect,
     pageSize: state.Pagination.initialState.pageSize,
     pageIndex: state.Pagination.initialState.pageIndex,
+    startDate: state.tickitListData.startDate,
+    endDate: state.tickitListData.endDate,
   }
 }
 

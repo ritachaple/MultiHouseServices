@@ -36,6 +36,7 @@ import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
 import { UnChecked, Checked } from '../Images/Checkbox'
 import { Urgent, Low, High, Medium, Default } from '../Images/Priority'
 import { AssignUser } from '../Images/AssignUser'
+import Example2 from './Date2.web'
 
 // const colors = ['red', 'green', 'orange']
 
@@ -168,7 +169,7 @@ const List = (props: any) => {
     }
     const res: any = await Api.post(configs.log_activity, data, token)
     if (res.status === 200) {
-      setTooltip('Status updated Successfully !!!')
+      // setTooltip('Status updated Successfully !!!')
       onCloseModal()
     }
   }
@@ -244,7 +245,7 @@ const List = (props: any) => {
     }
     const res: any = await Api.post(configs.log_activity, data, token)
     if (res.status === 200) {
-      setTooltip('Sentiment updated successfully')
+      // setTooltip('Sentiment updated successfully')
     }
 
     // console.log('sentiment Icon Res', res)
@@ -305,7 +306,7 @@ const List = (props: any) => {
     }
     const res: any = await Api.post(configs.log_activity, data, token)
     if (res.status === 200) {
-      setTooltip('Assignee updated successfully')
+      // setTooltip('Assignee updated successfully')
     }
 
     // console.log('sentiment Icon Res', res)
@@ -417,6 +418,7 @@ const List = (props: any) => {
           numberOfLines={1}
         >
           {tickitItems.complaint_text}
+          {/* <Example2 /> */}
         </Text>
       </View>
     )

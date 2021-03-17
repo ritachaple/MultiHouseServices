@@ -26,6 +26,7 @@ const ChatScreen = (props: any) => {
     selectedTickit,
     tickitList,
     navigation,
+    clearSelectedTickit,
   } = props
 
   const [index, setIndex] = useState()
@@ -43,17 +44,16 @@ const ChatScreen = (props: any) => {
     findIndexOfTickit()
   }, [props, complaintId, tickitList])
 
-  // useEffect(() => {
-  //   const { clearSelectedTickit } = props
+  // const clearTickit = () => {
+  //   clearSelectedTickit()
+  // }
 
-  //   const clearTickit = () => {
-  //     clearSelectedTickit()
-  //   }
+  // useEffect(() => {
 
   //   return () => {
   //     clearTickit()
   //   }
-  // }, [])
+  // },[])
 
   const onMarkInfluencer = async (type: any) => {
     try {

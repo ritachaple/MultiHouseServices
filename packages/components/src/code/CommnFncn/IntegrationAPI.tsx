@@ -5,6 +5,8 @@ export const searchComplaintsApi = async (
   token: string,
   pageSize: number,
   pageIndex: number,
+  startDate: any,
+  endDate: any,
 ) => {
   let res: any = {}
   try {
@@ -14,8 +16,8 @@ export const searchComplaintsApi = async (
       department: [],
       is_deleted: false,
       is_spam: false,
-      to_date: '2021-03-10T12:16:01.556Z',
-      from_date: '2021-02-24T12:16:01.556Z',
+      to_date: endDate,
+      from_date: startDate,
       custom_filter: null,
       customer_responded: null,
       page_size: pageSize,

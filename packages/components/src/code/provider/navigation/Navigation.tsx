@@ -47,7 +47,7 @@ const AppScreens = () => (
 
     <Stack.Screen name="Interaction" component={Interaction} />
     <Stack.Screen name="ChatScreen" component={ChatScreen} />
-    <Stack.Screen name="Dashboard" component={Dashboard} />
+    {/* <Stack.Screen name="Dashboard" component={Dashboard} /> */}
     {/* <Stack.Screen name="Webview" component={Webview} /> */}
   </Stack.Navigator>
   /* </Default>  */
