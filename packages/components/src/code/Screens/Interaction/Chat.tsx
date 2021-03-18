@@ -146,7 +146,7 @@ const ChatScreen = (props: any) => {
         <View
           style={{
             flexDirection: 'row',
-            backgroundColor: '#E5E5E5',
+            backgroundColor: '#F1F6FF',
             height: '10%',
             paddingRight: '2%',
           }}
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
   },
   ButtonText: {
     color: '5A607F',
-    fontFamily: 'Poppins-Black',
+    fontFamily: 'Poppins-Light',
     fontSize: 12,
     lineHeight: 20,
   },

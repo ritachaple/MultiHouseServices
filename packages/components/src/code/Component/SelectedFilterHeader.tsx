@@ -10,11 +10,11 @@ const SelectedFilterHeader = (props: any) => {
     <View
       style={{
         flexDirection: 'row',
-        backgroundColor: '#E5E5E5',
+        backgroundColor: '#F1F6FF',
         height: '9%',
         padding: '0.5',
         paddingLeft: '8%',
-        borderTopColor: '#E5E5E5',
+        borderTopColor: '#F1F6FF',
       }}
     >
       <View>{(isHeaderSelect || selectedOneTickit) && <SelectIcon />}</View>

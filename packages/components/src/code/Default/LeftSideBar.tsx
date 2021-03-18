@@ -126,7 +126,7 @@ const LeftSideBar = (props: any) => {
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontFamily: 'Poppins-Black',
+    fontFamily: 'Poppins-Light',
     color: '#fff',
     fontSize: 12,
     paddingTop: '20%',

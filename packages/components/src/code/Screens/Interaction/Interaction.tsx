@@ -67,10 +67,10 @@ const Interaction = (props: any) => {
           </View> */}
             <View
               style={{
-                backgroundColor: '#E5E5E5',
+                backgroundColor: '#F1F6FF',
                 height: '9%',
                 paddingRight: '3%',
-                borderBottomColor: '#E5E5E5',
+                borderBottomColor: '#F1F6FF',
                 zIndex: 999,
                 flexDirection: 'row',
                 justifyContent: 'space-around',

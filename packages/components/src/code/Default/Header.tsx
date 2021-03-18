@@ -25,7 +25,7 @@ const Header = (props: any) => {
         style={{
           paddingHorizontal: '1%',
           borderRightWidth: 2,
-          borderRightColor: '#E5E5E5',
+          borderRightColor: '#F1F6FF',
           paddingTop: '0.4%',
           justifyContent: 'center',
           width: '5%',
@@ -55,7 +55,7 @@ const Header = (props: any) => {
         >
           <Text
             style={{
-              fontFamily: 'Poppins-Black',
+              fontFamily: 'Poppins-Light',
               fontSize: 18,
               color:
                 selectedTickit && selectedTickit.complaint_id
@@ -72,7 +72,7 @@ const Header = (props: any) => {
                 style={{
                   color: '#5A607F',
                   paddingTop: '1%',
-                  fontFamily: 'Poppins-Black',
+                  fontFamily: 'Poppins-Light',
                   fontSize: 16,
                 }}
               >
@@ -104,8 +104,8 @@ const Header = (props: any) => {
               size={15}
             />
             <TextInput
-              style={{ paddingHorizontal: '2%', fontFamily: 'Poppins-Black' }}
-              placeholder="Search Tickits, Messages..."
+              style={{ paddingHorizontal: '2%', fontFamily: 'Poppins-Light' }}
+              placeholder="Search Tickets, Messages..."
               placeholderTextColor="#ADADAD"
             />
           </View>

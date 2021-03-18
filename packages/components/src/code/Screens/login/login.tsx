@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
     borderColor: '#d9d9d9',
   },
   textFont: {
-    fontFamily: 'Poppins-Black',
+    fontFamily: 'Poppins-Light',
     fontSize: 12,
     lineHeight: 28,
   },

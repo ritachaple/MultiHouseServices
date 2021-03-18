@@ -986,7 +986,7 @@ const styles = StyleSheet.create({
     width: '100',
   },
   fontFamily: {
-    fontFamily: 'Poppins-Black',
+    fontFamily: 'Poppins-Light',
     fontSize: 12,
   },
 })

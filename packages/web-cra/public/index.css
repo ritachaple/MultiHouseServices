@@ -10,6 +10,45 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+::-webkit-input-placeholder {
+  color: #fff;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #fff;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #fff;
+}
+
+:-ms-input-placeholder {
+  color: #fff;
+}
+
+form {
+  margin: 50px;
+  padding: 5px;
+  background: green;
+  display: inline-block;
+}
+
+form input {
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #fff;
+  outline: none;
+}
+
+form button {
+  background: transparent;
+  border: 0;
+  color: #fff;
+}
+
 @font-face {
   font-family: 'MaterialIcons';
   src: url('./Fonts/MaterialIcons.ttf');
@@ -79,7 +118,13 @@ body {
   font-family: 'Octicons';
   src: url('./Fonts/Octicons.ttf');
 }
+
 @font-face {
   font-family: 'SimpleLineIcons';
   src: url('./Fonts/SimpleLineIcons.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins-Light';
+  src: url('./Fonts/Poppins-Light.ttf');
 }
