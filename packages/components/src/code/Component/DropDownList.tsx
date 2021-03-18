@@ -1,23 +1,12 @@
 import React from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, StyleSheet } from 'react-native'
 
 const DropDownList = (props: any) => {
-  const { children } = props
+  const { children, style } = props
   console.log('dropdown props', props)
 
   return (
-    <View
-      style={{
-        flex: 1,
-        width: '100%',
-        height: '50%',
-        marginHorizontal: '40%',
-        marginTop: '33%',
-        marginBottom: 0,
-        alignSelf: 'center',
-        elevation: 8,
-      }}
-    >
+    <View style={style || styles.defaultStyle}>
       <View
         style={{
           flex: 1,
@@ -38,5 +27,18 @@ const DropDownList = (props: any) => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  defaultStyle: {
+    flex: 1,
+    width: '100%',
+    height: '50%',
+    marginHorizontal: '40%',
+    marginTop: '33%',
+    marginBottom: 0,
+    alignSelf: 'center',
+    elevation: 8,
+  },
+})
 
 export default DropDownList

@@ -41,15 +41,15 @@ const Pagination = (props: any) => {
 
   const searchComplaints = async (pageInd: number, pgSize: number) => {
     try {
-      const res: any = await searchComplaintsApi(token, pgSize, pageInd)
-      if (res && res.status === 200) {
-        props.setTikitData(res.data.data)
-        props.setTotalRecords(res.data.total_records)
-        // totalPages()
-        // console.log('res.data', res.data.data)
-      } else {
-        props.clearToken()
-      }
+      // const res: any = await searchComplaintsApi(token, pgSize, pageInd)
+      // if (res && res.status === 200) {
+      //   props.setTikitData(res.data.data)
+      //   props.setTotalRecords(res.data.total_records)
+      //   // totalPages()
+      //   // console.log('res.data', res.data.data)
+      // } else {
+      //   props.clearToken()
+      // }
     } catch (error) {
       console.error('tickitList', error)
     }

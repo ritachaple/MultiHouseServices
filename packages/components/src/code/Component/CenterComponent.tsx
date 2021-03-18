@@ -100,8 +100,6 @@ const CenterComponent = (props: any) => {
         // zIndex: 999
       }}
     >
-      {/* <View>Hello World</View> */}
-
       <View style={{ paddingHorizontal: '1%' }}>
         <DatePicker />
       </View>

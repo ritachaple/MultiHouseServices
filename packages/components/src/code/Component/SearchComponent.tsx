@@ -9,10 +9,8 @@ import {
   Text,
   Modal,
 } from 'react-native'
-import { MenuProvider } from 'react-native-popup-menu'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Chat from './Chat'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Pagination from './Pagination'
@@ -108,6 +106,8 @@ const SearchComplaints = (props: any) => {
   }
 
   const onPlusClick = () => {
+    console.log('clickclose')
+
     seHeaderListModal(!showHeaderListModal)
   }
 
@@ -127,6 +127,8 @@ const SearchComplaints = (props: any) => {
         data.splice(index, 0, item)
         // console.log(data)
         setSelectedHeader(data)
+      } else {
+        removeItem(item)
       }
     } catch (error) {
       console.error('dropdown errro', error)
@@ -141,7 +143,6 @@ const SearchComplaints = (props: any) => {
       data.splice(index, 1)
       headerName.splice(ind, 1)
       if (sort === '+') {
-        // await
         data.splice(index - 1, 0, item)
 
         headerName.splice(ind - 1, 0, item)
@@ -283,8 +284,19 @@ const SearchComplaints = (props: any) => {
           animationType="none"
           transparent={showHeaderListModal}
           visible={showHeaderListModal}
+          onRequestClose={() => {
+            onPlusClick()
+          }}
         >
-          <DropDownList>
+          <DropDownList
+            style={{
+              marginLeft: '75%',
+              marginRight: '1%',
+              marginTop: '15%',
+              marginBottom: '15%',
+              // width:"30%"
+            }}
+          >
             <Icon
               name="remove"
               onPress={onPlusClick}
@@ -322,9 +334,15 @@ const SearchComplaints = (props: any) => {
                     >
                       <View style={{ paddingHorizontal: '1%' }}>
                         {' '}
-                        {isCheck ? <Checked /> : <UnChecked />}
+                        <TouchableOpacity
+                          onPress={() => onDropdownSelect(item, index)}
+                        >
+                          {isCheck ? <Checked /> : <UnChecked />}
+                        </TouchableOpacity>
                       </View>
-                      <Text onPress={() => onDropdownSelect(item, index)}>
+                      <Text
+                      // onPress={() => onDropdownSelect(item, index)}
+                      >
                         {item}
                       </Text>
                     </View>
@@ -367,7 +385,7 @@ const SearchComplaints = (props: any) => {
                         )}
                       </View>
                       <View>
-                        {isCheck && index > 0 && (
+                        {/* {isCheck && index > 0 && (
                           <Icon
                             name="remove"
                             onPress={() => removeItem(item)}
@@ -379,7 +397,7 @@ const SearchComplaints = (props: any) => {
                             size={12}
                             color="#000"
                           />
-                        )}
+                        )} */}
                       </View>
                     </View>
                   </View>
