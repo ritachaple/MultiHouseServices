@@ -50,7 +50,7 @@ const Dropdown = (props: any) => {
       <TouchableOpacity onPress={onInputPress}>
         <TextInput
           style={styles.input}
-          placeholder="Select Data"
+          // placeholder="Select Data"
           value={textField}
         />
       </TouchableOpacity>
@@ -94,7 +94,7 @@ const Dropdown = (props: any) => {
 const styles = StyleSheet.create({
   input: {
     paddingLeft: 0,
-    // backgroundColor: '#fff',
+    backgroundColor: '#fff',
     color: '#424242',
     // borderRadius: 5,
     borderColor: 'gray',

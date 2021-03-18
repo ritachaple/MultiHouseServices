@@ -21,21 +21,16 @@ import ModalScreen from './ModalScreen'
 import TooltipMessage from './TooltipMessage'
 import DropDownList from './DropDownList'
 import { configs } from '../provider/api/ApiUrl'
-import Dropdown from './Dropdown'
-
-// DropDownPicker
-// import DropDownPicker from "react-native-dropdown-picker";
-
+import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
+import { UnChecked, Checked } from '../Images/Checkbox'
+import { Urgent, Low, High, Medium, Default } from '../Images/Priority'
+import { AssignUser } from '../Images/AssignUser'
 import {
   DefaultSentiment,
   NegativeSentiment,
   PositiveSentiment,
   NeutralSentiment,
-} from '../../assets/Icon/Sentiment'
-import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
-import { UnChecked, Checked } from '../Images/Checkbox'
-import { Urgent, Low, High, Medium, Default } from '../Images/Priority'
-import { AssignUser } from '../Images/AssignUser'
+} from '../Images/SentimentIcon'
 
 // const colors = ['red', 'green', 'orange']
 
@@ -62,9 +57,9 @@ const tickitIcon = [
 ]
 
 const sentimentList = [
-  { id: '1', text: 'Positive' },
-  { id: '-1', text: 'Negative' },
-  { id: '0', text: 'Neutral' },
+  { id: '1', text: 'Positive', component: <PositiveSentiment /> },
+  { id: '-1', text: 'Negative', component: <NegativeSentiment /> },
+  { id: '0', text: 'Neutral', component: <NeutralSentiment /> },
 ]
 
 const List = (props: any) => {
@@ -79,10 +74,10 @@ const List = (props: any) => {
     priorityDropdownList,
     assigneeDropdownList,
     navigation,
+    tickitList,
   } = props
   // console.log(tickitItems)
 
-  const [tickIcon, setTickIcon] = useState('hourglass-half')
   const [checkbox, setCheckbox] = useState(false)
   const [message, setMessage] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
@@ -93,6 +88,17 @@ const List = (props: any) => {
   const [isPriorityDropdown, setPriorityList] = useState(false)
   const [isAssigneeList, setAssigneeList] = useState(false)
   const [isSentimentList, setSentimentList] = useState(false)
+  const [dropdownStyle, setDropdownStyle] = useState({
+    left: '0',
+    right: '0',
+    top: '0',
+    bottom: '0',
+  })
+
+  // let left = "0"
+  // let right = "0"
+  // let top = "0"
+  // let bottom = "0"
 
   const tooltipRef: any = React.useRef(null)
 
@@ -181,7 +187,7 @@ const List = (props: any) => {
 
   const onCloseModal = () => {
     setModalVisible(false)
-    setIsChatScreen(false)
+    // setIsChatScreen(false)
     setIsDropdownList(false)
     setPriorityList(false)
     setStatusDropdown(false)
@@ -364,7 +370,30 @@ const List = (props: any) => {
     setIsDropdownList(!isDropdownList)
     setAssigneeList(true)
   }
-  const onSentimentPress = () => {
+
+  const findIndexOfTickit = () => {
+    const ind = tickitList
+      .map(function (item: any) {
+        return item.complaint_id
+      })
+      .indexOf(tickitItems.complaint_id)
+    return ind
+  }
+
+  const onSentimentPress = async () => {
+    // const ind = await findIndexOfTickit()
+    // const data:any = {...dropdownStyle}
+    // data.left = "60%"
+    // data.right= "20%"
+    // // data.bottom ="15%"
+    // if(ind > 0){
+    //  const tp =  ind *4
+    //   data.top=`${tp+18}%`
+    //   data.bottom =`${15-tp}`
+    // }else{
+    //   data.top="18%"
+    // }
+    // setDropdownStyle(data)
     setModalVisible(!modalVisible)
     setIsDropdownList(!isDropdownList)
     setSentimentList(true)
@@ -530,7 +559,7 @@ const List = (props: any) => {
         }}
       >
         <TouchableOpacity
-          onPress={onSentimentPress}
+          onPress={() => onSentimentPress()}
           style={{ flex: 1, flexDirection: 'row', paddingHorizontal: '20%' }}
         >
           <View style={{ flex: 1 }} />
@@ -715,7 +744,7 @@ const List = (props: any) => {
             >
               {isStatusDropdown && (
                 <Text
-                  style={styles.fontFamily}
+                  style={[styles.fontFamily]}
                   onPress={() => tickitStatusMenu(index, item.status_name)}
                 >
                   {item.status_name && item.status_name}
@@ -725,7 +754,7 @@ const List = (props: any) => {
               {isPriorityDropdown && <Text>{item.text && item.text}</Text>}
               {isAssigneeList && (
                 <Text
-                  style={styles.fontFamily}
+                  style={[styles.fontFamily]}
                   onPress={() => onAssigneeClick(item)}
                 >
                   {item.text && item.text}
@@ -733,10 +762,11 @@ const List = (props: any) => {
               )}
               {isSentimentList && (
                 <Text
-                  style={styles.fontFamily}
+                  style={[styles.fontFamily]}
                   onPress={() => onSentimetIconClick(item)}
                 >
                   {item.text && item.text}
+                  {/* {item.component && item.component} */}
                 </Text>
               )}
             </View>
@@ -792,7 +822,15 @@ const List = (props: any) => {
                 visible={modalVisible}
               >
                 {isDropdownList ? (
-                  <DropDownList>
+                  <DropDownList
+                  // style={{
+                  //   marginLeft: dropdownStyle.left,
+                  //   marginRight: dropdownStyle.right,
+                  //   marginTop: dropdownStyle.top,
+                  //   marginBottom: dropdownStyle.bottom,
+                  //   // width:"30%"
+                  // }}
+                  >
                     <Icon
                       name="remove"
                       onPress={onCloseModal}
@@ -806,14 +844,14 @@ const List = (props: any) => {
                     {isSentimentList && flatlist(sentimentList)}
                   </DropDownList>
                 ) : null}
-                {isChatScreen ? (
+                {/* {isChatScreen ? (
                   <ModalScreen
                     closeModal={() => onCloseModal()}
                     complaintId={tickitItems.complaint_id}
                     clientId={tickitItems.client_id}
                     userId={tickitItems.user_id}
                   />
-                ) : null}
+                ) : null} */}
               </Modal>
             </>
 
@@ -848,6 +886,7 @@ const mapStateToProps = (state: any) => {
     storeSelectedTickits: state.tickitListData.storeSelectedTickits
       ? state.tickitListData.storeSelectedTickits
       : ([] as any),
+    tickitList: state.tickitListData.tickitList,
   }
 }
 
