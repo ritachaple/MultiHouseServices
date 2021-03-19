@@ -18,6 +18,7 @@ import DropDownList from './DropDownList'
 import ListComponent from './ListComponent'
 import { UnChecked, Checked } from '../Images/Checkbox'
 import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
+import { Plus } from '../Images/Header'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -234,8 +235,14 @@ const SearchComplaints = (props: any) => {
             keyExtractor={(index: any) => index.toString()}
           />
         </View>
-
-        <Icon
+        <TouchableOpacity
+          onPress={() => {
+            onPlusClick()
+          }}
+        >
+          <Plus />
+        </TouchableOpacity>
+        {/* <Icon
           style={{
             paddingTop: 3,
           }}
@@ -243,7 +250,7 @@ const SearchComplaints = (props: any) => {
           name="plus"
           size={15}
           color="grey"
-        />
+        /> */}
       </View>
     )
   }
@@ -320,8 +327,8 @@ const SearchComplaints = (props: any) => {
                       flexDirection: 'row',
                       // backgroundColor: isCheck ? '#3498DB' : '#fff',
                       backgroundColor: '#fff',
-                      borderBottomWidth: 0.2,
-                      borderBottomColor: 'gray',
+                      // borderBottomWidth: 0.2,
+                      // borderBottomColor: 'gray',
                     }}
                   >
                     <View
@@ -332,74 +339,67 @@ const SearchComplaints = (props: any) => {
                         flexDirection: 'row',
                       }}
                     >
-                      <View style={{ paddingHorizontal: '1%' }}>
-                        {' '}
-                        <TouchableOpacity
-                          onPress={() => onDropdownSelect(item, index)}
+                      <View style={{ flexDirection: 'row', flex: 3 }}>
+                        <View style={{ paddingHorizontal: '1%' }}>
+                          {' '}
+                          <TouchableOpacity
+                            onPress={() => onDropdownSelect(item, index)}
+                          >
+                            {isCheck ? <Checked /> : <UnChecked />}
+                          </TouchableOpacity>
+                        </View>
+                        <Text
+                        // onPress={() => onDropdownSelect(item, index)}
                         >
-                          {isCheck ? <Checked /> : <UnChecked />}
-                        </TouchableOpacity>
+                          {item}
+                        </Text>
                       </View>
-                      <Text
-                      // onPress={() => onDropdownSelect(item, index)}
-                      >
-                        {item}
-                      </Text>
                     </View>
                     <View
                       style={{
+                        flex: 1,
                         flexDirection: 'row',
                         width: '20%',
                         justifyContent: 'space-around',
-                        paddingRight: '2%',
+                        paddingRight: '10%',
                       }}
                     >
-                      <View>
-                        {index > 1 && (
+                      <View
+                        style={{ paddingHorizontal: '20%', paddingTop: '20%' }}
+                      >
+                        {index > 0 && (
                           <Icon
-                            name="arrow-up"
+                            name="angle-up"
                             onPress={() => onSortPress(item, '+', index)}
                             style={{
                               flex: 1,
                               justifyContent: 'center',
-                              paddingTop: '1%',
+                              // paddingTop: '1%',
                             }}
                             size={12}
                             color="#000"
                           />
                         )}
                       </View>
-                      <View>
-                        {selectedHeader.length - 1 !== index && index > 0 && (
+                      <View
+                        style={{ paddingHorizontal: '20%', paddingTop: '20%' }}
+                      >
+                        {selectedHeader.length - 1 !== index && (
                           <Icon
-                            name="arrow-down"
+                            name="angle-down"
                             onPress={() => onSortPress(item, '-', index)}
                             style={{
                               flex: 1,
                               justifyContent: 'center',
-                              paddingTop: '1%',
+                              // paddingTop: '40%',
                             }}
                             size={12}
                             color="#000"
                           />
                         )}
                       </View>
-                      <View>
-                        {/* {isCheck && index > 0 && (
-                          <Icon
-                            name="remove"
-                            onPress={() => removeItem(item)}
-                            style={{
-                              flex: 1,
-                              justifyContent: 'center',
-                              paddingTop: '1%',
-                            }}
-                            size={12}
-                            color="#000"
-                          />
-                        )} */}
-                      </View>
                     </View>
+                    <View style={{ flex: 2 }} />
                   </View>
                 )
               }}

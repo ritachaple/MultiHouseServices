@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Template, ViewList } from '../Images/FilterHeader'
-import { Filter } from '../Images/Header'
+import { Filter, Line, TileGrid } from '../Images/Header'
 
 const RightComponent = (props: any) => {
   const { onFilterPress } = props
@@ -33,15 +33,18 @@ const RightComponent = (props: any) => {
         </View>
       </View>
       <View
+        // style={{paddingHorizontal:"2%"}}
         style={{
           // borderLeftColor: 'red',
           borderLeftColor: '#DEDEDE',
-          borderLeftWidth: 2,
+          borderLeftWidth: 1,
           paddingRight: '20%',
           marginTop: '1%',
           height: '140%',
         }}
-      />
+      >
+        {/* <Line /> */}
+      </View>
       <View style={{ paddingRight: '10%', flexDirection: 'row' }}>
         <View
           style={{
@@ -80,6 +83,7 @@ const RightComponent = (props: any) => {
         style={{ paddingRight: '20%', paddingLeft: '10%', paddingTop: '10%' }}
       >
         <Icon style={{}} name="ellipsis-v" size={15} color="#000" />
+        {/* <TileGrid /> */}
       </View>
     </View>
   )

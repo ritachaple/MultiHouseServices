@@ -774,8 +774,8 @@ const List = (props: any) => {
                   style={[styles.fontFamily]}
                   onPress={() => onSentimetIconClick(item)}
                 >
-                  {item.text && item.text}
-                  {/* {item.component && item.component} */}
+                  {/* {item.text && item.text} */}
+                  {item.component && item.component}
                 </Text>
               )}
             </View>

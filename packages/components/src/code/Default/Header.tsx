@@ -1,5 +1,11 @@
-import React from 'react'
-import { View, Text, TextInput } from 'react-native'
+import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -9,6 +15,7 @@ import UnobotText from '../Images/UnobotText'
 
 const Header = (props: any) => {
   const { selectedTickit } = props
+  const [state, setstate] = useState(false)
 
   return (
     <View
@@ -103,8 +110,14 @@ const Header = (props: any) => {
               color="#B6B6B6"
               size={15}
             />
+            {/* <TouchableOpacity style={styles.inputStyle}>
+              <Text style={{color:"#ADADAD"}}>
+              Search Tickets, Messages...
+              </Text>
+            </TouchableOpacity> */}
             <TextInput
-              style={{ paddingHorizontal: '2%', fontFamily: 'Poppins-Light' }}
+              // onBlur={()=>{setstate(true)}}
+              style={styles.inputStyle}
               placeholder="Search Tickets, Messages..."
               placeholderTextColor="#ADADAD"
             />
@@ -158,3 +171,16 @@ const mapStateToProps = (state: any) => {
 }
 
 export default connect(mapStateToProps)(Header)
+
+const styles = StyleSheet.create({
+  inputStyle: {
+    paddingHorizontal: '2%',
+    fontFamily: 'Poppins-Light',
+    // borderRadius: 36,
+  },
+  input1Style: {
+    paddingHorizontal: '2%',
+    fontFamily: 'Poppins-Light',
+    boderColor: 'red',
+  },
+})
