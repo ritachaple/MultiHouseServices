@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useRoute } from '@react-navigation/native'
+import { Badge } from 'react-native-elements'
+import { connect } from 'react-redux'
 import {
   Dashboard,
   Interactions,
@@ -17,7 +19,7 @@ const LeftSideBar = (props: any) => {
   const route = useRoute()
   console.log('route', route.name)
 
-  const { navigation } = props
+  const { navigation, totalRecords } = props
 
   const onDashboard = () => {
     navigation.navigate('ChatScreen')
@@ -56,6 +58,14 @@ const LeftSideBar = (props: any) => {
               }}
             >
               <ActiveInteractions />
+              <Badge
+                value={totalRecords && totalRecords}
+                badgeStyle={{
+                  borderColor: '#FE46D5',
+                  backgroundColor: '#FE46D5',
+                }}
+                containerStyle={{ position: 'absolute', top: 8, right: -21 }}
+              />
             </Pressable>
           </View>
         ) : (
@@ -124,6 +134,12 @@ const LeftSideBar = (props: any) => {
   )
 }
 
+const mapStateToProps = (state: any) => {
+  return {
+    totalRecords: state.Pagination.totalRecords,
+  }
+}
+
 const styles = StyleSheet.create({
   textStyle: {
     fontFamily: 'Poppins-Light',
@@ -143,4 +159,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default LeftSideBar
+export default connect(mapStateToProps)(LeftSideBar)

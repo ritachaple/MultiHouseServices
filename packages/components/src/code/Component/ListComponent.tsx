@@ -88,19 +88,15 @@ const List = (props: any) => {
   const [isPriorityDropdown, setPriorityList] = useState(false)
   const [isAssigneeList, setAssigneeList] = useState(false)
   const [isSentimentList, setSentimentList] = useState(false)
-  const [dropdownStyle, setDropdownStyle] = useState({
-    left: '0',
-    right: '0',
-    top: '0',
-    bottom: '0',
-  })
-
-  // let left = "0"
-  // let right = "0"
-  // let top = "0"
-  // let bottom = "0"
+  // const [dropdownStyle, setDropdownStyle] = useState({
+  //   left: '0',
+  //   right: '0',
+  //   top: '0',
+  //   bottom: '0',
+  // })
 
   const tooltipRef: any = React.useRef(null)
+  const fontWeight = tickitItems.is_read ? '100' : '700'
 
   const onSubjectTextPress = () => {
     props.setTickit(tickitItems)
@@ -442,7 +438,7 @@ const List = (props: any) => {
         <Text
           // onPress={() => toggleOverlay(tickitItems)}
           onPress={() => onSubjectTextPress()}
-          style={[styles.complaintText, styles.fontFamily]}
+          style={[styles.complaintText, styles.fontFamily, { fontWeight }]}
           numberOfLines={1}
         >
           {tickitItems.complaint_text}
@@ -459,7 +455,9 @@ const List = (props: any) => {
           // backgroundColor: 'yellow'
         }}
       >
-        <Text style={styles.fontFamily}>{tickitItems.user_name}</Text>
+        <Text style={[styles.fontFamily, { fontWeight }]}>
+          {tickitItems.user_name}
+        </Text>
       </View>
     )
   }
@@ -473,7 +471,9 @@ const List = (props: any) => {
           // paddingLeft: '1%',
         }}
       >
-        <Text style={[styles.complaintTimeZone, styles.fontFamily]}>
+        <Text
+          style={[styles.complaintTimeZone, styles.fontFamily, { fontWeight }]}
+        >
           {/* {moment(tickitItems.last_modified_on).format('DD MMM YYYY, h:mm a')} */}
           {moment(tickitItems.created_on).format('DD MMM YYYY, h:mm a')}
         </Text>
@@ -500,7 +500,12 @@ const List = (props: any) => {
           onPress={() => onStatusSelect(hovered)}
           style={{ flexDirection: 'row', flex: 4 }}
         >
-          <Text style={[styles.fontFamily, { flex: 2, textAlign: 'center' }]}>
+          <Text
+            style={[
+              styles.fontFamily,
+              { flex: 2, textAlign: 'center', fontWeight },
+            ]}
+          >
             {selectedStatus}
           </Text>
           <View style={{ flex: 1 }}>
@@ -683,7 +688,7 @@ const List = (props: any) => {
           )}
         </View>
         <View style={{ paddingLeft: '10%' }}>
-          <Text style={[styles.fontFamily, { fontSize: 15 }]}>
+          <Text style={[styles.fontFamily, { fontSize: 15, fontWeight }]}>
             #{tickitItems.complaint_id}
           </Text>
         </View>
