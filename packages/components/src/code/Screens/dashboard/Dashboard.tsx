@@ -72,18 +72,6 @@ const Dashboard = (props: any) => {
             }
           />
           <SearchComplaints navigation={navigation} />
-          <Modal
-            style={{ flex: 1 }}
-            animationType="none"
-            transparent={isSidebarOpen}
-            visible={isSidebarOpen}
-          >
-            <SideBar
-              onClosePress={() => {
-                onFilterPress()
-              }}
-            />
-          </Modal>
         </View>
       </View>
     </View>

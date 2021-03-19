@@ -34,9 +34,12 @@ const RightComponent = (props: any) => {
       </View>
       <View
         style={{
+          // borderLeftColor: 'red',
           borderLeftColor: '#DEDEDE',
           borderLeftWidth: 2,
           paddingRight: '20%',
+          marginTop: '1%',
+          height: '140%',
         }}
       />
       <View style={{ paddingRight: '10%', flexDirection: 'row' }}>

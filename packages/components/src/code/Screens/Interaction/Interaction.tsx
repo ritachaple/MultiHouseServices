@@ -8,8 +8,10 @@ import {
   Modal,
   Image,
   TextInput,
+  TouchableOpacity,
 } from 'react-native'
-import { Header } from 'react-native-elements'
+import { Header, Divider } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import SearchComplaints from '../../Component/SearchComponent'
 import SelectIcon from '../../Component/SelectIcon'
 import CenterComponent from '../../Component/CenterComponent'
@@ -17,6 +19,7 @@ import RightComponent from '../../Component/RightComponent'
 import SideBar from '../../Component/SideBar'
 import SelectedFilterHeader from '../../Component/SelectedFilterHeader'
 import Default from '../../Default/Default'
+import { Filter } from '../../Images/Header'
 
 const Interaction = (props: any) => {
   const { navigation, isHeaderSelect, selectedOneTickit } = props
@@ -33,7 +36,6 @@ const Interaction = (props: any) => {
 
   const onFilterPress = () => {
     console.log('filter press')
-
     setIsSidebarOpen(!isSidebarOpen)
   }
 
@@ -112,11 +114,51 @@ const Interaction = (props: any) => {
               transparent={isSidebarOpen}
               visible={isSidebarOpen}
             >
-              <SideBar
-                onClosePress={() => {
-                  onFilterPress()
+              <View
+                style={{
+                  width: '20%',
+                  marginTop: '4%',
+                  height: '100%',
+                  backgroundColor: '#FBFBFB',
+                  alignSelf: 'flex-end',
+                  borderTopLeftRadius: 5,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
                 }}
-              />
+              >
+                <Header
+                  containerStyle={{
+                    backgroundColor: '#FBFBFB',
+                    height: '8%',
+                    borderTopLeftRadius: 5,
+                  }}
+                  leftComponent={<Filter />}
+                  // leftComponent={<Icon name="filter" size={15} />}
+                  centerComponent={
+                    <Text style={{ marginRight: '50%' }}>All Filters</Text>
+                  }
+                  rightComponent={
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsSidebarOpen(false)
+                      }}
+                    >
+                      <Icon name="close" color="#000" size={15} />
+                    </TouchableOpacity>
+                  }
+                />
+                <Divider />
+                <SideBar />
+              </View>
+              {/* <SideBar
+               
+              /> */}
             </Modal>
           </View>
         </View>

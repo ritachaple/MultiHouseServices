@@ -505,11 +505,7 @@ const List = (props: any) => {
           </Text>
           <View style={{ flex: 1 }}>
             {hovered ? (
-              <Icon
-                style={{ paddingLeft: '5%', paddingTop: '2%' }}
-                name="angle-down"
-                size={15}
-              />
+              <Icon style={styles.angleDown} name="angle-down" size={15} />
             ) : null}
           </View>
           <View style={{ flex: 1 }} />
@@ -567,7 +563,13 @@ const List = (props: any) => {
             {sentiIcon(tickitItems.sentiment)}
           </View>
           <View style={{ flex: 1 }}>
-            {hovered && <Icon name="angle-down" size={15} />}
+            {hovered && (
+              <Icon
+                name="angle-down"
+                style={[styles.angleDown, { paddingTop: '15%' }]}
+                size={15}
+              />
+            )}
           </View>
         </TouchableOpacity>
       </View>
@@ -611,7 +613,9 @@ const List = (props: any) => {
             onPress={() => onPriorityPress()}
           >
             {setPriority(tickitItems.priority_id)}
-            {hovered && <Icon name="angle-down" size={15} />}
+            {hovered && (
+              <Icon name="angle-down" style={styles.angleDown} size={15} />
+            )}
           </Pressable>
         </View>
       </View>
@@ -624,6 +628,7 @@ const List = (props: any) => {
         style={{
           flex: 1,
           flexDirection: 'row',
+          marginRight: '2%',
           // backgroundColor: 'red'
         }}
       >
@@ -637,11 +642,15 @@ const List = (props: any) => {
             {/* <Icon style={{ flex: 3 }} name="user-circle" size={15} /> */}
             <AssignUser />
             {hovered && (
-              <Icon style={{ flex: 1 }} name="angle-down" size={15} />
+              <Icon
+                style={{ paddingHorizontal: '6%', paddingTop: '14%' }}
+                name="angle-down"
+                size={15}
+              />
             )}
           </Pressable>
         </View>
-        <View style={{ flex: 1 }} />
+        {/* <View style={{ flex: 1 }} /> */}
       </View>
     )
   }
@@ -1027,6 +1036,10 @@ const styles = StyleSheet.create({
   fontFamily: {
     fontFamily: 'Poppins-Light',
     fontSize: 12,
+  },
+  angleDown: {
+    paddingTop: '5%',
+    paddingHorizontal: '5%',
   },
 })
 
