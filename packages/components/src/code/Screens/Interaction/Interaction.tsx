@@ -78,15 +78,6 @@ const Interaction = (props: any) => {
                 justifyContent: 'space-around',
                 paddingVertical: '1%',
               }}
-              // centerComponent={<CenterComponent />}
-              // placement="left"
-              // rightComponent={
-              //   <RightComponent
-              //     onFilterPress={() => {
-              //       onFilterPress()
-              //     }}
-              //   />
-              // }
             >
               <View
               // style={{paddingVertical:"1%"}}
@@ -106,7 +97,9 @@ const Interaction = (props: any) => {
                 />
               </View>
             </View>
-            <SelectedFilterHeader />
+            <View style={{ height: '9%' }}>
+              <SelectedFilterHeader />
+            </View>
             <SearchComplaints navigation={navigation} />
             <Modal
               style={{ flex: 1 }}
@@ -156,9 +149,6 @@ const Interaction = (props: any) => {
                 <Divider />
                 <SideBar />
               </View>
-              {/* <SideBar
-               
-              /> */}
             </Modal>
           </View>
         </View>

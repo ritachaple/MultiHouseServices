@@ -110,11 +110,7 @@ const Header = (props: any) => {
               color="#B6B6B6"
               size={15}
             />
-            {/* <TouchableOpacity style={styles.inputStyle}>
-              <Text style={{color:"#ADADAD"}}>
-              Search Tickets, Messages...
-              </Text>
-            </TouchableOpacity> */}
+
             <TextInput
               // onBlur={()=>{setstate(true)}}
               style={styles.inputStyle}
