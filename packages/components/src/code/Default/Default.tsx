@@ -9,7 +9,7 @@ const Default = (props: any) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Header />
+      <Header navigation={navigation} />
       <View style={{ flex: 1, flexDirection: 'row' }}>
         <LeftSideBar navigation={navigation} />
         <View style={{ flex: 1 }}>{children}</View>

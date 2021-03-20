@@ -17,10 +17,11 @@ import Api from '../../provider/api/Api'
 import { configs } from '../../provider/api/ApiUrl'
 import SideBar from '../../Component/SideBar'
 import Whatsapp from '../../Component/ImageComponents/Whatsapp'
-import Facebook from '../../Component/ImageComponents/Facebook'
+// import Facebook from '../../Component/ImageComponents/Facebook'
 import Twitter from '../../Component/ImageComponents/Twitter'
 import UnoBot from '../../Component/ImageComponents/UnoBot'
 import LinkedIn from '../../Component/ImageComponents/LinkedIn'
+import { LoginFacebook } from '../../Images/MediaIcon'
 
 const smIcons = [
   {
@@ -107,35 +108,7 @@ const Login = (props: any) => {
           >
             <UnoBot />
           </View>
-          {isNext ? (
-            <View style={[styles.outerView]}>
-              <View style={[styles.innerView]}>
-                <Text style={[styles.textFont]}>Password</Text>
-                <TextInput
-                  secureTextEntry
-                  defaultValue=""
-                  style={[styles.input, styles.textFont]}
-                  placeholder="Enter Password"
-                  onChangeText={(value) => {
-                    onInputChange(value, 'password')
-                  }}
-                />
-                <TouchableOpacity
-                  onPress={() => {
-                    onLoginPress()
-                  }}
-                  style={[
-                    styles.modalButton,
-                    { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
-                  ]}
-                >
-                  <Text style={[styles.buttonText, { color: '#fff' }]}>
-                    Submit
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : (
+          {!isNext && (
             <View style={[styles.outerView]}>
               {/* <View style={{flex:1}} /> */}
               <View style={[styles.innerView]}>
@@ -160,6 +133,36 @@ const Login = (props: any) => {
               </TouchableOpacity>
             </View>
           )}
+
+          {isNext && (
+            <View style={[styles.outerView]}>
+              {/* <View style={{flex:1}} /> */}
+              <View style={[styles.innerView]}>
+                <Text style={[styles.textFont]}>Password</Text>
+                <TextInput
+                  secureTextEntry
+                  defaultValue=""
+                  style={[styles.input, styles.textFont]}
+                  placeholder="Enter Password"
+                  onChangeText={(value) => {
+                    onInputChange(value, 'password')
+                  }}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={() => onLoginPress()}
+                style={[
+                  styles.modalButton,
+                  { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
+                ]}
+              >
+                <Text style={[styles.buttonText, { color: '#fff' }]}>
+                  Submit
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           <View style={{ marginTop: '10%' }}>
             <Text
               style={{
@@ -185,30 +188,15 @@ const Login = (props: any) => {
             >
               <Whatsapp />
               <Twitter />
-              <Facebook />
+              <LoginFacebook />
               <LinkedIn />
-              {/* <Facebook/> */}
-              {/* {smIcons.length > 0 ? (
-                smIcons.map((item) => (
-                  // <View style={{flexDirection:"row"}}>
-                  <TouchableOpacity onPress={() => {}}>
-                    <Entypo
-                      name={item.iconName}
-                      size={item.iconSize}
-                      color={item.iconColor}
-                    />
-                  </TouchableOpacity>
-                  // </View>
-                ))
-              ) : (
-                <></>
-              )} */}
             </View>
             <View
               style={{
                 flexDirection: 'row',
-                alignSelf: 'center',
-                width: '70%',
+                // alignSelf: 'center',
+                // width: '0%',
+                paddingLeft: '26%',
               }}
             >
               <TouchableOpacity>
@@ -230,7 +218,13 @@ const Login = (props: any) => {
                   Terms of Service
                 </Text>{' '}
               </TouchableOpacity>
-              <Text style={[styles.textFont, { marginHorizontal: '1%' }]}>
+              <Text
+                style={[
+                  styles.textFont,
+                  styles.textFooter,
+                  { marginHorizontal: '1%' },
+                ]}
+              >
                 {'\u25CF'}
               </Text>
               <TouchableOpacity>
@@ -256,122 +250,6 @@ const Login = (props: any) => {
         </View>
       </View>
     </View>
-    // <View
-    //   style={{
-    //     backgroundColor: 'white',
-    //     flex: 1,
-    //     alignContent: 'center',
-    //     padding: '2%',
-    //   }}
-    // >
-    //   <View style={{ flexDirection: 'row' }}>
-    //     <View style={[styles.container, { flex: 3, padding: '5%' }]}>
-    //       <View
-    //         style={{
-    //           // backgroundColor: 'red',
-    //           height: '35%',
-    //           // width: '40%',
-    //           alignSelf: 'center',
-    //         }}
-    //       >
-    //         <UnoBot />
-    //       </View>
-    //       <View>
-    //         <Text>Email</Text>
-    //         <TextInput
-    //           style={styles.input}
-    //           placeholder="Enter Email"
-    //           onChangeText={(value) => {
-    //             onInputChange(value, 'username')
-    //           }}
-    //         />
-    //         <TouchableOpacity
-    //           onPress={() => {
-    //             onLoginPress()
-    //           }}
-    //           style={[
-    //             styles.modalButton,
-    //             { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
-    //           ]}
-    //         >
-    //           <Text style={[styles.buttonText, { color: '#fff' }]}>Next</Text>
-    //         </TouchableOpacity>
-    //       </View>
-    //       <View style={{ marginTop: '10%' }}>
-    //         <Text
-    //           style={{
-    //             color: '#a6a6a6',
-    //             fontStyle: 'italic',
-    //             alignSelf: 'center',
-    //           }}
-    //         >
-    //           Need Help ?{' '}
-    //           <TouchableOpacity>
-    //             <Text style={{ textDecorationLine: 'underline' }}>Support</Text>
-    //           </TouchableOpacity>{' '}
-    //           is here
-    //         </Text>
-    //         <View
-    //           style={{
-    //             flexDirection: 'row',
-    //             alignSelf: 'center',
-    //             justifyContent: 'space-between',
-    //             width: '35%',
-    //             marginVertical: '2%',
-    //           }}
-    //         >
-    //           <Whatsapp />
-    //           <Twitter />
-    //           <Facebook />
-    //           <LinkedIn />
-    //           {/* <Facebook/> */}
-    //           {/* {smIcons.length > 0 ? (
-    //             smIcons.map((item) => (
-    //               // <View style={{flexDirection:"row"}}>
-    //               <TouchableOpacity onPress={() => {}}>
-    //                 <Entypo
-    //                   name={item.iconName}
-    //                   size={item.iconSize}
-    //                   color={item.iconColor}
-    //                 />
-    //               </TouchableOpacity>
-    //               // </View>
-    //             ))
-    //           ) : (
-    //             <></>
-    //           )} */}
-    //         </View>
-    //         <View
-    //           style={{
-    //             flexDirection: 'row',
-    //             alignSelf: 'center',
-    //             width: '70%',
-    //           }}
-    //         >
-    //           <TouchableOpacity>
-    //             <Text>Privacy Policy</Text>
-    //           </TouchableOpacity>
-    //           <Text style={{ marginHorizontal: '1%' }}>{'\u25CF'}</Text>
-    //           <TouchableOpacity>
-    //             <Text>Terms of Service</Text>{' '}
-    //           </TouchableOpacity>
-    //           <Text style={{ marginHorizontal: '1%' }}>{'\u25CF'}</Text>
-    //           <TouchableOpacity>Copyright 2021.</TouchableOpacity>
-    //           <Text> All rights reserved</Text>
-    //         </View>
-    //       </View>
-    //     </View>
-    //     <View style={[styles.container, { flex: 2 }]}>
-    //       <View
-    //         style={{
-    //           backgroundColor: 'skyblue',
-    //           width: '100%',
-    //           height: '100%',
-    //         }}
-    //       />
-    //     </View>
-    //   </View>
-    // </View>
   )
 }
 const mapDispatchToProps = (dispatch: any) => {
@@ -386,30 +264,8 @@ export default connect(null, mapDispatchToProps)(Login)
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor:"white",
-    // width: '100%',
     height: '140%',
-    // flex:1
-    // borderWidth: 1,
-    // marginHorizontal: '25%',
-    // marginVertical: '10%',
-    // borderRadius: 4,
-    // justifyContent: 'center',
-    // paddingHorizontal: '2%',
-    // paddingVertical: '2%',
   },
-  // container: {
-  //   // backgroundColor:"white",
-  //   // width: '100%',
-  //   height: '140%',
-  //   // borderWidth: 1,
-  //   // marginHorizontal: '25%',
-  //   // marginVertical: '10%',
-  //   // borderRadius: 4,
-  //   justifyContent: 'center',
-  //   // paddingHorizontal: '2%',
-  //   // paddingVertical: '2%',
-  // },
   modalButton: {
     borderWidth: 1,
     // marginRight: '20%',
@@ -431,6 +287,7 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 2,
     borderColor: '#d9d9d9',
+    paddingHorizontal: '2%',
   },
   textFont: {
     fontFamily: 'Poppins-Light',

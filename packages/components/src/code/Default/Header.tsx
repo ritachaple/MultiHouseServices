@@ -14,9 +14,12 @@ import Unobot from '../Images/Unobot'
 import UnobotText from '../Images/UnobotText'
 
 const Header = (props: any) => {
-  const { selectedTickit } = props
+  const { selectedTickit, navigation } = props
   const [state, setstate] = useState(false)
 
+  const logout = () => {
+    props.clearToken()
+  }
   return (
     <View
       style={{
@@ -60,18 +63,29 @@ const Header = (props: any) => {
             paddingVertical: '1%',
           }}
         >
-          <Text
-            style={{
-              fontFamily: 'Poppins-Light',
-              fontSize: 18,
-              color:
-                selectedTickit && selectedTickit.complaint_id
-                  ? '#FE46D5'
-                  : 'none',
-            }}
-          >
-            Interactions
-          </Text>
+          {selectedTickit && selectedTickit.complaint_id ? (
+            <Text
+              style={{
+                fontFamily: 'Poppins-Light',
+                fontSize: 18,
+                color: '#FE46D5',
+              }}
+              onPress={() => {
+                navigation.navigate('Interaction')
+              }}
+            >
+              Interactions
+            </Text>
+          ) : (
+            <Text
+              style={{
+                fontFamily: 'Poppins-Light',
+                fontSize: 18,
+              }}
+            >
+              Interactions
+            </Text>
+          )}
           {selectedTickit && selectedTickit.complaint_id ? (
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ color: '#5A607F' }}> /</Text>
@@ -145,6 +159,9 @@ const Header = (props: any) => {
               name="user-circle"
               size={25}
               color="#B6B6B6"
+              onPress={() => {
+                logout()
+              }}
             />
             <FontAwesome
               style={{ padding: '18%', paddingLeft: 0 }}
@@ -166,7 +183,15 @@ const mapStateToProps = (state: any) => {
   }
 }
 
-export default connect(mapStateToProps)(Header)
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    clearToken: () => {
+      dispatch({ type: 'CLEAR_LOGIN_TOKEN' })
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
 
 const styles = StyleSheet.create({
   inputStyle: {

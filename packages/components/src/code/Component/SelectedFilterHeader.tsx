@@ -71,9 +71,9 @@ const SelectedFilterHeader = (props: any) => {
                 )}
               </View>
               <Icon
-                style={styles.iconStyle}
+                style={[styles.iconStyle, styles.textStyle]}
                 name="close"
-                color="#000"
+                color="#4d4d4d"
                 size={15}
               />
             </View>
@@ -83,9 +83,9 @@ const SelectedFilterHeader = (props: any) => {
                 {priority || 'All'}
               </Text>
               <Icon
-                style={styles.iconStyle}
+                style={[styles.iconStyle, styles.textStyle]}
                 name="close"
-                color="#000"
+                color="#4d4d4d"
                 size={15}
               />
             </View>
@@ -95,9 +95,9 @@ const SelectedFilterHeader = (props: any) => {
                 {status || 'All'}
               </Text>
               <Icon
-                style={styles.iconStyle}
+                style={[styles.iconStyle, styles.textStyle]}
                 name="close"
-                color="#000"
+                color="#4d4d4d"
                 size={15}
               />
             </View>
@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     paddingHorizontal: '10%',
+    paddingTop: '2%',
   },
   selectedFilter: {
     paddingHorizontal: '3%',
