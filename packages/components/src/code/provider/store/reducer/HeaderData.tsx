@@ -5,7 +5,7 @@ const initialState = {
 }
 
 const checkData = (state = { initialState }, action: any) => {
-  console.log('state redux: ', state, 'action redux: ', action)
+  // console.log('state redux: ', state, 'action redux: ', action)
   switch (action.type) {
     case 'CHECK_DATA':
       return action.payload

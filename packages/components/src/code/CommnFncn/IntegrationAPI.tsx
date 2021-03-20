@@ -7,7 +7,9 @@ export const searchComplaintsApi = async (
   pageIndex: number,
   startDate: any,
   endDate: any,
+  mediumId?: any,
 ) => {
+  const medum = mediumId || []
   let res: any = {}
   try {
     const data = {
@@ -27,6 +29,7 @@ export const searchComplaintsApi = async (
       search_text: '',
       page_index: pageIndex,
       agent_id: 5889,
+      medium: medum,
     }
     // console.log('search_complaintsRes1')
 

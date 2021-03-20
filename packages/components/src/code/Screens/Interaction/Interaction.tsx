@@ -97,7 +97,7 @@ const Interaction = (props: any) => {
                 />
               </View>
             </View>
-            <View style={{ height: '9%' }}>
+            <View style={{ height: '10%' }}>
               <SelectedFilterHeader />
             </View>
             <SearchComplaints navigation={navigation} />
@@ -160,7 +160,7 @@ const Interaction = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'whitesmoke',
+    backgroundColor: '#F1F6FF',
     // paddingHorizontal: '2%',
   },
   header: {
