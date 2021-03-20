@@ -20,6 +20,7 @@ import Api from '../provider/api/Api'
 import ModalScreen from './ModalScreen'
 import TooltipMessage from './TooltipMessage'
 import DropDownList from './DropDownList'
+import SelectBoxList from './SelectBoxList'
 import { configs } from '../provider/api/ApiUrl'
 import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
 import { UnChecked, Checked } from '../Images/Checkbox'
@@ -191,10 +192,10 @@ const List = (props: any) => {
     setSentimentList(false)
   }
 
-  const onSentimetIconClick = async (item: any) => {
-    // setTooltip('Sentiment updated successfully')
-    // console.log("tickitItem",tickitItems)
-    // console.log("item",item)
+  const onSentimetIconClick = async (selData: any) => {
+    const selectedData: any = sentimentList.find((item) => {
+      return item.text === selData
+    })
     onCloseModal()
     const data = {
       assigned_to: null,
@@ -207,7 +208,7 @@ const List = (props: any) => {
       response_allowed: false,
       blocked_by: null,
       medium_id: tickitItems.medium_id,
-      sentiment_name: item.text,
+      sentiment_name: selectedData.text,
       last_modified_on: tickitItems.last_modified_on,
       fake_factor: tickitItems.fake_factor,
       priority_id: tickitItems.priority_id,
@@ -215,7 +216,7 @@ const List = (props: any) => {
       user_type: tickitItems.user_type,
       client_id: tickitItems.client_id,
       medium_username: tickitItems.medium_username,
-      sentiment: item.id,
+      sentiment: selectedData.id,
       cust_location: null,
       complaint_text: tickitItems.complaint_text,
       post_url: tickitItems.post_url,
@@ -236,7 +237,7 @@ const List = (props: any) => {
       is_deleted: false,
       resolution_text: null,
       activity_id: null,
-      conversation_text: `Sentiment has been changed to ${item.text}`,
+      conversation_text: `Sentiment has been changed to ${selectedData.text}`,
       created_by: 'system',
       is_internal_user: true,
       is_internal: true,
@@ -390,9 +391,9 @@ const List = (props: any) => {
     //   data.top="18%"
     // }
     // setDropdownStyle(data)
-    setModalVisible(!modalVisible)
+    // setModalVisible(!modalVisible)
     setIsDropdownList(!isDropdownList)
-    setSentimentList(true)
+    setSentimentList(!isSentimentList)
   }
 
   const mediaIcon = (mediumId: any) => {
@@ -530,6 +531,11 @@ const List = (props: any) => {
     )
   }
 
+  const handleonchange = (value: any) => {
+    console.log('value: ', value)
+
+    setSentimentList(!isSentimentList)
+  }
   const sentiIcon = (Sentiment: any) => {
     try {
       switch (Sentiment) {
@@ -559,24 +565,45 @@ const List = (props: any) => {
           flexDirection: 'row',
         }}
       >
-        <TouchableOpacity
-          onPress={() => onSentimentPress()}
-          style={{ flex: 1, flexDirection: 'row', paddingHorizontal: '20%' }}
-        >
-          <View style={{ flex: 1 }} />
-          <View style={{ flex: 1, justifyContent: 'center' }}>
-            {sentiIcon(tickitItems.sentiment)}
-          </View>
-          <View style={{ flex: 1 }}>
-            {hovered && (
-              <Icon
-                name="angle-down"
-                style={[styles.angleDown, { paddingTop: '15%' }]}
-                size={15}
-              />
-            )}
-          </View>
-        </TouchableOpacity>
+        {!isSentimentList ? (
+          <TouchableOpacity
+            onPress={() => onSentimentPress()}
+            style={{ flex: 1, flexDirection: 'row', paddingHorizontal: '20%' }}
+          >
+            <View style={{ flex: 1 }} />
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              {sentiIcon(tickitItems.sentiment)}
+            </View>
+            <View style={{ flex: 1 }}>
+              {hovered && (
+                <Icon
+                  name="angle-down"
+                  style={[styles.angleDown, { paddingTop: '15%' }]}
+                  size={15}
+                />
+              )}
+            </View>
+          </TouchableOpacity>
+        ) : (
+          isSentimentList && (
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                paddingHorizontal: '20%',
+              }}
+            >
+              <View style={{ flex: 1, justifyContent: 'center' }}>
+                <SelectBoxList
+                  data={sentimentList}
+                  handleonchange={(value: any) => {
+                    onSentimetIconClick(value)
+                  }}
+                />
+              </View>
+            </View>
+          )
+        )}
       </View>
     )
   }
