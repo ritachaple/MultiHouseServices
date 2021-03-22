@@ -536,8 +536,10 @@ const Chat = (props: any) => {
           borderRadius: 10,
           backgroundColor: '#d9d9d9',
           padding: '1%',
-          width: '95%',
+          width: '100%',
           alignSelf: 'center',
+          // paddingVertical: "2%"
+          marginVertical: '2%',
         }}
       >
         <TouchableOpacity
@@ -999,6 +1001,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: '1%',
     borderRadius: 20,
+    paddingHorizontal: '2%',
+    paddingVertical: '1%',
   },
   msgContainer: {
     marginBottom: '1%',

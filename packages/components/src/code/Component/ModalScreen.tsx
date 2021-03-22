@@ -17,6 +17,7 @@ import { configs } from '../provider/api/ApiUrl'
 import UserHistory from './UserHistory'
 import UserData from './UserDetails_New'
 import MultipleDropdown from './MultipleDropdown'
+import { Interaction2Edit } from './DropdownSelect'
 
 // import Datepicker from './DatePicker'
 
@@ -54,12 +55,12 @@ const ModalScreen = (props: any) => {
           setPendingWithDropdown(res.data.controls[0])
           setDepartment(res.data.controls[1])
           setPolicyNo(res.data.controls[2])
-          setAssignTo(res.data.controls[3])
-          setPriority(res.data.controls[4])
-          setStatus(res.data.controls[5])
-          setDueDate(res.data.controls[6])
-          setFakeNewsType(res.data.controls[7])
-          setFakeFactor(res.data.controls[8])
+          setAssignTo(res.data.controls[4])
+          setPriority(res.data.controls[5])
+          setStatus(res.data.controls[7])
+          // setDueDate(res.data.controls[6])
+          // setFakeNewsType(res.data.controls[7])
+          // setFakeFactor(res.data.controls[8])
         }
       } catch (error) {
         console.log('dynamic Control error', error)
@@ -328,35 +329,53 @@ const ModalScreen = (props: any) => {
               flex: 1,
               paddingHorizontal: '1%',
               backgroundColor: '#FBFBFB',
+              paddingBottom: '4%',
               //  marginHorizontal: '1%', paddingVertical: '2%'
             }}
           >
+            <View style={{ paddingVertical: '5%' }}>
+              <Text style={[styles.textStyle, { fontWeight: '700' }]}>
+                Edit
+              </Text>
+            </View>
             <ScrollView
-              style={{ paddingHorizontal: '3%', paddingVertical: '4%' }}
+              style={{ paddingHorizontal: '3%', paddingVertical: '2%' }}
             >
-              <View>
+              {/* <View>
                 <Text>Pending With</Text>
                 <Dropdown
                   dropdownList={PendingWithDropdown.lookup_data}
                   selectedItem={selectedPendingItem}
                 />
-              </View>
-              <View style={{ paddingTop: '7%' }}>
-                <Text>Department</Text>
-                <Dropdown
+              </View> */}
+              <View style={styles.dropdownViewStyle}>
+                <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                  Department
+                </Text>
+                {/* <Dropdown
                   dropdownList={Department.lookup_data}
                   selectedItem={selectedPendingItem}
+                /> */}
+                <Interaction2Edit
+                  list={Department.lookup_data}
+                  onSelectedItem={selectedPendingItem}
                 />
               </View>
-              <View style={{ paddingTop: '7%' }}>
+              {/* <View style={styles.dropdownViewStyle}>
                 <Text>Policy No</Text>
                 <Dropdown
                   dropdownList={PolicyNo.lookup_data}
                   selectedItem={selectedPendingItem}
                 />
-              </View>
-              <View style={{ paddingTop: '7%' }}>
-                <Text>Assign To</Text>
+              </View> */}
+              <View style={styles.dropdownViewStyle}>
+                <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                  Assign To
+                </Text>
+                <Interaction2Edit
+                  list={AssignTo.lookup_data}
+                  onSelectedItem={selectedPendingItem}
+                />
                 {/* <Dropdown
                   dropdownList={AssignTo.lookup_data}
                   selectedItem={selectedPendingItem}
@@ -378,47 +397,62 @@ const ModalScreen = (props: any) => {
         />
       </TouchableOpacity> */}
 
-                <MultipleDropdown
+                {/* <MultipleDropdown
                   dropdownList={AssignTo.lookup_data}
                   selectedItem={selectedPendingItem}
-                />
+                /> */}
               </View>
-              <View style={{ paddingTop: '7%' }}>
-                <Text>Priority</Text>
-                <Dropdown
+              <View style={styles.dropdownViewStyle}>
+                <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                  Priority
+                </Text>
+                <Interaction2Edit
+                  list={Priority.lookup_data}
+                  onSelectedItem={selectedPendingItem}
+                />
+                {/* <Dropdown
                   dropdownList={Priority.lookup_data}
                   selectedItem={selectedPendingItem}
-                />
+                /> */}
               </View>
-              <View style={{ paddingTop: '7%' }}>
-                <Text>Status</Text>
-                <Dropdown
+              <View style={styles.dropdownViewStyle}>
+                <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                  Status
+                </Text>
+                <Interaction2Edit
+                  list={Status.lookup_data}
+                  onSelectedItem={selectedPendingItem}
+                />
+                {/* <Dropdown
                   dropdownList={Status.lookup_data}
                   lseectedItem={selectedPendingItem}
-                />
+                /> */}
               </View>
-              <View style={{ paddingTop: '7%' }}>
-                <Text>Due Date</Text>
+              <View style={styles.dropdownViewStyle}>
+                <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                  Due Date
+                </Text>
+
                 {/* <Dropdown
                   dropdownList={PolicyNo.lookup_data}
                   selectedItem={selectedPendingItem}
                 /> */}
                 {/* <Datepicker /> */}
               </View>
-              <View style={{ paddingTop: '7%' }}>
+              {/* <View style={styles.dropdownViewStyle}>
                 <Text>Fake new Type</Text>
                 <Dropdown
                   dropdownList={FakeNewsType.lookup_data}
                   selectedItem={selectedPendingItem}
                 />
               </View>
-              <View style={{ paddingTop: '7%' }}>
+              <View style={styles.dropdownViewStyle}>
                 <Text>Fake Factor</Text>
                 <Dropdown
                   dropdownList={FakeFactor.lookup_data}
                   selectedItem={selectedPendingItem}
                 />
-              </View>
+              </View> */}
             </ScrollView>
           </View>
         </View>
@@ -472,5 +506,16 @@ const styles = StyleSheet.create({
     height: '100%',
     width: 1,
     backgroundColor: '#EDEDED',
+  },
+  textStyle: {
+    fontFamily: 'Poppins-Light',
+    fontSize: 14,
+    lineHeight: 28,
+  },
+  DropdownTextColor: {
+    color: '#8A92BB',
+  },
+  dropdownViewStyle: {
+    paddingVertical: '10%',
   },
 })

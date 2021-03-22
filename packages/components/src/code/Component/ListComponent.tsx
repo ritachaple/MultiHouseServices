@@ -32,6 +32,7 @@ import {
   PositiveSentiment,
   NeutralSentiment,
 } from '../Images/SentimentIcon'
+import { Interaction2Edit } from './DropdownSelect'
 
 // const colors = ['red', 'green', 'orange']
 
@@ -256,7 +257,7 @@ const List = (props: any) => {
   const onAssigneeClick = async (item: any) => {
     // setTooltip('Sentiment updated successfully')
     // console.log("tickitItem",tickitItems)
-    // console.log("item",item)
+    console.log('item1', item)
     onCloseModal()
     const data = {
       assigned_to: [5889],
@@ -314,6 +315,67 @@ const List = (props: any) => {
     // console.log('sentiment Icon Res', res)
   }
 
+  const onPrioritySelect = async (selText: string) => {
+    const priority: any = priorityDropdownList.find((item: any) => {
+      return item.text === selText
+    })
+    console.log('selText', selText)
+
+    onCloseModal()
+    const data = {
+      assigned_to: [5889],
+      created_on: tickitItems.created_on,
+      custom_column: { due_date: null, policy_number: '1234' },
+      user_name: tickitItems.user_name,
+      customer_responded: tickitItems.customer_responded,
+      is_dm: tickitItems.is_dm,
+      department_id: null,
+      response_allowed: false,
+      blocked_by: null,
+      medium_id: tickitItems.medium_id,
+      sentiment_name: tickitItems.sentiment_name,
+      last_modified_on: tickitItems.last_modified_on,
+      fake_factor: tickitItems.fake_factor,
+      priority_id: priority.status_id,
+      user_profile_picture_url: null,
+      user_type: tickitItems.user_type,
+      client_id: tickitItems.client_id,
+      medium_username: tickitItems.medium_username,
+      sentiment: tickitItems.tickitItems,
+      cust_location: null,
+      complaint_text: tickitItems.complaint_text,
+      post_url: tickitItems.post_url,
+      user_id: tickitItems.user_id,
+      thread_count: tickitItems.thread_count,
+      complaint_id: tickitItems.complaint_id,
+      verified: false,
+      is_parent_missing: false,
+      follower_count: tickitItems.follower_count,
+      status_id: tickitItems.status_id,
+      issue_id: null,
+      state_id: tickitItems.status_id,
+      is_spam: false,
+      is_read: true,
+      fake_tagged_by: tickitItems.fake_tagged_by,
+      fake_news_type: null,
+      district: null,
+      is_deleted: false,
+      resolution_text: null,
+      activity_id: null,
+      conversation_text: 'Complaint has been assigned',
+      created_by: 'system',
+      is_internal_user: true,
+      is_internal: true,
+      is_system_generated: true,
+      is_user_reply: false,
+      status_name: priority.text,
+    }
+    const res: any = await Api.post(configs.log_activity, data, token)
+    if (res.status === 200) {
+      // setTooltip('Assignee updated successfully')
+    }
+  }
+
   const onCheckboxClick = (Id: any) => {
     try {
       let tickits = [...storeSelectedTickits]
@@ -358,8 +420,8 @@ const List = (props: any) => {
   }
 
   const onPriorityPress = () => {
-    setModalVisible(!modalVisible)
-    setIsDropdownList(!isDropdownList)
+    // setModalVisible(!modalVisible)
+    // setIsDropdownList(!isDropdownList)
     setPriorityList(true)
   }
   const onAssigneePress = () => {
@@ -648,15 +710,22 @@ const List = (props: any) => {
       >
         <View style={{ flex: 1 }} />
         <View style={{ flex: 1 }}>
-          <Pressable
-            style={{ flex: 1, flexDirection: 'row' }}
-            onPress={() => onPriorityPress()}
-          >
-            {setPriority(tickitItems.priority_id)}
-            {hovered && (
-              <Icon name="angle-down" style={styles.angleDown} size={15} />
-            )}
-          </Pressable>
+          {!isPriorityDropdown ? (
+            <Pressable
+              style={{ flex: 1, flexDirection: 'row' }}
+              onPress={() => onPriorityPress()}
+            >
+              {setPriority(tickitItems.priority_id)}
+              {hovered && (
+                <Icon name="angle-down" style={styles.angleDown} size={15} />
+              )}
+            </Pressable>
+          ) : (
+            <Interaction2Edit
+              list={priorityDropdownList}
+              onSelectedItem={(value: any) => onPrioritySelect(value)}
+            />
+          )}
         </View>
       </View>
     )
@@ -888,8 +957,8 @@ const List = (props: any) => {
                       color="#000"
                     />
                     {isStatusDropdown && flatlist(statusDropdownList)}
-                    {isPriorityDropdown && flatlist(priorityDropdownList)}
-                    {isAssigneeList && flatlist(assigneeDropdownList)}
+                    {/* {isPriorityDropdown && flatlist(priorityDropdownList)}
+                    {isAssigneeList && flatlist(assigneeDropdownList)} */}
                     {isSentimentList && flatlist(sentimentList)}
                   </DropDownList>
                 ) : null}

@@ -48,6 +48,20 @@ form button {
   border: 0;
   color: #fff;
 }
+.dropdown-input {
+  background-color: white;
+  padding: 4%;
+  border: 1px solid #d6d9e6;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+/* .dropdown-input {
+  background-color: white;
+  padding: 4%;
+  border: 1px solid #d6d9e6;
+  box-sizing: border-box;
+  border-radius: 8px;
+} */
 
 @font-face {
   font-family: 'MaterialIcons';
