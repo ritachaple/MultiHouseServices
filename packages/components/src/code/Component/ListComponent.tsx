@@ -608,6 +608,7 @@ const List = (props: any) => {
   }
   const sentiIcon = (Sentiment: any) => {
     try {
+      console.log('SENTIMATE', Sentiment)
       switch (Sentiment) {
         case 1:
           return <PositiveSentiment />
