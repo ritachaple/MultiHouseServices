@@ -56,7 +56,7 @@ const SelectedFilterHeader = (props: any) => {
             <View style={styles.filterBox}>
               <Text style={styles.textStyle}>Medium: </Text>
               <View style={{ flexDirection: 'row' }}>
-                {medium.length > 0 ? (
+                {medium.length !== undefined && medium.length > 0 ? (
                   medium.slice(0, 2).map((item: any, i: number) => {
                     return (
                       <Text style={[styles.textStyle, styles.selectedFilter]}>

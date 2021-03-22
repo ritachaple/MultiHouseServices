@@ -5,8 +5,8 @@ const SelectBoxList = (props: any) => {
   const { data, handleonchange } = props
   return (
     <select
-      className="form-control"
-      id="fruit"
+      // className="form-control"
+      // id="fruit"
       onChange={(val) => {
         handleonchange(val.target.value)
       }}
