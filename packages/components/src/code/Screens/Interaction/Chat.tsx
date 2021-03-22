@@ -30,6 +30,7 @@ const ChatScreen = (props: any) => {
   } = props
 
   const [index, setIndex] = useState()
+  const [isInfluencer, setIsInfluencer] = useState('')
 
   useEffect(() => {
     const findIndexOfTickit = () => {
@@ -61,6 +62,7 @@ const ChatScreen = (props: any) => {
         client_id: clientId,
         user_type: type,
       }
+      setIsInfluencer(type)
       const res: any = await Api.put(
         `${configs.mark_influencer_detractor}`,
         body,
@@ -168,7 +170,11 @@ const ChatScreen = (props: any) => {
                   }}
                 >
                   <View style={styles.Icon}>
-                    <RadioChecked />
+                    {isInfluencer === 'detractor' ? (
+                      <RadioChecked />
+                    ) : (
+                      <RadioUnchecked />
+                    )}
                   </View>
                   <Text style={styles.ButtonText}>Detractor</Text>
                 </TouchableOpacity>
@@ -181,7 +187,11 @@ const ChatScreen = (props: any) => {
                   }}
                 >
                   <View style={styles.Icon}>
-                    <RadioUnchecked />
+                    {isInfluencer === 'influencer' ? (
+                      <RadioChecked />
+                    ) : (
+                      <RadioUnchecked />
+                    )}
                   </View>
                   <Text style={styles.ButtonText}>Influencer</Text>
                 </TouchableOpacity>
