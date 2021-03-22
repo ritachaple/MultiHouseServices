@@ -1,13 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import DatePicker from 'react-datepicker'
 import { connect } from 'react-redux'
 import 'react-datepicker/dist/react-datepicker.css'
 import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
-
+import { addDays, format } from 'date-fns';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+// @ts-ignore
+import { DateRangePicker, DateRange } from 'react-date-range';
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+const TimePicker = ({ startDate, endDate }: { startDate: Date, endDate: Date }) => {
+  console.log('TimePicker, ', startDate, endDate);
 
+  return (<View>
+    <View>
+      <Text>From</Text>
+      {format(startDate, 'dd LLL,yyyy')}
+    </View>
+    <View>
+      <Text>To</Text>
+      {format(endDate, 'dd LLL,yyyy')}
+    </View>
+  </View>)
+}
 const stDate = new Date()
 stDate.setDate(stDate.getDate() - 15)
 
@@ -15,8 +32,23 @@ const Example = (props: any) => {
   const { token, pageSize, pageIndex } = props
 
   const [startDate, setStartDate] = useState(stDate)
-  const [endDate, setEndDate] = useState(new Date())
+  const [endDate, setEndDate] = useState(new Date());
+  const [isVisible, setIsVisible] = useState(false);
 
+  const [state, setState] = useState([
+    {
+      startDate: startDate,
+      endDate: endDate,
+      key: 'selection'
+    }
+  ]);
+  const [originaldatestate, setOriginaldatestate] = useState([
+    {
+      startDate: startDate,
+      endDate: endDate,
+      key: 'selection'
+    }
+  ]);
   useEffect(() => {
     const ed = endDate.toISOString()
     const sd = startDate.toISOString()
@@ -59,27 +91,65 @@ const Example = (props: any) => {
     tickitList()
   }
 
+  const handleSelect = (item: any) => {
+    console.log('date selcted : ', item);
+    setState([item.selection]); // changes only for view
+  }
+  const showDatePicker=()=>{
+      setIsVisible(true);
+  }
+  const submitDatePicker=()=>{
+    props.onSubmit(state);
+    setIsVisible(false);
+    setOriginaldatestate([...state]);
+  }
+  const hideDatePicker=()=>{
+    setIsVisible(false);
+    // props.onSubmit(originaldatestate);
+    setState([...originaldatestate]); // changes only for view
+  }
   return (
-    <View style={{ flexDirection: 'row', paddingLeft: '4%' }}>
-      <View style={styles.calenderStyle}>
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => onStartDate(date)}
-          timeInputLabel="Time:"
-          dateFormat="dd MMM, yyyy h:mm aa"
-          showTimeInput
-        />
-      </View>
-      <View style={styles.calenderStyle}>
-        <DatePicker
-          minDate={startDate}
-          selected={endDate}
-          onChange={(date) => onEndDate(date)}
-          timeInputLabel="Time:"
-          dateFormat="dd MMM, yyyy h:mm aa"
-          showTimeInput
-        />
-      </View>
+    <View>
+
+ {isVisible ?<View>
+        <View style={{ backgroundColor: '#fff', flexDirection: 'row', flex: 1 }}>
+          {console.log('render : ', state)}
+
+          {/* // <View style={{ flexDirection: 'row', paddingLeft: '4%' }}>
+    //   <View style={styles.calenderStyle}> */}
+          <View>
+            <DateRange
+              onChange={(item: any) => {
+                console.log('onChange: ', item);
+                handleSelect(item)
+              }}
+              showSelectionPreview={false}
+              moveRangeOnFirstSelection={false}
+              months={1}
+              ranges={state}
+              direction="horizontal"
+              showMonthAndYearPickers={false}
+              showPreview={false}
+              showDateDisplay={false}
+              inputRanges={[]}
+              staticRanges={[]}
+            />
+          </View>
+          <View>
+            <TimePicker {...state[0]} />
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end',borderTopColor:'#E1E1E1',borderTopWidth:1,
+      paddingVertical:20,backgroundColor:'#fff' }}>
+          <TouchableOpacity onPress={hideDatePicker}>
+            <Text>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={submitDatePicker}>
+            <Text>Submit</Text>
+          </TouchableOpacity>
+        </View>
+      </View>:<TouchableOpacity onPress={showDatePicker}>{format(state[0].startDate, 'dd LLL,yyyy')}-{format(state[0].endDate, 'dd LLL,yyyy')}</TouchableOpacity>
+}
     </View>
   )
 }
