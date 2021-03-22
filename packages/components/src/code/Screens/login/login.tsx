@@ -163,7 +163,7 @@ const Login = (props: any) => {
             </View>
           )}
 
-          <View style={{ marginTop: '10%' }}>
+          <View style={{ marginTop: '18%' }}>
             <Text
               style={{
                 color: '#a6a6a6',
@@ -240,12 +240,12 @@ const Login = (props: any) => {
           </View>
         </View>
         <View style={[styles.container, { flex: 2 }]}>
-          <View
-            style={{
-              backgroundColor: 'skyblue',
-              width: '100%',
-              height: '100%',
+          <Image
+            source={{
+              uri:
+                'https://unoboat.s3.ap-south-1.amazonaws.com/main-login-_1_.svg',
             }}
+            style={{ width: '100%', height: '75%' }}
           />
         </View>
       </View>

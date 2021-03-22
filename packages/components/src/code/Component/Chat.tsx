@@ -498,6 +498,7 @@ const Chat = (props: any) => {
                               backgroundColor: '#F4F4F4',
                               alignSelf: 'flex-start',
                               flexDirection: 'row',
+                              borderColor: '#F4F4F4',
                             },
                           ]}
                         >
@@ -515,6 +516,7 @@ const Chat = (props: any) => {
                         {
                           backgroundColor: '#F1F6FF',
                           marginLeft: '10%',
+                          borderColor: '#F1F6FF',
                         },
                       ]}
                     >

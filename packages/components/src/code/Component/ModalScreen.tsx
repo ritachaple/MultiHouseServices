@@ -326,7 +326,8 @@ const ModalScreen = (props: any) => {
           <View
             style={{
               flex: 1,
-
+              paddingHorizontal: '1%',
+              backgroundColor: '#FBFBFB',
               //  marginHorizontal: '1%', paddingVertical: '2%'
             }}
           >
@@ -470,6 +471,6 @@ const styles = StyleSheet.create({
   verticleLine: {
     height: '100%',
     width: 1,
-    backgroundColor: '#909090',
+    backgroundColor: '#EDEDED',
   },
 })
