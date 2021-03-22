@@ -17,6 +17,7 @@ import { configs } from '../provider/api/ApiUrl'
 import UserHistory from './UserHistory'
 import UserData from './UserDetails_New'
 import MultipleDropdown from './MultipleDropdown'
+
 // import Datepicker from './DatePicker'
 
 const ModalScreen = (props: any) => {
@@ -301,7 +302,7 @@ const ModalScreen = (props: any) => {
             style={{
               flexDirection: 'row',
               justifyContent: 'flex-end',
-              padding: '1%',
+              // padding: '1%',
             }}
           >
             {/* <Text>#{complaintId}</Text> */}
@@ -317,9 +318,9 @@ const ModalScreen = (props: any) => {
               ))}
             {/* {isCRM ? <UserData userId={userId} onClose={showUserDetails}/> : null} */}
 
-            {isConversation ? (
-              <Chat complaintId={complaintId} clientId={clientId} />
-            ) : null}
+            {/* {isConversation ? ( */}
+            <Chat complaintId={complaintId} clientId={clientId} />
+            {/* ) : null} */}
           </View>
           <View style={styles.verticleLine} />
           <View

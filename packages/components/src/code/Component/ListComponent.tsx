@@ -483,8 +483,13 @@ const List = (props: any) => {
   }
 
   const Status = (hovered: any) => {
-    const selectedStatus = statusDropdownList[tickitItems.status_id].status_name
-    // console.log('selectedStatus', selectedStatus)
+    let selectedStatus
+
+    if (tickitItems.state_id !== null) {
+      selectedStatus = statusDropdownList[tickitItems.status_id].status_name
+    } else {
+      selectedStatus = null
+    }
 
     return (
       <View
@@ -501,14 +506,17 @@ const List = (props: any) => {
           onPress={() => onStatusSelect(hovered)}
           style={{ flexDirection: 'row', flex: 4 }}
         >
-          <Text
-            style={[
-              styles.fontFamily,
-              { flex: 2, textAlign: 'center', fontWeight },
-            ]}
-          >
-            {selectedStatus}
-          </Text>
+          {selectedStatus !== null ? (
+            <View style={{ flex: 2 }}>
+              <Text
+                style={[styles.fontFamily, { fontWeight, textAlign: 'center' }]}
+              >
+                {selectedStatus}
+              </Text>
+            </View>
+          ) : (
+            <View style={{ flex: 1 }} />
+          )}
           <View style={{ flex: 1 }}>
             {hovered ? (
               <Icon style={styles.angleDown} name="angle-down" size={15} />

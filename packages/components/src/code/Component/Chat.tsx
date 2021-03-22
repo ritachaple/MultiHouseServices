@@ -24,11 +24,18 @@ import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
 import DropDownList from './DropDownList'
 import ChatModal from './ChatModal'
+import {
+  AllMedia,
+  Twitter2,
+  Facebook2,
+  WhatsApp2,
+  EmailInterac2,
+} from '../Images/MediaIcon'
 
 // const Chat = (complaintId: any) => {
 const Chat = (props: any) => {
-  const { complaintId, clientId, token } = props
-  console.log('checkCID', complaintId)
+  const { clientId, token, selectedTickit } = props
+  // console.log('checkCID', complaintId)
   console.log('clientId', clientId)
 
   // const Id: any = complaintId.complaintId
@@ -50,9 +57,12 @@ const Chat = (props: any) => {
     AddressBook: 'Enter Email Address',
     EmailTemplate: 'Default',
   })
+  const [selectedMedia, setSelectedMedia] = useState('all')
   const [msgModal, setMsgModel] = useState(false)
 
   const bodercolor = '#acb3bf'
+
+  const fontWeight = 600
 
   // const bottomBtn = [
   //   {
@@ -73,7 +83,7 @@ const Chat = (props: any) => {
     const chatDetails = async () => {
       try {
         const res: any = await Api.get(
-          `${configs.get_activity}${complaintId}/2`,
+          `${configs.get_activity}${selectedTickit.complaint_id}/2`,
           token,
         )
         console.log('chatDetails', res)
@@ -109,7 +119,7 @@ const Chat = (props: any) => {
 
     chatDetails()
     channedResponse()
-  }, [complaintId, clientId, token])
+  }, [selectedTickit, clientId, token])
 
   const onSendMessage = async () => {
     try {
@@ -126,7 +136,7 @@ const Chat = (props: any) => {
           status_id: '1',
           fake_news_type: null,
           fake_factor: null,
-          complaint_id: complaintId,
+          complaint_id: selectedTickit.complaint_id,
           activity_id: null,
           resolution_text: null,
           medium_id: 2,
@@ -271,7 +281,7 @@ const Chat = (props: any) => {
     return (
       <>
         <View
-          style={{ flexDirection: 'row', paddingLeft: '2%', paddingTop: '5%' }}
+          style={{ flexDirection: 'row', paddingLeft: '2%', paddingTop: '3%' }}
         >
           <Icon
             onPress={() => {
@@ -298,7 +308,7 @@ const Chat = (props: any) => {
   const onForwardPress = async () => {
     try {
       const body = {
-        complaint_id: [complaintId],
+        complaint_id: [selectedTickit.complaint_id],
         forward_to: ['nchandivade@unoligo.com'],
         clientId: { clientId },
         email_template_id: 2,
@@ -332,82 +342,186 @@ const Chat = (props: any) => {
       <View
         style={{
           // flex:0.1
-          padding: '1%',
+          // padding: '1%',
           flexDirection: 'row',
+          paddingVertical: '1%',
         }}
       >
-        <Text>Conversations :</Text>
-        <TouchableOpacity
-          style={{ flexDirection: 'row', paddingHorizontal: '2%' }}
-          onPress={() => {}}
-        >
-          <View
-            style={{
-              padding: '5%',
-              paddingHorizontal: '7%',
-              marginHorizontal: '10%',
-              backgroundColor: '#b3b3ff',
-              borderRadius: 30,
-            }}
+        <View style={{ justifyContent: 'center' }}>
+          <Text
+            style={[
+              styles.textStyle,
+              { lineHeight: 28, color: '#000', textAlignVertical: 'center' },
+            ]}
           >
-            <Feather name="globe" size={18} color="#fff" />
+            Conversations :
+          </Text>
+        </View>
+
+        <View style={[styles.mediaIconBox]}>
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: '2%',
+            }}
+            onPress={() => {}}
+          >
+            <View>
+              <AllMedia />
+            </View>
+          </TouchableOpacity>
+          <View>
+            <Text
+              style={[
+                styles.textStyle,
+                {
+                  fontSize: 11,
+                  lineHeight: 18,
+                  fontWeight: selectedMedia === 'all' ? '600' : '400',
+                },
+              ]}
+            >
+              All Mediums
+            </Text>
           </View>
-          <Text>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ flexDirection: 'row', paddingHorizontal: '2%' }}
-          onPress={() => {}}
-        >
-          <Entypo
-            style={{ marginHorizontal: '10%' }}
-            name="facebook-with-circle"
-            size={20}
-            color="#b3b3ff"
-          />
-          <Text>Facebook</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ flexDirection: 'row', paddingHorizontal: '2%' }}
-          onPress={() => {}}
-        >
-          <Entypo
-            style={{ marginHorizontal: '10%' }}
-            name="twitter-with-circle"
-            size={20}
-            color="#b3b3ff"
-          />
-          <Text>Twitter</Text>
-        </TouchableOpacity>
+        </View>
+
+        <View style={styles.mediaIconBox}>
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: '2%',
+            }}
+            onPress={() => {}}
+          >
+            <View>
+              <EmailInterac2 />
+            </View>
+          </TouchableOpacity>
+          <View>
+            <Text style={[styles.textStyle, { fontSize: 11, lineHeight: 18 }]}>
+              Email
+            </Text>
+          </View>
+        </View>
+        <View style={styles.mediaIconBox}>
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: '2%',
+            }}
+            onPress={() => {}}
+          >
+            <View>
+              <Facebook2 />
+            </View>
+          </TouchableOpacity>
+          <View>
+            <Text style={[styles.textStyle, { fontSize: 11, lineHeight: 18 }]}>
+              Facebook
+            </Text>
+          </View>
+        </View>
+        <View style={styles.mediaIconBox}>
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: '2%',
+            }}
+            onPress={() => {}}
+          >
+            <View>
+              <Twitter2 />
+            </View>
+          </TouchableOpacity>
+          <View>
+            <Text style={[styles.textStyle, { fontSize: 11, lineHeight: 18 }]}>
+              Twitter
+            </Text>
+          </View>
+        </View>
+        <View style={styles.mediaIconBox}>
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: '2%',
+            }}
+            onPress={() => {}}
+          >
+            <View>
+              <WhatsApp2 />
+            </View>
+          </TouchableOpacity>
+          <View>
+            <Text style={[styles.textStyle, { fontSize: 11, lineHeight: 18 }]}>
+              Whats App
+            </Text>
+          </View>
+        </View>
       </View>
-      <Divider style={{ backgroundColor: bodercolor }} />
+      <Divider style={{ backgroundColor: '#EDEDED' }} />
       <ScrollView style={{ flex: 1 }}>
         <FlatList
-          style={styles.list}
+          // style={styles.list}
           data={chatData}
           keyExtractor={(data: any) => {
             return data.parent_message_id
           }}
           renderItem={(data: any) => {
             const inMessage = data.item.is_user_reply === true
-            const itemStyle = inMessage ? styles.itemIn : styles.itemOut
-            const bgcolor = inMessage ? styles.colorIn : styles.colorOut
+            // const itemStyle = inMessage ? styles.itemIn : styles.itemOut
+            // const bgcolor = inMessage ? styles.colorIn : styles.colorOut
             const date: any = moment(data.item.created_on).format(
               'DD MM YYYY HH:mm',
             )
 
             return (
-              <View>
+              <View style={{ flex: 1, paddingVertical: '1%' }}>
                 <View>
-                  <Text style={[styles.time, itemStyle]}>{date}</Text>
+                  {/* <Text style={[styles.time, itemStyle]}>{date}</Text> */}
                 </View>
-
-                <View style={[styles.item, itemStyle]}>
+                <View />
+                {/* <View style={[styles.item, itemStyle]}>
                   <View style={[styles.balloon, bgcolor]}>
                     <Text>{data.item.conversation_text}</Text>
                   </View>
 
                   {inMessage && msgIcon(data.item)}
-                </View>
+                </View> */}
+
+                {data.item && data.item.is_user_reply ? (
+                  <View>
+                    <View>
+                      {/* <Text style={[styles.time]}>{date}</Text> */}
+                    </View>
+                    <View style={{ flexDirection: 'row', marginRight: '10%' }}>
+                      <View style={[styles.msgContainer]}>
+                        <View
+                          style={[
+                            styles.conversationMsg,
+                            {
+                              backgroundColor: '#F4F4F4',
+                              alignSelf: 'flex-start',
+                              flexDirection: 'row',
+                            },
+                          ]}
+                        >
+                          <Text>{data.item.conversation_text}</Text>
+                        </View>
+                      </View>
+                      {msgIcon(data.item)}
+                    </View>
+                  </View>
+                ) : (
+                  <View style={styles.msgContainer}>
+                    <View
+                      style={[
+                        styles.conversationMsg,
+                        {
+                          backgroundColor: '#F1F6FF',
+                          marginLeft: '10%',
+                        },
+                      ]}
+                    >
+                      <Text>{data.item.conversation_text}</Text>
+                    </View>
+                  </View>
+                )}
               </View>
             )
           }}
@@ -773,6 +887,7 @@ const Chat = (props: any) => {
 const mapStateToProps = (state: any) => {
   return {
     token: state.loginReducer.token,
+    selectedTickit: state.tickitListData.selectedTickit,
   }
 }
 
@@ -781,10 +896,11 @@ export default connect(mapStateToProps)(Chat)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginHorizontal: '2%',
+    marginHorizontal: '2%',
   },
   list: {
-    paddingHorizontal: 17,
+    // paddingHorizontal: 17,
+    paddingHorizontal: '2%',
   },
   footer: {
     flexDirection: 'row',
@@ -825,21 +941,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   balloon: {
-    maxWidth: '90%',
+    maxWidth: '100%',
     padding: 10,
     borderRadius: 20,
   },
-  itemIn: {
+  msgIn: {
     alignSelf: 'flex-start',
+    // paddingRight: "10%"
   },
-  itemOut: {
+  msgOut: {
     alignSelf: 'flex-end',
+    // paddingLeft: "20%"
+    marginLeft: '10%',
   },
   colorIn: {
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#F4F4F4',
+    // backgroundColor: '#eeeeee',
   },
   colorOut: {
-    backgroundColor: '#13eb4d',
+    backgroundColor: '#F1F6FF',
   },
   time: {
     alignSelf: 'flex-end',
@@ -862,5 +982,25 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     width: '10%',
+  },
+  textStyle: {
+    fontFamily: 'Poppins-Light',
+    fontSize: 12,
+    fontWeight: '400',
+  },
+  mediaIconBox: {
+    alignItems: 'center',
+    paddingHorizontal: '2%',
+  },
+  conversationMsg: {
+    flex: 1,
+    borderWidth: 1,
+    padding: '1%',
+    borderRadius: 20,
+  },
+  msgContainer: {
+    marginBottom: '1%',
+    // flex: 1,
+    // padding: "1%"
   },
 })
