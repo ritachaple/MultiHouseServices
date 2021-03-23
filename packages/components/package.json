@@ -28,6 +28,7 @@
     "react-native-webview": "*",
     "prop-types": "*",
     "react-native-calendars": "*",
-    "react-datepicker": "*"
+    "react-datepicker": "*",
+    "react-date-range":"*"
   }
 }

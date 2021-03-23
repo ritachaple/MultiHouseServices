@@ -101,7 +101,13 @@ const CenterComponent = (props: any) => {
       }}
     >
       <View style={{ paddingHorizontal: '1%' }}>
-        <DatePicker />
+        <TouchableOpacity></TouchableOpacity>
+        <DatePicker onSubmit={(range:any)=>{
+          console.log('range: ',range);
+          
+        }}
+        
+        />
       </View>
 
       {/* <DropdownStaticData
