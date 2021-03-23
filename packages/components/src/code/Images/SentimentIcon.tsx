@@ -24,7 +24,7 @@ export const NegativeSentiment = () => {
       source={{
         uri: 'https://unoboat.s3.ap-south-1.amazonaws.com/negative.svg',
       }}
-      style={{ width: '100%', height: '120%' }}
+      style={{ width: '80%', height: '100%' }}
     />
   )
 }
@@ -35,7 +35,7 @@ export const PositiveSentiment = () => {
       source={{
         uri: 'https://unoboat.s3.ap-south-1.amazonaws.com/positive.svg',
       }}
-      style={{ width: '100%', height: '120%' }}
+      style={{ width: '80%', height: '100%' }}
     />
   )
 }
@@ -46,7 +46,7 @@ export const NeutralSentiment = () => {
       source={{
         uri: 'https://unoboat.s3.ap-south-1.amazonaws.com/neutral.svg',
       }}
-      style={{ width: '100%', height: '120%' }}
+      style={{ width: '80%', height: '100%' }}
     />
   )
 }

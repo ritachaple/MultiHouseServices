@@ -100,6 +100,8 @@ const List = (props: any) => {
   const tooltipRef: any = React.useRef(null)
   const fontWeight = tickitItems.is_read ? '100' : '700'
 
+  console.log('statusDropdown', statusDropdownList)
+
   const onSubjectTextPress = () => {
     props.setTickit(tickitItems)
     navigation.navigate('ChatScreen')
@@ -319,7 +321,7 @@ const List = (props: any) => {
     const priority: any = priorityDropdownList.find((item: any) => {
       return item.text === selText
     })
-    console.log('selText', selText)
+    console.log('selText', priority)
 
     onCloseModal()
     const data = {
@@ -336,7 +338,7 @@ const List = (props: any) => {
       sentiment_name: tickitItems.sentiment_name,
       last_modified_on: tickitItems.last_modified_on,
       fake_factor: tickitItems.fake_factor,
-      priority_id: priority.status_id,
+      priority_id: priority.value,
       user_profile_picture_url: null,
       user_type: tickitItems.user_type,
       client_id: tickitItems.client_id,
@@ -547,8 +549,11 @@ const List = (props: any) => {
   const Status = (hovered: any) => {
     let selectedStatus
 
-    if (tickitItems.state_id !== null) {
-      selectedStatus = statusDropdownList[tickitItems.status_id].status_name
+    if (tickitItems.status_id !== null) {
+      // selectedStatus = statusDropdownList[tickitItems.status_id].status_name
+      selectedStatus = statusDropdownList.find((item: any) => {
+        return item.status_id === tickitItems.status_id
+      })
     } else {
       selectedStatus = null
     }
@@ -573,7 +578,7 @@ const List = (props: any) => {
               <Text
                 style={[styles.fontFamily, { fontWeight, textAlign: 'center' }]}
               >
-                {selectedStatus}
+                {selectedStatus.status_name}
               </Text>
             </View>
           ) : (
@@ -586,17 +591,6 @@ const List = (props: any) => {
           </View>
           <View style={{ flex: 1 }} />
         </TouchableOpacity>
-        {/* <DropDownPicker
-          items={[
-            { label: 'UK', value: 'uk' },
-            { label: 'France', value: 'france' },
-            { label: 'Germany', value: 'germany' },
-          ]}
-          placeholder="Select a country"
-          containerStyle={{height: 40}}
-          style={{ backgroundColor: '#ffffff' }}
-          dropDownStyle={{ backgroundColor: 'white' }}
-        /> */}
       </View>
     )
   }
@@ -608,7 +602,7 @@ const List = (props: any) => {
   }
   const sentiIcon = (Sentiment: any) => {
     try {
-      console.log('SENTIMATE', Sentiment)
+      // console.log('SENTIMATE', Sentiment)
       switch (Sentiment) {
         case 1:
           return <PositiveSentiment />
