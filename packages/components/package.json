@@ -29,6 +29,7 @@
     "prop-types": "*",
     "react-native-calendars": "*",
     "react-datepicker": "*",
-    "react-date-range":"*"
+    "react-date-range": "*",
+    "date-fns": "*"
   }
 }

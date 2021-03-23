@@ -56,37 +56,41 @@ const Interaction = (props: any) => {
             // backgroundColor: 'red',
             flex: 1,
             flexDirection: 'row',
+
             // alignItems: 'stretch',
           }}
         >
           <View style={{ flex: 1 }}>
-            {/* <View style={{}}>
-        <RightComponent 
-                onFilterPress={() => {
-                  onFilterPress()
-                }}
-              />
-          </View> */}
             <View
               style={{
                 backgroundColor: '#F1F6FF',
                 height: '9%',
-                paddingRight: '3%',
+                // paddingRight: '0%',
                 borderBottomColor: '#F1F6FF',
                 zIndex: 999,
                 flexDirection: 'row',
-                justifyContent: 'space-around',
+                // justifyContent: 'space-around',
                 paddingVertical: '1%',
+                paddingHorizontal: '1%',
               }}
             >
               <View
-              // style={{paddingVertical:"1%"}}
+                // style={{ width: "40%" }}
+                style={{
+                  alignSelf: 'flex-start',
+                  width: '70%',
+                  flexDirection: 'row',
+                }}
               >
-                <CenterComponent />
+                <CenterComponent style={{ width: '20%' }} />
               </View>
               <View
                 style={{
-                  paddingLeft: '50%',
+                  // alignSelf: "flex-end",
+                  // width: "20%",
+                  paddingLeft: '15%',
+                  justifyContent: 'space-evenly',
+                  // marginRight: "1%"
                   // paddingVertical:"1%"
                 }}
               >

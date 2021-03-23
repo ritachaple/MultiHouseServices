@@ -23,5 +23,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'error',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'react/jsx-props-no-spreading': 'off',
   },
 }

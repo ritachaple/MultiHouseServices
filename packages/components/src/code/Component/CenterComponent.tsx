@@ -94,19 +94,27 @@ const CenterComponent = (props: any) => {
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        paddingLeft: '1%',
+        // justifyContent: 'space-around',
+        // paddingLeft: '1%',
         // flex:1
         // zIndex: 999
       }}
     >
-      <View style={{ paddingHorizontal: '1%' }}>
-        <TouchableOpacity></TouchableOpacity>
-        <DatePicker onSubmit={(range:any)=>{
-          console.log('range: ',range);
-          
+      <View
+        style={{
+          borderColor: '#F1F6FF',
+          backgroundColor: '#fff',
+          borderWidth: 1,
+          borderRadius: 100,
+          paddingVertical: '4%',
+          paddingHorizontal: '4%',
         }}
-        
+      >
+        <TouchableOpacity />
+        <DatePicker
+          onSubmit={(range: any) => {
+            console.log('range: ', range)
+          }}
         />
       </View>
 
@@ -115,7 +123,7 @@ const CenterComponent = (props: any) => {
         list={dropdownList}
         setType={setTIckitValue}
         defaultValue="Select Brand"
-        dropdownName="Brand"
+        dropdownName="Brand" 
       /> */}
 
       {/* <DropdownStaticData
