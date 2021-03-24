@@ -12,10 +12,28 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 import Unobot from '../Images/Unobot'
 import UnobotText from '../Images/UnobotText'
+import { DropdownList } from '../Component/ReactSelect'
 
 const Header = (props: any) => {
   const { selectedTickit, navigation } = props
-  const [state, setstate] = useState(false)
+  const [isMenu, setToggleMenu] = useState(false)
+
+  const menuList = [{ value: 'SignOut', text: 'SignOut' }]
+
+  const onSelectMenu = (val: any) => {
+    try {
+      setToggleMenu(false)
+      switch (val.value) {
+        case 'SignOut':
+          return logout()
+        default:
+          return null
+      }
+    } catch (error) {
+      console.error(error)
+    }
+    return null
+  }
 
   const logout = () => {
     props.clearToken()
@@ -154,21 +172,35 @@ const Header = (props: any) => {
           />
 
           <View style={{ flexDirection: 'row' }}>
-            <FontAwesome
-              style={{ padding: '10%' }}
-              name="user-circle"
-              size={25}
-              color="#B6B6B6"
-              onPress={() => {
-                logout()
-              }}
-            />
-            <FontAwesome
-              style={{ padding: '18%', paddingLeft: 0 }}
-              name="angle-down"
-              size={18}
-              color="#B6B6B6"
-            />
+            {!isMenu ? (
+              <View style={{ flexDirection: 'row' }}>
+                <FontAwesome
+                  style={{ padding: '10%' }}
+                  name="user-circle"
+                  size={25}
+                  color="#B6B6B6"
+                  onPress={() => {
+                    setToggleMenu(true)
+                  }}
+                />
+                <FontAwesome
+                  style={{ padding: '18%', paddingLeft: 0 }}
+                  name="angle-down"
+                  size={18}
+                  color="#B6B6B6"
+                  onPress={() => {
+                    setToggleMenu(true)
+                  }}
+                />
+              </View>
+            ) : (
+              <View>
+                <DropdownList
+                  list={menuList}
+                  onSelectValue={(val: any) => onSelectMenu(val)}
+                />
+              </View>
+            )}
           </View>
         </View>
       </View>
