@@ -10,6 +10,7 @@
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "@types/react-datepicker": "^3.1.7",
+    "@types/react-select": "^4.0.13",
     "add": "^2.0.6",
     "babel-loader": "^8.2.2",
     "babel-plugin-syntax-jsx": "^6.18.0",
@@ -28,6 +29,7 @@
     "react-native-screens": "^2.16.1",
     "react-native-web": "0.14.8",
     "react-scripts": "4.0.0",
+    "react-select": "^4.3.0",
     "redux-persist": "^6.0.0"
   },
   "peerDependencies": {

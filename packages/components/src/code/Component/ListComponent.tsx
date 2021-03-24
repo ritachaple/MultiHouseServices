@@ -8,7 +8,6 @@ import {
   Alert,
   TouchableHighlight,
   TouchableOpacity,
-  ImageBackground,
   Pressable,
 } from 'react-native'
 import moment from 'moment'
@@ -17,10 +16,7 @@ import { Hoverable } from 'react-native-web-hover'
 import { Tooltip } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Api from '../provider/api/Api'
-import ModalScreen from './ModalScreen'
 import TooltipMessage from './TooltipMessage'
-import DropDownList from './DropDownList'
-import SelectBoxList from './SelectBoxList'
 import { configs } from '../provider/api/ApiUrl'
 import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
 import { UnChecked, Checked } from '../Images/Checkbox'
@@ -32,31 +28,11 @@ import {
   PositiveSentiment,
   NeutralSentiment,
 } from '../Images/SentimentIcon'
-import { Interaction2Edit } from './DropdownSelect'
-
-// const colors = ['red', 'green', 'orange']
-
-const tickitStatus = [
-  'Pending',
-  'Assigned',
-  'Resolve',
-  'Closed',
-  'Escalated',
-  'Reopened',
-  'Blocked',
-  'Qwerty3',
-]
-
-const tickitIcon = [
-  'hourglass-half',
-  'user',
-  'check-circle',
-  'times-rectangle',
-  'angle-double-up',
-  'unlock-alt',
-  'ban',
-  'circle',
-]
+import {
+  searchComplaintsApi,
+  logActivityApi,
+} from '../CommnFncn/IntegrationAPI'
+import { StatusDropdown, SentimentSelect, DropdownList } from './ReactSelect'
 
 const sentimentList = [
   { id: '1', text: 'Positive', component: <PositiveSentiment /> },
@@ -77,105 +53,84 @@ const List = (props: any) => {
     assigneeDropdownList,
     navigation,
     tickitList,
+    pageSize,
+    pageIndex,
+    startDate,
+    endDate,
   } = props
-  // console.log(tickitItems)
 
-  const [checkbox, setCheckbox] = useState(false)
   const [message, setMessage] = useState('')
-  const [modalVisible, setModalVisible] = useState(false)
-  const [isChatScreen, setIsChatScreen] = useState(false)
-  const [tickitStatusList, setTickitStatusList] = useState([])
-  const [isDropdownList, setIsDropdownList] = useState(false)
   const [isStatusDropdown, setStatusDropdown] = useState(false)
   const [isPriorityDropdown, setPriorityList] = useState(false)
   const [isAssigneeList, setAssigneeList] = useState(false)
   const [isSentimentList, setSentimentList] = useState(false)
-  // const [dropdownStyle, setDropdownStyle] = useState({
-  //   left: '0',
-  //   right: '0',
-  //   top: '0',
-  //   bottom: '0',
-  // })
+  const [statusName, setStatusName] = useState()
 
   const tooltipRef: any = React.useRef(null)
   const fontWeight = tickitItems.is_read ? '100' : '700'
 
-  console.log('statusDropdown', statusDropdownList)
+  // console.log('statusDropdown', statusDropdownList)
+
+  useEffect(() => {
+    const status = statusDropdownList.find((item: any) => {
+      return item.status_id === tickitItems.status_id
+    })
+    //  // console.log("statusName", status);
+    if (status) {
+      setStatusName(status.status_name)
+    }
+  }, [])
+
+  const searchComplaints = async () => {
+    try {
+      const res: any = await searchComplaintsApi(
+        token,
+        pageSize,
+        pageIndex,
+        startDate,
+        endDate,
+      )
+      if (res && res.status === 200) {
+        props.setTikitData(res.data.data)
+        props.setTotalRecords(res.data.total_records)
+      } else {
+        props.clearToken()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const onSubjectTextPress = () => {
     props.setTickit(tickitItems)
     navigation.navigate('ChatScreen')
   }
 
-  const SelectedStatus = (data: any) => {
-    console.log('statusSelected', data)
-  }
-
-  // const setDropdownData = (index: any) => {
-  //   setDropdown(tickitStatus[index])
-  // }
-
   const setTooltip = (msg: any) => {
     setMessage(msg)
     tooltipRef.current.toggleTooltip()
   }
 
-  const tickitStatusMenu = async (index: any, statusName: string) => {
-    // setTickIcon(tickitIcon[index])
-
-    const data = {
-      assigned_to: [5889],
-      created_on: '2020-10-02 06:30:33.000000',
-      custom_column: { due_date: null, policy_number: '1234' },
-      user_name: 'uno ',
-      customer_responded: true,
-      is_dm: false,
-      department_id: null,
-      response_allowed: false,
-      blocked_by: null,
-      medium_id: 2,
-      sentiment_name: 'Positive',
-      last_modified_on: '2021-01-07 16:49:21.007326',
-      fake_factor: null,
-      priority_id: null,
-      user_profile_picture_url: null,
-      user_type: null,
-      client_id: 39,
-      medium_username: 'uno80261966',
-      sentiment: 1,
-      cust_location: null,
-      complaint_text: '@s_merilent unoligo',
-      post_url: 'https://twitter.com/uno80261966/status/1311916460441169921',
-      user_id: 5889,
-      thread_count: 2,
-      complaint_id: 325769,
-      verified: false,
-      is_parent_missing: false,
-      follower_count: null,
-      status_id: '2',
-      issue_id: null,
-      state_id: null,
-      is_spam: false,
-      is_read: true,
-      fake_tagged_by: 5889,
-      fake_news_type: null,
-      district: null,
-      is_deleted: false,
-      resolution_text: null,
-      activity_id: null,
-      conversation_text: 'Complaint has been assigned',
-      created_by: 'system',
-      is_internal_user: true,
-      is_internal: true,
-      is_system_generated: true,
-      is_user_reply: false,
-      status_name: statusName,
-      division_id: null,
-    }
-    const res: any = await Api.post(configs.log_activity, data, token)
-    if (res.status === 200) {
-      // setTooltip('Status updated Successfully !!!')
-      onCloseModal()
+  const tickitStatusMenu = async (selTickit: any) => {
+    setStatusName(selTickit.label)
+    onCloseModal()
+    try {
+      const conversationText = `Complaint has been changed`
+      const res: any = await setLogActivity(
+        tickitItems.sentiment,
+        tickitItems.sentiment_name,
+        conversationText,
+        selTickit.value,
+        tickitItems.priority_id,
+      )
+      if (res.status === 200) {
+        searchComplaints()
+        console.log('status updated successfully')
+      } else {
+        console.log('status not updated')
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -186,74 +141,98 @@ const List = (props: any) => {
   }
 
   const onCloseModal = () => {
-    setModalVisible(false)
-    // setIsChatScreen(false)
-    setIsDropdownList(false)
     setPriorityList(false)
     setStatusDropdown(false)
     setAssigneeList(false)
     setSentimentList(false)
   }
 
-  const onSentimetIconClick = async (selData: any) => {
-    const selectedData: any = sentimentList.find((item) => {
-      return item.text === selData
-    })
-    onCloseModal()
-    const data = {
-      assigned_to: null,
-      created_on: tickitItems.created_on,
-      custom_column: { due_date: null, policy_number: '1234' },
-      user_name: tickitItems.user_name,
-      customer_responded: tickitItems.customer_responded,
-      is_dm: tickitItems.is_dm,
-      department_id: null,
-      response_allowed: false,
-      blocked_by: null,
-      medium_id: tickitItems.medium_id,
-      sentiment_name: selectedData.text,
-      last_modified_on: tickitItems.last_modified_on,
-      fake_factor: tickitItems.fake_factor,
-      priority_id: tickitItems.priority_id,
-      user_profile_picture_url: null,
-      user_type: tickitItems.user_type,
-      client_id: tickitItems.client_id,
-      medium_username: tickitItems.medium_username,
-      sentiment: selectedData.id,
-      cust_location: null,
-      complaint_text: tickitItems.complaint_text,
-      post_url: tickitItems.post_url,
-      user_id: tickitItems.user_id,
-      thread_count: tickitItems.thread_count,
-      complaint_id: tickitItems.complaint_id,
-      verified: false,
-      is_parent_missing: false,
-      follower_count: tickitItems.follower_count,
-      status_id: tickitItems.status_id,
-      issue_id: null,
-      state_id: tickitItems.status_id,
-      is_spam: false,
-      is_read: true,
-      fake_tagged_by: tickitItems.fake_tagged_by,
-      fake_news_type: null,
-      district: null,
-      is_deleted: false,
-      resolution_text: null,
-      activity_id: null,
-      conversation_text: `Sentiment has been changed to ${selectedData.text}`,
-      created_by: 'system',
-      is_internal_user: true,
-      is_internal: true,
-      is_system_generated: true,
-      is_user_reply: false,
-      status_name: 'Pending',
+  const onSentimentSelect = async (selSentiment: any) => {
+    try {
+      const conversationText = `Sentiment has been changed to ${selSentiment.label}`
+      onCloseModal()
+      const res: any = await setLogActivity(
+        selSentiment.value,
+        selSentiment.label,
+        conversationText,
+        tickitItems.status_id,
+        tickitItems.priority_id,
+      )
+      if (res.status === 200) {
+        // setTooltip('Sentiment updated successfully')
+        searchComplaints()
+        console.log(`Sentiment updated successfully`)
+      } else {
+        console.log('sentiment api error')
+      }
+    } catch (error) {
+      console.error(error)
     }
-    const res: any = await Api.post(configs.log_activity, data, token)
-    if (res.status === 200) {
-      // setTooltip('Sentiment updated successfully')
-    }
+  }
 
-    // console.log('sentiment Icon Res', res)
+  const setLogActivity = async (
+    sentimentId: any,
+    sentimentName: string,
+    conversationText: string,
+    statusId: any,
+    priorityId: any,
+  ) => {
+    let res: any = {}
+    try {
+      const data = {
+        assigned_to: null,
+        created_on: tickitItems.created_on,
+        custom_column: { due_date: null, policy_number: '1234' },
+        user_name: tickitItems.user_name,
+        customer_responded: tickitItems.customer_responded,
+        is_dm: tickitItems.is_dm,
+        department_id: null,
+        response_allowed: false,
+        blocked_by: null,
+        medium_id: tickitItems.medium_id,
+        sentiment_name: sentimentName,
+        last_modified_on: tickitItems.last_modified_on,
+        fake_factor: tickitItems.fake_factor,
+        priority_id: priorityId,
+        user_profile_picture_url: null,
+        user_type: tickitItems.user_type,
+        client_id: tickitItems.client_id,
+        medium_username: tickitItems.medium_username,
+        sentiment: sentimentId,
+        cust_location: null,
+        complaint_text: tickitItems.complaint_text,
+        post_url: tickitItems.post_url,
+        user_id: tickitItems.user_id,
+        thread_count: tickitItems.thread_count,
+        complaint_id: tickitItems.complaint_id,
+        verified: false,
+        is_parent_missing: false,
+        follower_count: tickitItems.follower_count,
+        status_id: statusId,
+        issue_id: null,
+        state_id: tickitItems.state_id,
+        is_spam: false,
+        is_read: true,
+        fake_tagged_by: tickitItems.fake_tagged_by,
+        fake_news_type: null,
+        district: null,
+        is_deleted: false,
+        resolution_text: null,
+        activity_id: null,
+        conversation_text: `${conversationText}`,
+        created_by: 'system',
+        is_internal_user: true,
+        is_internal: true,
+        is_system_generated: true,
+        is_user_reply: false,
+        status_name: statusName,
+      }
+      res = await logActivityApi(data, token)
+    } catch (error) {
+      console.error(error)
+    }
+    console.log('logActivity', res)
+    return res
   }
 
   const onAssigneeClick = async (item: any) => {
@@ -317,64 +296,25 @@ const List = (props: any) => {
     // console.log('sentiment Icon Res', res)
   }
 
-  const onPrioritySelect = async (selText: string) => {
-    const priority: any = priorityDropdownList.find((item: any) => {
-      return item.text === selText
-    })
-    console.log('selText', priority)
-
-    onCloseModal()
-    const data = {
-      assigned_to: [5889],
-      created_on: tickitItems.created_on,
-      custom_column: { due_date: null, policy_number: '1234' },
-      user_name: tickitItems.user_name,
-      customer_responded: tickitItems.customer_responded,
-      is_dm: tickitItems.is_dm,
-      department_id: null,
-      response_allowed: false,
-      blocked_by: null,
-      medium_id: tickitItems.medium_id,
-      sentiment_name: tickitItems.sentiment_name,
-      last_modified_on: tickitItems.last_modified_on,
-      fake_factor: tickitItems.fake_factor,
-      priority_id: priority.value,
-      user_profile_picture_url: null,
-      user_type: tickitItems.user_type,
-      client_id: tickitItems.client_id,
-      medium_username: tickitItems.medium_username,
-      sentiment: tickitItems.tickitItems,
-      cust_location: null,
-      complaint_text: tickitItems.complaint_text,
-      post_url: tickitItems.post_url,
-      user_id: tickitItems.user_id,
-      thread_count: tickitItems.thread_count,
-      complaint_id: tickitItems.complaint_id,
-      verified: false,
-      is_parent_missing: false,
-      follower_count: tickitItems.follower_count,
-      status_id: tickitItems.status_id,
-      issue_id: null,
-      state_id: tickitItems.status_id,
-      is_spam: false,
-      is_read: true,
-      fake_tagged_by: tickitItems.fake_tagged_by,
-      fake_news_type: null,
-      district: null,
-      is_deleted: false,
-      resolution_text: null,
-      activity_id: null,
-      conversation_text: 'Complaint has been assigned',
-      created_by: 'system',
-      is_internal_user: true,
-      is_internal: true,
-      is_system_generated: true,
-      is_user_reply: false,
-      status_name: priority.text,
-    }
-    const res: any = await Api.post(configs.log_activity, data, token)
-    if (res.status === 200) {
-      // setTooltip('Assignee updated successfully')
+  const onPrioritySelect = async (selText: any) => {
+    try {
+      onCloseModal()
+      const conversationText = `Complaint has been changed`
+      const res: any = await setLogActivity(
+        tickitItems.sentiment,
+        tickitItems.sentiment_name,
+        conversationText,
+        tickitItems.status_id,
+        selText.value,
+      )
+      if (res.status === 200) {
+        searchComplaints()
+        console.log('Complaint has been changed')
+      } else {
+        console.log('complaint not updated')
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -410,25 +350,16 @@ const List = (props: any) => {
 
   const onStatusSelect = (hovered: any) => {
     try {
-      // // if(hovered){
-      // console.log('onStatusClick')
-      setModalVisible(true)
-      setIsDropdownList(true)
       setStatusDropdown(true)
-      // }
     } catch (error) {
       console.error(error)
     }
   }
 
   const onPriorityPress = () => {
-    // setModalVisible(!modalVisible)
-    // setIsDropdownList(!isDropdownList)
     setPriorityList(true)
   }
   const onAssigneePress = () => {
-    setModalVisible(!modalVisible)
-    setIsDropdownList(!isDropdownList)
     setAssigneeList(true)
   }
 
@@ -442,27 +373,10 @@ const List = (props: any) => {
   }
 
   const onSentimentPress = async () => {
-    // const ind = await findIndexOfTickit()
-    // const data:any = {...dropdownStyle}
-    // data.left = "60%"
-    // data.right= "20%"
-    // // data.bottom ="15%"
-    // if(ind > 0){
-    //  const tp =  ind *4
-    //   data.top=`${tp+18}%`
-    //   data.bottom =`${15-tp}`
-    // }else{
-    //   data.top="18%"
-    // }
-    // setDropdownStyle(data)
-    // setModalVisible(!modalVisible)
-    setIsDropdownList(!isDropdownList)
     setSentimentList(!isSentimentList)
   }
 
   const mediaIcon = (mediumId: any) => {
-    // console.log('mediumId', mediumId)
-
     try {
       switch (mediumId) {
         case 1:
@@ -532,8 +446,6 @@ const List = (props: any) => {
       <View
         style={{
           flex: 1,
-          // backgroundColor:"gray"
-          // paddingLeft: '1%',
         }}
       >
         <Text
@@ -550,7 +462,6 @@ const List = (props: any) => {
     let selectedStatus
 
     if (tickitItems.status_id !== null) {
-      // selectedStatus = statusDropdownList[tickitItems.status_id].status_name
       selectedStatus = statusDropdownList.find((item: any) => {
         return item.status_id === tickitItems.status_id
       })
@@ -564,42 +475,48 @@ const List = (props: any) => {
           flex: 1,
           flexDirection: 'row',
           paddingRight: 0,
-
           // backgroundColor: 'green',
         }}
       >
         <View style={{ flex: 1 }} />
-        <TouchableOpacity
-          onPress={() => onStatusSelect(hovered)}
-          style={{ flexDirection: 'row', flex: 4 }}
-        >
-          {selectedStatus !== null ? (
-            <View style={{ flex: 2 }}>
-              <Text
-                style={[styles.fontFamily, { fontWeight, textAlign: 'center' }]}
-              >
-                {selectedStatus.status_name}
-              </Text>
+        {!isStatusDropdown ? (
+          <TouchableOpacity
+            onPress={() => onStatusSelect(hovered)}
+            style={{ flexDirection: 'row', flex: 4 }}
+          >
+            {selectedStatus !== null ? (
+              <View style={{ flex: 2 }}>
+                <Text
+                  style={[
+                    styles.fontFamily,
+                    { fontWeight, textAlign: 'center' },
+                  ]}
+                >
+                  {selectedStatus.status_name}
+                </Text>
+              </View>
+            ) : (
+              <View style={{ flex: 1 }} />
+            )}
+            <View style={{ flex: 1 }}>
+              {hovered ? (
+                <Icon style={styles.angleDown} name="angle-down" size={15} />
+              ) : null}
             </View>
-          ) : (
             <View style={{ flex: 1 }} />
-          )}
-          <View style={{ flex: 1 }}>
-            {hovered ? (
-              <Icon style={styles.angleDown} name="angle-down" size={15} />
-            ) : null}
+          </TouchableOpacity>
+        ) : (
+          <View style={{ flex: 3 }}>
+            <StatusDropdown
+              list={statusDropdownList}
+              onStatusSelect={(val: any) => tickitStatusMenu(val)}
+            />
           </View>
-          <View style={{ flex: 1 }} />
-        </TouchableOpacity>
+        )}
       </View>
     )
   }
 
-  const handleonchange = (value: any) => {
-    console.log('value: ', value)
-
-    setSentimentList(!isSentimentList)
-  }
   const sentiIcon = (Sentiment: any) => {
     try {
       // console.log('SENTIMATE', Sentiment)
@@ -656,14 +573,13 @@ const List = (props: any) => {
                 flex: 1,
                 flexDirection: 'row',
                 paddingHorizontal: '20%',
+                zIndex: 999999,
               }}
             >
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <SelectBoxList
-                  data={sentimentList}
-                  handleonchange={(value: any) => {
-                    onSentimetIconClick(value)
-                  }}
+              <View style={{ flex: 1, justifyContent: 'center', zIndex: 1000 }}>
+                <SentimentSelect
+                  list={sentimentList}
+                  onStatusSelect={(val: any) => onSentimentSelect(val)}
                 />
               </View>
             </View>
@@ -716,9 +632,9 @@ const List = (props: any) => {
               )}
             </Pressable>
           ) : (
-            <Interaction2Edit
+            <DropdownList
               list={priorityDropdownList}
-              onSelectedItem={(value: any) => onPrioritySelect(value)}
+              onSelectValue={(value: any) => onPrioritySelect(value)}
             />
           )}
         </View>
@@ -837,59 +753,6 @@ const List = (props: any) => {
     return null
   }
 
-  const flatlist = (list: any) => {
-    return (
-      <FlatList
-        style={{ flex: 1 }}
-        data={list}
-        renderItem={({ item, index }) => {
-          return (
-            <View
-              style={{
-                // justifyContent: 'flex-start'
-                paddingHorizontal: '2%',
-                paddingVertical: '0.5%',
-                borderBottomWidth: 0.2,
-                borderBottomColor: 'gray',
-                // backgroundColor: hovered ? '#3498DB' : '#fff',
-                backgroundColor: '#fff',
-              }}
-            >
-              {isStatusDropdown && (
-                <Text
-                  style={[styles.fontFamily]}
-                  onPress={() => tickitStatusMenu(index, item.status_name)}
-                >
-                  {item.status_name && item.status_name}
-                </Text>
-              )}
-
-              {isPriorityDropdown && <Text>{item.text && item.text}</Text>}
-              {isAssigneeList && (
-                <Text
-                  style={[styles.fontFamily]}
-                  onPress={() => onAssigneeClick(item)}
-                >
-                  {item.text && item.text}
-                </Text>
-              )}
-              {isSentimentList && (
-                <Text
-                  style={[styles.fontFamily]}
-                  onPress={() => onSentimetIconClick(item)}
-                >
-                  {/* {item.text && item.text} */}
-                  {item.component && item.component}
-                </Text>
-              )}
-            </View>
-          )
-        }}
-        keyExtractor={(index: any) => index.toString()}
-      />
-    )
-  }
-
   return (
     <View style={styles.container}>
       <Hoverable>
@@ -899,8 +762,6 @@ const List = (props: any) => {
               flex: 1,
               flexDirection: 'row',
               paddingTop: '1%',
-              // alignContent:"center",
-              // alignItems:"center",
               paddingVertical: '1%',
               backgroundColor: hovered ? 'whitesmoke' : 'none',
               width: '100%',
@@ -912,61 +773,6 @@ const List = (props: any) => {
             {selectedHeader.map((elementInArray: any, index: any) =>
               checkHeader(elementInArray, hovered),
             )}
-
-            {/* <View style={{flex:1}}>
-
-          <Icon
-            name="square"
-            style={{ paddingTop: '1%' }}
-            size={12}
-            color={
-              colors[tickitItems.priority_id]
-                ? colors[tickitItems.priority_id]
-                : 'yellow'
-            }
-          />
-                  </View> */}
-
-            <>
-              <Modal
-                style={{ flex: 1 }}
-                animationType="none"
-                transparent={modalVisible}
-                visible={modalVisible}
-              >
-                {isDropdownList ? (
-                  <DropDownList
-                  // style={{
-                  //   marginLeft: dropdownStyle.left,
-                  //   marginRight: dropdownStyle.right,
-                  //   marginTop: dropdownStyle.top,
-                  //   marginBottom: dropdownStyle.bottom,
-                  //   // width:"30%"
-                  // }}
-                  >
-                    <Icon
-                      name="remove"
-                      onPress={onCloseModal}
-                      style={{ marginLeft: '95%', paddingTop: '1%' }}
-                      size={12}
-                      color="#000"
-                    />
-                    {isStatusDropdown && flatlist(statusDropdownList)}
-                    {/* {isPriorityDropdown && flatlist(priorityDropdownList)}
-                    {isAssigneeList && flatlist(assigneeDropdownList)} */}
-                    {isSentimentList && flatlist(sentimentList)}
-                  </DropDownList>
-                ) : null}
-                {/* {isChatScreen ? (
-                  <ModalScreen
-                    closeModal={() => onCloseModal()}
-                    complaintId={tickitItems.complaint_id}
-                    clientId={tickitItems.client_id}
-                    userId={tickitItems.user_id}
-                  />
-                ) : null} */}
-              </Modal>
-            </>
 
             {/* <Tooltip
               containerStyle={{
@@ -1000,6 +806,10 @@ const mapStateToProps = (state: any) => {
       ? state.tickitListData.storeSelectedTickits
       : ([] as any),
     tickitList: state.tickitListData.tickitList,
+    pageSize: state.Pagination.initialState.pageSize,
+    pageIndex: state.Pagination.initialState.pageIndex,
+    startDate: state.tickitListData.startDate,
+    endDate: state.tickitListData.endDate,
   }
 }
 
@@ -1017,20 +827,17 @@ const mapDispatchToProps = (dispatch: any) => {
     setSelectedTickit: (data: any) => {
       dispatch({ type: 'STORE_SELECTED_TICKIT', payload: data })
     },
+    setTotalRecords: (data: number) => {
+      dispatch({ type: 'TOTAL_RECORDS', payload: data })
+    },
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginBottom: '1%',
     borderBottomColor: '#dce3de',
     borderBottomWidth: 0.1,
-    // zIndex: 0,
-    // backgroundColor:"blue"
-
-    // marginHorizontal: '2%',
-    // borderRadius: 3,
   },
   complaintId: {
     flex: 1,
@@ -1038,7 +845,6 @@ const styles = StyleSheet.create({
     lineHeight: 1,
     marginTop: '2%',
     alignItems: 'center',
-    // justifyContent: 'center',
     fontWeight: 'bold',
     flexDirection: 'row',
   },
@@ -1065,18 +871,14 @@ const styles = StyleSheet.create({
   complaintText: {
     color: '#333',
     fontSize: 12,
-    // lineHeight: 1,
     marginTop: '1%',
-    // marginHorizontal: 5,
-    // overflow: 'hidden'
+    rflow: 'hidden',
   },
   complaintTimeZone: {
     fontSize: 12,
-    // color: '#aaa',
-    // letterSpacing: 0.1,
+    erSpacing: 0.1,
     marginTop: 1,
-    // marginRight: 5,
-    // marginLeft: '3%',
+    arginLeft: '3%',
   },
   viewLink: {
     fontSize: 8,
@@ -1112,19 +914,14 @@ const styles = StyleSheet.create({
     width: 10,
   },
   //  modal style
-
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
   },
-
   // dropdown style
 
   input: {
     flex: 1,
-    // paddingTop: 10,
-    // paddingRight: 10,
-    // paddingBottom: 10,
     paddingLeft: 0,
     // backgroundColor: '#fff',
     color: '#424242',

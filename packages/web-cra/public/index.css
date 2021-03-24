@@ -54,7 +54,9 @@ form button {
   border: 1px solid #d6d9e6;
   box-sizing: border-box;
   border-radius: 8px;
+  z-index: 9999;
 }
+
 /* .dropdown-input {
   background-color: white;
   padding: 4%;

@@ -40,3 +40,13 @@ export const searchComplaintsApi = async (
   }
   return res
 }
+
+export const logActivityApi = async (data: any, token: string) => {
+  let res: any = {}
+  try {
+    res = await Api.post(configs.log_activity, data, token)
+  } catch (error) {
+    console.error(error)
+  }
+  return res
+}
