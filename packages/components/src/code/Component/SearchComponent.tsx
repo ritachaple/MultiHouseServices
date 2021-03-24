@@ -272,11 +272,13 @@ const SearchComplaints = (props: any) => {
             renderItem={({ item }) => {
               //  console.log('renderItem item: ', item)
               return (
-                <ListComponent
-                  tickitItems={item}
-                  selectedHeader={selectedHeader}
-                  navigation={navigation}
-                />
+                <View>
+                  <ListComponent
+                    tickitItems={item}
+                    selectedHeader={selectedHeader}
+                    navigation={navigation}
+                  />
+                </View>
               )
             }}
             ListHeaderComponent={() => headerList()}

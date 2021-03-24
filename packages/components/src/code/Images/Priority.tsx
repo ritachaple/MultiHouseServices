@@ -66,5 +66,16 @@ export const Low = () => {
 }
 
 export const Urgent = () => {
-  return <></>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="19"
+      height="20"
+      fill="none"
+      viewBox="0 0 19 20"
+    >
+      <path fill="#FF0000" d="M0 0H1.25V20H0z" />
+      <path fill="#FF0000" d="M18.75 0H0v11.25h18.75l-5.114-5.625L18.75 0z" />
+    </svg>
+  )
 }

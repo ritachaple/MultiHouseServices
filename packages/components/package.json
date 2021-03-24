@@ -30,6 +30,7 @@
     "react-native-calendars": "*",
     "react-datepicker": "*",
     "react-date-range": "*",
-    "date-fns": "*"
+    "date-fns": "*",
+    "react-select": "*"
   }
 }

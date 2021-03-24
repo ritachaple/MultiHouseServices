@@ -25,5 +25,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'error',
     '@typescript-eslint/ban-ts-comment': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
 }
