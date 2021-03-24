@@ -8,7 +8,6 @@ import {
   Alert,
   TouchableHighlight,
   TouchableOpacity,
-  ImageBackground,
   Pressable,
 } from 'react-native'
 import moment from 'moment'
@@ -33,30 +32,10 @@ import {
   NeutralSentiment,
 } from '../Images/SentimentIcon'
 import { Interaction2Edit } from './DropdownSelect'
-
-// const colors = ['red', 'green', 'orange']
-
-const tickitStatus = [
-  'Pending',
-  'Assigned',
-  'Resolve',
-  'Closed',
-  'Escalated',
-  'Reopened',
-  'Blocked',
-  'Qwerty3',
-]
-
-const tickitIcon = [
-  'hourglass-half',
-  'user',
-  'check-circle',
-  'times-rectangle',
-  'angle-double-up',
-  'unlock-alt',
-  'ban',
-  'circle',
-]
+import {
+  searchComplaintsApi,
+  logActivityApi,
+} from '../CommnFncn/IntegrationAPI'
 
 const sentimentList = [
   { id: '1', text: 'Positive', component: <PositiveSentiment /> },
@@ -77,6 +56,10 @@ const List = (props: any) => {
     assigneeDropdownList,
     navigation,
     tickitList,
+    pageSize,
+    pageIndex,
+    startDate,
+    endDate,
   } = props
   // console.log(tickitItems)
 
@@ -90,17 +73,31 @@ const List = (props: any) => {
   const [isPriorityDropdown, setPriorityList] = useState(false)
   const [isAssigneeList, setAssigneeList] = useState(false)
   const [isSentimentList, setSentimentList] = useState(false)
-  // const [dropdownStyle, setDropdownStyle] = useState({
-  //   left: '0',
-  //   right: '0',
-  //   top: '0',
-  //   bottom: '0',
-  // })
 
   const tooltipRef: any = React.useRef(null)
   const fontWeight = tickitItems.is_read ? '100' : '700'
 
-  console.log('statusDropdown', statusDropdownList)
+  // console.log('statusDropdown', statusDropdownList)
+
+  const searchComplaints = async () => {
+    try {
+      const res: any = await searchComplaintsApi(
+        token,
+        pageSize,
+        pageIndex,
+        startDate,
+        endDate,
+      )
+      if (res && res.status === 200) {
+        props.setTikitData(res.data.data)
+        props.setTotalRecords(res.data.total_records)
+      } else {
+        props.clearToken()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const onSubjectTextPress = () => {
     props.setTickit(tickitItems)
@@ -196,64 +193,84 @@ const List = (props: any) => {
   }
 
   const onSentimetIconClick = async (selData: any) => {
-    const selectedData: any = sentimentList.find((item) => {
-      return item.text === selData
-    })
-    onCloseModal()
-    const data = {
-      assigned_to: null,
-      created_on: tickitItems.created_on,
-      custom_column: { due_date: null, policy_number: '1234' },
-      user_name: tickitItems.user_name,
-      customer_responded: tickitItems.customer_responded,
-      is_dm: tickitItems.is_dm,
-      department_id: null,
-      response_allowed: false,
-      blocked_by: null,
-      medium_id: tickitItems.medium_id,
-      sentiment_name: selectedData.text,
-      last_modified_on: tickitItems.last_modified_on,
-      fake_factor: tickitItems.fake_factor,
-      priority_id: tickitItems.priority_id,
-      user_profile_picture_url: null,
-      user_type: tickitItems.user_type,
-      client_id: tickitItems.client_id,
-      medium_username: tickitItems.medium_username,
-      sentiment: selectedData.id,
-      cust_location: null,
-      complaint_text: tickitItems.complaint_text,
-      post_url: tickitItems.post_url,
-      user_id: tickitItems.user_id,
-      thread_count: tickitItems.thread_count,
-      complaint_id: tickitItems.complaint_id,
-      verified: false,
-      is_parent_missing: false,
-      follower_count: tickitItems.follower_count,
-      status_id: tickitItems.status_id,
-      issue_id: null,
-      state_id: tickitItems.status_id,
-      is_spam: false,
-      is_read: true,
-      fake_tagged_by: tickitItems.fake_tagged_by,
-      fake_news_type: null,
-      district: null,
-      is_deleted: false,
-      resolution_text: null,
-      activity_id: null,
-      conversation_text: `Sentiment has been changed to ${selectedData.text}`,
-      created_by: 'system',
-      is_internal_user: true,
-      is_internal: true,
-      is_system_generated: true,
-      is_user_reply: false,
-      status_name: 'Pending',
-    }
-    const res: any = await Api.post(configs.log_activity, data, token)
-    if (res.status === 200) {
-      // setTooltip('Sentiment updated successfully')
+    try {
+      const selectedData: any = sentimentList.find((item) => {
+        return item.text === selData
+      })
+      const conversationText = `Sentiment has been changed to ${selectedData.text}`
+      onCloseModal()
+      const res: any = await setLogActivity(selectedData, conversationText)
+      if (res.status === 200) {
+        // setTooltip('Sentiment updated successfully')
+        console.log(`Sentiment updated successfully`)
+        searchComplaints()
+      } else {
+        console.log('sentiment api error')
+      }
+    } catch (error) {
+      console.error(error)
     }
 
     // console.log('sentiment Icon Res', res)
+  }
+
+  const setLogActivity = async (sentiment: any, conversationText: string) => {
+    let res: any = {}
+    try {
+      const data = {
+        assigned_to: null,
+        created_on: tickitItems.created_on,
+        custom_column: { due_date: null, policy_number: '1234' },
+        user_name: tickitItems.user_name,
+        customer_responded: tickitItems.customer_responded,
+        is_dm: tickitItems.is_dm,
+        department_id: null,
+        response_allowed: false,
+        blocked_by: null,
+        medium_id: tickitItems.medium_id,
+        sentiment_name: sentiment.text,
+        last_modified_on: tickitItems.last_modified_on,
+        fake_factor: tickitItems.fake_factor,
+        priority_id: tickitItems.priority_id,
+        user_profile_picture_url: null,
+        user_type: tickitItems.user_type,
+        client_id: tickitItems.client_id,
+        medium_username: tickitItems.medium_username,
+        sentiment: sentiment.id,
+        cust_location: null,
+        complaint_text: tickitItems.complaint_text,
+        post_url: tickitItems.post_url,
+        user_id: tickitItems.user_id,
+        thread_count: tickitItems.thread_count,
+        complaint_id: tickitItems.complaint_id,
+        verified: false,
+        is_parent_missing: false,
+        follower_count: tickitItems.follower_count,
+        status_id: tickitItems.status_id,
+        issue_id: null,
+        state_id: tickitItems.status_id,
+        is_spam: false,
+        is_read: true,
+        fake_tagged_by: tickitItems.fake_tagged_by,
+        fake_news_type: null,
+        district: null,
+        is_deleted: false,
+        resolution_text: null,
+        activity_id: null,
+        conversation_text: `${conversationText}`,
+        created_by: 'system',
+        is_internal_user: true,
+        is_internal: true,
+        is_system_generated: true,
+        is_user_reply: false,
+        status_name: tickitItems.status_name,
+      }
+
+      res = await logActivityApi(data, token)
+    } catch (error) {
+      console.error(error)
+    }
+    return res
   }
 
   const onAssigneeClick = async (item: any) => {
@@ -442,20 +459,6 @@ const List = (props: any) => {
   }
 
   const onSentimentPress = async () => {
-    // const ind = await findIndexOfTickit()
-    // const data:any = {...dropdownStyle}
-    // data.left = "60%"
-    // data.right= "20%"
-    // // data.bottom ="15%"
-    // if(ind > 0){
-    //  const tp =  ind *4
-    //   data.top=`${tp+18}%`
-    //   data.bottom =`${15-tp}`
-    // }else{
-    //   data.top="18%"
-    // }
-    // setDropdownStyle(data)
-    // setModalVisible(!modalVisible)
     setIsDropdownList(!isDropdownList)
     setSentimentList(!isSentimentList)
   }
@@ -899,8 +902,6 @@ const List = (props: any) => {
               flex: 1,
               flexDirection: 'row',
               paddingTop: '1%',
-              // alignContent:"center",
-              // alignItems:"center",
               paddingVertical: '1%',
               backgroundColor: hovered ? 'whitesmoke' : 'none',
               width: '100%',
@@ -935,15 +936,7 @@ const List = (props: any) => {
                 visible={modalVisible}
               >
                 {isDropdownList ? (
-                  <DropDownList
-                  // style={{
-                  //   marginLeft: dropdownStyle.left,
-                  //   marginRight: dropdownStyle.right,
-                  //   marginTop: dropdownStyle.top,
-                  //   marginBottom: dropdownStyle.bottom,
-                  //   // width:"30%"
-                  // }}
-                  >
+                  <DropDownList>
                     <Icon
                       name="remove"
                       onPress={onCloseModal}
@@ -1000,6 +993,10 @@ const mapStateToProps = (state: any) => {
       ? state.tickitListData.storeSelectedTickits
       : ([] as any),
     tickitList: state.tickitListData.tickitList,
+    pageSize: state.Pagination.initialState.pageSize,
+    pageIndex: state.Pagination.initialState.pageIndex,
+    startDate: state.tickitListData.startDate,
+    endDate: state.tickitListData.endDate,
   }
 }
 
@@ -1016,6 +1013,9 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     setSelectedTickit: (data: any) => {
       dispatch({ type: 'STORE_SELECTED_TICKIT', payload: data })
+    },
+    setTotalRecords: (data: number) => {
+      dispatch({ type: 'TOTAL_RECORDS', payload: data })
     },
   }
 }
