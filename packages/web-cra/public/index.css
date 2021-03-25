@@ -48,6 +48,7 @@ form button {
   border: 0;
   color: #fff;
 }
+
 .dropdown-input {
   background-color: white;
   padding: 4%;
@@ -149,98 +150,3 @@ form button {
   font-family: 'Poppins-Light';
   src: url('./Fonts/Poppins-Light.ttf');
 }
-
-/* .css-yk16xz-control {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: transparent !important;
-  border-color: hsl(0, 0%, 80%);
-  border-radius: 0px !important;
-  border-style: solid;
-  border-width: 0px !important;
-  cursor: default;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  min-height: 38px;
-  outline: 0 !important;
-  position: relative;
-  -webkit-transition: all 100ms;
-  transition: all 100ms;
-  box-sizing: border-box;
-}
-
-.css-1pahdxg-control {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: transparent !important;
-  border-color: #2684ff;
-  border-radius: 0px !important;
-  border-style: solid;
-  border-width: 0px !important;
-  box-shadow: 0 0 0 1px #2684ff;
-  cursor: default;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  min-height: 8px !important;
-  outline: 0 !important;
-  position: relative;
-  -webkit-transition: all 100ms;
-  transition: all 100ms;
-  box-sizing: border-box;
-  color: #4f2d7f !important;
-}
-
-.css-2b097c-container {
-  position: relative;
-  width: 250px !important;
-  box-sizing: border-box;
-}
-
-.css-tlfecz-indicatorContainer:hover {
-  color: #000 !important;
-}
-
-.css-tlfecz-indicatorContainer {
-  color: #000 !important;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 8px;
-  -webkit-transition: color 150ms;
-  transition: color 150ms;
-  box-sizing: border-box;
-}
-
-.css-1okebmr-indicatorSeparator {
-  -webkit-align-self: stretch;
-  -ms-flex-item-align: stretch;
-  align-self: stretch;
-  background-color: transparent !important;
-  margin-bottom: 8px;
-  margin-top: 8px;
-  width: 1px;
-  box-sizing: border-box;
-} */
