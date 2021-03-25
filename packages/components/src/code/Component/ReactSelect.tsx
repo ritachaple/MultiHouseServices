@@ -78,6 +78,81 @@ export const DropdownList = (props: any) => {
 
   return (
     <Select
+      menuPlacement="auto"
+      menuPortalTarget={document.querySelector('body')}
+      defaultValue={selectedOption}
+      onChange={(value: any) => {
+        onSelect(value)
+      }}
+      options={options}
+    />
+  )
+}
+
+export const MultipleDropdownList = (props: any) => {
+  const { list, onSelectValue } = props
+  const isMulti = true
+
+  const [selectedOption, setSelectedOption] = useState(null)
+
+  const options =
+    list !== undefined &&
+    list.length > 0 &&
+    list.map(function (item: any) {
+      return { value: item.value, label: item.text }
+    })
+
+  const onSelect = (val: any) => {
+    setSelectedOption(val)
+    // console.log("valll", val);
+    // let array: any = []
+
+    // const list = val !== undefined && val.length > 0 && val.map((item: any) => {
+    //   return item.value
+    // })
+
+    console.log('list', list)
+
+    // console.log("arrayyy", array);
+
+    // onSelectValue(val)
+  }
+
+  return (
+    <Select
+      isMulti={isMulti}
+      menuPlacement="auto"
+      menuPortalTarget={document.querySelector('body')}
+      defaultValue={selectedOption}
+      onChange={(value: any) => {
+        onSelect(value)
+      }}
+      options={options}
+    />
+  )
+}
+
+export const PaginationList = (props: any) => {
+  const { list, onSelectValue } = props
+
+  const [selectedOption, setSelectedOption] = useState(null)
+
+  const options =
+    list !== undefined &&
+    list.length > 0 &&
+    list.map((item: any, index: number) => {
+      return { value: item, label: item }
+    })
+
+  const onSelect = (val: any) => {
+    setSelectedOption(val)
+    console.log('val', val)
+    onSelectValue(val)
+  }
+
+  return (
+    <Select
+      menuPlacement="auto"
       menuPortalTarget={document.querySelector('body')}
       defaultValue={selectedOption}
       onChange={(value: any) => {
