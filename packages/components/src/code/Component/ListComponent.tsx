@@ -32,7 +32,12 @@ import {
   searchComplaintsApi,
   logActivityApi,
 } from '../CommnFncn/IntegrationAPI'
-import { StatusDropdown, SentimentSelect, DropdownList } from './ReactSelect'
+import {
+  StatusDropdown,
+  SentimentSelect,
+  DropdownList,
+  MultipleDropdownList,
+} from './ReactSelect'
 
 const sentimentList = [
   { id: '1', text: 'Positive', component: <PositiveSentiment /> },
@@ -62,9 +67,11 @@ const List = (props: any) => {
   const [message, setMessage] = useState('')
   const [isStatusDropdown, setStatusDropdown] = useState(false)
   const [isPriorityDropdown, setPriorityList] = useState(false)
-  const [isAssigneeList, setAssigneeList] = useState(false)
+  // const [isAssigneeList, setAssigneeList] = useState(false)
   const [isSentimentList, setSentimentList] = useState(false)
   const [statusName, setStatusName] = useState()
+  const [isAssignList, setToggleAssignList] = useState(false)
+  const [selAssignList, setSetAssignList] = useState([] as any)
 
   const tooltipRef: any = React.useRef(null)
   const fontWeight = tickitItems.is_read ? '100' : '700'
@@ -79,6 +86,7 @@ const List = (props: any) => {
     if (status) {
       setStatusName(status.status_name)
     }
+    setSetAssignList(tickitItems.assigned_to)
   }, [])
 
   const searchComplaints = async () => {
@@ -122,6 +130,7 @@ const List = (props: any) => {
         conversationText,
         selTickit.value,
         tickitItems.priority_id,
+        selAssignList,
       )
       if (res.status === 200) {
         searchComplaints()
@@ -143,7 +152,7 @@ const List = (props: any) => {
   const onCloseModal = () => {
     setPriorityList(false)
     setStatusDropdown(false)
-    setAssigneeList(false)
+    // setAssigneeList(false)
     setSentimentList(false)
   }
 
@@ -157,6 +166,7 @@ const List = (props: any) => {
         conversationText,
         tickitItems.status_id,
         tickitItems.priority_id,
+        selAssignList,
       )
       if (res.status === 200) {
         // setTooltip('Sentiment updated successfully')
@@ -176,11 +186,12 @@ const List = (props: any) => {
     conversationText: string,
     statusId: any,
     priorityId: any,
+    assignTo: any,
   ) => {
     let res: any = {}
     try {
       const data = {
-        assigned_to: null,
+        assigned_to: assignTo,
         created_on: tickitItems.created_on,
         custom_column: { due_date: null, policy_number: '1234' },
         user_name: tickitItems.user_name,
@@ -235,65 +246,37 @@ const List = (props: any) => {
     return res
   }
 
-  const onAssigneeClick = async (item: any) => {
-    // setTooltip('Sentiment updated successfully')
-    // console.log("tickitItem",tickitItems)
-    console.log('item1', item)
-    onCloseModal()
-    const data = {
-      assigned_to: [5889],
-      created_on: tickitItems.created_on,
-      custom_column: { due_date: null, policy_number: '1234' },
-      user_name: tickitItems.user_name,
-      customer_responded: tickitItems.customer_responded,
-      is_dm: tickitItems.is_dm,
-      department_id: null,
-      response_allowed: false,
-      blocked_by: null,
-      medium_id: tickitItems.medium_id,
-      sentiment_name: tickitItems.sentiment_name,
-      last_modified_on: tickitItems.last_modified_on,
-      fake_factor: tickitItems.fake_factor,
-      priority_id: tickitItems.priority_id,
-      user_profile_picture_url: null,
-      user_type: tickitItems.user_type,
-      client_id: tickitItems.client_id,
-      medium_username: tickitItems.medium_username,
-      sentiment: tickitItems.tickitItems,
-      cust_location: null,
-      complaint_text: tickitItems.complaint_text,
-      post_url: tickitItems.post_url,
-      user_id: tickitItems.user_id,
-      thread_count: tickitItems.thread_count,
-      complaint_id: tickitItems.complaint_id,
-      verified: false,
-      is_parent_missing: false,
-      follower_count: tickitItems.follower_count,
-      status_id: tickitItems.status_id,
-      issue_id: null,
-      state_id: tickitItems.status_id,
-      is_spam: false,
-      is_read: true,
-      fake_tagged_by: tickitItems.fake_tagged_by,
-      fake_news_type: null,
-      district: null,
-      is_deleted: false,
-      resolution_text: null,
-      activity_id: null,
-      conversation_text: 'Complaint has been assigned',
-      created_by: 'system',
-      is_internal_user: true,
-      is_internal: true,
-      is_system_generated: true,
-      is_user_reply: false,
-      status_name: 'Assigned',
-    }
-    const res: any = await Api.post(configs.log_activity, data, token)
-    if (res.status === 200) {
-      // setTooltip('Assignee updated successfully')
-    }
+  const onAssigneeSelect = async (selData: any) => {
+    try {
+      // let assignTo: any = []
+      const assignTo =
+        selData !== undefined &&
+        selData.length > 0 &&
+        selData.map((item: any) => {
+          return item.value
+        })
+      const conversationText = `Complaint has been assigned`
+      setToggleAssignList(false)
+      setSetAssignList(assignTo)
+      const res: any = await setLogActivity(
+        tickitItems.sentiment,
+        tickitItems.sentiment_name,
+        conversationText,
+        tickitItems.status_id,
+        tickitItems.priority_id,
+        assignTo,
+      )
 
-    // console.log('sentiment Icon Res', res)
+      if (res.status === 200) {
+        // setTooltip('Sentiment updated successfully')
+        searchComplaints()
+        console.log(`Complaint updated successfully`)
+      } else {
+        console.log('assignee api error')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const onPrioritySelect = async (selText: any) => {
@@ -306,6 +289,7 @@ const List = (props: any) => {
         conversationText,
         tickitItems.status_id,
         selText.value,
+        selAssignList,
       )
       if (res.status === 200) {
         searchComplaints()
@@ -359,8 +343,9 @@ const List = (props: any) => {
   const onPriorityPress = () => {
     setPriorityList(true)
   }
+
   const onAssigneePress = () => {
-    setAssigneeList(true)
+    // setAssigneeList(true)
   }
 
   const findIndexOfTickit = () => {
@@ -654,22 +639,31 @@ const List = (props: any) => {
       >
         <View style={{ flex: 3 }} />
         {/* <Text >{tickitItems.user_name}</Text> */}
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Pressable
-            style={{ flex: 1, flexDirection: 'row' }}
-            onPress={onAssigneePress}
-          >
-            {/* <Icon style={{ flex: 3 }} name="user-circle" size={15} /> */}
-            <AssignUser />
-            {hovered && (
-              <Icon
-                style={{ paddingHorizontal: '6%', paddingTop: '14%' }}
-                name="angle-down"
-                size={15}
-              />
-            )}
-          </Pressable>
-        </View>
+        {!isAssignList ? (
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <Pressable
+              style={{ flex: 1, flexDirection: 'row' }}
+              onPress={() => setToggleAssignList(true)}
+            >
+              {/* <Icon style={{ flex: 3 }} name="user-circle" size={15} /> */}
+              <AssignUser />
+              {hovered && (
+                <Icon
+                  style={{ paddingHorizontal: '6%', paddingTop: '14%' }}
+                  name="angle-down"
+                  size={15}
+                />
+              )}
+            </Pressable>
+          </View>
+        ) : (
+          <MultipleDropdownList
+            list={assigneeDropdownList}
+            onSelectValue={(val: any) => {
+              onAssigneeSelect(val)
+            }}
+          />
+        )}
         {/* <View style={{ flex: 1 }} /> */}
       </View>
     )

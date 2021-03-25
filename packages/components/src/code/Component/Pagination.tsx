@@ -27,24 +27,24 @@ const Pagination = (props: any) => {
   } = props
 
   const [totalPageCount, setTotalPageCount] = useState(0)
-  const [isModal, setModalOpen] = useState(false)
   const [noOfPages, setNoOfPages] = useState([] as any)
   const [isNoOfPages, setToglePagesList] = useState(false)
   const [isRowsPerPage, setToggleRowsList] = useState(false)
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
-      const totalPages = () => {
-        const noOfPage: number = Math.ceil(totalRecords / pageSize)
-        const array = [...Array(noOfPage + 1).keys()]
-        array.shift()
-        setNoOfPages(array)
-        setTotalPageCount(noOfPage)
-      }
-      totalPages()
+      totalPages(pageSize)
     })
     return unsubscribe
   }, [])
+
+  const totalPages = (pgsize: number) => {
+    const noOfPage: number = Math.ceil(totalRecords / pgsize)
+    const array = [...Array(noOfPage + 1).keys()]
+    array.shift()
+    setNoOfPages(array)
+    setTotalPageCount(noOfPage)
+  }
 
   const searchComplaints = async (pageInd: number, pgSize: number) => {
     try {
@@ -83,10 +83,11 @@ const Pagination = (props: any) => {
     props.setPageIndex(page.value)
   }
 
-  const onRowsSelect = (selData: any) => {
-    setToggleRowsList(false)
-    searchComplaints(pageIndex, selData.value)
+  const onRowsSelect = async (selData: any) => {
     props.setPageSize(selData.value)
+    setToggleRowsList(false)
+    await searchComplaints(pageIndex, selData.value)
+    totalPages(selData.value)
   }
 
   return (
@@ -165,9 +166,6 @@ const Pagination = (props: any) => {
             }}
           >
             <View style={styles.ArrowStyle}>
-              {/* <Pressable disabled={ true: false}
-         
-         > */}
               {pageIndex === 1 ? (
                 <Icon
                   style={{ opacity: 0.2 }}
