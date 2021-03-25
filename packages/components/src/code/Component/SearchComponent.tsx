@@ -286,7 +286,7 @@ const SearchComplaints = (props: any) => {
           />
         </View>
       </ScrollView>
-      {/* <Pagination navigation={navigation} /> */}
+      <Pagination navigation={navigation} />
       <>
         <Modal
           style={{ flex: 1 }}

@@ -65,6 +65,11 @@ form button {
   border-radius: 8px;
 } */
 
+.drop-up .Select-menu-outer {
+  top: auto;
+  bottom: 100%;
+}
+
 @font-face {
   font-family: 'MaterialIcons';
   src: url('./Fonts/MaterialIcons.ttf');
