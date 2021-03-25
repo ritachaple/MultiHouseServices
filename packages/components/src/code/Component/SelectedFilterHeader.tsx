@@ -20,6 +20,13 @@ const SelectedFilterHeader = (props: any) => {
     // clearMedium()
   }, [])
 
+  const clearFilter = () => {
+    props.clearMedium()
+    props.clearStatus()
+    props.clearPriority()
+    setFilter(false)
+  }
+
   return (
     <View
       style={{
@@ -75,6 +82,9 @@ const SelectedFilterHeader = (props: any) => {
                 name="close"
                 color="#4d4d4d"
                 size={15}
+                onPress={() => {
+                  props.clearMedium()
+                }}
               />
             </View>
             <View style={styles.filterBox}>
@@ -87,6 +97,9 @@ const SelectedFilterHeader = (props: any) => {
                 name="close"
                 color="#4d4d4d"
                 size={15}
+                onPress={() => {
+                  props.clearPriority()
+                }}
               />
             </View>
             <View style={styles.filterBox}>
@@ -99,13 +112,16 @@ const SelectedFilterHeader = (props: any) => {
                 name="close"
                 color="#4d4d4d"
                 size={15}
+                onPress={() => {
+                  props.clearStatus()
+                }}
               />
             </View>
 
             <View style={{ marginVertical: '5%' }}>
               <TouchableOpacity
                 onPress={() => {
-                  setFilter(false)
+                  clearFilter()
                 }}
               >
                 <Text
@@ -139,6 +155,12 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     clearMedium: () => {
       dispatch({ type: 'CLEAR_SELECTED_MEDIUM' })
+    },
+    clearPriority: () => {
+      dispatch({ type: 'CLEAR_SELECTED_PRIORITY' })
+    },
+    clearStatus: () => {
+      dispatch({ type: 'CLEAR_SELECTED_STATUS' })
     },
   }
 }

@@ -8,13 +8,18 @@ export const searchComplaintsApi = async (
   startDate: any,
   endDate: any,
   mediumId?: any,
+  priority?: any,
+  status?: any,
 ) => {
   const medum = mediumId || []
+  const priorityList = priority || []
+  const statusList = status || []
   let res: any = {}
   try {
     const data = {
       client_id: 39,
-      status: [],
+      status: statusList,
+      priority: priorityList,
       department: [],
       is_deleted: false,
       is_spam: false,
@@ -31,7 +36,7 @@ export const searchComplaintsApi = async (
       agent_id: 5889,
       medium: medum,
     }
-    // console.log('search_complaintsRes1')
+    console.log('datafilter', data)
 
     res = await Api.post(configs.search_complaints, data, `${token}`)
     // console.log('searchcomplaintsRes', res)

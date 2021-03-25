@@ -19,6 +19,11 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Dropdown from './Dropdown'
 import DropDownList from './DropDownList'
+import {
+  MediaDropdownList,
+  MultipleDropdownList,
+  StatusDropdownList,
+} from './ReactSelect'
 
 const SideBar = (props: any) => {
   const {
@@ -29,13 +34,17 @@ const SideBar = (props: any) => {
     pageIndex,
     startDate,
     endDate,
+    onClose,
   } = props
 
   const [mediaList, setMediaList] = useState([] as any)
   const [modalVisible, setModalVisible] = useState(false)
   const [isMediaDropdown, setmediaDropdown] = useState(false)
   const [media, setMedia] = useState([] as any)
-  const [mediaId, setMediaId] = useState([] as any)
+  // const [mediaId, setMediaId] = useState([] as any)
+  const [selMedia, setSelMediaList] = useState([] as any)
+  const [selPriority, setSelPriority] = useState([] as any)
+  const [setStatus, setSelStatus] = useState([] as any)
 
   const setModal = () => {
     setModalVisible(!modalVisible)
@@ -45,27 +54,7 @@ const SideBar = (props: any) => {
     setmediaDropdown(!isMediaDropdown)
     setModalVisible(!modalVisible)
     // setModal()
-    searchComplaintApi()
-  }
-
-  const searchComplaintApi = async () => {
-    const res: any = await searchComplaintsApi(
-      token,
-      pageSize,
-      pageIndex,
-      startDate,
-      endDate,
-      mediaId,
-    )
-    if (res && res.status === 200) {
-      props.setTikitData(res.data.data)
-      props.setTotalRecords(res.data.total_records)
-      // props.setPageIndex(pageIndex)
-      // props.setPageSize(pageSize)
-      // console.log('res.data', res.data.data)
-    } else {
-      props.clearToken()
-    }
+    // searchComplaintApi()
   }
 
   useEffect(() => {
@@ -73,6 +62,8 @@ const SideBar = (props: any) => {
       try {
         const res: any = await Api.get(`${configs.mediaList}`, token)
         if (res.status === 200) {
+          // console.log('medialist', res.data.data);
+
           setMediaList(res.data.data)
           console.log('media details', res)
         }
@@ -87,53 +78,156 @@ const SideBar = (props: any) => {
     console.log('selected Item')
   }
 
-  const setmediaId = (item: any, index: number) => {
+  // const setmediaId = (item: any, index: number) => {
+  //   try {
+  //     const isCheck = Boolean(
+  //       mediaId.find((value: any) => {
+  //         return value.medium_id === item.medium_id
+  //       }),
+  //     )
+  //     const data: any = [...mediaId]
+  //     if (!isCheck) {
+  //       //  data.push(obj)
+  //       data.splice(index, 0, { medium_id: item.medium_id })
+  //     } else {
+  //       const ind = data.indexOf(item.medium_id)
+  //       data.splice(ind, 1)
+  //     }
+  //     setMediaId(data)
+  //     console.log('mediumIdd', data)
+  //   } catch (error) {
+  //     console.log('setmediaId', error)
+  //   }
+  // }
+
+  const onMediaSelect = (selData: any) => {
     try {
-      const isCheck = Boolean(
-        mediaId.find((value: any) => {
-          return value.medium_id === item.medium_id
-        }),
-      )
-      const data: any = [...mediaId]
-      if (!isCheck) {
-        //  data.push(obj)
-        data.splice(index, 0, { medium_id: item.medium_id })
-      } else {
-        const ind = data.indexOf(item.medium_id)
-        data.splice(ind, 1)
-      }
-      setMediaId(data)
-      console.log('mediumIdd', data)
-    } catch (error) {
-      console.log('setmediaId', error)
-    }
-  }
+      // console.log("selmData", selData);
 
-  const onMediaSelect = (item: any, index: number) => {
-    try {
-      setmediaId(item, index)
-      const isCheck = Boolean(
-        media.find((value: any) => {
-          return value === item.medium_name
-        }),
-      )
+      // const selList = selData !== undefined && selData.length > 0 &&
+      //   selData.map((item: any) => {
+      //     return { "medium_id": item.value, "is_dm": false }
+      //   })
+      // console.log("selMediaList", selList);
+      setSelMediaList(selData)
 
-      const data = [...media]
-      if (!isCheck) {
-        data.splice(index, 0, item.medium_name)
+      // setmediaId(item, index)
+      // const isCheck = Boolean(
+      //   media.find((value: any) => {
+      //     return value === item.medium_name
+      //   }),
+      // )
 
-        console.log('mediaselect', data)
-      } else {
-        // remove item code
-        const ind = data.indexOf(item.medium_name)
-        data.splice(ind, 1)
-      }
-      setMedia(data)
-      props.setMediaFilter(data)
+      // const data = [...media]
+      // if (!isCheck) {
+      //   data.splice(index, 0, item.medium_name)
+
+      //   console.log('mediaselect', data)
+      // } else {
+      //   // remove item code
+      //   const ind = data.indexOf(item.medium_name)
+      //   data.splice(ind, 1)
+      // }
+      // setMedia(data)
+      // props.setMediaFilter(data)
     } catch (error) {
       console.error('media select', error)
     }
     // onMediaPress()
+  }
+
+  const onPrioritySelect = (selData: any) => {
+    console.log('selPriority', selData)
+    setSelPriority(selData)
+  }
+
+  const onStatausSelect = (selData: any) => {
+    console.log('statusSel', selData)
+    setSelStatus(selData)
+  }
+
+  const onSubmitFilter = () => {
+    // selPriority
+    // setStatus
+    // const selMediaId = selMedia
+    const selMediaId =
+      selMedia !== undefined &&
+      selMedia.length > 0 &&
+      selMedia.map((item: any) => {
+        return { medium_id: item.value, is_dm: false }
+      })
+
+    const setMediaName =
+      selMedia !== undefined &&
+      selMedia.length > 0 &&
+      selMedia.map((item: any) => {
+        return item.label
+      })
+
+    const setPriorityId =
+      selPriority !== undefined &&
+      selPriority.length > 0 &&
+      selPriority.map((item: any) => {
+        return item.value
+      })
+
+    const setPriorityName =
+      selPriority !== undefined &&
+      selPriority.length > 0 &&
+      selPriority.map((item: any) => {
+        return item.label
+      })
+
+    const setStatusId =
+      setStatus !== undefined &&
+      setStatus.length > 0 &&
+      setStatus.map((item: any) => {
+        return item.value
+      })
+
+    const setStatusName =
+      setStatus !== undefined &&
+      setStatus.length > 0 &&
+      setStatus.map((item: any) => {
+        return item.label
+      })
+    props.onClose()
+    // console.log("selMediaId", selMediaId);
+    // console.log("setMediaName", setMediaName);
+    // console.log("setPriorityId", setPriorityId);
+    // console.log("setPriorityName", setPriorityName);
+    // console.log("setStatusId", setStatusId);
+    // console.log("setStatusName", setStatusName);
+    searchComplaintApi(selMediaId, setPriorityId, setStatusId)
+    props.setMediaFilter(setMediaName)
+    props.setPriorityFilter(setPriorityName)
+    props.setStatusFilter(setStatusName)
+  }
+
+  const searchComplaintApi = async (
+    mediaId: any,
+    priority: any,
+    status: any,
+  ) => {
+    const res: any = await searchComplaintsApi(
+      token,
+      pageSize,
+      pageIndex,
+      startDate,
+      endDate,
+      mediaId,
+      priority,
+      status,
+    )
+    if (res && res.status === 200) {
+      props.setTikitData(res.data.data)
+      props.setTotalRecords(res.data.total_records)
+      // props.setPageIndex(pageIndex)
+      // props.setPageSize(pageSize)
+      // console.log('res.data', res.data.data)
+    } else {
+      props.clearToken()
+    }
   }
 
   const flatList = (list: any) => {
@@ -170,7 +264,7 @@ const SideBar = (props: any) => {
                   <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity
                       onPress={() => {
-                        onMediaSelect(item, index)
+                        // onMediaSelect(item, index)
                       }}
                     >
                       {isCheck ? <Checked /> : <UnChecked />}
@@ -228,7 +322,7 @@ const SideBar = (props: any) => {
       <View style={{ marginVertical: '10%', marginHorizontal: '5%' }}>
         <Text style={{ fontSize: 13 }}>Medium</Text>
         <Pressable onPress={() => onMediaPress()}>
-          <TextInput
+          {/* <TextInput
             style={{
               paddingLeft: 0,
               backgroundColor: '#fff',
@@ -238,26 +332,55 @@ const SideBar = (props: any) => {
               borderWidth: 1,
               borderRadius: 4,
               paddingVertical: '1%',
+            }} */}
+          {/* /> */}
+          <MediaDropdownList
+            list={mediaList}
+            onSelectValue={(val: any) => {
+              onMediaSelect(val)
             }}
-            // value={media}
           />
         </Pressable>
       </View>
       <View style={{ marginVertical: '5%', marginHorizontal: '5%' }}>
         <Text style={{ fontSize: 13, paddingVertical: '2%' }}>Priority</Text>
-        <Dropdown
+        {/* <Dropdown
           dropdownList={priorityDropdownList}
           selectedItem={selectedItemItem}
+        /> */}
+        <MultipleDropdownList
+          list={priorityDropdownList}
+          onSelectValue={(val: any) => {
+            onPrioritySelect(val)
+          }}
         />
       </View>
       <View style={{ marginVertical: '5%', marginHorizontal: '5%' }}>
         <Text style={{ fontSize: 13, paddingVertical: '2%' }}>Status</Text>
-        <Dropdown
+        {/* <Dropdown
           dropdownList={statusDropdownList}
           selectedItem={selectedItemItem}
+        /> */}
+        <StatusDropdownList
+          list={statusDropdownList}
+          onSelectValue={(val: any) => {
+            onStatausSelect(val)
+          }}
         />
       </View>
-      <>
+      <View style={{ flex: 1, marginHorizontal: '40%', marginVertical: '40%' }}>
+        <Pressable onPress={onSubmitFilter} style={styles.buttonStyle}>
+          <Text
+            style={[
+              styles.fontFamily,
+              { justifyContent: 'center', color: '#fff' },
+            ]}
+          >
+            Apply
+          </Text>
+        </Pressable>
+      </View>
+      {/* <>
         <Modal
           style={{ flex: 1 }}
           animationType="none"
@@ -266,7 +389,7 @@ const SideBar = (props: any) => {
         >
           <DropDownList>{isMediaDropdown && flatList(mediaList)}</DropDownList>
         </Modal>
-      </>
+      </> */}
     </>
     // </View>
   )
@@ -289,6 +412,12 @@ const mapDispatchToProps = (dispatch: any) => {
     setMediaFilter: (data: any) => {
       dispatch({ type: 'SELECTED_MEDIUM', payload: data })
     },
+    setPriorityFilter: (data: any) => {
+      dispatch({ type: 'SELECTED_PRIORITY', payload: data })
+    },
+    setStatusFilter: (data: any) => {
+      dispatch({ type: 'SELECTED_STATUS', payload: data })
+    },
     setTotalRecords: (data: number) => {
       dispatch({ type: 'TOTAL_RECORDS', payload: data })
     },
@@ -303,5 +432,13 @@ const styles = StyleSheet.create({
   fontFamily: {
     fontFamily: 'Poppins-Light',
     fontSize: 12,
+    lineHeight: 28,
+  },
+  buttonStyle: {
+    paddingVertical: '1%',
+    paddingHorizontal: '15%',
+    borderRadius: 25,
+    borderColor: '#001163',
+    backgroundColor: '#001163',
   },
 })

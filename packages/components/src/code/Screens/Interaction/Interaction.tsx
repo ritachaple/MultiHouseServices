@@ -151,7 +151,11 @@ const Interaction = (props: any) => {
                   }
                 />
                 <Divider />
-                <SideBar />
+                <SideBar
+                  onClose={() => {
+                    setIsSidebarOpen(false)
+                  }}
+                />
               </View>
             </Modal>
           </View>

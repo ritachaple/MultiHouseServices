@@ -28,10 +28,22 @@ const Filter = (state = { initialState }, action: any) => {
         priority: action.payload,
       }
       break
+    case 'CLEAR_SELECTED_PRIORITY':
+      return {
+        ...state,
+        priority: [],
+      }
+      break
     case 'SELECTED_STATUS':
       return {
         ...state,
         status: action.payload,
+      }
+      break
+    case 'CLEAR_SELECTED_STATUS':
+      return {
+        ...state,
+        status: [],
       }
       break
 
