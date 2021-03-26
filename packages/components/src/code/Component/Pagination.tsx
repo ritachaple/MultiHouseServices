@@ -40,7 +40,8 @@ const Pagination = (props: any) => {
 
   const totalPages = (pgsize: number) => {
     const noOfPage: number = Math.ceil(totalRecords / pgsize)
-    const array = [...Array(noOfPage + 1).keys()]
+    let array = []
+    array = [...Array(noOfPage + 1).keys()]
     array.shift()
     setNoOfPages(array)
     setTotalPageCount(noOfPage)

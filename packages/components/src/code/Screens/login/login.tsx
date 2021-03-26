@@ -9,47 +9,14 @@ import {
   Image,
   ImageBackground,
 } from 'react-native'
-import Entypo from 'react-native-vector-icons/Entypo'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { Input } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Api from '../../provider/api/Api'
 import { configs } from '../../provider/api/ApiUrl'
-import SideBar from '../../Component/SideBar'
 import Whatsapp from '../../Component/ImageComponents/Whatsapp'
-// import Facebook from '../../Component/ImageComponents/Facebook'
 import Twitter from '../../Component/ImageComponents/Twitter'
 import UnoBot from '../../Component/ImageComponents/UnoBot'
 import LinkedIn from '../../Component/ImageComponents/LinkedIn'
 import { LoginFacebook } from '../../Images/MediaIcon'
-
-const smIcons = [
-  {
-    iconName: 'twitter-with-circle',
-    iconSize: 30,
-    iconColor: '#00acee',
-  },
-  {
-    iconName: 'facebook-with-circle',
-    iconSize: 30,
-    iconColor: '#1877f2',
-  },
-  {
-    iconName: 'linkedin-with-circle',
-    iconSize: 30,
-    iconColor: '#0e76a8',
-  },
-  {
-    iconName: 'youtube-with-circle',
-    iconSize: 30,
-    iconColor: '#c4302b',
-  },
-  {
-    iconName: '',
-    iconSize: 30,
-    iconColor: '',
-  },
-]
 
 const Login = (props: any) => {
   // const Login = ({ navigation }: { navigation: any }) => {
@@ -163,7 +130,7 @@ const Login = (props: any) => {
             </View>
           )}
 
-          <View style={{ marginTop: '18%' }}>
+          <View style={{ marginTop: '18%', marginLeft: '15%' }}>
             <Text
               style={{
                 color: '#a6a6a6',
@@ -196,7 +163,7 @@ const Login = (props: any) => {
                 flexDirection: 'row',
                 // alignSelf: 'center',
                 // width: '0%',
-                paddingLeft: '26%',
+                paddingLeft: '23%',
               }}
             >
               <TouchableOpacity>
