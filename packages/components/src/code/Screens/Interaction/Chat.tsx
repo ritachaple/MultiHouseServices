@@ -142,6 +142,18 @@ const ChatScreen = (props: any) => {
     props.setTickit(tickitList[ind + 1])
   }
 
+  const viewPost = async () => {
+    const url = selectedTickit.post_url ? selectedTickit.post_url : null
+    // window.open(url, '_blank');
+    // return url
+    window.open(
+      url,
+      'targetWindow',
+      'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, width=800,height=700,left=460',
+    )
+    return false
+  }
+
   return (
     <Default navigation={navigation}>
       <View style={{ flex: 1 }}>
@@ -153,10 +165,11 @@ const ChatScreen = (props: any) => {
             paddingRight: '2%',
           }}
         >
-          <View style={{ flex: 12 }}>
+          <View style={{ flex: 13 }}>
             <View
               style={{
                 justifyContent: 'space-between',
+                // justifyContent: 'space-around',
                 flexDirection: 'row',
                 width: '50%',
                 paddingLeft: '2%',
@@ -207,11 +220,18 @@ const ChatScreen = (props: any) => {
                   <Text style={styles.ButtonText}>Refresh</Text>
                 </TouchableOpacity>
               </View>
-              <View style={[styles.headerButton, { width: '20%' }]}>
-                <View style={styles.Icon}>
-                  <OpenPost />
-                </View>
-                <Text style={styles.ButtonText}>View Post</Text>
+              <View style={[styles.headerButton]}>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row' }}
+                  onPress={viewPost}
+                >
+                  <View style={styles.Icon}>
+                    <OpenPost />
+                  </View>
+                  <View>
+                    <Text style={styles.ButtonText}>View Post</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
               <View style={styles.headerButton}>
                 <TouchableOpacity
