@@ -7342,6 +7342,11 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
+goober@^2.0.30:
+  version "2.0.36"
+  resolved "https://registry.yarnpkg.com/goober/-/goober-2.0.36.tgz#460186364f81983e1f7ea6abc95c661fc0dbd37c"
+  integrity sha512-Hute+CvX7s1L4pSAaMOmRTwbBU7Rhv6q3RwkxwQcwhcA1o/EzaqLNhbBBXDNeOjtU8i75fUOQDnW46SjbSHaOg==
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0, graceful-fs@^4.2.4:
   version "4.2.6"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.6.tgz#ff040b2b0853b23c3d31027523706f1885d76bee"
@@ -12283,6 +12288,13 @@ react-list@^0.8.13:
   integrity sha512-LSxfvdwB9Ip+E+8NBtLPW2pcIngzuV0rSoH9nMt9C2lFjZEbnoBY/ib/Zx121jPgFgg3xYkMlMXSzx5gaiP5ig==
   dependencies:
     prop-types "15"
+
+react-multi-select-component@^3.1.7:
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/react-multi-select-component/-/react-multi-select-component-3.1.7.tgz#4d68fa57f20b02c596c20d8ef61cc3c304ade766"
+  integrity sha512-ycb+qCc8I+KLjlgVvo/I5Gsali8qw4vLUjfIMorgpt/RUY0+0aOtqxOAc4ojwQAe6tNKee23IRyCCQvU4tyBFA==
+  dependencies:
+    goober "^2.0.30"
 
 "react-native-calendars@https://github.com/codegrabs/react-native-calendars":
   version "1.22.0"
