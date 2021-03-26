@@ -10,6 +10,7 @@ import {
   TextInput,
   FlatList,
   Modal,
+  Pressable,
 } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -28,8 +29,14 @@ import {
   AllMedia,
   Twitter2,
   Facebook2,
+  Facebook,
   WhatsApp2,
   EmailInterac2,
+  ConvertedText,
+  Reply,
+  Twitter,
+  Email,
+  WhatsApp,
 } from '../Images/MediaIcon'
 
 // const Chat = (complaintId: any) => {
@@ -275,6 +282,10 @@ const Chat = (props: any) => {
     )
   }
 
+  const dateFormat = (date: any) => {
+    return moment(date).format(`ddd,DD MMM YYYY [At] HH:mm A`)
+  }
+
   const msgIcon = (data: any) => {
     // console.log('msgIcn', data)
 
@@ -283,15 +294,24 @@ const Chat = (props: any) => {
         <View
           style={{ flexDirection: 'row', paddingLeft: '2%', paddingTop: '3%' }}
         >
-          <Icon
+          {/* <Icon
             onPress={() => {
               onReplyClick(data)
             }}
             name="reply"
             size={15}
             color="#000"
-          />
-          <Icon
+          /> */}
+          <View>
+            <Pressable
+              onPress={() => {
+                onReplyClick(data)
+              }}
+            >
+              <Reply />
+            </Pressable>
+          </View>
+          {/* <Icon
             style={{ marginLeft: 5 }}
             onPress={() => {
               translatePress(data.conversation_text)
@@ -299,10 +319,51 @@ const Chat = (props: any) => {
             name="language"
             size={15}
             color="#000"
-          />
+          /> */}
+          <View style={{ paddingLeft: '10%' }}>
+            <Pressable
+              onPress={() => {
+                translatePress(data.conversation_text)
+              }}
+            >
+              <ConvertedText />
+            </Pressable>
+          </View>
         </View>
       </>
     )
+  }
+
+  const MediaImageOnProfile = (mediumName: string) => {
+    try {
+      switch (mediumName) {
+        case 'Facebook':
+          return <Facebook />
+          break
+        case 'Email':
+          return <Email />
+          break
+        case 'Instagram':
+          // return <Twitter3 />
+          break
+        case 'Twitter':
+          return <Twitter />
+          break
+        case 'Whatsapp':
+          return <WhatsApp />
+          break
+        case 'Knowlarity':
+          return null
+          break
+
+        default:
+          return null
+          break
+      }
+    } catch (error) {
+      console.error()
+    }
+    return null
   }
 
   const onForwardPress = async () => {
@@ -463,31 +524,63 @@ const Chat = (props: any) => {
             return data.parent_message_id
           }}
           renderItem={(data: any) => {
-            const inMessage = data.item.is_user_reply === true
-            // const itemStyle = inMessage ? styles.itemIn : styles.itemOut
-            // const bgcolor = inMessage ? styles.colorIn : styles.colorOut
-            const date: any = moment(data.item.created_on).format(
-              'DD MM YYYY HH:mm',
-            )
-
             return (
-              <View style={{ flex: 1, paddingVertical: '1%' }}>
-                <View>
-                  {/* <Text style={[styles.time, itemStyle]}>{date}</Text> */}
-                </View>
-                <View />
-                {/* <View style={[styles.item, itemStyle]}>
-                  <View style={[styles.balloon, bgcolor]}>
-                    <Text>{data.item.conversation_text}</Text>
-                  </View>
-
-                  {inMessage && msgIcon(data.item)}
-                </View> */}
-
+              <View
+                style={{ flex: 1, paddingVertical: '1%', paddingTop: '2%' }}
+              >
                 {data.item && data.item.is_user_reply ? (
                   <View>
-                    <View>
-                      {/* <Text style={[styles.time]}>{date}</Text> */}
+                    <View
+                      style={{ paddingHorizontal: '1%', flexDirection: 'row' }}
+                    >
+                      <View>
+                        <Image
+                          source={{
+                            // uri: 'https://cxp.azureedge.net/static/content/icon/avatar_2x.png'
+                            uri: data.item.user_profile_picture_url,
+                          }}
+                          style={{ width: 40, height: 40, borderRadius: 20 }}
+                        />
+                        <View
+                          style={{
+                            position: 'relative',
+                            top: '-25%',
+                            right: '-40%',
+                          }}
+                        >
+                          {MediaImageOnProfile(data.item.medium_name)}
+                        </View>
+                      </View>
+                      <View style={{ paddingHorizontal: '1%' }}>
+                        {data.item.user_name !== null ? (
+                          <Text
+                            style={[
+                              styles.textStyle,
+                              { fontWeight: '700', color: '#FE46D5' },
+                            ]}
+                          >
+                            {data.item.user_name}{' '}
+                          </Text>
+                        ) : (
+                          <Text> </Text>
+                        )}
+                        {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text
+                            style={[styles.textStyle, { color: '#8A92BB' }]}
+                          >
+                            {moment(data.item.created_on).fromNow()}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.textStyle,
+                              { color: '#8A92BB', paddingLeft: 2 },
+                            ]}
+                          >
+                            ({dateFormat(data.item.created_on)})
+                          </Text>
+                        </View>
+                      </View>
                     </View>
                     <View style={{ flexDirection: 'row', marginRight: '10%' }}>
                       <View style={[styles.msgContainer]}>
@@ -509,18 +602,86 @@ const Chat = (props: any) => {
                     </View>
                   </View>
                 ) : (
-                  <View style={styles.msgContainer}>
+                  <View
+                    style={[{ marginRight: '2%', justifyContent: 'flex-end' }]}
+                  >
                     <View
-                      style={[
-                        styles.conversationMsg,
-                        {
-                          backgroundColor: '#F1F6FF',
-                          marginLeft: '10%',
-                          borderColor: '#F1F6FF',
-                        },
-                      ]}
+                      style={{
+                        paddingHorizontal: '1%',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                      }}
                     >
-                      <Text>{data.item.conversation_text}</Text>
+                      <View>
+                        <Image
+                          source={{
+                            // uri: 'https://cxp.azureedge.net/static/content/icon/avatar_2x.png'
+                            uri: data.item.user_profile_picture_url,
+                          }}
+                          style={{ width: 40, height: 40, borderRadius: 20 }}
+                        />
+                        {/* {MediaImageOnProfile(data.item.medium_name)} */}
+
+                        {data.item.medium_name !== null ? (
+                          <View
+                            style={{
+                              position: 'relative',
+                              top: '-25%',
+                              right: '-40%',
+                            }}
+                          >
+                            {MediaImageOnProfile(data.item.medium_name)}
+                          </View>
+                        ) : (
+                          <View style={{ marginVertical: '1%' }} />
+                        )}
+                      </View>
+                      <View style={{ paddingHorizontal: '1%' }}>
+                        {data.item.created_by !== null ? (
+                          <Text
+                            style={[
+                              styles.textStyle,
+                              { fontWeight: '700', color: '#FE46D5' },
+                            ]}
+                          >
+                            {data.item.created_by}{' '}
+                          </Text>
+                        ) : (
+                          <Text> </Text>
+                        )}
+                        {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text
+                            style={[styles.textStyle, { color: '#8A92BB' }]}
+                          >
+                            {moment(data.item.created_on).fromNow()}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.textStyle,
+                              { color: '#8A92BB', paddingLeft: 2 },
+                            ]}
+                          >
+                            ({dateFormat(data.item.created_on)})
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={[styles.msgContainer]}>
+                      <View
+                        style={[
+                          styles.conversationMsg,
+                          {
+                            backgroundColor: '#F1F6FF',
+                            marginLeft: '50%',
+                            borderColor: '#F1F6FF',
+                            justifyContent: 'flex-end',
+                            // width: "40%"
+                          },
+                        ]}
+                      >
+                        <Text>{data.item.conversation_text}</Text>
+                      </View>
                     </View>
                   </View>
                 )}
@@ -534,7 +695,7 @@ const Chat = (props: any) => {
         style={{
           flexDirection: 'row',
           borderRadius: 10,
-          backgroundColor: '#d9d9d9',
+          backgroundColor: '#F6F6F6',
           padding: '1%',
           width: '100%',
           alignSelf: 'center',
