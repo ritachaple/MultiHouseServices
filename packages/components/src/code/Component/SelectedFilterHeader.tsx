@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import SelectIcon from './SelectIcon'
+import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
 
 const SelectedFilterHeader = (props: any) => {
   const {
@@ -11,7 +12,11 @@ const SelectedFilterHeader = (props: any) => {
     status,
     priority,
     medium,
-    clearMedium,
+    token,
+    pageSize,
+    pageIndex,
+    startDate,
+    endDate,
   } = props
 
   const [filter, setFilter] = useState(true)
@@ -21,10 +26,31 @@ const SelectedFilterHeader = (props: any) => {
   }, [])
 
   const clearFilter = () => {
+    searchComplaints()
     props.clearMedium()
     props.clearStatus()
     props.clearPriority()
     setFilter(false)
+  }
+
+  const searchComplaints = async () => {
+    const res: any = await searchComplaintsApi(
+      token,
+      pageSize,
+      pageIndex,
+      startDate,
+      endDate,
+    )
+    if (res && res.status === 200) {
+      // setTickit(res.data.data)
+      props.setTikitData(res.data.data)
+      props.setTotalRecords(res.data.total_records)
+      // props.setPageIndex(pageIndex)
+      // props.setPageSize(pageSize)
+      console.log('res.data', res.data.data)
+    } else {
+      props.clearToken()
+    }
   }
 
   return (
@@ -89,9 +115,25 @@ const SelectedFilterHeader = (props: any) => {
             </View>
             <View style={styles.filterBox}>
               <Text style={styles.textStyle}>Priority:</Text>
-              <Text style={[styles.textStyle, styles.selectedFilter]}>
+              <View style={{ flexDirection: 'row' }}>
+                {priority !== undefined && priority.length > 0 ? (
+                  priority.map((item: any, i: number) => {
+                    return (
+                      <Text style={[styles.textStyle, styles.selectedFilter]}>
+                        {item}
+                      </Text>
+                    )
+                  })
+                ) : (
+                  <Text style={[styles.textStyle, styles.selectedFilter]}>
+                    All
+                  </Text>
+                )}
+              </View>
+              {/* <Text style={[styles.textStyle, styles.selectedFilter]}>
+
                 {priority || 'All'}
-              </Text>
+              </Text> */}
               <Icon
                 style={[styles.iconStyle, styles.textStyle]}
                 name="close"
@@ -104,9 +146,24 @@ const SelectedFilterHeader = (props: any) => {
             </View>
             <View style={styles.filterBox}>
               <Text style={styles.textStyle}>Status:</Text>
-              <Text style={[styles.textStyle, styles.selectedFilter]}>
+              {/* <Text style={[styles.textStyle, styles.selectedFilter]}>
                 {status || 'All'}
-              </Text>
+              </Text> */}
+              <View style={{ flexDirection: 'row' }}>
+                {status !== undefined && status.length > 0 ? (
+                  status.map((item: any, i: number) => {
+                    return (
+                      <Text style={[styles.textStyle, styles.selectedFilter]}>
+                        {item}
+                      </Text>
+                    )
+                  })
+                ) : (
+                  <Text style={[styles.textStyle, styles.selectedFilter]}>
+                    All
+                  </Text>
+                )}
+              </View>
               <Icon
                 style={[styles.iconStyle, styles.textStyle]}
                 name="close"
@@ -143,11 +200,16 @@ const SelectedFilterHeader = (props: any) => {
 
 const mapStateToProps = (state: any) => {
   return {
+    token: state.loginReducer.token,
     isHeaderSelect: state.headerData.isHeaderSelect,
     selectedOneTickit: state.headerData.oneTickitSelect,
     medium: state.Filter.medium,
     priority: state.Filter.priority,
     status: state.Filter.status,
+    pageSize: state.Pagination.initialState.pageSize,
+    pageIndex: state.Pagination.initialState.pageIndex,
+    startDate: state.tickitListData.startDate,
+    endDate: state.tickitListData.endDate,
   }
 }
 
@@ -161,6 +223,12 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     clearStatus: () => {
       dispatch({ type: 'CLEAR_SELECTED_STATUS' })
+    },
+    setTotalRecords: (data: number) => {
+      dispatch({ type: 'TOTAL_RECORDS', payload: data })
+    },
+    setTikitData: (data: any) => {
+      dispatch({ type: 'TICKIT_LIST', payload: data })
     },
   }
 }

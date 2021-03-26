@@ -276,7 +276,7 @@ const Chat = (props: any) => {
   }
 
   const msgIcon = (data: any) => {
-    console.log('msgIcn', data)
+    // console.log('msgIcn', data)
 
     return (
       <>

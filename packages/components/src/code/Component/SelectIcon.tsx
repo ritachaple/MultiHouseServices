@@ -39,6 +39,9 @@ const SelectIcon = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
   const [blockModalVisible, setBlockModalVisible] = useState(false)
   const [mergeModalVisible, setMergeModalVisible] = useState(false)
+  const [spamModalVisible, setSpamModalVisible] = useState(false)
+  const [undeleteModalVisible, setUndeleteModal] = useState(false)
+  const [unspamModalVisible, setUnspamModal] = useState(false)
 
   const onShareClick = () => {
     setModalVisible(!modalVisible)
@@ -58,6 +61,19 @@ const SelectIcon = () => {
   const onMergePress = () => {
     setModalVisible(!modalVisible)
     setMergeModalVisible(!mergeModalVisible)
+  }
+
+  const onSpamPress = () => {
+    setModalVisible(!modalVisible)
+    setSpamModalVisible(!spamModalVisible)
+  }
+  const onUnDeletePress = () => {
+    setModalVisible(!modalVisible)
+    setUndeleteModal(!undeleteModalVisible)
+  }
+  const onUnSpamPress = () => {
+    setModalVisible(!modalVisible)
+    setUnspamModal(!unspamModalVisible)
   }
 
   const onDeleteOk = async () => {
@@ -172,27 +188,27 @@ const SelectIcon = () => {
       </View>
       <View style={[styles.borderBox, { marginLeft: '8%' }]}>
         <TouchableOpacity
-        // onPress={() => {
-        //     onBlockClick()
-        //   }}
+          onPress={() => {
+            onSpamPress()
+          }}
         >
           <MarkUnread />
         </TouchableOpacity>
       </View>
       <View style={[styles.borderBox, { marginLeft: '8%' }]}>
         <TouchableOpacity
-        // onPress={() => {
-        //     onBlockClick()
-        //   }}
+          onPress={() => {
+            onUnDeletePress()
+          }}
         >
           <SpamUser />
         </TouchableOpacity>
       </View>
       <View style={[styles.borderBox, { marginLeft: '8%' }]}>
         <TouchableOpacity
-        // onPress={() => {
-        //     onBlockClick()
-        //   }}
+          onPress={() => {
+            onUnSpamPress()
+          }}
         >
           <MarkUndelete />
         </TouchableOpacity>
@@ -280,6 +296,49 @@ const SelectIcon = () => {
             title="Merge Notification"
           />
         ) : null}
+
+        {spamModalVisible && (
+          <NotificationModal
+            onCancelPress={() => {
+              onSpamPress()
+            }}
+            onOkPress={() => {
+              onSpamPress()
+            }}
+            okBtnName="Spam"
+            cancelBtnName="Cancel"
+            message="Selected complaints will be mark as Spam. Proceed with Spam?"
+            title="Mark Spam"
+          />
+        )}
+        {undeleteModalVisible && (
+          <NotificationModal
+            onCancelPress={() => {
+              onUnDeletePress()
+            }}
+            onOkPress={() => {
+              onUnDeletePress()
+            }}
+            okBtnName="Undelete"
+            cancelBtnName="Cancel"
+            message="Selected complaints will be restored. Proceed with Undelete?"
+            title="Undelete Notification"
+          />
+        )}
+        {unspamModalVisible && (
+          <NotificationModal
+            onCancelPress={() => {
+              onUnSpamPress()
+            }}
+            onOkPress={() => {
+              onUnSpamPress()
+            }}
+            okBtnName="Unspam"
+            cancelBtnName="Cancel"
+            message="Selected complaints will be Unspammed. Proceed with Unspam?"
+            title="Unspam Notification"
+          />
+        )}
       </Modal>
     </View>
   )

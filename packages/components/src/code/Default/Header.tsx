@@ -105,8 +105,8 @@ const Header = (props: any) => {
             </Text>
           )}
           {selectedTickit && selectedTickit.complaint_id ? (
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ color: '#5A607F' }}> /</Text>
+            <View style={{ flexDirection: 'row', paddingTop: '1%' }}>
+              <Text style={{ color: '#5A607F', paddingTop: '1%' }}> /</Text>
               <Text
                 style={{
                   color: '#5A607F',
