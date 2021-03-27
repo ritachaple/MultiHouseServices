@@ -39,6 +39,8 @@ import {
   MultipleDropdownList,
 } from './ReactSelect'
 
+// import MultiSelect from "react-multi-select-component"
+
 const sentimentList = [
   { id: '1', text: 'Positive', component: <PositiveSentiment /> },
   { id: '-1', text: 'Negative', component: <NegativeSentiment /> },
@@ -657,6 +659,14 @@ const List = (props: any) => {
             </Pressable>
           </View>
         ) : (
+          //       <MultiSelect
+          //   options={assigneeDropdownList}
+          //   value={assigneeDropdownList}
+          //   onChange={(val: any) => {
+          //         onAssigneeSelect(val)
+          //       }}
+          //   labelledBy={"Select"}
+          // />
           <MultipleDropdownList
             list={assigneeDropdownList}
             onSelectValue={(val: any) => {
