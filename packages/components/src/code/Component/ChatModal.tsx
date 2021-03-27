@@ -36,7 +36,7 @@ const ChatModal = (props: any) => {
     >
       <View
         style={{
-          backgroundColor: 'lightgray',
+          backgroundColor: '#F1F6FF',
           flexDirection: 'row',
           paddingVertical: '1%',
           borderTopLeftRadius: 8,
@@ -53,7 +53,7 @@ const ChatModal = (props: any) => {
             paddingHorizontal: '1%',
           }}
         >
-          <Text>Forward to</Text>
+          <Text>Forward</Text>
           <Entypo name="chevron-down" size={20} color="#000" />
         </TouchableOpacity>
         <View
