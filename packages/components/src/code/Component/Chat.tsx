@@ -66,6 +66,10 @@ const Chat = (props: any) => {
   })
   const [selectedMedia, setSelectedMedia] = useState('all')
   const [msgModal, setMsgModel] = useState(false)
+  const [isFecebookMedia, setFacebookMedia] = useState(false)
+  const [isEmailMedia, setEmailMedia] = useState(false)
+  const [isTwitterMedia, setTwitterMedia] = useState(false)
+  const [isWhatsAppMedia, setWatsAppMedia] = useState(false)
 
   const bodercolor = '#acb3bf'
 
@@ -96,16 +100,21 @@ const Chat = (props: any) => {
         console.log('chatDetails', res)
         if (res.status === 200) {
           setChatData(res.data.data)
+          checkMedia(res.data.data)
         }
       } catch (error) {
         console.log('chatDetailsError', error)
       }
     }
 
+    const checkMedia = (data: any) => {
+      data.map((item: any) => displayMedia(item))
+    }
+
     const channedResponse = async () => {
       try {
         const body = {
-          client_id: clientId,
+          client_id: selectedTickit.client_id,
           params: { address_book: {}, email_template: {}, canned_response: {} },
         }
         const res: any = await Api.post(
@@ -126,7 +135,189 @@ const Chat = (props: any) => {
 
     chatDetails()
     channedResponse()
-  }, [selectedTickit, clientId, token])
+    return () => {
+      closeMediaIcon()
+    }
+  }, [selectedTickit])
+
+  // useEffect(() => {
+  //   return () => {
+  //     closeMediaIcon()
+  //   }
+  // }, [])
+
+  const closeMediaIcon = () => {
+    setWatsAppMedia(false)
+    setTwitterMedia(false)
+    setEmailMedia(false)
+    setFacebookMedia(false)
+    setSelectedMedia('all')
+  }
+
+  const AllMediaView = () => {
+    return (
+      <View style={[styles.mediaIconBox]}>
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: '2%',
+          }}
+          onPress={() => {
+            setSelectedMedia('all')
+          }}
+        >
+          <View>
+            <AllMedia />
+          </View>
+        </TouchableOpacity>
+        <View>
+          <Text
+            style={[
+              styles.textStyle,
+              {
+                fontSize: 11,
+                lineHeight: 18,
+                fontWeight: selectedMedia === 'all' ? '600' : '400',
+              },
+            ]}
+          >
+            All Mediums
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
+  const EmailMedia = () => {
+    return (
+      <View style={styles.mediaIconBox}>
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: '2%',
+          }}
+          onPress={() => {
+            setSelectedMedia('Email')
+          }}
+        >
+          <View>
+            <EmailInterac2 />
+          </View>
+        </TouchableOpacity>
+        <View>
+          <Text
+            style={[
+              styles.textStyle,
+              {
+                fontSize: 11,
+                lineHeight: 18,
+                fontWeight: selectedMedia === 'Email' ? '600' : '400',
+              },
+            ]}
+          >
+            Email
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
+  const FacebookMedia = () => {
+    return (
+      <View style={styles.mediaIconBox}>
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: '2%',
+          }}
+          onPress={() => {
+            setSelectedMedia('Facebook')
+          }}
+        >
+          <View>
+            <Facebook2 />
+          </View>
+        </TouchableOpacity>
+        <View>
+          <Text
+            style={[
+              styles.textStyle,
+              {
+                fontSize: 11,
+                lineHeight: 18,
+                fontWeight: selectedMedia === 'Facebook' ? '600' : '400',
+              },
+            ]}
+          >
+            Facebook
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
+  const TwitterMedia = () => {
+    return (
+      <View style={styles.mediaIconBox}>
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: '2%',
+          }}
+          onPress={() => {
+            setSelectedMedia('Twitter')
+          }}
+        >
+          <View>
+            <Twitter2 />
+          </View>
+        </TouchableOpacity>
+        <View>
+          <Text
+            style={[
+              styles.textStyle,
+              {
+                fontSize: 11,
+                lineHeight: 18,
+                fontWeight: selectedMedia === 'Twitter' ? '600' : '400',
+              },
+            ]}
+          >
+            Twitter
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
+  const WhatsAppMedia = () => {
+    return (
+      <View style={styles.mediaIconBox}>
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: '2%',
+          }}
+          onPress={() => {
+            setSelectedMedia('Whatsapp')
+          }}
+        >
+          <View>
+            <WhatsApp2 />
+          </View>
+        </TouchableOpacity>
+        <View>
+          <Text
+            style={[
+              styles.textStyle,
+              {
+                fontSize: 11,
+                lineHeight: 18,
+                fontWeight: selectedMedia === 'Whatsapp' ? '600' : '400',
+              },
+            ]}
+          >
+            Whats App
+          </Text>
+        </View>
+      </View>
+    )
+  }
 
   const onSendMessage = async () => {
     try {
@@ -397,6 +588,40 @@ const Chat = (props: any) => {
     }
   }
 
+  // data.find((item:any)=>{
+  //   return item.medium_name
+  // })
+
+  const displayMedia = (data: any) => {
+    // console.log("displayData", data);
+    // console.log("displayDataid", data.medium_name);
+    try {
+      switch (data.medium_name) {
+        case 'Facebook':
+          setFacebookMedia(true)
+          break
+        case 'Email':
+          setEmailMedia(true)
+          break
+        case 'Instagram':
+          break
+        case 'Twitter':
+          setTwitterMedia(true)
+
+          break
+        case 'Whatsapp':
+          setTwitterMedia(true)
+
+          break
+
+        default:
+          break
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     // <ScrollView>
     <View style={styles.container}>
@@ -419,101 +644,57 @@ const Chat = (props: any) => {
           </Text>
         </View>
 
-        <View style={[styles.mediaIconBox]}>
-          <TouchableOpacity
-            style={{
-              paddingHorizontal: '2%',
-            }}
-            onPress={() => {}}
-          >
-            <View>
-              <AllMedia />
-            </View>
-          </TouchableOpacity>
-          <View>
-            <Text
-              style={[
-                styles.textStyle,
-                {
-                  fontSize: 11,
-                  lineHeight: 18,
-                  fontWeight: selectedMedia === 'all' ? '600' : '400',
-                },
-              ]}
-            >
-              All Mediums
-            </Text>
-          </View>
-        </View>
+        <AllMediaView />
+        {/* <View> */}
+        {/* <Pressable onPress={() => {
+        }}> */}
 
-        <View style={styles.mediaIconBox}>
-          <TouchableOpacity
-            style={{
-              paddingHorizontal: '2%',
-            }}
-            onPress={() => {}}
-          >
-            <View>
-              <EmailInterac2 />
-            </View>
-          </TouchableOpacity>
-          <View>
-            <Text style={[styles.textStyle, { fontSize: 11, lineHeight: 18 }]}>
-              Email
-            </Text>
-          </View>
-        </View>
-        <View style={styles.mediaIconBox}>
-          <TouchableOpacity
-            style={{
-              paddingHorizontal: '2%',
-            }}
-            onPress={() => {}}
-          >
-            <View>
-              <Facebook2 />
-            </View>
-          </TouchableOpacity>
-          <View>
-            <Text style={[styles.textStyle, { fontSize: 11, lineHeight: 18 }]}>
-              Facebook
-            </Text>
-          </View>
-        </View>
-        <View style={styles.mediaIconBox}>
-          <TouchableOpacity
-            style={{
-              paddingHorizontal: '2%',
-            }}
-            onPress={() => {}}
-          >
-            <View>
-              <Twitter2 />
-            </View>
-          </TouchableOpacity>
-          <View>
-            <Text style={[styles.textStyle, { fontSize: 11, lineHeight: 18 }]}>
-              Twitter
-            </Text>
-          </View>
-        </View>
-        <View style={styles.mediaIconBox}>
-          <TouchableOpacity
-            style={{
-              paddingHorizontal: '2%',
-            }}
-            onPress={() => {}}
-          >
-            <View>
-              <WhatsApp2 />
-            </View>
-          </TouchableOpacity>
-          <View>
-            <Text style={[styles.textStyle, { fontSize: 11, lineHeight: 18 }]}>
-              Whats App
-            </Text>
-          </View>
-        </View>
+        {/* </Pressable> */}
+        {/* </View> */}
+        {
+          isEmailMedia && <EmailMedia />
+          // <View>
+          //   <Pressable onPress={() => {
+          //     setSelectedMedia('Email')
+          //   }}>
+          //   </Pressable>
+          // </View>
+        }
+        {
+          isFecebookMedia && <FacebookMedia />
+          // <View>
+          //   <Pressable onPress={() => {
+          //     setSelectedMedia('Facebook')
+          //   }}>
+          //   </Pressable>
+          // </View>
+        }
+        {
+          isTwitterMedia && <TwitterMedia />
+          // <View>
+          //   <Pressable onPress={() => {
+          //     setSelectedMedia('Twitter')
+          //   }}>
+
+          //   </Pressable>
+          // </View>
+        }
+        {
+          isWhatsAppMedia && <WhatsAppMedia />
+          // <View>
+          //   <Pressable onPress={() => {
+          //     setSelectedMedia('Whatsapp')
+          //   }}>
+
+          //   </Pressable>
+          // </View>
+        }
+
+        {/* {
+          chatData.map((data: any) =>
+            displayMedia(data)
+          )
+        } */}
       </View>
       <Divider style={{ backgroundColor: '#EDEDED' }} />
       <ScrollView style={{ flex: 1 }}>
@@ -530,159 +711,182 @@ const Chat = (props: any) => {
               >
                 {data.item && data.item.is_user_reply ? (
                   <View>
-                    <View
-                      style={{ paddingHorizontal: '1%', flexDirection: 'row' }}
-                    >
+                    {(selectedMedia === data.item.medium_name ||
+                      selectedMedia === 'all') && (
                       <View>
-                        <Image
-                          source={{
-                            // uri: 'https://cxp.azureedge.net/static/content/icon/avatar_2x.png'
-                            uri: data.item.user_profile_picture_url,
-                          }}
-                          style={{ width: 40, height: 40, borderRadius: 20 }}
-                        />
                         <View
                           style={{
-                            position: 'relative',
-                            top: '-25%',
-                            right: '-40%',
+                            paddingHorizontal: '1%',
+                            flexDirection: 'row',
                           }}
                         >
-                          {MediaImageOnProfile(data.item.medium_name)}
+                          <View>
+                            <Image
+                              source={{
+                                // uri: 'https://cxp.azureedge.net/static/content/icon/avatar_2x.png'
+                                uri: data.item.user_profile_picture_url,
+                              }}
+                              style={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                              }}
+                            />
+                            <View
+                              style={{
+                                position: 'relative',
+                                top: '-25%',
+                                right: '-40%',
+                              }}
+                            >
+                              {MediaImageOnProfile(data.item.medium_name)}
+                            </View>
+                          </View>
+                          <View style={{ paddingHorizontal: '1%' }}>
+                            {data.item.user_name !== null ? (
+                              <Text
+                                style={[
+                                  styles.textStyle,
+                                  { fontWeight: '700', color: '#FE46D5' },
+                                ]}
+                              >
+                                {data.item.user_name}{' '}
+                              </Text>
+                            ) : (
+                              <Text> </Text>
+                            )}
+                            {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
+                            <View style={{ flexDirection: 'row' }}>
+                              <Text
+                                style={[styles.textStyle, { color: '#8A92BB' }]}
+                              >
+                                {moment(data.item.created_on).fromNow()}
+                              </Text>
+                              <Text
+                                style={[
+                                  styles.textStyle,
+                                  { color: '#8A92BB', paddingLeft: 2 },
+                                ]}
+                              >
+                                ({dateFormat(data.item.created_on)})
+                              </Text>
+                            </View>
+                          </View>
                         </View>
-                      </View>
-                      <View style={{ paddingHorizontal: '1%' }}>
-                        {data.item.user_name !== null ? (
-                          <Text
-                            style={[
-                              styles.textStyle,
-                              { fontWeight: '700', color: '#FE46D5' },
-                            ]}
-                          >
-                            {data.item.user_name}{' '}
-                          </Text>
-                        ) : (
-                          <Text> </Text>
-                        )}
-                        {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text
-                            style={[styles.textStyle, { color: '#8A92BB' }]}
-                          >
-                            {moment(data.item.created_on).fromNow()}
-                          </Text>
-                          <Text
-                            style={[
-                              styles.textStyle,
-                              { color: '#8A92BB', paddingLeft: 2 },
-                            ]}
-                          >
-                            ({dateFormat(data.item.created_on)})
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', marginRight: '10%' }}>
-                      <View style={[styles.msgContainer]}>
                         <View
-                          style={[
-                            styles.conversationMsg,
-                            {
-                              backgroundColor: '#F4F4F4',
-                              alignSelf: 'flex-start',
-                              flexDirection: 'row',
-                              borderColor: '#F4F4F4',
-                            },
-                          ]}
+                          style={{ flexDirection: 'row', marginRight: '10%' }}
                         >
-                          <Text>{data.item.conversation_text}</Text>
+                          <View style={[styles.msgContainer]}>
+                            <View
+                              style={[
+                                styles.conversationMsg,
+                                {
+                                  backgroundColor: '#F4F4F4',
+                                  alignSelf: 'flex-start',
+                                  flexDirection: 'row',
+                                  borderColor: '#F4F4F4',
+                                },
+                              ]}
+                            >
+                              <Text>{data.item.conversation_text}</Text>
+                            </View>
+                          </View>
+                          {msgIcon(data.item)}
                         </View>
                       </View>
-                      {msgIcon(data.item)}
-                    </View>
+                    )}
                   </View>
                 ) : (
                   <View
                     style={[{ marginRight: '2%', justifyContent: 'flex-end' }]}
                   >
-                    <View
-                      style={{
-                        paddingHorizontal: '1%',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                      }}
-                    >
-                      <View>
-                        <Image
-                          source={{
-                            // uri: 'https://cxp.azureedge.net/static/content/icon/avatar_2x.png'
-                            uri: data.item.user_profile_picture_url,
-                          }}
-                          style={{ width: 40, height: 40, borderRadius: 20 }}
-                        />
-                        {/* {MediaImageOnProfile(data.item.medium_name)} */}
-
-                        {data.item.medium_name !== null ? (
-                          <View
-                            style={{
-                              position: 'relative',
-                              top: '-25%',
-                              right: '-40%',
-                            }}
-                          >
-                            {MediaImageOnProfile(data.item.medium_name)}
-                          </View>
-                        ) : (
-                          <View style={{ marginVertical: '1%' }} />
-                        )}
-                      </View>
-                      <View style={{ paddingHorizontal: '1%' }}>
-                        {data.item.created_by !== null ? (
-                          <Text
-                            style={[
-                              styles.textStyle,
-                              { fontWeight: '700', color: '#FE46D5' },
-                            ]}
-                          >
-                            {data.item.created_by}{' '}
-                          </Text>
-                        ) : (
-                          <Text> </Text>
-                        )}
-                        {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text
-                            style={[styles.textStyle, { color: '#8A92BB' }]}
-                          >
-                            {moment(data.item.created_on).fromNow()}
-                          </Text>
-                          <Text
-                            style={[
-                              styles.textStyle,
-                              { color: '#8A92BB', paddingLeft: 2 },
-                            ]}
-                          >
-                            ({dateFormat(data.item.created_on)})
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                    <View style={[styles.msgContainer]}>
-                      <View
-                        style={[
-                          styles.conversationMsg,
-                          {
-                            backgroundColor: '#F1F6FF',
-                            marginLeft: '50%',
-                            borderColor: '#F1F6FF',
+                    {(selectedMedia === data.item.medium_name ||
+                      selectedMedia === 'all') && (
+                      <>
+                        <View
+                          style={{
+                            paddingHorizontal: '1%',
+                            flexDirection: 'row',
                             justifyContent: 'flex-end',
-                            // width: "40%"
-                          },
-                        ]}
-                      >
-                        <Text>{data.item.conversation_text}</Text>
-                      </View>
-                    </View>
+                          }}
+                        >
+                          <View>
+                            <Image
+                              source={{
+                                // uri: 'https://cxp.azureedge.net/static/content/icon/avatar_2x.png'
+                                uri: data.item.user_profile_picture_url,
+                              }}
+                              style={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                              }}
+                            />
+                            {/* {MediaImageOnProfile(data.item.medium_name)} */}
+
+                            {data.item.medium_name !== null ? (
+                              <View
+                                style={{
+                                  position: 'relative',
+                                  top: '-25%',
+                                  right: '-40%',
+                                }}
+                              >
+                                {MediaImageOnProfile(data.item.medium_name)}
+                              </View>
+                            ) : (
+                              <View style={{ marginVertical: '1%' }} />
+                            )}
+                          </View>
+                          <View style={{ paddingHorizontal: '1%' }}>
+                            {data.item.created_by !== null ? (
+                              <Text
+                                style={[
+                                  styles.textStyle,
+                                  { fontWeight: '700', color: '#FE46D5' },
+                                ]}
+                              >
+                                {data.item.created_by}{' '}
+                              </Text>
+                            ) : (
+                              <Text> </Text>
+                            )}
+                            {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
+                            <View style={{ flexDirection: 'row' }}>
+                              <Text
+                                style={[styles.textStyle, { color: '#8A92BB' }]}
+                              >
+                                {moment(data.item.created_on).fromNow()}
+                              </Text>
+                              <Text
+                                style={[
+                                  styles.textStyle,
+                                  { color: '#8A92BB', paddingLeft: 2 },
+                                ]}
+                              >
+                                ({dateFormat(data.item.created_on)})
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                        <View style={[styles.msgContainer]}>
+                          <View
+                            style={[
+                              styles.conversationMsg,
+                              {
+                                backgroundColor: '#F1F6FF',
+                                marginLeft: '50%',
+                                borderColor: '#F1F6FF',
+                                justifyContent: 'flex-end',
+                                // width: "40%"
+                              },
+                            ]}
+                          >
+                            <Text>{data.item.conversation_text}</Text>
+                          </View>
+                        </View>
+                      </>
+                    )}
                   </View>
                 )}
               </View>
@@ -717,9 +921,9 @@ const Chat = (props: any) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          // onPress={() => {
-          //   setMsgModel(true)
-          // }}
+          onPress={() => {
+            setMsgModel(true)
+          }}
           style={{
             backgroundColor: 'white',
             padding: '0.5%',
@@ -749,7 +953,7 @@ const Chat = (props: any) => {
       <Overlay
         overlayStyle={{ marginHorizontal: '3%' }}
         isVisible={msgModal}
-        // onBackdropPress={() => setMsgModel(!msgModal)}
+        onBackdropPress={() => setMsgModel(!msgModal)}
       >
         <Modal
           style={{ position: 'absolute', top: 50 }}
@@ -757,7 +961,7 @@ const Chat = (props: any) => {
           transparent={msgModal}
           visible={msgModal}
         >
-          <ChatModal />
+          {/* <ChatModal /> */}
         </Modal>
       </Overlay>
       {/* <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
