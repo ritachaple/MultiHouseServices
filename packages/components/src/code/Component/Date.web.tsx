@@ -108,13 +108,17 @@ const Example = (props: any) => {
     setState([...originaldatestate]) // changes only for view
   }
   const updateTime = (event: any, isStartDate: boolean) => {
-    console.log(
-      'updateTime TimePicker onChange: ',
-      event.target.value,
-      ' isStartDate: ',
-      isStartDate,
-    )
-    // isStartDate?setStartTime(event.target.value):setEndTime(event.target.value);
+    // console.log(
+    //   'updateTime TimePicker onChange: ',
+    //   event.target.value,
+    //   ' isStartDate: ',
+    //   isStartDate,
+    // )
+    if (isStartDate) {
+      setStartTime(event.target.value)
+    } else {
+      setEndTime(event.target.value)
+    }
   }
   return (
     <View style={{}}>

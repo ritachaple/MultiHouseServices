@@ -5,7 +5,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 const TimePicker = (props: any) => {
   const { startDate, endDate, startTime, endTime, name } = props
   const [options, setOptions] = useState([])
-  console.log('TimePicker, ', startDate, endDate)
+  // console.log('TimePicker, ', startDate, endDate)
 
   // propTypes: {
   // 	defaultValue: React.PropTypes.string,
@@ -43,10 +43,10 @@ const TimePicker = (props: any) => {
 
     while (isEarlierThanEndLimit(timeValue, endLimit, lastValue)) {
       lastValue = timeValue
-      console.log(
-        timeValue,
-        moment(timeValue, 'h:mm A').diff(moment(endLimit, 'h:mm A'), 'minutes'),
-      )
+      // console.log(
+      //   timeValue,
+      //   moment(timeValue, 'h:mm A').diff(moment(endLimit, 'h:mm A'), 'minutes'),
+      // )
       timeValue = moment(timeValue, 'h:mm A')
         .add(step, 'minutes')
         .format('h:mm A')
