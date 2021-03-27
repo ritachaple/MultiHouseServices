@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Modal, TouchableOpacity, Text, TextInput } from 'react-native'
+import {
+  View,
+  Modal,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  StyleSheet,
+} from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -11,15 +18,20 @@ import { Divider } from 'react-native-elements'
 
 const bodercolor = '#acb3bf'
 
-const ChatModal = () => {
+const ChatModal = (props: any) => {
+  // const onCancel = { props }
+
   return (
     <View
       style={{
-        width: '80%',
+        width: '70%',
         height: '35%',
         backgroundColor: '#fff',
-        borderRadius: 10,
-        marginHorizontal: '2%',
+        borderRadius: 8,
+        marginHorizontal: '10%',
+        marginTop: '13%',
+        borderWidth: 1,
+        borderColor: '#D6D9E6',
       }}
     >
       <View
@@ -27,8 +39,9 @@ const ChatModal = () => {
           backgroundColor: 'lightgray',
           flexDirection: 'row',
           paddingVertical: '1%',
-          borderTopLeftRadius: 10,
+          borderTopLeftRadius: 8,
           borderTopEndRadius: 10,
+
           flex: 1,
         }}
       >
@@ -85,22 +98,26 @@ const ChatModal = () => {
             marginLeft: '1%',
           }}
         >
-          <Text style={{ color: '#fff' }}>Forward</Text>
+          <Text style={[styles.textStyle, { color: '#fff' }]}>Forward</Text>
           <Entypo name="chevron-down" size={20} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            borderRadius: 20,
-            borderWidth: 1,
-            borderColor: 'blue',
-            width: '10%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginLeft: '1%',
-          }}
+          style={[
+            // styles.buttonStyle
+            {
+              flexDirection: 'row',
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: 'blue',
+              width: '10%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: '1%',
+            },
+          ]}
+          onPress={() => props.onCancel()}
         >
-          <Text>Cancel</Text>
+          <Text style={[styles.textStyle]}>Cancel</Text>
         </TouchableOpacity>
         <View
           style={{
@@ -185,4 +202,17 @@ const ChatModal = () => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  buttonStyle: {
+    paddingVertical: '1%',
+    paddingHorizontal: '5%',
+    borderRadius: 25,
+  },
+  textStyle: {
+    fontFamily: 'Poppins-Light',
+    fontSize: 12,
+    lineHeight: 28,
+  },
+})
 export default ChatModal

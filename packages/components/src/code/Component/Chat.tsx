@@ -43,7 +43,7 @@ import {
 const Chat = (props: any) => {
   const { clientId, token, selectedTickit } = props
   // console.log('checkCID', complaintId)
-  console.log('clientId', clientId)
+  // console.log('clientId', clientId)
 
   // const Id: any = complaintId.complaintId
   const [logActivity, setLogActivity] = useState([] as any)
@@ -622,6 +622,10 @@ const Chat = (props: any) => {
     }
   }
 
+  const onCloseModal = () => {
+    setMsgModel(false)
+  }
+
   return (
     // <ScrollView>
     <View style={styles.container}>
@@ -950,20 +954,24 @@ const Chat = (props: any) => {
         </TouchableOpacity>
       </View>
       <Divider style={{ backgroundColor: bodercolor }} />
-      <Overlay
+      {/* <Overlay
         overlayStyle={{ marginHorizontal: '3%' }}
         isVisible={msgModal}
         onBackdropPress={() => setMsgModel(!msgModal)}
+      > */}
+      <Modal
+        style={{ position: 'absolute', top: 50 }}
+        animationType="slide"
+        transparent={msgModal}
+        visible={msgModal}
       >
-        <Modal
-          style={{ position: 'absolute', top: 50 }}
-          animationType="slide"
-          transparent={msgModal}
-          visible={msgModal}
-        >
-          {/* <ChatModal /> */}
-        </Modal>
-      </Overlay>
+        <ChatModal
+          onCancel={() => {
+            onCloseModal()
+          }}
+        />
+      </Modal>
+      {/* </Overlay> */}
       {/* <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
         <TouchableOpacity
           style={{
