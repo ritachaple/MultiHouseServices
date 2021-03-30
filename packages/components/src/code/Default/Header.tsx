@@ -47,8 +47,6 @@ const Header = (props: any) => {
 
         paddingVertical: '0.4%',
         paddingHorizontal: '0.5%',
-        marginRight:
-          selectedTickit && selectedTickit.complaint_id !== null ? '2%' : '0',
       }}
     >
       <View

@@ -65,11 +65,14 @@ const Chat = (props: any) => {
     EmailTemplate: 'Default',
   })
   const [selectedMedia, setSelectedMedia] = useState('all')
+  // const [selectedMedia, setSelectedMedia] = useState('Twitter')
   const [msgModal, setMsgModel] = useState(false)
   const [isFecebookMedia, setFacebookMedia] = useState(false)
   const [isEmailMedia, setEmailMedia] = useState(false)
   const [isTwitterMedia, setTwitterMedia] = useState(false)
   const [isWhatsAppMedia, setWatsAppMedia] = useState(false)
+  const [selectedMediaId, setSelectedMediaId] = useState(0)
+  const [chatDataCopy, setChatDataCopy] = useState([] as any)
 
   const bodercolor = '#acb3bf'
 
@@ -100,6 +103,7 @@ const Chat = (props: any) => {
         console.log('chatDetails', res)
         if (res.status === 200) {
           setChatData(res.data.data)
+          setChatDataCopy(res.data.data)
           checkMedia(res.data.data)
         }
       } catch (error) {
@@ -154,6 +158,23 @@ const Chat = (props: any) => {
     setSelectedMedia('all')
   }
 
+  const onMediaClick = (name: string) => {
+    setSelectedMedia(name)
+    const filterList =
+      chatDataCopy !== undefined &&
+      chatDataCopy.length > 0 &&
+      chatDataCopy.filter((item: any) => {
+        return item.medium_name === name
+      })
+    console.log('filterList', filterList)
+    setChatData(filterList)
+  }
+
+  const onSetAllMedia = (name: string) => {
+    setSelectedMedia(name)
+    setChatData(chatDataCopy)
+  }
+
   const AllMediaView = () => {
     return (
       <View style={[styles.mediaIconBox]}>
@@ -162,7 +183,8 @@ const Chat = (props: any) => {
             paddingHorizontal: '2%',
           }}
           onPress={() => {
-            setSelectedMedia('all')
+            // setSelectedMedia('all')
+            onSetAllMedia('all')
           }}
         >
           <View>
@@ -195,7 +217,8 @@ const Chat = (props: any) => {
             paddingHorizontal: '2%',
           }}
           onPress={() => {
-            setSelectedMedia('Email')
+            // setSelectedMedia('Email')
+            onMediaClick('Email')
           }}
         >
           <View>
@@ -228,7 +251,8 @@ const Chat = (props: any) => {
             paddingHorizontal: '2%',
           }}
           onPress={() => {
-            setSelectedMedia('Facebook')
+            // setSelectedMedia('Facebook')
+            onMediaClick('Facebook')
           }}
         >
           <View>
@@ -262,6 +286,7 @@ const Chat = (props: any) => {
           }}
           onPress={() => {
             setSelectedMedia('Twitter')
+            onMediaClick('Twitter')
           }}
         >
           <View>
@@ -294,7 +319,8 @@ const Chat = (props: any) => {
             paddingHorizontal: '2%',
           }}
           onPress={() => {
-            setSelectedMedia('Whatsapp')
+            // setSelectedMedia('WhatsApp')
+            onMediaClick('WhatsApp')
           }}
         >
           <View>
@@ -308,7 +334,7 @@ const Chat = (props: any) => {
               {
                 fontSize: 11,
                 lineHeight: 18,
-                fontWeight: selectedMedia === 'Whatsapp' ? '600' : '400',
+                fontWeight: selectedMedia === 'WhatsApp' ? '600' : '400',
               },
             ]}
           >
@@ -540,7 +566,7 @@ const Chat = (props: any) => {
         case 'Twitter':
           return <Twitter />
           break
-        case 'Whatsapp':
+        case 'WhatsApp':
           return <WhatsApp />
           break
         case 'Knowlarity':
@@ -609,7 +635,7 @@ const Chat = (props: any) => {
           setTwitterMedia(true)
 
           break
-        case 'Whatsapp':
+        case 'WhatsApp':
           setTwitterMedia(true)
 
           break
@@ -649,93 +675,153 @@ const Chat = (props: any) => {
         </View>
 
         <AllMediaView />
-        {/* <View> */}
-        {/* <Pressable onPress={() => {
-        }}> */}
-
-        {/* </Pressable> */}
-        {/* </View> */}
-        {
-          isEmailMedia && <EmailMedia />
-          // <View>
-          //   <Pressable onPress={() => {
-          //     setSelectedMedia('Email')
-          //   }}>
-          //   </Pressable>
-          // </View>
-        }
-        {
-          isFecebookMedia && <FacebookMedia />
-          // <View>
-          //   <Pressable onPress={() => {
-          //     setSelectedMedia('Facebook')
-          //   }}>
-          //   </Pressable>
-          // </View>
-        }
-        {
-          isTwitterMedia && <TwitterMedia />
-          // <View>
-          //   <Pressable onPress={() => {
-          //     setSelectedMedia('Twitter')
-          //   }}>
-
-          //   </Pressable>
-          // </View>
-        }
-        {
-          isWhatsAppMedia && <WhatsAppMedia />
-          // <View>
-          //   <Pressable onPress={() => {
-          //     setSelectedMedia('Whatsapp')
-          //   }}>
-
-          //   </Pressable>
-          // </View>
-        }
-
-        {/* {
-          chatData.map((data: any) =>
-            displayMedia(data)
-          )
-        } */}
+        {isEmailMedia && <EmailMedia />}
+        {isFecebookMedia && <FacebookMedia />}
+        {isTwitterMedia && <TwitterMedia />}
+        {isWhatsAppMedia && <WhatsAppMedia />}
       </View>
       <Divider style={{ backgroundColor: '#EDEDED' }} />
       <ScrollView style={{ flex: 1 }}>
+        {console.log('selectedMedia: ', selectedMedia)}
         <FlatList
           // style={styles.list}
+          key={selectedMedia}
           data={chatData}
           keyExtractor={(data: any) => {
             return data.parent_message_id
           }}
+          // extraData={selectedMediaId}
           renderItem={(data: any) => {
+            // { console.log('renderItem: ', data) }
             return (
               <View
                 style={{ flex: 1, paddingVertical: '1%', paddingTop: '2%' }}
               >
                 {data.item && data.item.is_user_reply ? (
                   <View>
-                    {(selectedMedia === data.item.medium_name ||
-                      selectedMedia === 'all') && (
-                      <View>
-                        <View
-                          style={{
-                            paddingHorizontal: '1%',
-                            flexDirection: 'row',
-                          }}
-                        >
-                          <View>
-                            <Image
-                              source={{
-                                // uri: 'https://cxp.azureedge.net/static/content/icon/avatar_2x.png'
-                                uri: data.item.user_profile_picture_url,
-                              }}
-                              style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                              }}
-                            />
+                    {/* { console.log('selectedMediaItem: ', selectedMedia)}
+                    { console.log('cond1: ', selectedMedia === data.item.medium_name)}
+                    { console.log('cond2: ', selectedMedia === 'all')}
+                    { console.log('cons: ', ((selectedMedia === data.item.medium_name) || (selectedMedia === 'all')))} */}
+
+                    {/* {((selectedMedia === data.item.medium_name) || (selectedMedia === 'all')) ? ( */}
+
+                    <View>
+                      <View
+                        style={{
+                          paddingHorizontal: '1%',
+                          flexDirection: 'row',
+                        }}
+                      >
+                        <View>
+                          <Image
+                            source={{
+                              uri: data.item.user_profile_picture_url,
+                            }}
+                            style={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 20,
+                            }}
+                          />
+                          <View
+                            style={{
+                              position: 'relative',
+                              top: '-25%',
+                              right: '-40%',
+                            }}
+                          >
+                            {MediaImageOnProfile(data.item.medium_name)}
+                          </View>
+                        </View>
+                        <View style={{ paddingHorizontal: '1%' }}>
+                          {data.item.user_name !== null ? (
+                            <Text
+                              style={[
+                                styles.textStyle,
+                                { fontWeight: '700', color: '#FE46D5' },
+                              ]}
+                            >
+                              {data.item.user_name}{' '}
+                            </Text>
+                          ) : (
+                            <Text> </Text>
+                          )}
+                          {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text
+                              style={[styles.textStyle, { color: '#8A92BB' }]}
+                            >
+                              {moment(data.item.created_on).fromNow()}
+                            </Text>
+                            <Text
+                              style={[
+                                styles.textStyle,
+                                { color: '#8A92BB', paddingLeft: 2 },
+                              ]}
+                            >
+                              ({dateFormat(data.item.created_on)})
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View
+                        style={{ flexDirection: 'row', marginRight: '10%' }}
+                      >
+                        <View style={[styles.msgContainer]}>
+                          <View
+                            style={[
+                              styles.conversationMsg,
+                              {
+                                backgroundColor: '#F4F4F4',
+                                alignSelf: 'flex-start',
+                                flexDirection: 'row',
+                                borderColor: '#F4F4F4',
+                              },
+                            ]}
+                          >
+                            <Text>{data.item.conversation_text}</Text>
+                          </View>
+                        </View>
+                        {msgIcon(data.item)}
+                      </View>
+                    </View>
+                    {/* ) :
+                      <></>
+                    } */}
+                  </View>
+                ) : (
+                  <View
+                    style={[{ marginRight: '2%', justifyContent: 'flex-end' }]}
+                  >
+                    {/* {((selectedMedia === data.item.medium_name)
+                      ||
+                      (selectedMedia === 'all')
+                    )
+                      && ( */}
+                    <>
+                      <View
+                        style={{
+                          paddingHorizontal: '1%',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                        }}
+                      >
+                        <View>
+                          <Image
+                            source={{
+                              // uri: 'https://cxp.azureedge.net/static/content/icon/avatar_2x.png'
+                              uri: data.item.user_profile_picture_url,
+                            }}
+                            style={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 20,
+                            }}
+                          />
+                          {/* {MediaImageOnProfile(data.item.medium_name)} */}
+
+                          {data.item.medium_name !== null ? (
                             <View
                               style={{
                                 position: 'relative',
@@ -745,152 +831,59 @@ const Chat = (props: any) => {
                             >
                               {MediaImageOnProfile(data.item.medium_name)}
                             </View>
-                          </View>
-                          <View style={{ paddingHorizontal: '1%' }}>
-                            {data.item.user_name !== null ? (
-                              <Text
-                                style={[
-                                  styles.textStyle,
-                                  { fontWeight: '700', color: '#FE46D5' },
-                                ]}
-                              >
-                                {data.item.user_name}{' '}
-                              </Text>
-                            ) : (
-                              <Text> </Text>
-                            )}
-                            {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
-                            <View style={{ flexDirection: 'row' }}>
-                              <Text
-                                style={[styles.textStyle, { color: '#8A92BB' }]}
-                              >
-                                {moment(data.item.created_on).fromNow()}
-                              </Text>
-                              <Text
-                                style={[
-                                  styles.textStyle,
-                                  { color: '#8A92BB', paddingLeft: 2 },
-                                ]}
-                              >
-                                ({dateFormat(data.item.created_on)})
-                              </Text>
-                            </View>
-                          </View>
+                          ) : (
+                            <View style={{ marginVertical: '1%' }} />
+                          )}
                         </View>
-                        <View
-                          style={{ flexDirection: 'row', marginRight: '10%' }}
-                        >
-                          <View style={[styles.msgContainer]}>
-                            <View
+                        <View style={{ paddingHorizontal: '1%' }}>
+                          {data.item.created_by !== null ? (
+                            <Text
                               style={[
-                                styles.conversationMsg,
-                                {
-                                  backgroundColor: '#F4F4F4',
-                                  alignSelf: 'flex-start',
-                                  flexDirection: 'row',
-                                  borderColor: '#F4F4F4',
-                                },
+                                styles.textStyle,
+                                { fontWeight: '700', color: '#FE46D5' },
                               ]}
                             >
-                              <Text>{data.item.conversation_text}</Text>
-                            </View>
+                              {data.item.created_by}{' '}
+                            </Text>
+                          ) : (
+                            <Text> </Text>
+                          )}
+                          {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text
+                              style={[styles.textStyle, { color: '#8A92BB' }]}
+                            >
+                              {moment(data.item.created_on).fromNow()}
+                            </Text>
+                            <Text
+                              style={[
+                                styles.textStyle,
+                                { color: '#8A92BB', paddingLeft: 2 },
+                              ]}
+                            >
+                              ({dateFormat(data.item.created_on)})
+                            </Text>
                           </View>
-                          {msgIcon(data.item)}
                         </View>
                       </View>
-                    )}
-                  </View>
-                ) : (
-                  <View
-                    style={[{ marginRight: '2%', justifyContent: 'flex-end' }]}
-                  >
-                    {(selectedMedia === data.item.medium_name ||
-                      selectedMedia === 'all') && (
-                      <>
+                      <View style={[styles.msgContainer]}>
                         <View
-                          style={{
-                            paddingHorizontal: '1%',
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                          }}
+                          style={[
+                            styles.conversationMsg,
+                            {
+                              backgroundColor: '#F1F6FF',
+                              marginLeft: '50%',
+                              borderColor: '#F1F6FF',
+                              justifyContent: 'flex-end',
+                              // width: "40%"
+                            },
+                          ]}
                         >
-                          <View>
-                            <Image
-                              source={{
-                                // uri: 'https://cxp.azureedge.net/static/content/icon/avatar_2x.png'
-                                uri: data.item.user_profile_picture_url,
-                              }}
-                              style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                              }}
-                            />
-                            {/* {MediaImageOnProfile(data.item.medium_name)} */}
-
-                            {data.item.medium_name !== null ? (
-                              <View
-                                style={{
-                                  position: 'relative',
-                                  top: '-25%',
-                                  right: '-40%',
-                                }}
-                              >
-                                {MediaImageOnProfile(data.item.medium_name)}
-                              </View>
-                            ) : (
-                              <View style={{ marginVertical: '1%' }} />
-                            )}
-                          </View>
-                          <View style={{ paddingHorizontal: '1%' }}>
-                            {data.item.created_by !== null ? (
-                              <Text
-                                style={[
-                                  styles.textStyle,
-                                  { fontWeight: '700', color: '#FE46D5' },
-                                ]}
-                              >
-                                {data.item.created_by}{' '}
-                              </Text>
-                            ) : (
-                              <Text> </Text>
-                            )}
-                            {/* <Text style={[styles.textStyle, { fontWeight: "700", color: "#FE46D5" }]}>Rita</Text> */}
-                            <View style={{ flexDirection: 'row' }}>
-                              <Text
-                                style={[styles.textStyle, { color: '#8A92BB' }]}
-                              >
-                                {moment(data.item.created_on).fromNow()}
-                              </Text>
-                              <Text
-                                style={[
-                                  styles.textStyle,
-                                  { color: '#8A92BB', paddingLeft: 2 },
-                                ]}
-                              >
-                                ({dateFormat(data.item.created_on)})
-                              </Text>
-                            </View>
-                          </View>
+                          <Text>{data.item.conversation_text}</Text>
                         </View>
-                        <View style={[styles.msgContainer]}>
-                          <View
-                            style={[
-                              styles.conversationMsg,
-                              {
-                                backgroundColor: '#F1F6FF',
-                                marginLeft: '50%',
-                                borderColor: '#F1F6FF',
-                                justifyContent: 'flex-end',
-                                // width: "40%"
-                              },
-                            ]}
-                          >
-                            <Text>{data.item.conversation_text}</Text>
-                          </View>
-                        </View>
-                      </>
-                    )}
+                      </View>
+                    </>
+                    {/* )} */}
                   </View>
                 )}
               </View>

@@ -31,6 +31,8 @@
     "react-datepicker": "*",
     "react-date-range": "*",
     "date-fns": "*",
-    "react-select": "*"
+    "react-select": "*",
+    "react-draft-wysiwyg":"*",
+    "draft-js":"*"
   }
 }

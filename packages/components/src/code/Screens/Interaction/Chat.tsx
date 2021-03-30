@@ -156,7 +156,7 @@ const ChatScreen = (props: any) => {
 
   return (
     <Default navigation={navigation}>
-      <View style={{ flex: 1, backgroundColor: 'red', marginRight: '2%' }}>
+      <View style={{ flex: 1, backgroundColor: 'red' }}>
         <View
           style={{
             flexDirection: 'row',

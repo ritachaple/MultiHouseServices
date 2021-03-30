@@ -42,9 +42,24 @@ import {
 // import MultiSelect from "react-multi-select-component"
 
 const sentimentList = [
-  { id: '1', text: 'Positive', component: <PositiveSentiment /> },
-  { id: '-1', text: 'Negative', component: <NegativeSentiment /> },
-  { id: '0', text: 'Neutral', component: <NeutralSentiment /> },
+  {
+    id: '1',
+    text: 'Positive',
+    component: <PositiveSentiment />,
+    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/positive.svg',
+  },
+  {
+    id: '-1',
+    text: 'Negative',
+    component: <NegativeSentiment />,
+    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/negative.svg',
+  },
+  {
+    id: '0',
+    text: 'Neutral',
+    component: <NeutralSentiment />,
+    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/neutral.svg',
+  },
 ]
 
 const List = (props: any) => {
@@ -466,7 +481,7 @@ const List = (props: any) => {
         }}
       >
         <View style={{ flex: 1 }} />
-        {!isStatusDropdown ? (
+        {/* {!isStatusDropdown ? (
           <TouchableOpacity
             onPress={() => onStatusSelect(hovered)}
             style={{ flexDirection: 'row', flex: 4 }}
@@ -492,14 +507,19 @@ const List = (props: any) => {
             </View>
             <View style={{ flex: 1 }} />
           </TouchableOpacity>
-        ) : (
-          <View style={{ flex: 3 }}>
-            <StatusDropdown
-              list={statusDropdownList}
-              onStatusSelect={(val: any) => tickitStatusMenu(val)}
-            />
-          </View>
-        )}
+        ) : ( */}
+        <View style={{ flex: 3 }}>
+          <StatusDropdown
+            list={statusDropdownList}
+            onStatusSelect={(val: any) => tickitStatusMenu(val)}
+            defaultValue={{
+              value: selectedStatus.status_id,
+              label: selectedStatus.status_name,
+            }}
+            // value={{ label: selectedStatus.status_name }}
+          />
+        </View>
+        {/* )} */}
       </View>
     )
   }
@@ -527,6 +547,17 @@ const List = (props: any) => {
   }
 
   const Sentiment = (hovered: any) => {
+    let senti: any
+    if (tickitItems.sentiment) {
+      senti = sentimentList.find((item: any) => {
+        return item.id === tickitItems.sentiment
+      })
+    } else {
+      senti = {
+        id: '2',
+        url: 'https://unoboat.s3.ap-south-1.amazonaws.com/positive.svg',
+      }
+    }
     return (
       <View
         style={{
@@ -534,7 +565,7 @@ const List = (props: any) => {
           flexDirection: 'row',
         }}
       >
-        {!isSentimentList ? (
+        {/* {!isSentimentList ? (
           <TouchableOpacity
             onPress={() => onSentimentPress()}
             style={{ flex: 1, flexDirection: 'row', paddingHorizontal: '20%' }}
@@ -554,24 +585,26 @@ const List = (props: any) => {
             </View>
           </TouchableOpacity>
         ) : (
-          isSentimentList && (
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                paddingHorizontal: '20%',
-                zIndex: 999999,
-              }}
-            >
-              <View style={{ flex: 1, justifyContent: 'center', zIndex: 1000 }}>
-                <SentimentSelect
-                  list={sentimentList}
-                  onStatusSelect={(val: any) => onSentimentSelect(val)}
-                />
-              </View>
-            </View>
-          )
-        )}
+          isSentimentList && ( */}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            paddingHorizontal: '20%',
+            zIndex: 999999,
+          }}
+        >
+          <View style={{ flex: 1, justifyContent: 'center', zIndex: 1000 }}>
+            <SentimentSelect
+              // defaultValue={sentiIcon(tickitItems.sentiment)}
+              // defaultValue={{ value: senti.id, label: <img src={senti.url} /> }}
+              list={sentimentList}
+              onStatusSelect={(val: any) => onSentimentSelect(val)}
+            />
+          </View>
+        </View>
+        {/* ) */}
+        {/* )} */}
       </View>
     )
   }
@@ -767,7 +800,8 @@ const List = (props: any) => {
               flexDirection: 'row',
               paddingTop: '1%',
               paddingVertical: '1%',
-              backgroundColor: hovered ? 'whitesmoke' : 'none',
+              // backgroundColor: hovered ? 'whitesmoke' : 'none',
+              backgroundColor: hovered ? '#F9F9F9' : 'none',
               width: '100%',
               justifyContent: 'space-between',
             }}

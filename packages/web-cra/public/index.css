@@ -150,3 +150,53 @@ form button {
   font-family: 'Poppins-Light';
   src: url('./Fonts/Poppins-Light.ttf');
 }
+
+.rdw-option-wrapper {
+  border: none !important;
+  padding: none !important;
+  font-size: 12px !important;
+}
+
+.css-yk16xz-control {
+  border-color: none !important;
+  border-radius: none !important;
+  border-style: none !important;
+  border-width: none !important;
+}
+.select_box .css-yk16xz-control {
+  background-color: none !important;
+}
+
+/* .css-yk16xz-control .css-1okebmr-indicatorSeparator,
+.css-1okebmr-indicatorSeparator {
+  background-color: '#fff' !important;
+  align-self: 'none' !important;
+  margin-bottom: none !important;
+  margin-top: none !important;
+  width: none !important;
+  box-sizing: none !important;
+} */
+
+.select_box span {
+  background-color: white !important;
+  width: none !important;
+}
+.select_box span :hover {
+  background-color: #f9f9f9 !important;
+  width: none !important;
+}
+
+.select_box .css-yk16xz-control :hover {
+  background-color: #f9f9f9 !important ;
+}
+
+.select_box :hover {
+  background-color: #f9f9f9 !important ;
+}
+.select_box {
+  background-color: none !important;
+}
+
+/* .select_box .css-tj5bde-Svg {
+  display: hidden !important;
+} */

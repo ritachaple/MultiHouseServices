@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Modal,
@@ -16,20 +16,35 @@ import Foundation from 'react-native-vector-icons/Foundation'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Divider } from 'react-native-elements'
 
+// @ts-ignore
+import { Editor } from 'react-draft-wysiwyg'
+// @ts-ignore
+import { EditorState } from 'draft-js'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+
 const bodercolor = '#acb3bf'
 
 const ChatModal = (props: any) => {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty(),
+  )
+
   // const onCancel = { props }
+
+  const onEditorStateChange = () => {}
 
   return (
     <View
       style={{
-        width: '70%',
+        width: '72%',
         height: '35%',
         backgroundColor: '#fff',
         borderRadius: 8,
-        marginHorizontal: '10%',
-        marginTop: '13%',
+        // marginHorizontal: '10%',
+        marginRight: '10%',
+        marginLeft: '7%',
+        marginTop: '25%',
+        // marginTop: '28%',
         borderWidth: 1,
         borderColor: '#D6D9E6',
       }}
@@ -87,7 +102,7 @@ const ChatModal = (props: any) => {
       <View style={{ flex: 8 }} />
       <Divider style={{ backgroundColor: bodercolor }} />
       <View style={{ flex: 1, paddingVertical: '1%', flexDirection: 'row' }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             flexDirection: 'row',
             borderRadius: 20,
@@ -118,24 +133,32 @@ const ChatModal = (props: any) => {
           onPress={() => props.onCancel()}
         >
           <Text style={[styles.textStyle]}>Cancel</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View
           style={{
             marginLeft: '1%',
             flexDirection: 'row',
             borderRightWidth: 2,
             justifyContent: 'space-evenly',
-            flex: 2,
+            // flex: 6,
           }}
         >
-          <TouchableOpacity>
+          <Editor
+            editorState={editorState}
+            toolbarClassName="toolbarClassName"
+            wrapperClassName="wrapperClassName"
+            editorClassName="editorClassName"
+            onEditorStateChange={onEditorStateChange}
+          />
+
+          {/* <TouchableOpacity>
             <MaterialCommunityIcons
               name="message-text-outline"
               size={20}
               color="#000"
             />
-          </TouchableOpacity>
-          <TouchableOpacity>
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity>
             <Ionicons name="attach" size={20} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity>
@@ -143,10 +166,10 @@ const ChatModal = (props: any) => {
           </TouchableOpacity>
           <TouchableOpacity>
             <FontAwesome name="star-half-o" size={20} color="#000" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             flex: 4,
@@ -163,11 +186,11 @@ const ChatModal = (props: any) => {
             <Foundation name="underline" size={25} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity style={{ flexDirection: 'row' }}>
-            <Text>Verdana</Text> {/* font family */}
+            <Text>Verdana</Text>
             <Entypo name="chevron-down" size={20} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity style={{ flexDirection: 'row' }}>
-            <Text>13</Text> {/* font size */}
+            <Text>13</Text> 
             <Entypo name="chevron-down" size={20} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity style={{ flexDirection: 'row' }}>
@@ -183,8 +206,10 @@ const ChatModal = (props: any) => {
           <TouchableOpacity>
             <MaterialIcons name="insert-link" size={20} color="#000" />
           </TouchableOpacity>
-        </View>
-        <View
+
+
+        </View> */}
+        {/* <View
           style={{ flexDirection: 'row', flex: 4, justifyContent: 'flex-end' }}
         >
           <Text style={{ paddingHorizontal: '5%' }}>Draft Saved!</Text>
@@ -197,7 +222,7 @@ const ChatModal = (props: any) => {
               color="#000"
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     </View>
   )

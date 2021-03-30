@@ -5,9 +5,10 @@ import Select from 'react-select'
 const isMulti = true
 
 export const StatusDropdown = (props: any) => {
-  const { list, onStatusSelect } = props
+  const { list, onStatusSelect, defaultValue } = props
 
-  const [selectedOption, setSelectedOption] = useState(null)
+  // const [selectedOption, setSelectedOption] = useState({ value: 1, label: 'xyz' })
+  const [selectedOption, setSelectedOption] = useState(defaultValue)
   const options =
     list !== undefined &&
     list.length > 0 &&
@@ -22,6 +23,7 @@ export const StatusDropdown = (props: any) => {
 
   return (
     <Select
+      className="select_box"
       menuPortalTarget={document.querySelector('body')}
       defaultValue={selectedOption}
       onChange={(value: any) => {
@@ -33,7 +35,7 @@ export const StatusDropdown = (props: any) => {
 }
 
 export const SentimentSelect = (props: any) => {
-  const { list, onStatusSelect } = props
+  const { list, onStatusSelect, defaultValue } = props
 
   const [selectedOption, setSelectedOption] = useState(null)
 
@@ -41,7 +43,9 @@ export const SentimentSelect = (props: any) => {
     list !== undefined &&
     list.length > 0 &&
     list.map(function (item: any) {
-      return { value: item.id, label: item.text }
+      // return { value: item.id, label: item.text }
+      // return { value: item.id, label: <img src="https://unoboat.s3.ap-south-1.amazonaws.com/negative.svg" /> }
+      return { value: item.id, label: <img src={item.url} alt="" /> }
     })
 
   const onSelect = (val: any) => {
@@ -51,6 +55,7 @@ export const SentimentSelect = (props: any) => {
 
   return (
     <Select
+      className="select_box"
       menuPortalTarget={document.querySelector('body')}
       defaultValue={selectedOption}
       onChange={(value: any) => {
