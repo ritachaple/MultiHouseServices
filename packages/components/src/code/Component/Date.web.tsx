@@ -3,37 +3,16 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import DatePicker from 'react-datepicker'
 import { connect } from 'react-redux'
 import 'react-datepicker/dist/react-datepicker.css'
-import { addDays, format } from 'date-fns'
+import moment from 'moment'
 import 'react-date-range/dist/styles.css' // main style file
 import 'react-date-range/dist/theme/default.css' // theme css file
 // @ts-ignore
-import { DateRangePicker, DateRange } from 'react-date-range'
+import { DateRange } from 'react-date-range'
 import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
+import TimePicker from './TimePicker.web'
+
 // CSS Modules, react-datepicker-cssmodules.css
-// import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-const TimePicker = ({
-  startDate,
-  endDate,
-}: {
-  startDate: Date
-  endDate: Date
-}) => {
-  console.log('TimePicker, ', startDate, endDate)
-
-  return (
-    <View>
-      <View>
-        <Text>From</Text>
-        {format(startDate, 'dd LLL,yyyy')}
-      </View>
-      <View>
-        <Text>To</Text>
-        {format(endDate, 'dd LLL,yyyy')}
-      </View>
-    </View>
-  )
-}
 const stDate = new Date()
 stDate.setDate(stDate.getDate() - 15)
 
@@ -42,6 +21,10 @@ const Example = (props: any) => {
 
   const [startDate, setStartDate] = useState(stDate)
   const [endDate, setEndDate] = useState(new Date())
+  const [selectedDateTime, setSelectedDateTime] = useState(0)
+  const [startTime, setStartTime] = useState('12:00 AM')
+  const [endTime, setEndTime] = useState('12:00 PM')
+
   const [isVisible, setIsVisible] = useState(false)
 
   const [state, setState] = useState([
@@ -124,6 +107,19 @@ const Example = (props: any) => {
     // props.onSubmit(originaldatestate);
     setState([...originaldatestate]) // changes only for view
   }
+  const updateTime = (event: any, isStartDate: boolean) => {
+    // console.log(
+    //   'updateTime TimePicker onChange: ',
+    //   event.target.value,
+    //   ' isStartDate: ',
+    //   isStartDate,
+    // )
+    if (isStartDate) {
+      setStartTime(event.target.value)
+    } else {
+      setEndTime(event.target.value)
+    }
+  }
   return (
     <View style={{}}>
       {isVisible ? (
@@ -152,7 +148,12 @@ const Example = (props: any) => {
               />
             </View>
             <View>
-              <TimePicker {...state[0]} />
+              <TimePicker
+                {...state[0]}
+                startTime={startTime}
+                endTime={endTime}
+                onChange={updateTime}
+              />
             </View>
           </View>
           <View
@@ -182,8 +183,10 @@ const Example = (props: any) => {
         </View>
       ) : (
         <TouchableOpacity onPress={showDatePicker}>
-          {format(state[0].startDate, 'dd LLL,yyyy')}-
-          {format(state[0].endDate, 'dd LLL,yyyy')}
+          <Text>
+            {moment(state[0].startDate).format('DD MMM,yyyy')},{startTime} -{' '}
+            {moment(state[0].endDate).format('DD MMM,yyyy')},{endTime}
+          </Text>
         </TouchableOpacity>
       )}
     </View>
