@@ -329,6 +329,8 @@ const ModalScreen = (props: any) => {
               flex: 1,
               paddingHorizontal: '1%',
               backgroundColor: '#FBFBFB',
+              // backgroundColor: "red",
+              // marginRight: "2%",
               paddingBottom: '4%',
               //  marginHorizontal: '1%', paddingVertical: '2%'
             }}

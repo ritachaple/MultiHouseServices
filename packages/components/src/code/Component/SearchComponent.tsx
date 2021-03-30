@@ -366,7 +366,7 @@ const SearchComplaints = (props: any) => {
                         paddingRight: '10%',
                       }}
                     >
-                      <View
+                      {/* <View
                         style={{ paddingHorizontal: '20%', paddingTop: '20%' }}
                       >
                         {index > 0 && (
@@ -382,8 +382,8 @@ const SearchComplaints = (props: any) => {
                             color="#000"
                           />
                         )}
-                      </View>
-                      <View
+                      </View> */}
+                      {/* <View
                         style={{ paddingHorizontal: '20%', paddingTop: '20%' }}
                       >
                         {selectedHeader.length - 1 !== index && (
@@ -399,7 +399,7 @@ const SearchComplaints = (props: any) => {
                             color="#000"
                           />
                         )}
-                      </View>
+                      </View> */}
                     </View>
                     <View style={{ flex: 2 }} />
                   </View>
