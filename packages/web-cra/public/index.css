@@ -200,3 +200,14 @@ form button {
 /* .select_box .css-tj5bde-Svg {
   display: hidden !important;
 } */
+
+.wrapperClass {
+  display: flex;
+  flex-direction: column;
+}
+.editorClass {
+  order: 1;
+}
+.toolbarClass {
+  order: 2;
+}
