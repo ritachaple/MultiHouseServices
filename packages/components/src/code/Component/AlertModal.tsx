@@ -5,7 +5,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 const AlertModal = (props: any) => {
   const { onPress, onSaveClick, message } = props
   return (
-    <View style={styles.centeredView}>
+    <View nativeID={"testBox"} style={styles.centeredView}>
       <View style={styles.modalView}>
         <View>
           <Text style={{ fontSize: 15, color: 'gray', paddingLeft: '3%' }}>
