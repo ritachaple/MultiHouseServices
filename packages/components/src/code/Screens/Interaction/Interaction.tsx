@@ -101,7 +101,7 @@ const Interaction = (props: any) => {
                 />
               </View>
             </View>
-            <View style={{ height: '10%' }}>
+            <View style={{ height: '11%' }}>
               <SelectedFilterHeader />
             </View>
             <SearchComplaints navigation={navigation} />

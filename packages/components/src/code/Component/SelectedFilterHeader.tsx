@@ -60,6 +60,7 @@ const SelectedFilterHeader = (props: any) => {
         backgroundColor: '#F1F6FF',
         // height: '9%',
         padding: '0.5',
+        paddingTop: 4,
         // paddingLeft: '4%',
         borderTopColor: '#F1F6FF',
       }}
