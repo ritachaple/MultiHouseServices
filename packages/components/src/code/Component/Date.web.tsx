@@ -157,7 +157,6 @@ const Example = (props: any) => {
                 inputRanges={[]}
                 staticRanges={[]}
                 maxDate={new Date()}
-                minimumNights={0}
               />
             </View>
             <View>
