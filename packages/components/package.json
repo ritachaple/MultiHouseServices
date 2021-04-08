@@ -34,7 +34,8 @@
     "react-select": "*",
     "react-draft-wysiwyg": "*",
     "draft-js": "*",
-    "draftjs-to-html":"*",
-    "html-to-draftjs":"*"
+    "draftjs-to-html": "*",
+    "html-to-draftjs": "*",
+    "@testing-library/react": "*"
   }
 }
