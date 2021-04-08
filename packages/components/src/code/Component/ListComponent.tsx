@@ -96,9 +96,12 @@ const List = (props: any) => {
   // console.log('statusDropdown', statusDropdownList)
 
   useEffect(() => {
-    const status = statusDropdownList.find((item: any) => {
-      return item.status_id === tickitItems.status_id
-    })
+    const status =
+      statusDropdownList !== undefined &&
+      statusDropdownList.length > 0 &&
+      statusDropdownList.find((item: any) => {
+        return item.status_id === tickitItems.status_id
+      })
     //  // console.log("statusName", status);
     if (status) {
       setStatusName(status.status_name)
@@ -463,13 +466,18 @@ const List = (props: any) => {
   const Status = (hovered: any) => {
     let selectedStatus
 
-    if (tickitItems.status_id !== null) {
-      selectedStatus = statusDropdownList.find((item: any) => {
-        return item.status_id === tickitItems.status_id
-      })
-    } else {
-      selectedStatus = null
+    if (tickitItems && tickitItems.status_id) {
+      selectedStatus =
+        statusDropdownList !== undefined &&
+        statusDropdownList.length > 0 &&
+        statusDropdownList.find((item: any) => {
+          return item.status_id === tickitItems.status_id
+        })
+      console.log('selectedStatus', selectedStatus)
     }
+    // else {
+    //   selectedStatus = null
+    // }
 
     return (
       <View
@@ -509,15 +517,27 @@ const List = (props: any) => {
           </TouchableOpacity>
         ) : ( */}
         <View style={{ flex: 3 }}>
-          <StatusDropdown
-            list={statusDropdownList}
-            onStatusSelect={(val: any) => tickitStatusMenu(val)}
-            defaultValue={{
-              value: selectedStatus.status_id,
-              label: selectedStatus.status_name,
-            }}
-            // value={{ label: selectedStatus.status_name }}
-          />
+          {selectedStatus !== undefined ? (
+            <StatusDropdown
+              list={statusDropdownList}
+              onStatusSelect={(val: any) => tickitStatusMenu(val)}
+              defaultValue={{
+                value:
+                  selectedStatus.status_id !== undefined
+                    ? selectedStatus.status_id
+                    : '',
+                label: selectedStatus.status_name
+                  ? selectedStatus.status_name
+                  : '',
+              }}
+              value={{ label: selectedStatus.status_name }}
+            />
+          ) : (
+            <StatusDropdown
+              list={statusDropdownList}
+              onStatusSelect={(val: any) => tickitStatusMenu(val)}
+            />
+          )}
         </View>
         {/* )} */}
       </View>

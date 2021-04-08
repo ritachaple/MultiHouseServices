@@ -10,6 +10,7 @@ export const searchComplaintsApi = async (
   mediumId?: any,
   priority?: any,
   status?: any,
+  searchText?: string,
 ) => {
   const medum = mediumId || []
   const priorityList = priority || []
@@ -31,7 +32,7 @@ export const searchComplaintsApi = async (
       assigned_to: [],
       order_by: '1',
       sort_order: 'DESC',
-      search_text: '',
+      search_text: searchText || '',
       page_index: pageIndex,
       agent_id: 5889,
       medium: medum,
