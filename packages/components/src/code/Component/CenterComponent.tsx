@@ -101,16 +101,16 @@ const CenterComponent = (props: any) => {
       }}
     >
       <View
-        style={{
-          borderColor: '#F1F6FF',
-          backgroundColor: '#fff',
-          borderWidth: 1,
-          borderRadius: 100,
-          paddingVertical: '4%',
-          paddingHorizontal: '4%',
-        }}
+      // style={{
+      //   borderColor: '#F1F6FF',
+      //   backgroundColor: 'red',
+      //   borderWidth: 1,
+      //   borderRadius: 100,
+      //   paddingVertical: '4%',
+      //   paddingHorizontal: '4%',
+      // }}
       >
-        <TouchableOpacity />
+        {/* <TouchableOpacity /> */}
         <DatePicker
           onSubmit={(range: any) => {
             console.log('range: ', range)

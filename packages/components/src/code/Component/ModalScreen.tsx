@@ -10,6 +10,9 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
+// @ts-ignore
+import { Calendar } from 'react-date-range'
+import moment from 'moment'
 import Chat from './Chat'
 import Dropdown from './Dropdown'
 import Api from '../provider/api/Api'
@@ -37,7 +40,7 @@ const ModalScreen = (props: any) => {
   const [PolicyNo, setPolicyNo] = useState([] as any)
   const [AssignTo, setAssignTo] = useState([] as any)
   const [Priority, setPriority] = useState([] as any)
-  const [DueDate, setDueDate] = useState([] as any)
+  const [DueDate, setDueDate] = useState(new Date())
   const [Status, setStatus] = useState([] as any)
   const [FakeNewsType, setFakeNewsType] = useState([] as any)
   const [FakeFactor, setFakeFactor] = useState([] as any)
@@ -45,6 +48,7 @@ const ModalScreen = (props: any) => {
   const [isCRM, setIsCRM] = useState(false)
   const [assignToData, setAssignToData] = useState([] as any)
   const [userDetails, setUserDetails] = useState(false)
+  const [CalenderVisible, setCalenderVisible] = useState(false)
 
   useEffect(() => {
     const dynamicControls = async () => {
@@ -72,6 +76,12 @@ const ModalScreen = (props: any) => {
 
   const selectedPendingItem = (item: any) => {
     console.log('selectedPendingItem', item)
+  }
+
+  const handleSelect = (date: any) => {
+    setDueDate(date)
+    setCalenderVisible(false)
+    console.log('date', date) // native Date object
   }
 
   const pressConversation = () => {
@@ -170,135 +180,6 @@ const ModalScreen = (props: any) => {
     <View style={styles.centeredView}>
       <View style={styles.modalView}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          {/* <View
-            style={{
-              // flex: 1,
-              padding: '1%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              borderBottomColor: '#dce3de',
-              borderBottomWidth: 0.1,
-              width: '30%',
-            }}
-          > */}
-          {/* <Icon name="remove" size={20} onPress={closeModal} />
-            <Icon name="refresh" size={20} onPress={fetchActivity} />
-            <Icon name="ban" size={20} onPress={onMarkSpam} />
-            <Icon name="eye" size={20} />
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#fff ',
-                borderRadius: 3,
-                borderColor: '#000',
-                borderWidth: 1,
-                paddingVertical: '0.5%',
-                paddingHorizontal: 5,
-                flexDirection: 'row',
-                width: '20%',
-              }}
-              onPress={() => {
-                onMarkInfluencer('influencer')
-              }}
-            >
-              <Icon
-                style={{ alignSelf: 'center', paddingHorizontal: '10%' }}
-                name="square-o"
-                size={10}
-                color="#000"
-              />
-              <Text
-                style={{ fontSize: 10, alignSelf: 'center', color: '#000' }}
-              >
-                Influencer
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#fff',
-                borderRadius: 3,
-                borderColor: '#000',
-                borderWidth: 1,
-                paddingVertical: '0.5%',
-                paddingHorizontal: 5,
-                flexDirection: 'row',
-                width: '20%',
-              }}
-              onPress={() => {
-                onMarkInfluencer('detractor')
-              }}
-            >
-              <Icon
-                style={{ alignSelf: 'center', paddingHorizontal: '10%' }}
-                name="check-square-o"
-                size={10}
-                color="#000"
-              />
-              <Text
-                style={{ fontSize: 10, alignSelf: 'center', color: '#000' }}
-              >
-                Detractor
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#fff',
-                borderRadius: 3,
-                borderColor: '#000',
-                borderWidth: 1,
-                paddingVertical: '0.5%',
-                paddingHorizontal: 5,
-                flexDirection: 'row',
-                width: '20%',
-              }}
-              onPress={() => {
-                onRatingLink()
-              }}
-            >
-              <Icon
-                style={{ alignSelf: 'center', paddingHorizontal: '10%' }}
-                name="star-half-o"
-                size={10}
-                color="#000"
-              />
-              <Text
-                style={{ fontSize: 10, alignSelf: 'center', color: '#000' }}
-              >
-                Rating
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              padding: '1%',
-            }}
-          >
-            <View style={{ flexDirection: 'row', marginHorizontal: '8%' }}>
-              <Icon name="arrow-left" size={15} />
-              <TouchableOpacity
-                onPress={() => pressConversation()}
-                style={{ marginHorizontal: '7%' }}
-              >
-                <Text
-                  style={{
-                    color: isConversation === true ? '#6b9ff2' : '#0a0a0a',
-                  }}
-                >
-                  Conversation
-                </Text>
-              </TouchableOpacity>
-              <Icon name="arrow-right" size={15} />
-            </View>
-            <TouchableOpacity
-              onPress={() => pressCRM()}
-              style={{ marginHorizontal: '8%' }}
-            >
-              <Text style={{ color: isCRM === true ? '#6b9ff2' : '#0a0a0a' }}>
-                CRM
-              </Text>
-            </TouchableOpacity> */}
-          {/* </View> */}
           <View
             style={{
               flexDirection: 'row',
@@ -378,26 +259,6 @@ const ModalScreen = (props: any) => {
                   list={AssignTo.lookup_data}
                   onSelectedItem={selectedPendingItem}
                 />
-                {/* <Dropdown
-                  dropdownList={AssignTo.lookup_data}
-                  selectedItem={selectedPendingItem}
-                /> */}
-                {/* <TouchableOpacity 
-                      // onPress={onInputPress}
-                      >
-        <TextInput
-          style={{    paddingLeft: 0,
-            // backgroundColor: '#fff',
-            color: '#424242',
-            // borderRadius: 5,
-            borderColor: 'gray',
-            borderWidth: 1,
-            borderRadius: 4,
-            paddingVertical: '1%',}}
-          placeholder="Select Data"
-          // value={textField}
-        />
-      </TouchableOpacity> */}
 
                 {/* <MultipleDropdown
                   dropdownList={AssignTo.lookup_data}
@@ -412,10 +273,6 @@ const ModalScreen = (props: any) => {
                   list={Priority.lookup_data}
                   onSelectedItem={selectedPendingItem}
                 />
-                {/* <Dropdown
-                  dropdownList={Priority.lookup_data}
-                  selectedItem={selectedPendingItem}
-                /> */}
               </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
@@ -425,21 +282,51 @@ const ModalScreen = (props: any) => {
                   list={Status.lookup_data}
                   onSelectedItem={selectedPendingItem}
                 />
-                {/* <Dropdown
-                  dropdownList={Status.lookup_data}
-                  lseectedItem={selectedPendingItem}
-                /> */}
               </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   Due Date
                 </Text>
 
-                {/* <Dropdown
-                  dropdownList={PolicyNo.lookup_data}
-                  selectedItem={selectedPendingItem}
-                /> */}
-                {/* <Datepicker /> */}
+                <View>
+                  {CalenderVisible ? (
+                    <View>
+                      <Calendar
+                        style={{ width: '100%' }}
+                        date={DueDate}
+                        onChange={handleSelect}
+                        showMonthAndYearPickers={false}
+                        // maxDate={new Date()}
+                        // minDate={new Date()}
+                      />
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        backgroundColor: '#fff',
+                        padding: '4%',
+                        borderRadius: 8,
+                        borderColor: '#d6d9e6',
+                        borderWidth: 1,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{ flexDirection: 'row' }}
+                        onPress={() => {
+                          setCalenderVisible(!CalenderVisible)
+                        }}
+                      >
+                        <Text>{moment(DueDate).format('DD-MM-YYYY')}</Text>
+                        {/* <Text>Date</Text> */}
+                        <Icon
+                          style={styles.angleDown}
+                          name="angle-down"
+                          size={15}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
               </View>
               {/* <View style={styles.dropdownViewStyle}>
                 <Text>Fake new Type</Text>
@@ -519,5 +406,10 @@ const styles = StyleSheet.create({
   },
   dropdownViewStyle: {
     paddingVertical: '10%',
+  },
+  angleDown: {
+    paddingTop: '1%',
+    paddingLeft: '50%',
+    // justifyContent: "flex-end"
   },
 })

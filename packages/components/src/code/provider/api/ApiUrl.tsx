@@ -15,7 +15,7 @@ export const configs = {
   delete_complaints: `${BaseUrl}${Api}${ticket}delete_complaints`,
   block_user: `${BaseUrl}${Api}${ticket}block_user`,
   mark_complaint_unread: `${BaseUrl}${Api}${ticket}mark_complaint_unread`,
-  tickit_forward: `${BaseUrl}${Api}${ticket}forward_to_external_agent`,
+  tickit_forward: `${BaseUrl}${Api}${ticket}forward_to_external_agent`, // To forward Interaction to email
   add_message_to_queue: `${BaseUrl}queuemanager/add_message_to_queue`,
   dynamic_canned_response: `${BaseUrl}${Api}${ticket}get_dynamic_canned_response/`,
   dynamic_get_controls: `${BaseUrl}${Api}${ticket}get_controls_with_data?client_id=39&group_id=2`,

@@ -20,6 +20,8 @@ const Api = {
 
   post: async (url = '', data = {}, token = '') => {
     let res = ''
+    console.log('data', data)
+
     try {
       const header = {
         headers: {

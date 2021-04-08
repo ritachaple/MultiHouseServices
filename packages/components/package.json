@@ -33,6 +33,9 @@
     "date-fns": "*",
     "react-select": "*",
     "react-draft-wysiwyg": "*",
-    "draft-js": "*"
+    "draft-js": "*",
+    "draftjs-to-html": "*",
+    "html-to-draftjs": "*",
+    "@testing-library/react": "*"
   }
 }

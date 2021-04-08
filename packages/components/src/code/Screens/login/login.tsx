@@ -79,7 +79,7 @@ const Login = (props: any) => {
             <View style={[styles.outerView]}>
               {/* <View style={{flex:1}} /> */}
               <View style={[styles.innerView]}>
-                <Text style={[styles.textFont]}>Email</Text>
+                <Text style={[styles.textFont]}>Username</Text>
                 <TextInput
                   defaultValue=""
                   style={[styles.input, styles.textFont]}

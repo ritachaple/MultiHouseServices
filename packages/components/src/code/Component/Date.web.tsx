@@ -123,7 +123,18 @@ const Example = (props: any) => {
   return (
     <View style={{}}>
       {isVisible ? (
-        <View style={{ borderRadius: 8, borderColor: 'red' }}>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: 'rgba(0, 0, 0, 0.2)',
+            borderRadius: 8,
+            padding: '2%',
+            width: '110%',
+            elevation: 6,
+            shadowColor: 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: '#fff',
+          }}
+        >
           <View style={{ flexDirection: 'row', flex: 1 }}>
             {console.log('render : ', state)}
 
@@ -145,6 +156,7 @@ const Example = (props: any) => {
                 showDateDisplay={false}
                 inputRanges={[]}
                 staticRanges={[]}
+                maxDate={new Date()}
               />
             </View>
             <View>
@@ -182,12 +194,24 @@ const Example = (props: any) => {
           </View>
         </View>
       ) : (
-        <TouchableOpacity onPress={showDatePicker}>
-          <Text>
-            {moment(state[0].startDate).format('DD MMM,yyyy')},{startTime} -{' '}
-            {moment(state[0].endDate).format('DD MMM,yyyy')},{endTime}
-          </Text>
-        </TouchableOpacity>
+        <View
+          style={{
+            borderColor: '#F1F6FF',
+            backgroundColor: '#fff',
+            width: '110%',
+            borderWidth: 1,
+            borderRadius: 100,
+            paddingVertical: '4%',
+            paddingHorizontal: '4%',
+          }}
+        >
+          <TouchableOpacity onPress={showDatePicker}>
+            <Text>
+              {moment(state[0].startDate).format('DD MMM,yyyy')},{startTime} -{' '}
+              {moment(state[0].endDate).format('DD MMM,yyyy')},{endTime}
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   )

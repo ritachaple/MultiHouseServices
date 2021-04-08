@@ -24,7 +24,7 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
 import DropDownList from './DropDownList'
-import ChatModal from './ChatModal'
+import ForwardModal from './ForwardModal'
 import {
   AllMedia,
   Twitter2,
@@ -38,8 +38,8 @@ import {
   Email,
   WhatsApp,
 } from '../Images/MediaIcon'
+import InternalNotes from './InternalNotes'
 
-// const Chat = (complaintId: any) => {
 const Chat = (props: any) => {
   const { clientId, token, selectedTickit } = props
   // console.log('checkCID', complaintId)
@@ -73,6 +73,9 @@ const Chat = (props: any) => {
   const [isWhatsAppMedia, setWatsAppMedia] = useState(false)
   const [selectedMediaId, setSelectedMediaId] = useState(0)
   const [chatDataCopy, setChatDataCopy] = useState([] as any)
+  const [email, setEmail] = useState()
+  const [isForward, setIsForward] = useState(false)
+  const [isInternalNote, setIsInternalNote] = useState(false)
 
   const bodercolor = '#acb3bf'
 
@@ -587,11 +590,12 @@ const Chat = (props: any) => {
     try {
       const body = {
         complaint_id: [selectedTickit.complaint_id],
-        forward_to: ['nchandivade@unoligo.com'],
-        clientId: { clientId },
+        // "forward_to": ["nchandivade@unoligo.com"],
+        forward_to: [email],
+        client_id: selectedTickit.client_id,
         email_template_id: 2,
       }
-      const res: any = await Api.post(`${configs.tickit_forward}`, body)
+      const res: any = await Api.post(`${configs.tickit_forward}`, body, token)
       if (res.status === 200) {
         console.log(res.data.message)
       }
@@ -648,8 +652,25 @@ const Chat = (props: any) => {
     }
   }
 
+  const onForward = () => {
+    setMsgModel(true)
+    setIsForward(true)
+  }
+
+  const onInternalNote = () => {
+    setMsgModel(true)
+    setIsInternalNote(true)
+  }
+
   const onCloseModal = () => {
     setMsgModel(false)
+    setIsForward(false)
+    setIsInternalNote(false)
+  }
+
+  const onSendEmail = (value: any) => {
+    setEmail(value)
+    // console.log("email", value);
   }
 
   return (
@@ -919,7 +940,7 @@ const Chat = (props: any) => {
 
         <TouchableOpacity
           onPress={() => {
-            setMsgModel(true)
+            onForward()
           }}
           style={{
             backgroundColor: 'white',
@@ -941,6 +962,9 @@ const Chat = (props: any) => {
             flexDirection: 'row',
             marginRight: '1%',
           }}
+          onPress={() => {
+            onInternalNote()
+          }}
         >
           <MaterialIcons name="notes" size={18} color="#595959" />
           <Text style={{ fontSize: 12 }}>Internal Note</Text>
@@ -958,11 +982,26 @@ const Chat = (props: any) => {
         transparent={msgModal}
         visible={msgModal}
       >
-        <ChatModal
-          onCancel={() => {
-            onCloseModal()
-          }}
-        />
+        {isForward && (
+          <ForwardModal
+            onCancel={() => {
+              onCloseModal()
+            }}
+            onForwardPress={() => {
+              onForwardPress()
+            }}
+            onSetEmail={onSendEmail}
+          />
+        )}
+
+        {isInternalNote && (
+          <InternalNotes
+            onCancel={() => {
+              onCloseModal()
+            }}
+            onSetEmail={onSendEmail}
+          />
+        )}
       </Modal>
       {/* </Overlay> */}
       {/* <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
