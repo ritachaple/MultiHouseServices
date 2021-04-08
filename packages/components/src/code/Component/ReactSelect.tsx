@@ -8,7 +8,7 @@ export const StatusDropdown = (props: any) => {
   const { list, onStatusSelect, defaultValue } = props
 
   // const [selectedOption, setSelectedOption] = useState({ value: 1, label: 'xyz' })
-  const [selectedOption, setSelectedOption] = useState(defaultValue)
+  const [selectedOption, setSelectedOption] = useState(defaultValue as any)
   const options =
     list !== undefined &&
     list.length > 0 &&

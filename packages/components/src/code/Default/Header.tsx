@@ -13,10 +13,21 @@ import { connect } from 'react-redux'
 import Unobot from '../Images/Unobot'
 import UnobotText from '../Images/UnobotText'
 import { DropdownList } from '../Component/ReactSelect'
+import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
 
 const Header = (props: any) => {
-  const { selectedTickit, navigation } = props
+  const {
+    selectedTickit,
+    navigation,
+    token,
+    pageSize,
+    pageIndex,
+    startDate,
+    endDate,
+  } = props
+
   const [isMenu, setToggleMenu] = useState(false)
+  const [SearchInput, setSearchInput] = useState()
 
   const menuList = [{ value: 'SignOut', text: 'SignOut' }]
 
@@ -35,9 +46,45 @@ const Header = (props: any) => {
     return null
   }
 
+  const onSearchInput = (value: any) => {
+    // console.log("textChange", value);
+
+    setSearchInput(value)
+  }
+
+  const searchComplaints = async () => {
+    console.log('SearchInput', SearchInput)
+
+    const res: any = await searchComplaintsApi(
+      token,
+      pageSize,
+      pageIndex,
+      startDate,
+      endDate,
+      undefined,
+      undefined,
+      undefined,
+      SearchInput,
+    )
+    if (res && res.status === 200) {
+      props.setTikitData(res.data.data)
+      props.setTotalRecords(res.data.total_records)
+      // console.log('res.data', res.data.data)
+    }
+    // else {
+    //   props.clearToken()
+    // }
+  }
+
   const logout = () => {
     props.clearToken()
   }
+
+  const submit = () => {
+    searchComplaints()
+    console.log('submit')
+  }
+
   return (
     <View
       style={{
@@ -145,9 +192,13 @@ const Header = (props: any) => {
 
             <TextInput
               // onBlur={()=>{setstate(true)}}
+              onChangeText={(value: any) => {
+                onSearchInput(value)
+              }}
               style={styles.inputStyle}
               placeholder="Search Tickets, Messages..."
               placeholderTextColor="#ADADAD"
+              onSubmitEditing={submit}
             />
           </View>
         </View>
@@ -212,6 +263,10 @@ const mapStateToProps = (state: any) => {
   return {
     token: state.loginReducer.token,
     selectedTickit: state.tickitListData.selectedTickit,
+    pageSize: state.Pagination.initialState.pageSize,
+    pageIndex: state.Pagination.initialState.pageIndex,
+    startDate: state.tickitListData.startDate,
+    endDate: state.tickitListData.endDate,
   }
 }
 
@@ -219,6 +274,12 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     clearToken: () => {
       dispatch({ type: 'CLEAR_LOGIN_TOKEN' })
+    },
+    setTotalRecords: (data: number) => {
+      dispatch({ type: 'TOTAL_RECORDS', payload: data })
+    },
+    setTikitData: (data: any) => {
+      dispatch({ type: 'TICKIT_LIST', payload: data })
     },
   }
 }

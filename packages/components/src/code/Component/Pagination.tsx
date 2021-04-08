@@ -39,12 +39,18 @@ const Pagination = (props: any) => {
   }, [])
 
   const totalPages = (pgsize: number) => {
-    const noOfPage: number = Math.ceil(totalRecords / pgsize)
-    let array = []
-    array = [...Array(noOfPage + 1).keys()]
-    array.shift()
-    setNoOfPages(array)
-    setTotalPageCount(noOfPage)
+    if (totalRecords) {
+      // console.log("totrec-pag", totalRecords);
+      const noOfPage: number = Math.ceil(totalRecords / pgsize)
+      // console.log("noOfPagePagination", noOfPage);
+      let array = []
+      // if (noOfPage !== NaN) {
+      array = [...Array(noOfPage + 1).keys()]
+      array.shift()
+      setNoOfPages(array)
+      setTotalPageCount(noOfPage)
+      // }
+    }
   }
 
   const searchComplaints = async (pageInd: number, pgSize: number) => {

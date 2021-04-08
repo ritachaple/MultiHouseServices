@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 // @ts-ignore
-import { Calendar } from 'react-date-range';
+import { Calendar } from 'react-date-range'
 import moment from 'moment'
 import Chat from './Chat'
 import Dropdown from './Dropdown'
@@ -81,7 +81,7 @@ const ModalScreen = (props: any) => {
   const handleSelect = (date: any) => {
     setDueDate(date)
     setCalenderVisible(false)
-    console.log("date", date); // native Date object
+    console.log('date', date) // native Date object
   }
 
   const pressConversation = () => {
@@ -180,7 +180,6 @@ const ModalScreen = (props: any) => {
     <View style={styles.centeredView}>
       <View style={styles.modalView}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-
           <View
             style={{
               flexDirection: 'row',
@@ -274,7 +273,6 @@ const ModalScreen = (props: any) => {
                   list={Priority.lookup_data}
                   onSelectedItem={selectedPendingItem}
                 />
-
               </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
@@ -284,7 +282,6 @@ const ModalScreen = (props: any) => {
                   list={Status.lookup_data}
                   onSelectedItem={selectedPendingItem}
                 />
-
               </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
@@ -292,33 +289,43 @@ const ModalScreen = (props: any) => {
                 </Text>
 
                 <View>
-                  {CalenderVisible ?
-                    <View >
+                  {CalenderVisible ? (
+                    <View>
                       <Calendar
-                        style={{ width: "100%" }}
+                        style={{ width: '100%' }}
                         date={DueDate}
                         onChange={handleSelect}
                         showMonthAndYearPickers={false}
-                      // maxDate={new Date()}
-                      // minDate={new Date()}
-
+                        // maxDate={new Date()}
+                        // minDate={new Date()}
                       />
-                    </View> :
-                    <View style={{
-                      backgroundColor: "#fff",
-                      padding: "4%",
-                      borderRadius: 8,
-                      borderColor: "#d6d9e6",
-                      borderWidth: 1,
-
-                    }}>
-                      <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => { setCalenderVisible(!CalenderVisible) }}>
-                        <Text>{moment(DueDate).format("DD-MM-YYYY")}</Text>
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        backgroundColor: '#fff',
+                        padding: '4%',
+                        borderRadius: 8,
+                        borderColor: '#d6d9e6',
+                        borderWidth: 1,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{ flexDirection: 'row' }}
+                        onPress={() => {
+                          setCalenderVisible(!CalenderVisible)
+                        }}
+                      >
+                        <Text>{moment(DueDate).format('DD-MM-YYYY')}</Text>
                         {/* <Text>Date</Text> */}
-                        <Icon style={styles.angleDown} name="angle-down" size={15} />
+                        <Icon
+                          style={styles.angleDown}
+                          name="angle-down"
+                          size={15}
+                        />
                       </TouchableOpacity>
                     </View>
-                  }
+                  )}
                 </View>
               </View>
               {/* <View style={styles.dropdownViewStyle}>

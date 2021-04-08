@@ -87,6 +87,7 @@ const Login = (props: any) => {
                   onChangeText={(value) => {
                     onInputChange(value, 'username')
                   }}
+                  onSubmitEditing={() => setNext(true)}
                 />
               </View>
               <TouchableOpacity
@@ -114,6 +115,7 @@ const Login = (props: any) => {
                   onChangeText={(value) => {
                     onInputChange(value, 'password')
                   }}
+                  onSubmitEditing={() => onLoginPress()}
                 />
               </View>
               <TouchableOpacity
