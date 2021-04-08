@@ -125,8 +125,13 @@ const Example = (props: any) => {
       {isVisible ? (
         <View
           style={{
+            borderWidth: 1,
+            borderColor: 'rgba(0, 0, 0, 0.2)',
             borderRadius: 8,
-            borderColor: 'red',
+            padding: '2%',
+            width: '110%',
+            elevation: 6,
+            shadowColor: 'rgba(0, 0, 0, 0.2)',
             backgroundColor: '#fff',
           }}
         >
@@ -151,6 +156,8 @@ const Example = (props: any) => {
                 showDateDisplay={false}
                 inputRanges={[]}
                 staticRanges={[]}
+                maxDate={new Date()}
+                minimumNights={0}
               />
             </View>
             <View>
@@ -191,7 +198,8 @@ const Example = (props: any) => {
         <View
           style={{
             borderColor: '#F1F6FF',
-            backgroundColor: 'red',
+            backgroundColor: '#fff',
+            width: '110%',
             borderWidth: 1,
             borderRadius: 100,
             paddingVertical: '4%',
