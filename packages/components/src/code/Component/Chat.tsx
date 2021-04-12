@@ -39,6 +39,7 @@ import {
   WhatsApp,
 } from '../Images/MediaIcon'
 import InternalNotes from './InternalNotes'
+import ReplyModal from './ReplyModal'
 
 const Chat = (props: any) => {
   const { clientId, token, selectedTickit } = props
@@ -76,6 +77,9 @@ const Chat = (props: any) => {
   const [email, setEmail] = useState()
   const [isForward, setIsForward] = useState(false)
   const [isInternalNote, setIsInternalNote] = useState(false)
+  const [isReply, setReplyModal] = useState(false)
+  const [replyName, setReplyName] = useState('')
+  const [userName, setUserName] = useState('')
 
   const bodercolor = '#acb3bf'
 
@@ -348,45 +352,48 @@ const Chat = (props: any) => {
     )
   }
 
-  const onSendMessage = async () => {
+  const onSendMessage = async (msg: string) => {
+    // console.log("msg", rplymsg);
+
     try {
-      if (message !== '') {
-        const body = {
-          custom_column: {
-            policy_number: '',
-            due_date: null,
-          },
-          blocked_by: null,
-          department_id: null,
-          assigned_to: null,
-          priority_id: null,
-          status_id: '1',
-          fake_news_type: null,
-          fake_factor: null,
-          complaint_id: selectedTickit.complaint_id,
-          activity_id: null,
-          resolution_text: null,
-          medium_id: 2,
-          created_by: 'paytm',
-          is_internal_user: true,
-          is_internal: true,
-          user_id: 5889,
-          is_dm: false,
-          medium_name: 'Twitter',
-          conversation_text: message,
-          parent_message_id: null,
-          index: 2,
-          attachments: [],
-        }
-        const res: any = await Api.post(`${configs.log_activity}`, body, token)
-        console.log('messageRes', res)
-        if (res.status === 200) {
-          setMessage('')
-          setLogActivity(res.data)
-        }
-      } else {
-        Alert.alert('Please Type Message')
+      // if (message !== '') {
+      const body = {
+        custom_column: {
+          policy_number: '',
+          due_date: null,
+        },
+        blocked_by: null,
+        department_id: null,
+        assigned_to: null,
+        priority_id: null,
+        status_id: '1',
+        fake_news_type: null,
+        fake_factor: null,
+        complaint_id: selectedTickit.complaint_id,
+        activity_id: null,
+        resolution_text: null,
+        medium_id: 2,
+        created_by: 'paytm',
+        is_internal_user: true,
+        is_internal: true,
+        user_id: 5889,
+        is_dm: false,
+        medium_name: 'Twitter',
+        conversation_text: msg,
+        parent_message_id: null,
+        index: 2,
+        attachments: [],
       }
+      const res: any = await Api.post(`${configs.log_activity}`, body, token)
+      console.log('messageRes', res)
+      if (res.status === 200) {
+        setMessage('')
+        setLogActivity(res.data)
+      }
+      onCloseModal()
+      // } else {
+      //   Alert.alert('Please Type Message')
+      // }
     } catch (error) {
       console.log('sendMessageError', error)
     }
@@ -666,11 +673,17 @@ const Chat = (props: any) => {
     setMsgModel(false)
     setIsForward(false)
     setIsInternalNote(false)
+    setReplyModal(false)
   }
 
   const onSendEmail = (value: any) => {
     setEmail(value)
     // console.log("email", value);
+  }
+
+  const onReplyModalClick = () => {
+    setReplyModal(true)
+    setMsgModel(true)
   }
 
   return (
@@ -726,7 +739,7 @@ const Chat = (props: any) => {
                     { console.log('cons: ', ((selectedMedia === data.item.medium_name) || (selectedMedia === 'all')))} */}
 
                     {/* {((selectedMedia === data.item.medium_name) || (selectedMedia === 'all')) ? ( */}
-
+                    {setReplyName(data.item.user_name)}
                     <View>
                       <View
                         style={{
@@ -820,6 +833,7 @@ const Chat = (props: any) => {
                       (selectedMedia === 'all')
                     )
                       && ( */}
+                    {/* {setUserName(data.item.created_by)} */}
                     <>
                       <View
                         style={{
@@ -933,6 +947,9 @@ const Chat = (props: any) => {
             flexDirection: 'row',
             marginRight: '1%',
           }}
+          onPress={() => {
+            onReplyModalClick()
+          }}
         >
           <Entypo name="reply" size={18} color="#595959" />
           <Text style={{ fontSize: 12 }}>Reply</Text>
@@ -999,7 +1016,16 @@ const Chat = (props: any) => {
             onCancel={() => {
               onCloseModal()
             }}
-            onSetEmail={onSendEmail}
+          />
+        )}
+
+        {isReply && (
+          <ReplyModal
+            onCancel={() => {
+              onCloseModal()
+            }}
+            onSendMessage={onSendMessage}
+            replyName={replyName}
           />
         )}
       </Modal>
