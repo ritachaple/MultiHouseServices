@@ -342,6 +342,7 @@ const List = (props: any) => {
       }
       //  // console.log('selectCheckbox', tickits)
       props.setSelectedTickit(tickits)
+      props.setFilterHeader()
       if (tickits.length > 0) {
         props.OneTickitSelect(true)
       } else {
@@ -466,14 +467,14 @@ const List = (props: any) => {
   const Status = (hovered: any) => {
     let selectedStatus
 
-    if (tickitItems && tickitItems.status_id) {
+    if (tickitItems && tickitItems.status_id !== null) {
       selectedStatus =
         statusDropdownList !== undefined &&
         statusDropdownList.length > 0 &&
         statusDropdownList.find((item: any) => {
           return item.status_id === tickitItems.status_id
         })
-      console.log('selectedStatus', selectedStatus)
+      // console.log('selectedStatus', selectedStatus)
     }
     // else {
     //   selectedStatus = null
@@ -887,6 +888,9 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     setTotalRecords: (data: number) => {
       dispatch({ type: 'TOTAL_RECORDS', payload: data })
+    },
+    setFilterHeader: () => {
+      dispatch({ type: 'SET_FILTER_HEADER' })
     },
   }
 }

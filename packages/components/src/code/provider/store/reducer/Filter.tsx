@@ -6,6 +6,7 @@ const initialState = {
   medium: med,
   priority: pri,
   status: stat,
+  isFilterHeader: true,
 }
 
 const Filter = (state = { initialState }, action: any) => {
@@ -44,6 +45,18 @@ const Filter = (state = { initialState }, action: any) => {
       return {
         ...state,
         status: [],
+      }
+      break
+    case 'SET_FILTER_HEADER':
+      return {
+        ...state,
+        isFilterHeader: true,
+      }
+      break
+    case 'CLEAR_FILTER_HEADER':
+      return {
+        ...state,
+        isFilterHeader: false,
       }
       break
 

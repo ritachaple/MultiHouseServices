@@ -22,10 +22,17 @@ import Default from '../../Default/Default'
 import { Filter } from '../../Images/Header'
 
 const Interaction = (props: any) => {
-  const { navigation, isHeaderSelect, selectedOneTickit } = props
+  const {
+    navigation,
+    isHeaderSelect,
+    selectedOneTickit,
+    isFilterHeader,
+  } = props
 
   const [isSelectClick, setIsSelectClick] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+  console.log('isFilterHeader', isFilterHeader)
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -64,7 +71,7 @@ const Interaction = (props: any) => {
             <View
               style={{
                 backgroundColor: '#F1F6FF',
-                height: '9%',
+                height: '12%',
                 // paddingRight: '0%',
                 borderBottomColor: '#F1F6FF',
                 zIndex: 999,
@@ -101,9 +108,16 @@ const Interaction = (props: any) => {
                 />
               </View>
             </View>
-            <View style={{ height: '11%' }}>
+            {isFilterHeader ? (
+              <View style={{ height: '11%' }}>
+                <SelectedFilterHeader />
+              </View>
+            ) : (
+              <></>
+            )}
+            {/* <View style={{ height: '1%' }}>
               <SelectedFilterHeader />
-            </View>
+            </View> */}
             <SearchComplaints navigation={navigation} />
             <Modal
               style={{ flex: 1 }}
@@ -182,6 +196,10 @@ const mapStateToProps = (state: any) => {
   return {
     isHeaderSelect: state.headerData.isHeaderSelect,
     selectedOneTickit: state.headerData.oneTickitSelect,
+    isFilterHeader:
+      state.Filter.isFilterHeader === undefined
+        ? state.Filter.initialState.isFilterHeader
+        : state.Filter.isFilterHeader,
   }
 }
 

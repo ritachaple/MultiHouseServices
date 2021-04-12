@@ -30,6 +30,7 @@ const SelectedFilterHeader = (props: any) => {
     props.clearMedium()
     props.clearStatus()
     props.clearPriority()
+    props.clearHeaderFilter()
     setFilter(false)
   }
 
@@ -59,8 +60,10 @@ const SelectedFilterHeader = (props: any) => {
         flexDirection: 'row',
         backgroundColor: '#F1F6FF',
         // height: '9%',
-        padding: '0.5',
-        paddingTop: 4,
+        // padding: '0.5',
+        paddingHorizontal: '0.5',
+        // paddingTop: 4,
+        paddingBottom: '0.5',
         // paddingLeft: '4%',
         borderTopColor: '#F1F6FF',
       }}
@@ -230,6 +233,9 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     setTikitData: (data: any) => {
       dispatch({ type: 'TICKIT_LIST', payload: data })
+    },
+    clearHeaderFilter: () => {
+      dispatch({ type: 'CLEAR_FILTER_HEADER' })
     },
   }
 }
