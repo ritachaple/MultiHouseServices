@@ -104,6 +104,7 @@ const SearchComplaints = (props: any) => {
 
   const onCheckBox = () => {
     props.headerSelect(!isHeaderSelect)
+    props.setFilterHeader()
   }
 
   const onPlusClick = () => {
@@ -454,6 +455,9 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     setPageSize: (pageSize: number) => {
       dispatch({ type: 'PAGE_SIZE', payload: pageSize })
+    },
+    setFilterHeader: () => {
+      dispatch({ type: 'SET_FILTER_HEADER' })
     },
   }
 }

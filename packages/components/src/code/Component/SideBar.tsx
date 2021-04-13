@@ -150,6 +150,7 @@ const SideBar = (props: any) => {
     // selPriority
     // setStatus
     // const selMediaId = selMedia
+
     const selMediaId =
       selMedia !== undefined &&
       selMedia.length > 0 &&
@@ -202,6 +203,7 @@ const SideBar = (props: any) => {
     props.setMediaFilter(setMediaName)
     props.setPriorityFilter(setPriorityName)
     props.setStatusFilter(setStatusName)
+    props.setFilterHeader()
   }
 
   const searchComplaintApi = async (
@@ -423,6 +425,9 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     setTikitData: (data: any) => {
       dispatch({ type: 'TICKIT_LIST', payload: data })
+    },
+    setFilterHeader: () => {
+      dispatch({ type: 'SET_FILTER_HEADER' })
     },
   }
 }

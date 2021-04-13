@@ -8,12 +8,6 @@ import {
   StyleSheet,
 } from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import Feather from 'react-native-vector-icons/Feather'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import Foundation from 'react-native-vector-icons/Foundation'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Divider } from 'react-native-elements'
 
 // @ts-ignore
@@ -25,6 +19,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
 // @ts-ignore
 import htmlToDraft from 'html-to-draftjs'
+import { RadioChecked, RadioUnchecked } from '../Images/SelectCBoxIcon'
 
 const bodercolor = '#acb3bf'
 
@@ -32,8 +27,12 @@ const bodercolor = '#acb3bf'
 //   structure: [props: any => <MyButton {...props} createComment={(text: any) => alert(text)} />]
 // });
 
-const InternalNotes = (props: any) => {
-  const { onCancel } = props
+const ReplyModal = (props: any) => {
+  const { onCancel, onSendMessage, replyName } = props
+
+  const [replyType, setReplyType] = useState('')
+
+  console.log('replyName', replyName)
 
   const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>'
   const contentBlock = htmlToDraft(html)
@@ -48,7 +47,9 @@ const InternalNotes = (props: any) => {
   }
   const [editorState, seteditorState] = useState(editorStat)
   const onEditorStateChange = (value: any) => {
+    // console.log('msgText:', editorState.getCurrentContent().getPlainText());
     seteditorState(value)
+    console.log('as HTML:', draftToHtml(value))
   }
 
   const editorLabels = {
@@ -171,6 +172,14 @@ const InternalNotes = (props: any) => {
   }
 
   const SubmitButton = () => {
+    // console.log('msgText:', editorState.getCurrentContent().getPlainText());
+    const onSendMsg = () => {
+      console.log('msgtext', editorState.getCurrentContent().getPlainText())
+
+      // props.setMsg(editorState.getCurrentContent().getPlainText())
+      onSendMessage(editorState.getCurrentContent().getPlainText())
+    }
+
     return (
       <View style={{ flexDirection: 'row' }}>
         <View style={{ marginRight: '10%' }}>
@@ -185,9 +194,9 @@ const InternalNotes = (props: any) => {
               paddingHorizontal: '2%',
               // marginLeft: '1%',
             }}
-            // onPress={}
+            onPress={() => onSendMsg()}
           >
-            <Text style={[styles.textStyle, { color: '#fff' }]}>Submit</Text>
+            <Text style={[styles.textStyle, { color: '#fff' }]}>Send</Text>
             <Entypo
               style={{ paddingLeft: '5%' }}
               name="chevron-down"
@@ -205,7 +214,7 @@ const InternalNotes = (props: any) => {
       style={{
         width: '72%',
         height: '35%',
-        backgroundColor: '#FFF8F8',
+        backgroundColor: '#fff',
         borderRadius: 8,
         // marginHorizontal: '10%',
         marginRight: '10%',
@@ -237,9 +246,7 @@ const InternalNotes = (props: any) => {
             paddingHorizontal: '1%',
           }}
         >
-          <Text style={[styles.textStyle, { alignSelf: 'center' }]}>
-            Internal Note
-          </Text>
+          <Text style={[styles.textStyle, { alignSelf: 'center' }]}>Reply</Text>
           <Entypo
             style={{ paddingTop: '5%', alignSelf: 'center' }}
             name="chevron-down"
@@ -247,36 +254,69 @@ const InternalNotes = (props: any) => {
             color="#585353"
           />
         </View>
-        {/* <View
-                    style={{ flexDirection: 'row', flex: 0.9, paddingHorizontal: '1%' }}
-                >
-                    <Text style={[styles.textStyle, { alignSelf: "center" }]} >To:</Text>
-                    <TextInput
-                        style={[styles.textStyle, { paddingHorizontal: '1%', alignSelf: "center", flex: 1, height: 20, }]}
-                        placeholder="type your group name or comma saperated email ID"
-                        placeholderTextColor="#A8A8A8"
-                        onChangeText={(value) => {
-                            onInputChange(value)
-                        }}
-                    />
+        {/* <View style={{ flexDirection: "row" }}>
+                    <RadioUnchecked />
+                    <Text>
+                        Post
+                    </Text>
+                    <RadioChecked />
                 </View> */}
-        {/* <View
-                    style={{
-                        flexDirection: 'row',
-                        flex: 0.15,
-                        justifyContent: 'space-evenly',
-                    }}
-                >
-                    <TouchableOpacity>
-                        <Text>Cc</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text>Bcc</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text>Subject</Text>
-                    </TouchableOpacity>
-                </View> */}
+        <View style={{ width: '10%', justifyContent: 'center' }}>
+          <View style={{ alignSelf: 'center' }}>
+            <Text>{replyName && replyName}</Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            width: '15%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            <View style={{ paddingTop: '5%' }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setReplyType('Post')
+                }}
+              >
+                {replyType === 'Post' ? <RadioChecked /> : <RadioUnchecked />}
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginHorizontal: '3%' }}>
+              <Text>Post</Text>
+            </View>
+          </View>
+          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            <View style={{ paddingTop: '5%' }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setReplyType('DM')
+                }}
+              >
+                {replyType === 'DM' ? <RadioChecked /> : <RadioUnchecked />}
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginHorizontal: '3%' }}>
+              <Text>DM</Text>
+            </View>
+          </View>
+          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            <View style={{ paddingTop: '5%' }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setReplyType('Both')
+                }}
+              >
+                {replyType === 'Both' ? <RadioChecked /> : <RadioUnchecked />}
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginHorizontal: '3%' }}>
+              <Text>Both</Text>
+            </View>
+          </View>
+        </View>
       </View>
       <Divider style={{ backgroundColor: bodercolor }} />
       <View style={{ flex: 8 }} />
@@ -301,7 +341,6 @@ const InternalNotes = (props: any) => {
             // toolbarCustomButtons={[<MyButton />]}
             toolbar={toolbar}
           />
-          {/* <MyButton /> */}
         </div>
       </View>
     </View>
@@ -320,4 +359,4 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
 })
-export default InternalNotes
+export default ReplyModal
