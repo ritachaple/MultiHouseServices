@@ -1,6 +1,7 @@
-const initialState = {
+export const initialState = {
   token: '',
 }
+
 const loginReducer = (state = { initialState }, action: any) => {
   switch (action.type) {
     case 'LOGIN_TOKEN':

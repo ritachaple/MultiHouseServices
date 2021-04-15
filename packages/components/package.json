@@ -36,6 +36,8 @@
     "draft-js": "*",
     "draftjs-to-html": "*",
     "html-to-draftjs": "*",
-    "@testing-library/react": "*"
+    "@testing-library/react": "*",
+    "react-beautiful-dnd":"*",
+    "styled-components":"*"
   }
 }

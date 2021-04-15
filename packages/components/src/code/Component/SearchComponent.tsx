@@ -11,6 +11,10 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
+// @ts-ignore
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+// @ts-ignore
+import styled from 'styled-components'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Pagination from './Pagination'
@@ -49,9 +53,88 @@ const SearchComplaints = (props: any) => {
   const [tickit, setTickit] = useState([])
   // const [totalRecords, setTotalRecords] = useState(0)
   const [showHeaderListModal, seHeaderListModal] = useState(false)
+  const [headerData, setHeaderList] = useState([] as any)
 
   const [selectedHeader, setSelectedHeader] = useState(headerName)
   const horizontalFlatlist = true
+
+  const toDo = [
+    {
+      id: '1',
+      title: 'Grocery',
+      list: ['id', 'apple', 'banana', 'milk', 'eggs', 'bread', 'eggs', 'bread'],
+    },
+  ]
+
+  // const Header1 = (props: any) => {
+  const Header1 = (toDoo: any) => {
+    // const { toDo } = props
+    // console.log('props', toDo)
+
+    const StyleContainer = styled.div`
+      width: 100%;
+    `
+
+    const taskHendler = (items: any) => {
+      console.log('item', items)
+
+      const StyledContainer = styled.div`
+        margin: 1% 5%;
+      `
+
+      return items.map(
+        (item: any, index: number) => (
+          // <View style={{ flexDirection: "row" }}>
+          /* <Text style={{ marginHorizontal: 65 }}>{item}</Text> */
+
+          <Draggable draggableId={`${index}`} index={index}>
+            {(provided: any, snapshot: any) => (
+              <StyledContainer
+                style={{ flexDirection: 'row' }}
+                id="styled-cont"
+                ref={provided.innerRef}
+                isDragging={snapshot.isDragging}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              >
+                {/* {item} */}
+
+                <Text style={{}}>{item}</Text>
+              </StyledContainer>
+            )}
+          </Draggable>
+        ),
+
+        // </View>
+      )
+    }
+
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        {/* {taskHendler(toDo.list)} */}
+
+        <Droppable droppableId={toDoo.id}>
+          {(provided: any) => (
+            <StyleContainer
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                  justifyContent: 'space-evenly',
+                }}
+              >
+                {taskHendler(toDoo.list)}
+              </View>
+              {provided.placeholder}
+            </StyleContainer>
+          )}
+        </Droppable>
+      </View>
+    )
+  }
 
   useEffect(() => {
     const dynamicControls = async () => {
@@ -65,6 +148,17 @@ const SearchComplaints = (props: any) => {
           // setPriority(res.data.controls[4])
           props.setAssigneeDropdownList(res.data.controls[4].lookup_data)
           props.setpriorityDropdown(res.data.controls[5].lookup_data)
+        }
+      } catch (error) {
+        console.log('dynamic Control error', error)
+      }
+    }
+
+    const HeadingList = async () => {
+      try {
+        const res: any = await Api.get(`${configs.headerList}`, props.token)
+        if (res.status === 200) {
+          console.log(' HeadingList', res.data.message)
         }
       } catch (error) {
         console.log('dynamic Control error', error)
@@ -97,6 +191,7 @@ const SearchComplaints = (props: any) => {
       }
       searchComplaints()
       clearData()
+      HeadingList()
       dynamicControls()
     })
     return unsubscribe
@@ -256,6 +351,19 @@ const SearchComplaints = (props: any) => {
     )
   }
 
+  const onDragEnd = (result: any) => {
+    if (!result.destination) {
+      return
+    }
+    const sourceIdx = parseInt(result.source.index, 10)
+    const destIdx = parseInt(result.destination.index, 10)
+    const draggedLink = toDo[0].list[sourceIdx]
+    const newList = toDo[0].list.slice()
+    newList.splice(sourceIdx, 1)
+    newList.splice(destIdx, 0, draggedLink)
+    toDo[0].list = newList
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
@@ -265,6 +373,12 @@ const SearchComplaints = (props: any) => {
             backgroundColor: '#fff',
           }}
         >
+          {/* {headerList()} */}
+
+          <DragDropContext onDragEnd={onDragEnd}>
+            {/* <Task toDo = {toDo[0]}/> */}
+            <Header1 toDoo={toDo[0]} />
+          </DragDropContext>
           <FlatList
             style={{
               flex: 1,
@@ -282,7 +396,7 @@ const SearchComplaints = (props: any) => {
                 </View>
               )
             }}
-            ListHeaderComponent={() => headerList()}
+            // ListHeaderComponent={() => headerList()}
             keyExtractor={(index: any) => index.toString()}
           />
         </View>
