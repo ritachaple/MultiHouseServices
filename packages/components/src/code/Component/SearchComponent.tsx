@@ -38,6 +38,23 @@ const headerName = [
   'Assignee',
 ]
 
+const toDo: any = [
+  {
+    id: '1',
+    title: 'HeaderList',
+    // list: headerName,
+    column: {
+      id: 'column-1',
+      list: headerName,
+    },
+  },
+]
+
+const Container = styled.div`
+  width: 100%;
+  position: static;
+`
+
 const SearchComplaints = (props: any) => {
   const {
     tickitItems,
@@ -51,82 +68,130 @@ const SearchComplaints = (props: any) => {
   } = props
 
   const [tickit, setTickit] = useState([])
-  // const [totalRecords, setTotalRecords] = useState(0)
   const [showHeaderListModal, seHeaderListModal] = useState(false)
-  const [headerData, setHeaderList] = useState([] as any)
+  // const [headerListData, setHeaderList] = useState([] as any)
 
-  const [selectedHeader, setSelectedHeader] = useState(headerName)
+  // const [selectedHeader, setSelectedHeader] = useState(headerName)
+  const [selectedHeader, setSelectedHeader] = useState(toDo[0].column.list)
+  const [headerStatListData, setStaticHeaderList] = useState(headerName)
   const horizontalFlatlist = true
 
-  const toDo = [
-    {
-      id: '1',
-      title: 'Grocery',
-      list: ['id', 'apple', 'banana', 'milk', 'eggs', 'bread', 'eggs', 'bread'],
-    },
-  ]
-
   // const Header1 = (props: any) => {
-  const Header1 = (toDoo: any) => {
-    // const { toDo } = props
-    // console.log('props', toDo)
+  const Header1 = () => {
+    // const data = toDoo.toDoo
+    // console.log('data', data)
 
+    // const StyleContainer = styled.div`
+    //   width: 100%;
+    //   display: flex;
+    //   flex-direction: column;
+    // `
     const StyleContainer = styled.div`
-      width: 100%;
+      flex-grow: 1;
+
+      display: flex;
     `
 
-    const taskHendler = (items: any) => {
-      console.log('item', items)
+    const taskHendler = () => {
+      // console.log('item', items)
 
       const StyledContainer = styled.div`
         margin: 1% 5%;
+        display: flex;
+        position: 'fixed';
       `
 
-      return items.map(
-        (item: any, index: number) => (
-          // <View style={{ flexDirection: "row" }}>
-          /* <Text style={{ marginHorizontal: 65 }}>{item}</Text> */
+      return (
+        selectedHeader !== undefined &&
+        selectedHeader.length > 0 &&
+        selectedHeader.map(
+          (item: any, index: number) => (
+            // <View style={{ flexDirection: "row" }}>
+            /* <Text style={{ marginHorizontal: 65 }}>{item}</Text> */
 
-          <Draggable draggableId={`${index}`} index={index}>
-            {(provided: any, snapshot: any) => (
-              <StyledContainer
-                style={{ flexDirection: 'row' }}
-                id="styled-cont"
-                ref={provided.innerRef}
-                isDragging={snapshot.isDragging}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-              >
-                {/* {item} */}
+            <View
+              style={{
+                flex: 1,
+                // paddingLeft: '2%'
+                paddingHorizontal: '2%',
+              }}
+            >
+              <Draggable draggableId={`${index}`} index={index}>
+                {(provided: any, snapshot: any) => (
+                  <StyledContainer
+                    // style={{ flexDirection: 'row', }}
+                    // id="styled-cont"
+                    // ref={provided.innerRef}
+                    // isDragging={snapshot.isDragging}
+                    // {...provided.draggableProps}
+                    // {...provided.dragHandleProps}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                    isDragging={snapshot.isDragging}
+                  >
+                    {/* {item} */}
 
-                <Text style={{}}>{item}</Text>
-              </StyledContainer>
-            )}
-          </Draggable>
-        ),
+                    <Text
+                      style={{
+                        flex: 1,
+                        fontSize: 12,
+                        fontFamily: 'Poppins-Light',
+                        color: '#5A607F',
+                      }}
+                    >
+                      {item}
+                    </Text>
+                  </StyledContainer>
+                )}
+              </Draggable>
+            </View>
+          ),
 
-        // </View>
+          // </View>
+        )
       )
     }
 
     return (
       <View style={{ flexDirection: 'row' }}>
         {/* {taskHendler(toDo.list)} */}
-
-        <Droppable droppableId={toDoo.id}>
-          {(provided: any) => (
+        <Droppable droppableId="dropableId" direction="horizontal">
+          {(provided: any, snapshot: any) => (
             <StyleContainer
               ref={provided.innerRef}
               {...provided.droppableProps}
+              isDraggingOver={snapshot.isDraggingOver}
+              // ref={provided.innerRef}
+              // {...provided.droppableProps}
             >
               <View
                 style={{
+                  // flexDirection: 'row',
+                  // width: '100%',
+                  // justifyContent: 'space-around',
+                  flex: 1,
                   flexDirection: 'row',
-                  width: '100%',
-                  justifyContent: 'space-evenly',
+                  borderBottomColor: '#dce3de',
+                  borderBottomWidth: 0.1,
+                  paddingHorizontal: '1%',
+                  // paddingLeft: '1%',
+                  paddingVertical: '1%',
                 }}
               >
-                {taskHendler(toDoo.list)}
+                <TouchableOpacity onPress={() => onCheckBox()}>
+                  {isHeaderSelect ? <Checked /> : <UnChecked />}
+                </TouchableOpacity>
+
+                {taskHendler()}
+                <TouchableOpacity
+                  style={{ width: '1%' }}
+                  onPress={() => {
+                    onPlusClick()
+                  }}
+                >
+                  <Plus />
+                </TouchableOpacity>
               </View>
               {provided.placeholder}
             </StyleContainer>
@@ -158,7 +223,9 @@ const SearchComplaints = (props: any) => {
       try {
         const res: any = await Api.get(`${configs.headerList}`, props.token)
         if (res.status === 200) {
-          console.log(' HeadingList', res.data.message)
+          // console.log('HeadingList', res)
+          // setHeaderList(res.data.message)
+          console.log('HeadingList', res.data.message)
         }
       } catch (error) {
         console.log('dynamic Control error', error)
@@ -215,21 +282,34 @@ const SearchComplaints = (props: any) => {
           return value === item
         }),
       )
-      console.log('checkHeader', check)
-      console.log('selectedHeader', selectedHeader)
+      // console.log('checkHeader', check)
 
+      const list = [...headerStatListData]
       if (!check) {
-        console.log('false')
+        // console.log('false')
         const data = [...selectedHeader]
+        // data.splice(index, 0, item)
+        // console.log("selectedHeader.length", selectedHeader.length);
+        const indx =
+          selectedHeader && selectedHeader.length > 0 && selectedHeader.length
         data.splice(index, 0, item)
-        // console.log(data)
+        // list.splice(index, 1)
         setSelectedHeader(data)
+        // if (indx) {
+        //   list.splice(indx, 0, item)
+        //   // console.log("listdata11", data)
+        // }
       } else {
+        const unchecked = list.splice(index, 1)
+        // console.log("unchecked", unchecked);
+        // list.splice(headerStatListData.length, 0, unchecked[0])
         removeItem(item)
       }
+      // setStaticHeaderList(list)
     } catch (error) {
       console.error('dropdown errro', error)
     }
+    // console.log('selectedHeader', selectedHeader)
   }
 
   const onSortPress = (item: any, sort: any, ind: any) => {
@@ -352,16 +432,31 @@ const SearchComplaints = (props: any) => {
   }
 
   const onDragEnd = (result: any) => {
-    if (!result.destination) {
+    const { destination, source, draggableId } = result
+
+    if (!destination) {
+      // setSelectedHeader(selectedHeader)
       return
     }
-    const sourceIdx = parseInt(result.source.index, 10)
-    const destIdx = parseInt(result.destination.index, 10)
-    const draggedLink = toDo[0].list[sourceIdx]
-    const newList = toDo[0].list.slice()
-    newList.splice(sourceIdx, 1)
-    newList.splice(destIdx, 0, draggedLink)
-    toDo[0].list = newList
+
+    // if (
+    //   destination.droppableId === source.droppableId &&
+    //   destination.index === source.index
+    // ) {
+    //   // setSelectedHeader(selectedHeader)
+    //   return;
+    // }
+
+    if (destination && destination.index !== source.index) {
+      const sourceIdx = parseInt(result.source.index, 10)
+      const destIdx = parseInt(result.destination.index, 10)
+      const draggedLink = selectedHeader[sourceIdx]
+
+      const newList = selectedHeader.slice()
+      newList.splice(sourceIdx, 1)
+      newList.splice(destIdx, 0, draggedLink)
+      setSelectedHeader(newList)
+    }
   }
 
   return (
@@ -369,6 +464,7 @@ const SearchComplaints = (props: any) => {
       <ScrollView style={{ flex: 1 }}>
         <View
           style={{
+            flex: 1,
             borderRadius: 3,
             backgroundColor: '#fff',
           }}
@@ -376,16 +472,17 @@ const SearchComplaints = (props: any) => {
           {/* {headerList()} */}
 
           <DragDropContext onDragEnd={onDragEnd}>
-            {/* <Task toDo = {toDo[0]}/> */}
-            <Header1 toDoo={toDo[0]} />
+            <Container>
+              <Header1 />
+            </Container>
           </DragDropContext>
+
           <FlatList
             style={{
               flex: 1,
             }}
             data={tickitItems}
             renderItem={({ item }) => {
-              //  console.log('renderItem item: ', item)
               return (
                 <View>
                   <ListComponent
@@ -430,7 +527,7 @@ const SearchComplaints = (props: any) => {
             />
             <FlatList
               style={{ flex: 1 }}
-              data={headerName}
+              data={headerStatListData}
               renderItem={({ item, index }) => {
                 const isCheck = Boolean(
                   selectedHeader.find((value: any) => {
@@ -466,7 +563,8 @@ const SearchComplaints = (props: any) => {
                           </TouchableOpacity>
                         </View>
                         <Text
-                        // onPress={() => onDropdownSelect(item, index)}
+                          style={styles.fontFamily}
+                          // onPress={() => onDropdownSelect(item, index)}
                         >
                           {item}
                         </Text>
@@ -593,5 +691,9 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '5%',
     height: '5%',
+  },
+  fontFamily: {
+    fontFamily: 'Poppins-Light',
+    fontSize: 12,
   },
 })
