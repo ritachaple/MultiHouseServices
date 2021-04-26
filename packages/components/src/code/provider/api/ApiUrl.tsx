@@ -25,4 +25,5 @@ export const configs = {
   ratingLink: `${BaseUrl}${Api}get_ratings_url`,
   getUserDetails: `${BaseUrl}${Api}user/get_user_details/`,
   mediaList: `${BaseUrl}${Api}${ticket}get_medium_details`,
+  headerList: `${BaseUrl}${Api}client/complaint_list_columns`, // headerList
 }
