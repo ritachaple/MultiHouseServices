@@ -45,12 +45,12 @@ export const SentimentSelect = (props: any) => {
     list.map(function (item: any) {
       // return { value: item.id, label: item.text }
       // return { value: item.id, label: <img src="https://unoboat.s3.ap-south-1.amazonaws.com/negative.svg" /> }
-      return { value: item.id, label: <img src={item.url} alt="" /> }
+      return { value: item, label: <img src={item.url} alt="" /> }
     })
 
   const onSelect = (val: any) => {
     setSelectedOption(val)
-    onStatusSelect(val)
+    onStatusSelect(val.value)
   }
 
   return (
