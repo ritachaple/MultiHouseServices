@@ -15,12 +15,14 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { Hoverable } from 'react-native-web-hover'
 import { Tooltip } from 'react-native-elements'
 import { connect } from 'react-redux'
+// import MultiSelect from 'react-multi-select-component'
+
 import Api from '../provider/api/Api'
 import TooltipMessage from './TooltipMessage'
 import { configs } from '../provider/api/ApiUrl'
 import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
 import { UnChecked, Checked } from '../Images/Checkbox'
-import { Urgent, Low, High, Medium, Default } from '../Images/Priority'
+import { Low, High, Medium, Default, Urgent } from '../Images/Priority'
 import { AssignUser } from '../Images/AssignUser'
 import {
   DefaultSentiment,
@@ -60,8 +62,46 @@ const sentimentList = [
     component: <NeutralSentiment />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/neutral.svg',
   },
+  {
+    id: null,
+    text: 'Default',
+    component: <DefaultSentiment />,
+    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/assign_user.svg',
+  },
 ]
 
+const priorityList = [
+  {
+    id: '0',
+    text: 'Default',
+    component: <Default />,
+    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/default_priority.svg',
+  },
+  {
+    id: '1',
+    text: 'Urgent',
+    component: <Urgent />,
+    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/redflag.svg',
+  },
+  {
+    id: '2',
+    text: 'High',
+    component: <High />,
+    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/yelloflag.svg',
+  },
+  {
+    id: '3',
+    text: 'Medium',
+    component: <Medium />,
+    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/blueflag.svg',
+  },
+  {
+    id: '4',
+    text: 'Low',
+    component: <Low />,
+    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/greenflag.svg',
+  },
+]
 const List = (props: any) => {
   const {
     isHeaderSelect,
@@ -476,11 +516,7 @@ const List = (props: any) => {
         statusDropdownList.find((item: any) => {
           return item.status_id === tickitItems.status_id
         })
-      // console.log('selectedStatus', selectedStatus)
     }
-    // else {
-    //   selectedStatus = null
-    // }
 
     return (
       <View
@@ -492,33 +528,6 @@ const List = (props: any) => {
         }}
       >
         <View style={{ flex: 1 }} />
-        {/* {!isStatusDropdown ? (
-          <TouchableOpacity
-            onPress={() => onStatusSelect(hovered)}
-            style={{ flexDirection: 'row', flex: 4 }}
-          >
-            {selectedStatus !== null ? (
-              <View style={{ flex: 2 }}>
-                <Text
-                  style={[
-                    styles.fontFamily,
-                    { fontWeight, textAlign: 'center' },
-                  ]}
-                >
-                  {selectedStatus.status_name}
-                </Text>
-              </View>
-            ) : (
-              <View style={{ flex: 1 }} />
-            )}
-            <View style={{ flex: 1 }}>
-              {hovered ? (
-                <Icon style={styles.angleDown} name="angle-down" size={15} />
-              ) : null}
-            </View>
-            <View style={{ flex: 1 }} />
-          </TouchableOpacity>
-        ) : ( */}
         <View style={{ flex: 3 }}>
           {selectedStatus !== undefined ? (
             <StatusDropdown
@@ -542,7 +551,6 @@ const List = (props: any) => {
             />
           )}
         </View>
-        {/* )} */}
       </View>
     )
   }
@@ -577,57 +585,52 @@ const List = (props: any) => {
       })
     } else {
       senti = {
-        id: 2,
-        url: 'https://unoboat.s3.ap-south-1.amazonaws.com/positive.svg',
+        id: null,
+        url: 'https://unoboat.s3.ap-south-1.amazonaws.com/assign_user.svg',
       }
     }
+    // if (tickitItems && tickitItems.status_id !== null) {
+    //   selectedStatus =
+    //     statusDropdownList !== undefined &&
+    //     statusDropdownList.length > 0 &&
+    //     statusDropdownList.find((item: any) => {
+    //       return item.status_id === tickitItems.status_id
+    //     })
+    // }
     return (
       <View
         style={{
           flex: 1,
-          flexDirection: 'row',
+          // flexDirection: 'row',
         }}
       >
-        {/* {!isSentimentList ? (
-          <TouchableOpacity
-            onPress={() => onSentimentPress()}
-            style={{ flex: 1, flexDirection: 'row', paddingHorizontal: '20%' }}
-          >
-            <View style={{ flex: 1 }} />
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-              {sentiIcon(tickitItems.sentiment)}
-            </View>
-            <View style={{ flex: 1 }}>
-              {hovered && (
-                <Icon
-                  name="angle-down"
-                  style={[styles.angleDown, { paddingTop: '15%' }]}
-                  size={15}
-                />
-              )}
-            </View>
-          </TouchableOpacity>
-        ) : (
-          isSentimentList && ( */}
         <View
           style={{
             flex: 1,
-            flexDirection: 'row',
+            // flexDirection: 'row',
             paddingHorizontal: '20%',
             zIndex: 999999,
           }}
         >
           <View style={{ flex: 1, justifyContent: 'center', zIndex: 1000 }}>
-            <SentimentSelect
-              // defaultValue={sentiIcon(tickitItems.sentiment)}
-              // defaultValue={{ value: senti.id, label: <img src={senti.url} /> }}
-              list={sentimentList}
-              onStatusSelect={(val: any) => onSentimentSelect(val)}
-            />
+            {senti !== undefined ? (
+              <SentimentSelect
+                // defaultValue={sentiIcon(tickitItems.sentiment)}
+                defaultValue={{
+                  value: senti.id,
+                  label: <img src={senti.url} alt="" />,
+                }}
+                list={sentimentList}
+                onStatusSelect={(val: any) => onSentimentSelect(val)}
+              />
+            ) : (
+              <SentimentSelect
+                list={sentimentList}
+                onStatusSelect={(val: any) => onSentimentSelect(val)}
+              />
+            )}
           </View>
         </View>
-        {/* ) */}
-        {/* )} */}
       </View>
     )
   }
@@ -768,11 +771,11 @@ const List = (props: any) => {
           }}
         >
           {isHeaderSelect ||
-          Boolean(
-            storeSelectedTickits.find((value: any) => {
-              return value === tickitItems.complaint_id
-            }),
-          ) ? (
+            Boolean(
+              storeSelectedTickits.find((value: any) => {
+                return value === tickitItems.complaint_id
+              }),
+            ) ? (
             <TouchableOpacity
               onPress={() => onCheckboxClick(tickitItems.complaint_id)}
             >
@@ -856,20 +859,6 @@ const List = (props: any) => {
             {selectedHeader.map((elementInArray: any, index: any) =>
               checkHeader(elementInArray, hovered),
             )}
-
-            {/* <Tooltip
-              containerStyle={{
-                backgroundColor: '#d7fcd4',
-                height: '15%',
-                width: '13%',
-                marginTop: 2,
-                borderRadius: 4,
-              }}
-              ref={tooltipRef}
-              withOverlay={false}
-              onOpen={onOpenToolTip}
-              popover={<TooltipMessage message={message} />}
-            /> */}
           </View>
         )}
       </Hoverable>
