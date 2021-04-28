@@ -39,7 +39,7 @@ import {
   MultipleDropdownList,
 } from './ReactSelect'
 
-// import MultiSelect from "react-multi-select-component"
+// import MultiSelect from 'react-multi-select-component'
 
 const sentimentList = [
   {
@@ -690,20 +690,21 @@ const List = (props: any) => {
       <View
         style={{
           flex: 1,
-          flexDirection: 'row',
-          marginRight: '2%',
+          // flexDirection: 'row',
+          // marginRight: '2%',
           // backgroundColor: 'red'
         }}
       >
-        <View style={{ flex: 3 }} />
+        {/* <View 
+        style={{ flex: 3 }} 
+        /> */}
         {/* <Text >{tickitItems.user_name}</Text> */}
-        {!isAssignList ? (
+        {/* {!isAssignList ? (
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <Pressable
               style={{ flex: 1, flexDirection: 'row' }}
               onPress={() => setToggleAssignList(true)}
             >
-              {/* <Icon style={{ flex: 3 }} name="user-circle" size={15} /> */}
               <AssignUser />
               {hovered && (
                 <Icon
@@ -715,29 +716,52 @@ const List = (props: any) => {
             </Pressable>
           </View>
         ) : (
-          //       <MultiSelect
-          //   options={assigneeDropdownList}
-          //   value={assigneeDropdownList}
-          //   onChange={(val: any) => {
-          //         onAssigneeSelect(val)
-          //       }}
-          //   labelledBy={"Select"}
-          // />
-          <MultipleDropdownList
-            list={assigneeDropdownList}
-            onSelectValue={(val: any) => {
+          <MultiSelect
+            options={assigneeDropdownList}
+            value={assigneeDropdownList}
+            onChange={(val: any) => {
               onAssigneeSelect(val)
             }}
-          />
-        )}
+            labelledBy={"Select"}
+          /> */}
+        <MultipleDropdownList
+          list={assigneeDropdownList}
+          onSelectValue={(val: any) => {
+            onAssigneeSelect(val)
+          }}
+        />
+        {/* )} */}
         {/* <View style={{ flex: 1 }} /> */}
       </View>
     )
   }
 
-  const displayData = () => {
+  const ComplaintId = () => {
     return (
-      <View style={{ flex: 1, flexDirection: 'row', paddingLeft: '1%' }}>
+      <View
+        style={{
+          flex: 1,
+          // paddingHorizontal: "2%"
+
+          // alignItems: 'center',
+        }}
+      >
+        <View style={{ marginLeft: '10%' }}>
+          <Text style={[styles.fontFamily, { fontSize: 15, fontWeight }]}>
+            #{tickitItems.complaint_id}
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
+  const checkbox = () => {
+    return (
+      <View
+        style={{
+          paddingLeft: '1%',
+        }}
+      >
         <View
           style={{
             paddingTop: '2%',
@@ -762,11 +786,6 @@ const List = (props: any) => {
             </TouchableOpacity>
           )}
         </View>
-        <View style={{ paddingLeft: '10%' }}>
-          <Text style={[styles.fontFamily, { fontSize: 15, fontWeight }]}>
-            #{tickitItems.complaint_id}
-          </Text>
-        </View>
       </View>
     )
   }
@@ -774,6 +793,9 @@ const List = (props: any) => {
   const checkHeader = (name: any, hovered: any) => {
     try {
       switch (name) {
+        case 'Id':
+          return ComplaintId()
+          break
         case 'Subject':
           return Subject()
           break
@@ -829,7 +851,7 @@ const List = (props: any) => {
               justifyContent: 'space-between',
             }}
           >
-            {displayData()}
+            {checkbox()}
 
             {selectedHeader.map((elementInArray: any, index: any) =>
               checkHeader(elementInArray, hovered),

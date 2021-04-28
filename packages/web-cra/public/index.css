@@ -196,6 +196,9 @@ form button {
 .select_box {
   background-color: none !important;
 }
+.multiselect {
+  z-index: 99999;
+}
 
 /* .select_box .css-tj5bde-Svg {
   display: hidden !important;
