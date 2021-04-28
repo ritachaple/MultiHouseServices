@@ -6,8 +6,6 @@ const isMulti = true
 
 export const StatusDropdown = (props: any) => {
   const { list, onStatusSelect, defaultValue } = props
-
-  // const [selectedOption, setSelectedOption] = useState({ value: 1, label: 'xyz' })
   const [selectedOption, setSelectedOption] = useState(defaultValue as any)
   const options =
     list !== undefined &&
@@ -30,6 +28,7 @@ export const StatusDropdown = (props: any) => {
         onSelect(value)
       }}
       options={options}
+      isSearchable={false}
     />
   )
 }
@@ -62,10 +61,11 @@ export const SentimentSelect = (props: any) => {
         onSelect(value)
       }}
       options={options}
+      isSearchable={false}
     />
   )
 }
-
+// For Priority
 export const DropdownList = (props: any) => {
   const { list, onSelectValue } = props
 
@@ -111,16 +111,6 @@ export const MultipleDropdownList = (props: any) => {
   const onSelect = (val: any) => {
     setSelectedOption(val)
     console.log('valll', val)
-    // let array: any = []
-
-    // const list = val !== undefined && val.length > 0 && val.map((item: any) => {
-    //   return item.value
-    // })
-
-    // console.log('list', list)
-
-    // console.log("arrayyy", array);
-
     onSelectValue(val)
   }
 
@@ -140,9 +130,7 @@ export const MultipleDropdownList = (props: any) => {
 
 export const MediaDropdownList = (props: any) => {
   const { list, onSelectValue } = props
-
   const [selectedOption, setSelectedOption] = useState(null)
-
   const options =
     list !== undefined &&
     list.length > 0 &&
@@ -153,16 +141,6 @@ export const MediaDropdownList = (props: any) => {
   const onSelect = (val: any) => {
     setSelectedOption(val)
     console.log('valllmedia', val)
-    // let array: any = []
-
-    // const list = val !== undefined && val.length > 0 && val.map((item: any) => {
-    //   return item.value
-    // })
-
-    // console.log('list', list)
-
-    // console.log("arrayyy", array);
-
     onSelectValue(val)
   }
 
@@ -182,9 +160,7 @@ export const MediaDropdownList = (props: any) => {
 
 export const StatusDropdownList = (props: any) => {
   const { list, onSelectValue } = props
-
   const [selectedOption, setSelectedOption] = useState(null)
-
   const options =
     list !== undefined &&
     list.length > 0 &&
@@ -194,17 +170,7 @@ export const StatusDropdownList = (props: any) => {
 
   const onSelect = (val: any) => {
     setSelectedOption(val)
-    // console.log("valll", val);
-    // let array: any = []
-
-    // const list = val !== undefined && val.length > 0 && val.map((item: any) => {
-    //   return item.value
-    // })
-
     console.log('list', list)
-
-    // console.log("arrayyy", array);
-
     onSelectValue(val)
   }
 
@@ -224,9 +190,7 @@ export const StatusDropdownList = (props: any) => {
 
 export const PaginationList = (props: any) => {
   const { list, onSelectValue } = props
-
   const [selectedOption, setSelectedOption] = useState(null)
-
   const options =
     list !== undefined &&
     list.length > 0 &&
