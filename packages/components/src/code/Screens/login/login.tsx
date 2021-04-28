@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   ImageBackground,
+  Modal,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Api from '../../provider/api/Api'
@@ -17,6 +18,7 @@ import Twitter from '../../Component/ImageComponents/Twitter'
 import UnoBot from '../../Component/ImageComponents/UnoBot'
 import LinkedIn from '../../Component/ImageComponents/LinkedIn'
 import { LoginFacebook } from '../../Images/MediaIcon'
+import ValidationMsg from '../../Component/ValidationMsg'
 
 const Login = (props: any) => {
   // const Login = ({ navigation }: { navigation: any }) => {
@@ -24,6 +26,9 @@ const Login = (props: any) => {
   // const {navigation,}
   const [login, setLogin] = useState({ username: '', password: '' })
   const [isNext, setNext] = useState(false)
+
+  const [msg, setMsg] = useState('')
+  const [openValidationMsg, setOpenValidationMsg] = useState(false)
 
   const onInputChange = (value: any, field: any) => {
     const data: any = { ...login }
@@ -33,25 +38,39 @@ const Login = (props: any) => {
 
   const onLoginPress = async () => {
     try {
-      const body = {
-        // "username": "paytm",
-        // "password": "Interactive!23"
-        username: login.username,
-        password: login.password,
-      }
-      console.log('body', login)
+      if (login.username && login.password) {
+        const body = {
+          username: login.username,
+          password: login.password,
+        }
+        console.log('body', login)
 
-      const res: any = await Api.post(configs.loginApi, body)
-      console.log('login Api res', res)
+        const res: any = await Api.post(configs.loginApi, body)
+        console.log('login Api res', res)
 
-      if (res.status === 200) {
-        console.log('token', res.data.token)
-        props.setToken(res.data.token)
-        props.navigation.navigate('Dashboard')
+        if (res.status === 200) {
+          console.log('token', res.data.token)
+          props.setToken(res.data.token)
+          props.navigation.navigate('Dashboard')
+        } else {
+          validationError('Login Error!!!')
+        }
+      } else {
+        validationError('Please Enter Username and Password!!!')
       }
     } catch (error) {
+      validationError('Login Error!!!')
       console.log('Login Api Error', error)
     }
+  }
+
+  const validationError = (mssg: string) => {
+    setMsg(mssg)
+    setOpenValidationMsg(true)
+  }
+
+  const hideValidationMsg = () => {
+    setOpenValidationMsg(false)
   }
 
   return (
@@ -83,7 +102,7 @@ const Login = (props: any) => {
                 <TextInput
                   defaultValue=""
                   style={[styles.input, styles.textFont]}
-                  placeholder="Enter Email"
+                  placeholder="Enter Username"
                   onChangeText={(value) => {
                     onInputChange(value, 'username')
                   }}
@@ -130,6 +149,15 @@ const Login = (props: any) => {
                 </Text>
               </TouchableOpacity>
             </View>
+          )}
+
+          {openValidationMsg && (
+            <ValidationMsg
+              message={msg}
+              validationMsg={hideValidationMsg}
+              displayMsg={openValidationMsg}
+              customeStyle={{ width: '35%' }}
+            />
           )}
 
           <View style={{ marginTop: '18%', marginLeft: '15%' }}>

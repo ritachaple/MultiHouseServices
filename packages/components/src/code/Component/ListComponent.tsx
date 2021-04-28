@@ -43,19 +43,19 @@ import {
 
 const sentimentList = [
   {
-    id: '1',
+    id: 1,
     text: 'Positive',
     component: <PositiveSentiment />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/positive.svg',
   },
   {
-    id: '-1',
+    id: -1,
     text: 'Negative',
     component: <NegativeSentiment />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/negative.svg',
   },
   {
-    id: '0',
+    id: 0,
     text: 'Neutral',
     component: <NeutralSentiment />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/neutral.svg',
@@ -216,11 +216,13 @@ const List = (props: any) => {
 
   const onSentimentSelect = async (selSentiment: any) => {
     try {
-      const conversationText = `Sentiment has been changed to ${selSentiment.label}`
+      console.log('selSentiment', selSentiment)
+
+      const conversationText = `Sentiment has been changed to ${selSentiment.text}`
       onCloseModal()
       const res: any = await setLogActivity(
-        selSentiment.value,
-        selSentiment.label,
+        selSentiment.id,
+        selSentiment.text,
         conversationText,
         tickitItems.status_id,
         tickitItems.priority_id,
