@@ -36,7 +36,7 @@ export const StatusDropdown = (props: any) => {
 export const SentimentSelect = (props: any) => {
   const { list, onStatusSelect, defaultValue } = props
 
-  const [selectedOption, setSelectedOption] = useState(null)
+  const [selectedOption, setSelectedOption] = useState(defaultValue as any)
 
   const options =
     list !== undefined &&
@@ -49,7 +49,7 @@ export const SentimentSelect = (props: any) => {
 
   const onSelect = (val: any) => {
     setSelectedOption(val)
-    onStatusSelect(val.value)
+    onStatusSelect(val)
   }
 
   return (
@@ -67,9 +67,9 @@ export const SentimentSelect = (props: any) => {
 }
 // For Priority
 export const DropdownList = (props: any) => {
-  const { list, onSelectValue } = props
+  const { list, onSelectValue, defaultValue } = props
 
-  const [selectedOption, setSelectedOption] = useState(null)
+  const [selectedOption, setSelectedOption] = useState(defaultValue as any)
 
   const options =
     list !== undefined &&
@@ -92,6 +92,7 @@ export const DropdownList = (props: any) => {
         onSelect(value)
       }}
       options={options}
+      isSearchable={false}
     />
   )
 }

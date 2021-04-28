@@ -583,7 +583,7 @@ const List = (props: any) => {
       })
     } else {
       senti = {
-        id: '2',
+        id: null,
         url: 'https://unoboat.s3.ap-south-1.amazonaws.com/assign_user.svg',
       }
     }
@@ -623,7 +623,7 @@ const List = (props: any) => {
               />
             ) : (
               <SentimentSelect
-                list={statusDropdownList}
+                list={sentimentList}
                 onStatusSelect={(val: any) => onSentimentSelect(val)}
               />
             )}
