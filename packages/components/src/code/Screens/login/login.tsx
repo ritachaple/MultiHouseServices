@@ -19,6 +19,7 @@ import UnoBot from '../../Component/ImageComponents/UnoBot'
 import LinkedIn from '../../Component/ImageComponents/LinkedIn'
 import { LoginFacebook } from '../../Images/MediaIcon'
 import ValidationMsg from '../../Component/ValidationMsg'
+import Loader from '../../Component/Loader'
 
 const Login = (props: any) => {
   // const Login = ({ navigation }: { navigation: any }) => {
@@ -26,6 +27,7 @@ const Login = (props: any) => {
   // const {navigation,}
   const [login, setLogin] = useState({ username: '', password: '' })
   const [isNext, setNext] = useState(false)
+  const [progres, setProgres] = useState(0)
 
   const [msg, setMsg] = useState('')
   const [openValidationMsg, setOpenValidationMsg] = useState(false)
@@ -38,6 +40,7 @@ const Login = (props: any) => {
 
   const onLoginPress = async () => {
     try {
+      setProgres(100)
       if (login.username && login.password) {
         const body = {
           username: login.username,
@@ -51,11 +54,14 @@ const Login = (props: any) => {
         if (res.status === 200) {
           console.log('token', res.data.token)
           props.setToken(res.data.token)
-          props.navigation.navigate('Dashboard')
+          setProgres(0)
+          props.navigation.navigate('Interaction')
         } else {
+          setProgres(0)
           validationError('Login Error!!!')
         }
       } else {
+        setProgres(0)
         validationError('Please Enter Username and Password!!!')
       }
     } catch (error) {
@@ -83,6 +89,7 @@ const Login = (props: any) => {
         paddingVertical: '1%',
       }}
     >
+      <Loader progres={progres} />
       <View style={{ flexDirection: 'row' }}>
         <View style={[styles.container, { flex: 3, paddingHorizontal: '5%' }]}>
           <View
