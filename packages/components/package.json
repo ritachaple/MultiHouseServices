@@ -38,6 +38,7 @@
     "html-to-draftjs": "*",
     "@testing-library/react": "*",
     "react-beautiful-dnd": "*",
-    "styled-components": "*"
+    "styled-components": "*",
+    "react-top-loading-bar":"*"
   }
 }
