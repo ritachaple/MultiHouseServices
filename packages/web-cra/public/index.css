@@ -85,6 +85,17 @@ form button {
   font-family: 'Poppins-Light' !important;
 }
 
+.sign-out-dropdown {
+  position: fixed;
+  right: 20px;
+  top: 50px;
+  /* border: 1px solid; */
+  width: 250px;
+  /* height: 150px; */
+  background-color: #f0f1f0;
+  border-radius: 10px;
+}
+
 /* .dropdown-input {
   background-color: white;
   padding: 4%;

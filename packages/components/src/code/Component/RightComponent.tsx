@@ -15,22 +15,22 @@ const RightComponent = (props: any) => {
       }}
     >
       <View style={{ paddingRight: '20%' }}>
-        <View
-          style={{
-            backgroundColor: '#fff',
-            width: 43,
-            height: 39,
-            borderWidth: 1,
-            borderColor: '#D7D7D7',
-            borderRadius: 6,
-            justifyContent: 'center',
-            paddingHorizontal: '35%',
-          }}
-        >
-          <TouchableOpacity onPress={onFilterPress}>
+        <TouchableOpacity onPress={onFilterPress}>
+          <View
+            style={{
+              backgroundColor: '#fff',
+              width: 43,
+              height: 39,
+              borderWidth: 1,
+              borderColor: '#D7D7D7',
+              borderRadius: 6,
+              justifyContent: 'center',
+              paddingHorizontal: '35%',
+            }}
+          >
             <Filter />
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
       <View
         // style={{paddingHorizontal:"2%"}}
