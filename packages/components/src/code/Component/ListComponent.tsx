@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   Pressable,
-  Image
+  Image,
 } from 'react-native'
 import moment from 'moment'
 import { Hoverable } from 'react-native-web-hover'
@@ -408,15 +408,20 @@ const List = (props: any) => {
       <View
         style={{
           flex: 1,
-          flexDirection: "row"
+          flexDirection: 'row',
         }}
       >
         {/* <View> */}
         <Image
           source={{
-            uri: url
+            uri: url,
           }}
-          style={{ width: '5%', height: '25%', marginTop: "3%", marginHorizontal: "5%" }}
+          style={{
+            width: '5%',
+            height: '25%',
+            marginTop: '3%',
+            marginHorizontal: '5%',
+          }}
         />
         {/* </View> */}
         <Text style={[styles.fontFamily, { fontWeight }]}>
@@ -648,11 +653,11 @@ const List = (props: any) => {
           }}
         >
           {isHeaderSelect ||
-            Boolean(
-              storeSelectedTickits.find((value: any) => {
-                return value === tickitItems.complaint_id
-              }),
-            ) ? (
+          Boolean(
+            storeSelectedTickits.find((value: any) => {
+              return value === tickitItems.complaint_id
+            }),
+          ) ? (
             <TouchableOpacity
               onPress={() => onCheckboxClick(tickitItems.complaint_id)}
             >

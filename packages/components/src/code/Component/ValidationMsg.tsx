@@ -9,7 +9,7 @@ const ValidationMsg = (props: any) => {
     const interval = setInterval(() => {
       setState(false)
       props.validationMsg()
-    }, 1000)
+    }, 6000)
     return () => clearInterval(interval)
   })
 

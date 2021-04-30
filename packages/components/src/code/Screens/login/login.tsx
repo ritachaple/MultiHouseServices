@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useRef } from 'react'
 import {
   View,
   Text,
@@ -31,6 +31,7 @@ const Login = (props: any) => {
 
   const [msg, setMsg] = useState('')
   const [openValidationMsg, setOpenValidationMsg] = useState(false)
+  const autoFocus = true
 
   const onInputChange = (value: any, field: any) => {
     const data: any = { ...login }
@@ -38,10 +39,20 @@ const Login = (props: any) => {
     setLogin(data)
   }
 
+  useEffect(() => {
+    const input = document.querySelector('input')
+    // {
+    //   input !== null && input.focus()
+    // }
+    if (input !== null) {
+      input.focus()
+    }
+  }, [])
+
   const onLoginPress = async () => {
     try {
       setProgres(100)
-      if (login.username && login.password) {
+      if (login.password) {
         const body = {
           username: login.username,
           password: login.password,
@@ -62,7 +73,7 @@ const Login = (props: any) => {
         }
       } else {
         setProgres(0)
-        validationError('Please Enter Username and Password!!!')
+        validationError('Please Enter Password!!!')
       }
     } catch (error) {
       validationError('Login Error!!!')
@@ -77,6 +88,14 @@ const Login = (props: any) => {
 
   const hideValidationMsg = () => {
     setOpenValidationMsg(false)
+  }
+
+  const onNextPress = () => {
+    if (login.username) {
+      setNext(true)
+    } else {
+      validationError('Please Enter Username')
+    }
   }
 
   return (
@@ -108,16 +127,17 @@ const Login = (props: any) => {
                 <Text style={[styles.textFont]}>Username</Text>
                 <TextInput
                   defaultValue=""
+                  autoFocus={autoFocus}
                   style={[styles.input, styles.textFont]}
                   placeholder="Enter Username"
                   onChangeText={(value) => {
                     onInputChange(value, 'username')
                   }}
-                  onSubmitEditing={() => setNext(true)}
+                  onSubmitEditing={() => onNextPress()}
                 />
               </View>
               <TouchableOpacity
-                onPress={() => setNext(true)}
+                onPress={() => onNextPress()}
                 style={[
                   styles.modalButton,
                   { backgroundColor: '#4d7be8', borderColor: '#4d7be8' },
@@ -135,6 +155,7 @@ const Login = (props: any) => {
                 <Text style={[styles.textFont]}>Password</Text>
                 <TextInput
                   secureTextEntry
+                  autoFocus={autoFocus}
                   defaultValue=""
                   style={[styles.input, styles.textFont]}
                   placeholder="Enter Password"
