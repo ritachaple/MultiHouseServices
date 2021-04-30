@@ -99,51 +99,49 @@ const Chat = (props: any) => {
   //     btnText:'Internal Note'
   //   }
   // ]
+  const chatDetails = async () => {
+    try {
+      const res: any = await Api.get(
+        `${configs.get_activity}${selectedTickit.complaint_id}/2`,
+        token,
+      )
+      console.log('chatDetails', res)
+      if (res.status === 200) {
+        setChatData(res.data.data)
+        setChatDataCopy(res.data.data)
+        checkMedia(res.data.data)
+      }
+    } catch (error) {
+      console.log('chatDetailsError', error)
+    }
+  }
 
+  const checkMedia = (data: any) => {
+    data.map((item: any) => displayMedia(item))
+  }
+
+  const channedResponse = async () => {
+    try {
+      const body = {
+        client_id: selectedTickit.client_id,
+        params: { address_book: {}, email_template: {}, canned_response: {} },
+      }
+      const res: any = await Api.post(
+        `${configs.dynamic_canned_response}`,
+        body,
+        token,
+      )
+      console.log('dynamic canned Res', res)
+      if (res.status === 200) {
+        setDynamicCannedRes(res.data.data[0].val)
+        setEmailTemplate(res.data.data[1].val)
+        setAddressBook(res.data.data[2].val)
+      }
+    } catch (error) {
+      console.log('dynamic Canned Error', error)
+    }
+  }
   useEffect(() => {
-    const chatDetails = async () => {
-      try {
-        const res: any = await Api.get(
-          `${configs.get_activity}${selectedTickit.complaint_id}/2`,
-          token,
-        )
-        console.log('chatDetails', res)
-        if (res.status === 200) {
-          setChatData(res.data.data)
-          setChatDataCopy(res.data.data)
-          checkMedia(res.data.data)
-        }
-      } catch (error) {
-        console.log('chatDetailsError', error)
-      }
-    }
-
-    const checkMedia = (data: any) => {
-      data.map((item: any) => displayMedia(item))
-    }
-
-    const channedResponse = async () => {
-      try {
-        const body = {
-          client_id: selectedTickit.client_id,
-          params: { address_book: {}, email_template: {}, canned_response: {} },
-        }
-        const res: any = await Api.post(
-          `${configs.dynamic_canned_response}`,
-          body,
-          token,
-        )
-        console.log('dynamic canned Res', res)
-        if (res.status === 200) {
-          setDynamicCannedRes(res.data.data[0].val)
-          setEmailTemplate(res.data.data[1].val)
-          setAddressBook(res.data.data[2].val)
-        }
-      } catch (error) {
-        console.log('dynamic Canned Error', error)
-      }
-    }
-
     chatDetails()
     channedResponse()
     return () => {
@@ -389,6 +387,7 @@ const Chat = (props: any) => {
       if (res.status === 200) {
         setMessage('')
         setLogActivity(res.data)
+        chatDetails()
       }
       onCloseModal()
       // } else {
