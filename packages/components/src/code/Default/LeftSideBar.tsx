@@ -47,7 +47,7 @@ const LeftSideBar = (props: any) => {
       </View>
 
       <View style={{ paddingTop: '40%', alignSelf: 'center' }}>
-        {route.name === 'Interaction' ? (
+        {route.name === 'Interaction' || route.name === 'ChatScreen' ? (
           <View
             // style={{ paddingHorizontal: '30%' }}
             style={styles.activeScreen}
