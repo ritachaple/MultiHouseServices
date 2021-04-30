@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   Pressable,
+  Image
 } from 'react-native'
 import moment from 'moment'
 import { Hoverable } from 'react-native-web-hover'
@@ -397,12 +398,27 @@ const List = (props: any) => {
   }
 
   const raisedBy = () => {
+    let url: any
+    if (tickitItems.user_type === 'influencer') {
+      url = 'https://unoboat.s3.ap-south-1.amazonaws.com/greentick.svg'
+    } else if (tickitItems.user_type === 'detractor') {
+      url = 'https://unoboat.s3.ap-south-1.amazonaws.com/redclose.svg'
+    }
     return (
       <View
         style={{
           flex: 1,
+          flexDirection: "row"
         }}
       >
+        {/* <View> */}
+        <Image
+          source={{
+            uri: url
+          }}
+          style={{ width: '5%', height: '25%', marginTop: "3%", marginHorizontal: "5%" }}
+        />
+        {/* </View> */}
         <Text style={[styles.fontFamily, { fontWeight }]}>
           {tickitItems.user_name}
         </Text>
@@ -632,11 +648,11 @@ const List = (props: any) => {
           }}
         >
           {isHeaderSelect ||
-          Boolean(
-            storeSelectedTickits.find((value: any) => {
-              return value === tickitItems.complaint_id
-            }),
-          ) ? (
+            Boolean(
+              storeSelectedTickits.find((value: any) => {
+                return value === tickitItems.complaint_id
+              }),
+            ) ? (
             <TouchableOpacity
               onPress={() => onCheckboxClick(tickitItems.complaint_id)}
             >

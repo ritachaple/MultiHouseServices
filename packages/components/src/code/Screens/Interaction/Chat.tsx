@@ -41,6 +41,7 @@ const ChatScreen = (props: any) => {
         .indexOf(complaintId)
       setIndex(ind)
     }
+    { selectedTickit.user_type && setIsInfluencer(selectedTickit.user_type) }
 
     findIndexOfTickit()
   }, [props, complaintId, tickitList])
