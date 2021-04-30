@@ -285,11 +285,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: '#d9d9d9',
     paddingHorizontal: '2%',
+    outLine: 'none',
   },
   textFont: {
     fontFamily: 'Poppins-Light',
     fontSize: 12,
     lineHeight: 28,
+    outLine: 'none',
   },
   textFooter: {
     color: 'gray',

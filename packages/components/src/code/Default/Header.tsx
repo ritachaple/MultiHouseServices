@@ -291,6 +291,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: '2%',
     fontFamily: 'Poppins-Light',
     // borderRadius: 36,
+    outLine: 'none',
+    width: '200px',
   },
   input1Style: {
     paddingHorizontal: '2%',

@@ -58,6 +58,33 @@ form button {
   z-index: 9999;
 }
 
+.cal-time-dropdown {
+  position: relative;
+  /* left: 75.23%;
+  right: 11.47%;
+  top: 36.34%;
+  bottom: 55.77%; */
+  font-family: 'Poppins-Light' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 28px;
+  /* identical to box height, or 233% */
+  display: flex;
+  align-items: center;
+  background: #f1f6ff;
+  border-radius: 8px;
+  outline: none !important;
+  padding: 4px;
+  border: 0;
+}
+
+.rdrCalendarWrapper {
+  color: #000000;
+  font-size: 12px;
+  font-family: 'Poppins-Light' !important;
+}
+
 /* .dropdown-input {
   background-color: white;
   padding: 4%;
@@ -163,6 +190,7 @@ form button {
   border-style: none !important;
   border-width: none !important;
 }
+
 .select_box .css-yk16xz-control {
   background-color: none !important;
 }
@@ -181,21 +209,24 @@ form button {
   background-color: white !important;
   width: none !important;
 }
+
 .select_box span :hover {
   background-color: #f9f9f9 !important;
   width: none !important;
 }
 
 .select_box .css-yk16xz-control :hover {
-  background-color: #f9f9f9 !important ;
+  background-color: #f9f9f9 !important;
 }
 
 .select_box :hover {
-  background-color: #f9f9f9 !important ;
+  background-color: #f9f9f9 !important;
 }
+
 .select_box {
   background-color: none !important;
 }
+
 .multiselect {
   z-index: 99999;
 }
@@ -208,9 +239,11 @@ form button {
   display: flex;
   flex-direction: column;
 }
+
 .editorClass {
   order: 1;
 }
+
 .toolbarClass {
   order: 2;
 }

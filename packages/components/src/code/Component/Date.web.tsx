@@ -140,8 +140,9 @@ const Example = (props: any) => {
 
             {/* // <View style={{ flexDirection: 'row', paddingLeft: '4%' }}>
     //   <View style={styles.calenderStyle}> */}
-            <View style={{}}>
+            <View>
               <DateRange
+                // style={{fontFamily: 'Poppins-Light'}}
                 onChange={(item: any) => {
                   console.log('onChange: ', item)
                   handleSelect(item)
