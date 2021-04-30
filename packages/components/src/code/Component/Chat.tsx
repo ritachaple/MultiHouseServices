@@ -909,6 +909,7 @@ const Chat = (props: any) => {
                               marginLeft: '50%',
                               borderColor: '#F1F6FF',
                               justifyContent: 'flex-end',
+                              //  "transform": "matrix(-1, 0, 0, 1, 0, 0)"
                               // width: "40%"
                             },
                           ]}

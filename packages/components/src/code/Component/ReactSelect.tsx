@@ -86,6 +86,7 @@ export const DropdownList = (props: any) => {
   return (
     <Select
       menuPlacement="auto"
+      className="select_box"
       menuPortalTarget={document.querySelector('body')}
       defaultValue={selectedOption}
       onChange={(value: any) => {

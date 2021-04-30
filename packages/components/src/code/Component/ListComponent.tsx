@@ -11,14 +11,11 @@ import {
   Pressable,
 } from 'react-native'
 import moment from 'moment'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import { Hoverable } from 'react-native-web-hover'
-import { Tooltip } from 'react-native-elements'
 import { connect } from 'react-redux'
 // import MultiSelect from 'react-multi-select-component'
 
 import Api from '../provider/api/Api'
-import TooltipMessage from './TooltipMessage'
 import { configs } from '../provider/api/ApiUrl'
 import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
 import { UnChecked, Checked } from '../Images/Checkbox'
@@ -41,65 +38,49 @@ import {
   MultipleDropdownList,
 } from './ReactSelect'
 
+// import MultiSelect from 'react-multi-select-component'
+
 const sentimentList = [
   {
     id: 1,
     text: 'Positive',
-    component: <PositiveSentiment />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/positive.svg',
   },
   {
     id: -1,
     text: 'Negative',
-    component: <NegativeSentiment />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/negative.svg',
   },
   {
     id: 0,
     text: 'Neutral',
-    component: <NeutralSentiment />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/neutral.svg',
-  },
-  {
-    id: null,
-    text: 'Default',
-    component: <DefaultSentiment />,
-    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/assign_user.svg',
   },
 ]
 
 const priorityList = [
   {
-    id: '0',
-    text: 'Default',
-    component: <Default />,
-    url: 'https://unoboat.s3.ap-south-1.amazonaws.com/default_priority.svg',
-  },
-  {
-    id: '1',
+    id: 1,
     text: 'Urgent',
-    component: <Urgent />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/redflag.svg',
   },
   {
-    id: '2',
+    id: 2,
     text: 'High',
-    component: <High />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/yelloflag.svg',
   },
   {
-    id: '3',
+    id: 3,
     text: 'Medium',
-    component: <Medium />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/blueflag.svg',
   },
   {
-    id: '4',
+    id: 4,
     text: 'Low',
-    component: <Low />,
     url: 'https://unoboat.s3.ap-south-1.amazonaws.com/greenflag.svg',
   },
 ]
+
 const List = (props: any) => {
   const {
     isHeaderSelect,
@@ -119,10 +100,6 @@ const List = (props: any) => {
     endDate,
   } = props
 
-  const [message, setMessage] = useState('')
-  const [isStatusDropdown, setStatusDropdown] = useState(false)
-  const [isPriorityDropdown, setPriorityList] = useState(false)
-  // const [isAssigneeList, setAssigneeList] = useState(false)
   const [isSentimentList, setSentimentList] = useState(false)
   const [statusName, setStatusName] = useState()
   const [isAssignList, setToggleAssignList] = useState(false)
@@ -130,8 +107,6 @@ const List = (props: any) => {
 
   const tooltipRef: any = React.useRef(null)
   const fontWeight = tickitItems.is_read ? '100' : '700'
-
-  // console.log('statusDropdown', statusDropdownList)
 
   useEffect(() => {
     const status =
@@ -172,14 +147,8 @@ const List = (props: any) => {
     navigation.navigate('ChatScreen')
   }
 
-  const setTooltip = (msg: any) => {
-    setMessage(msg)
-    tooltipRef.current.toggleTooltip()
-  }
-
   const tickitStatusMenu = async (selTickit: any) => {
     setStatusName(selTickit.label)
-    onCloseModal()
     try {
       const conversationText = `Complaint has been changed`
       const res: any = await setLogActivity(
@@ -201,25 +170,10 @@ const List = (props: any) => {
     }
   }
 
-  const onOpenToolTip = () => {
-    setTimeout(function () {
-      tooltipRef.current.toggleTooltip()
-    }, 3000)
-  }
-
-  const onCloseModal = () => {
-    setPriorityList(false)
-    setStatusDropdown(false)
-    // setAssigneeList(false)
-    setSentimentList(false)
-  }
-
   const onSentimentSelect = async (selSentiment: any) => {
     try {
-      console.log('selSentiment', selSentiment)
-
+      // console.log('selSentiment', selSentiment)
       const conversationText = `Sentiment has been changed to ${selSentiment.text}`
-      onCloseModal()
       const res: any = await setLogActivity(
         selSentiment.id,
         selSentiment.text,
@@ -229,7 +183,6 @@ const List = (props: any) => {
         selAssignList,
       )
       if (res.status === 200) {
-        // setTooltip('Sentiment updated successfully')
         searchComplaints()
         console.log(`Sentiment updated successfully`)
       } else {
@@ -341,7 +294,7 @@ const List = (props: any) => {
 
   const onPrioritySelect = async (selText: any) => {
     try {
-      onCloseModal()
+      console.log('selText', selText)
       const conversationText = `Complaint has been changed`
       const res: any = await setLogActivity(
         tickitItems.sentiment,
@@ -353,9 +306,9 @@ const List = (props: any) => {
       )
       if (res.status === 200) {
         searchComplaints()
-        console.log('Complaint has been changed')
+        console.log('Complaint has been changed', res)
       } else {
-        console.log('complaint not updated')
+        console.log('complaint not updated', res)
       }
     } catch (error) {
       console.error(error)
@@ -391,35 +344,6 @@ const List = (props: any) => {
     } catch (error) {
       console.error(error)
     }
-  }
-
-  const onStatusSelect = (hovered: any) => {
-    try {
-      setStatusDropdown(true)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const onPriorityPress = () => {
-    setPriorityList(true)
-  }
-
-  const onAssigneePress = () => {
-    // setAssigneeList(true)
-  }
-
-  const findIndexOfTickit = () => {
-    const ind = tickitList
-      .map(function (item: any) {
-        return item.complaint_id
-      })
-      .indexOf(tickitItems.complaint_id)
-    return ind
-  }
-
-  const onSentimentPress = async () => {
-    setSentimentList(!isSentimentList)
   }
 
   const mediaIcon = (mediumId: any) => {
@@ -477,7 +401,6 @@ const List = (props: any) => {
       <View
         style={{
           flex: 1,
-          // backgroundColor: 'yellow'
         }}
       >
         <Text style={[styles.fontFamily, { fontWeight }]}>
@@ -553,31 +476,9 @@ const List = (props: any) => {
     )
   }
 
-  const sentiIcon = (Sentiment: any) => {
-    try {
-      // console.log('SENTIMATE', Sentiment)
-      switch (Sentiment) {
-        case 1:
-          return <PositiveSentiment />
-          break
-        case -1:
-          return <NegativeSentiment />
-          break
-        case 0:
-          return <NeutralSentiment />
-          break
-        default:
-          return <DefaultSentiment />
-      }
-    } catch (error) {
-      console.error(error)
-    }
-    return <DefaultSentiment />
-  }
-
   const Sentiment = (hovered: any) => {
     let senti: any
-    if (tickitItems.sentiment) {
+    if (tickitItems.sentiment !== null) {
       senti = sentimentList.find((item: any) => {
         return item.id === tickitItems.sentiment
       })
@@ -587,14 +488,7 @@ const List = (props: any) => {
         url: 'https://unoboat.s3.ap-south-1.amazonaws.com/assign_user.svg',
       }
     }
-    // if (tickitItems && tickitItems.status_id !== null) {
-    //   selectedStatus =
-    //     statusDropdownList !== undefined &&
-    //     statusDropdownList.length > 0 &&
-    //     statusDropdownList.find((item: any) => {
-    //       return item.status_id === tickitItems.status_id
-    //     })
-    // }
+
     return (
       <View
         style={{
@@ -607,80 +501,52 @@ const List = (props: any) => {
             flex: 1,
             // flexDirection: 'row',
             paddingHorizontal: '20%',
-            zIndex: 999999,
           }}
         >
-          <View style={{ flex: 1, justifyContent: 'center', zIndex: 1000 }}>
-            {senti !== undefined ? (
-              <SentimentSelect
-                // defaultValue={sentiIcon(tickitItems.sentiment)}
-                defaultValue={{
-                  value: senti.id,
-                  label: <img src={senti.url} alt="" />,
-                }}
-                list={sentimentList}
-                onStatusSelect={(val: any) => onSentimentSelect(val)}
-              />
-            ) : (
-              <SentimentSelect
-                list={sentimentList}
-                onStatusSelect={(val: any) => onSentimentSelect(val)}
-              />
-            )}
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <SentimentSelect
+              defaultValue={{
+                value: senti.id,
+                label: <img src={senti.url} alt="" />,
+              }}
+              list={sentimentList}
+              onStatusSelect={(val: any) => onSentimentSelect(val.value)}
+            />
           </View>
         </View>
       </View>
     )
   }
 
-  const setPriority = (priorityId: any) => {
-    try {
-      switch (priorityId) {
-        case 1:
-          return <Urgent />
-        case 2:
-          return <High />
-        case 3:
-          return <Medium />
-        case 4:
-          return <Low />
-        default:
-          return <Default />
-      }
-    } catch (error) {
-      console.error(error)
-    }
-    return <Default />
-  }
-
   const Priority = (hovered: any) => {
+    let setPri: any
+    if (tickitItems.priority_id) {
+      setPri = priorityList.find((item: any) => {
+        return item.id === tickitItems.priority_id
+      })
+    } else {
+      setPri = {
+        id: null,
+        url: 'https://unoboat.s3.ap-south-1.amazonaws.com/default_priority.svg',
+      }
+    }
+
     return (
       <View
         style={{
           flex: 1,
-          alignItems: 'center',
-          flexDirection: 'row',
-          // backgroundColor: 'pink'
         }}
       >
-        <View style={{ flex: 1 }} />
-        <View style={{ flex: 1 }}>
-          {!isPriorityDropdown ? (
-            <Pressable
-              style={{ flex: 1, flexDirection: 'row' }}
-              onPress={() => onPriorityPress()}
-            >
-              {setPriority(tickitItems.priority_id)}
-              {hovered && (
-                <Icon name="angle-down" style={styles.angleDown} size={15} />
-              )}
-            </Pressable>
-          ) : (
-            <DropdownList
-              list={priorityDropdownList}
-              onSelectValue={(value: any) => onPrioritySelect(value)}
-            />
-          )}
+        <View style={{ paddingRight: '10%' }}>
+          <DropdownList
+            defaultValue={{
+              value: setPri.id,
+              label: <img src={setPri.url} alt="" />,
+              // label: <img src='https://unoboat.s3.ap-south-1.amazonaws.com/redflag.svg' alt="" />
+            }}
+            list={priorityDropdownList}
+            onSelectValue={(value: any) => onPrioritySelect(value)}
+          />
         </View>
       </View>
     )
@@ -691,20 +557,21 @@ const List = (props: any) => {
       <View
         style={{
           flex: 1,
-          flexDirection: 'row',
-          marginRight: '2%',
+          // flexDirection: 'row',
+          // marginRight: '2%',
           // backgroundColor: 'red'
         }}
       >
-        <View style={{ flex: 3 }} />
+        {/* <View 
+        style={{ flex: 3 }} 
+        /> */}
         {/* <Text >{tickitItems.user_name}</Text> */}
-        {!isAssignList ? (
+        {/* {!isAssignList ? (
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <Pressable
               style={{ flex: 1, flexDirection: 'row' }}
               onPress={() => setToggleAssignList(true)}
             >
-              {/* <Icon style={{ flex: 3 }} name="user-circle" size={15} /> */}
               <AssignUser />
               {hovered && (
                 <Icon
@@ -716,29 +583,49 @@ const List = (props: any) => {
             </Pressable>
           </View>
         ) : (
-          // <MultiSelect
-          //   options={assigneeDropdownList}
-          //   value={assigneeDropdownList}
-          //   onChange={(val: any) => {
-          //     onAssigneeSelect(val)
-          //   }}
-          //   labelledBy={'Select'}
-          // />
-          <MultipleDropdownList
-            list={assigneeDropdownList}
-            onSelectValue={(val: any) => {
+          <MultiSelect
+            options={assigneeDropdownList}
+            value={assigneeDropdownList}
+            onChange={(val: any) => {
               onAssigneeSelect(val)
             }}
-          />
-        )}
+            labelledBy={"Select"}
+          /> */}
+        <MultipleDropdownList
+          list={assigneeDropdownList}
+          onSelectValue={(val: any) => {
+            onAssigneeSelect(val)
+          }}
+        />
+        {/* )} */}
         {/* <View style={{ flex: 1 }} /> */}
       </View>
     )
   }
 
-  const displayData = () => {
+  const ComplaintId = () => {
     return (
-      <View style={{ flex: 1, flexDirection: 'row', paddingLeft: '1%' }}>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        <View style={{ marginLeft: '10%' }}>
+          <Text style={[styles.fontFamily, { fontSize: 15, fontWeight }]}>
+            #{tickitItems.complaint_id}
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
+  const checkbox = () => {
+    return (
+      <View
+        style={{
+          paddingLeft: '1%',
+        }}
+      >
         <View
           style={{
             paddingTop: '2%',
@@ -763,11 +650,6 @@ const List = (props: any) => {
             </TouchableOpacity>
           )}
         </View>
-        <View style={{ paddingLeft: '10%' }}>
-          <Text style={[styles.fontFamily, { fontSize: 15, fontWeight }]}>
-            #{tickitItems.complaint_id}
-          </Text>
-        </View>
       </View>
     )
   }
@@ -775,6 +657,9 @@ const List = (props: any) => {
   const checkHeader = (name: any, hovered: any) => {
     try {
       switch (name) {
+        case 'Id':
+          return ComplaintId()
+          break
         case 'Subject':
           return Subject()
           break
@@ -810,7 +695,6 @@ const List = (props: any) => {
     } catch (error) {
       console.error('tickitList', error)
     }
-
     return null
   }
 
@@ -830,8 +714,7 @@ const List = (props: any) => {
               justifyContent: 'space-between',
             }}
           >
-            {displayData()}
-
+            {checkbox()}
             {selectedHeader.map((elementInArray: any, index: any) =>
               checkHeader(elementInArray, hovered),
             )}

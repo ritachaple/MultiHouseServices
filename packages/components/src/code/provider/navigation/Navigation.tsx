@@ -15,7 +15,7 @@ const linking = {
   config: {
     screens: {
       Login: 'Login',
-      Dashboard: 'Dashboard',
+      // Dashboard: 'Dashboard',
       Interaction: 'Interaction',
       ChatScreen: 'ChatScreen',
       // Webview: 'Webview',

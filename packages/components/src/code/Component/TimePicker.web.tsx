@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
 
 const TimePicker = (props: any) => {
   const { startDate, endDate, startTime, endTime, name } = props
@@ -61,11 +61,47 @@ const TimePicker = (props: any) => {
 
   return (
     // return(
-    <View>
-      <View>
-        <Text>From</Text>
-        <Text>{moment(startDate).format('DD MMM,yyyy')}</Text>
+    <View style={{ paddingLeft: '5%' }}>
+      {/* <View style={{
+        borderStyle: '1px solid ',
+      }} ></View> */}
+      <View style={{ paddingTop: '35%' }}>
+        <Image
+          source={{
+            uri: 'https://unoboat.s3.ap-south-1.amazonaws.com/time.svg',
+          }}
+          style={{
+            width: '50%',
+            height: '50%',
+            position: 'relative',
+            marginVertical: '15px',
+          }}
+        />
+      </View>
+      <View style={{ paddingTop: '45%' }}>
+        <Text
+          style={{
+            position: 'relative',
+            color: '#5A607F',
+            fontFamily: 'Poppins-Light',
+            fontWeight: '900',
+            paddingBottom: '5px',
+          }}
+        >
+          From
+        </Text>
+        <Text
+          style={{
+            color: '#001163',
+            fontFamily: 'Poppins-Light',
+            fontWeight: 'bold',
+          }}
+        >
+          {' '}
+          {moment(startDate).format('DD MMM,yyyy')}
+        </Text>
         <select
+          className="cal-time-dropdown"
           defaultValue={startTime}
           onChange={(e) => {
             props.onChange(e, true)
@@ -76,10 +112,32 @@ const TimePicker = (props: any) => {
           {options}
         </select>
       </View>
+      &nbsp;
       <View>
-        <Text>To</Text>
-        <Text>{moment(endDate).format('DD MMM,yyyy')}</Text>
+        <Text
+          style={{
+            position: 'relative',
+            color: '#5A607F',
+            fontFamily: 'Poppins-Light',
+            fontWeight: '700',
+            paddingBottom: '5px',
+          }}
+        >
+          To
+        </Text>
+        <Text
+          style={{
+            // position: 'relative',
+            color: '#001163',
+            fontFamily: 'Poppins-Light',
+            fontWeight: 'bold',
+            // fontSize: '12px',
+          }}
+        >
+          {moment(endDate).format('DD MMM,yyyy')}
+        </Text>
         <select
+          className="cal-time-dropdown"
           defaultValue={endTime}
           onChange={(e) => {
             props.onChange(e, false)
@@ -97,3 +155,15 @@ const TimePicker = (props: any) => {
 }
 
 export default TimePicker
+const styles = StyleSheet.create({
+  fromStyle: {
+    position: 'absolute',
+    fontFamily: 'Poppins-Light',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontSize: '12px',
+    lineHeight: '28px',
+    display: 'flex',
+    alignItems: 'center',
+  },
+})

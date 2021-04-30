@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 // @ts-ignore
 import styled from 'styled-components'
+
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Pagination from './Pagination'
@@ -23,6 +24,7 @@ import ListComponent from './ListComponent'
 import { UnChecked, Checked } from '../Images/Checkbox'
 import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
 import { Plus } from '../Images/Header'
+import Loader from './Loader'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -74,6 +76,7 @@ const SearchComplaints = (props: any) => {
   // const [selectedHeader, setSelectedHeader] = useState(headerName)
   const [selectedHeader, setSelectedHeader] = useState(toDo[0].column.list)
   const [headerStatListData, setStaticHeaderList] = useState(headerName)
+  const [progres, setProgres] = useState(100)
   const horizontalFlatlist = true
 
   // const Header1 = (props: any) => {
@@ -234,6 +237,7 @@ const SearchComplaints = (props: any) => {
 
     const unsubscribe = props.navigation.addListener('focus', () => {
       const searchComplaints = async () => {
+        setProgres(100)
         const res: any = await searchComplaintsApi(
           token,
           pageSize,
@@ -243,6 +247,7 @@ const SearchComplaints = (props: any) => {
         )
         if (res && res.status === 200) {
           setTickit(res.data.data)
+          setProgres(0)
           props.setTikitData(res.data.data)
           props.setTotalRecords(res.data.total_records)
           props.setPageIndex(pageIndex)
@@ -461,6 +466,7 @@ const SearchComplaints = (props: any) => {
 
   return (
     <View style={styles.container}>
+      <Loader progres={progres} />
       <ScrollView style={{ flex: 1 }}>
         <View
           style={{
