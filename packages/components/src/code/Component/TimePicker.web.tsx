@@ -61,32 +61,45 @@ const TimePicker = (props: any) => {
 
   return (
     // return(
-    <View>
+    <View style={{ paddingLeft: '5%' }}>
       {/* <View style={{
         borderStyle: '1px solid ',
       }} ></View> */}
       <View style={{ paddingTop: '35%' }}>
         <Image
           source={{
-            uri: 'https://unoboat.s3.ap-south-1.amazonaws.com/yelloflag.svg',
+            uri: 'https://unoboat.s3.ap-south-1.amazonaws.com/time.svg',
           }}
-          style={{ width: '80%', height: '100%' }}
+          style={{
+            width: '50%',
+            height: '50%',
+            position: 'relative',
+            marginVertical: '15px',
+          }}
         />
-        &nbsp;
       </View>
-      <View style={{ paddingTop: '55%' }}>
+      <View style={{ paddingTop: '45%' }}>
         <Text
           style={{
             position: 'relative',
-            color: '#001163',
+            color: '#5A607F',
             fontFamily: 'Poppins-Light',
-            fontWeight: 'bold',
-            // fontSize: '12px',
+            fontWeight: '900',
+            paddingBottom: '5px',
           }}
         >
           From
         </Text>
-        <Text>{moment(startDate).format('DD MMM,yyyy')}</Text>
+        <Text
+          style={{
+            color: '#001163',
+            fontFamily: 'Poppins-Light',
+            fontWeight: 'bold',
+          }}
+        >
+          {' '}
+          {moment(startDate).format('DD MMM,yyyy')}
+        </Text>
         <select
           className="cal-time-dropdown"
           defaultValue={startTime}
@@ -99,14 +112,15 @@ const TimePicker = (props: any) => {
           {options}
         </select>
       </View>
+      &nbsp;
       <View>
         <Text
           style={{
             position: 'relative',
-            color: '#001163',
+            color: '#5A607F',
             fontFamily: 'Poppins-Light',
-            fontWeight: 'bold',
-            // fontSize: '12px',
+            fontWeight: '700',
+            paddingBottom: '5px',
           }}
         >
           To

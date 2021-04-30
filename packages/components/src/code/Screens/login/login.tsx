@@ -289,10 +289,10 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   input: {
+    outLine: 'none',
     borderBottomWidth: 2,
     borderColor: '#d9d9d9',
     paddingHorizontal: '2%',
-    outLine: 'none',
   },
   textFont: {
     fontFamily: 'Poppins-Light',

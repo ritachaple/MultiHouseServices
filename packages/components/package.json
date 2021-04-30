@@ -39,6 +39,6 @@
     "@testing-library/react": "*",
     "react-beautiful-dnd": "*",
     "styled-components": "*",
-    "react-top-loading-bar":"*"
+    "react-top-loading-bar": "*"
   }
 }
