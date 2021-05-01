@@ -22,6 +22,7 @@
     "axios": "^0.21.1",
     "axios-mock-adapter": "^1.19.0",
     "components": "0.0.1",
+    "lodash": "^4.17.21",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
     "prop-types": "^15.7.2",

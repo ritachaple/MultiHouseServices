@@ -26,4 +26,5 @@ export const configs = {
   getUserDetails: `${BaseUrl}${Api}user/get_user_details/`,
   mediaList: `${BaseUrl}${Api}${ticket}get_medium_details`,
   headerList: `${BaseUrl}${Api}client/complaint_list_columns`, // headerList
+  verifyUser: `${BaseUrl}${Api}verify_user`, // verify user
 }
