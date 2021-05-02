@@ -63,6 +63,26 @@ const Login = (props: any) => {
         console.log('login Api res', res)
 
         if (res.status === 200) {
+          const ubody = {
+            exp: 1610040764,
+            // "username": "paytm",
+            username: login.username,
+            orig_iat: 1610022764,
+            user_id: 5889,
+            email: '',
+            email_id: '',
+            // "password": "Interactive!23"
+            password: login.password,
+          }
+          const verfyUser = await Api.post(
+            configs.verifyUser,
+            ubody,
+            res.data.token,
+          )
+          if (res.status === 200) {
+            console.log('verifyUser', verfyUser)
+          }
+
           console.log('token', res.data.token)
           props.setToken(res.data.token)
           setProgres(0)
