@@ -41,6 +41,11 @@ const tickitListData = (state = { initialState }, action: any) => {
         ...state,
         storeSelectedTickits: action.payload,
       }
+    case 'CLEAR_STORE_SELECTED_TICKIT':
+      return {
+        ...state,
+        storeSelectedTickits: [],
+      }
     case 'START_DATE':
       return {
         ...state,

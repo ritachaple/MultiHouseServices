@@ -10,6 +10,8 @@ import {
 import { Header } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { connect } from 'react-redux'
+import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
 import {
   SpamUser,
   Forward,
@@ -27,7 +29,17 @@ import ForwardExternalAgent from './ForwardExternalAgent'
 import IconButton from './IconButton'
 import NotificationModal from './NotificationModal'
 
-const SelectIcon = () => {
+const SelectIcon = (props: any) => {
+  const {
+    storeSelectedTickits,
+    selectedOneTickit,
+    token,
+    endDate,
+    startDate,
+    pageIndex,
+    pageSize,
+  } = props
+
   const onEditClick = () => {
     setModalVisible(!modalVisible)
     setEditModalVisible(!editModalVisible)
@@ -80,11 +92,11 @@ const SelectIcon = () => {
     onDeleteClick()
     try {
       const body = {
-        complaint_id: [325833],
+        complaint_id: storeSelectedTickits,
         user_id: 5889,
         is_delete: true,
       }
-      const res: any = await Api.post(configs.delete_complaints, body)
+      const res: any = await Api.post(configs.delete_complaints, body, token)
       console.log('deleteRes', res)
       // if(res.status===200){
       // }
@@ -98,10 +110,10 @@ const SelectIcon = () => {
     onBlockClick()
     try {
       const body = {
-        complaint_id: [325871],
+        complaint_id: storeSelectedTickits,
         client_id: 39,
       }
-      const res: any = await Api.post(configs.block_user, body)
+      const res: any = await Api.post(configs.block_user, body, token)
       console.log('blockRes', res)
       // if(res.status===200){
       // }
@@ -110,15 +122,44 @@ const SelectIcon = () => {
     }
   }
 
-  const onMergeOk = async () => {
-    onMergePress()
-    try {
-      const body = ['325938']
+  const searchComplaints = async () => {
+    // setProgres(100)
+    const res: any = await searchComplaintsApi(
+      token,
+      pageSize,
+      pageIndex,
+      startDate,
+      endDate,
+    )
+    if (res && res.status === 200) {
+      // setTickit(res.data.data)
+      // setProgres(0)
+      props.setTikitData(res.data.data)
+      props.setTotalRecords(res.data.total_records)
+      props.setPageIndex(pageIndex)
+      props.setPageSize(pageSize)
+      console.log('res.data', res.data.data)
+    } else {
+      props.clearToken()
+    }
+  }
 
-      const res: any = await Api.post(configs.mark_complaint_unread, body)
+  const onMergeOk = async () => {
+    // onMergePress()
+    try {
+      const body = storeSelectedTickits
+
+      const res: any = await Api.post(
+        configs.mark_complaint_unread,
+        body,
+        token,
+      )
       console.log('Mark Complaint', res)
-      // if(res.status===200){
-      // }
+      if (res.status === 200) {
+        props.clearStoreSelectedTickit()
+        props.clearHeaderFilter()
+        searchComplaints()
+      }
     } catch (error) {
       console.log('Mark Complaint Error', error)
     }
@@ -189,7 +230,8 @@ const SelectIcon = () => {
       <View style={[styles.borderBox, { marginLeft: '8%' }]}>
         <TouchableOpacity
           onPress={() => {
-            onSpamPress()
+            // onSpamPress()
+            onMergeOk()
           }}
         >
           <MarkUnread />
@@ -198,7 +240,8 @@ const SelectIcon = () => {
       <View style={[styles.borderBox, { marginLeft: '8%' }]}>
         <TouchableOpacity
           onPress={() => {
-            onUnDeletePress()
+            // onUnDeletePress()
+            onSpamPress()
           }}
         >
           <SpamUser />
@@ -207,7 +250,8 @@ const SelectIcon = () => {
       <View style={[styles.borderBox, { marginLeft: '8%' }]}>
         <TouchableOpacity
           onPress={() => {
-            onUnSpamPress()
+            // onUnSpamPress()
+            onUnDeletePress()
           }}
         >
           <MarkUndelete />
@@ -282,7 +326,7 @@ const SelectIcon = () => {
           />
         ) : null}
 
-        {mergeModalVisible ? (
+        {/* {mergeModalVisible ? (
           <NotificationModal
             onCancelPress={() => {
               onMergePress()
@@ -295,7 +339,7 @@ const SelectIcon = () => {
             message="Selected complaints will be merged. Proceed with merge?"
             title="Merge Notification"
           />
-        ) : null}
+        ) : null} */}
 
         {spamModalVisible && (
           <NotificationModal
@@ -344,7 +388,47 @@ const SelectIcon = () => {
   )
 }
 
-export default SelectIcon
+const mapStateToProps = (state: any) => {
+  return {
+    token: state.loginReducer.token,
+    selectedOneTickit: state.headerData.oneTickitSelect,
+    storeSelectedTickits: state.tickitListData.storeSelectedTickits
+      ? state.tickitListData.storeSelectedTickits
+      : ([] as any),
+    pageSize: state.Pagination.initialState.pageSize,
+    pageIndex: state.Pagination.initialState.pageIndex,
+    startDate: state.tickitListData.startDate,
+    endDate: state.tickitListData.endDate,
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    clearStoreSelectedTickit: () => {
+      dispatch({ type: 'CLEAR_STORE_SELECTED_TICKIT' })
+    },
+    clearHeaderFilter: () => {
+      dispatch({ type: 'CLEAR_FILTER_HEADER' })
+    },
+    setTikitData: (data: any) => {
+      dispatch({ type: 'TICKIT_LIST', payload: data })
+    },
+    setPageIndex: (pageIndex: number) => {
+      dispatch({ type: 'PAGE_INDEX', payload: pageIndex })
+    },
+    setPageSize: (pageSize: number) => {
+      dispatch({ type: 'PAGE_SIZE', payload: pageSize })
+    },
+    setTotalRecords: (data: number) => {
+      dispatch({ type: 'TOTAL_RECORDS', payload: data })
+    },
+    clearToken: () => {
+      dispatch({ type: 'CLEAR_LOGIN_TOKEN' })
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectIcon)
 
 const styles = StyleSheet.create({
   modalView: {

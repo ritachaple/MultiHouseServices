@@ -44,6 +44,9 @@ const ChatScreen = (props: any) => {
     // {
     //   selectedTickit.user_type && setIsInfluencer(selectedTickit.user_type)
     // }
+    if (selectedTickit.user_type) {
+      setIsInfluencer(selectedTickit.user_type)
+    }
 
     findIndexOfTickit()
   }, [props, complaintId, tickitList])
@@ -262,6 +265,7 @@ const ChatScreen = (props: any) => {
           >
             <View style={styles.ArrowIcon}>
               {index === 0 ? (
+                // <View style={styles.ArrowIcon}>
                 <Icon
                   style={{ opacity: 0.2 }}
                   name="angle-left"
@@ -269,12 +273,15 @@ const ChatScreen = (props: any) => {
                   size={20}
                 />
               ) : (
+                // </View>
+                // <View style={styles.ArrowIcon}>
                 <Icon
                   name="angle-left"
                   color="#585353"
                   onPress={() => onPreviousTickit()}
                   size={20}
                 />
+                // </View>
               )}
             </View>
             <View style={styles.ArrowIcon}>

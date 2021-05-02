@@ -15,7 +15,6 @@ import moment from 'moment'
 import { Hoverable } from 'react-native-web-hover'
 import { connect } from 'react-redux'
 // import MultiSelect from 'react-multi-select-component'
-
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
