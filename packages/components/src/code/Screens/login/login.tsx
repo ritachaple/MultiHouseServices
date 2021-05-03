@@ -63,6 +63,10 @@ const Login = (props: any) => {
         console.log('login Api res', res)
 
         if (res.status === 200) {
+          props.setToken(res.data.token)
+          setProgres(0)
+          props.navigation.navigate('Interaction')
+
           const ubody = {
             exp: 1610040764,
             // "username": "paytm",
@@ -84,9 +88,6 @@ const Login = (props: any) => {
           }
 
           console.log('token', res.data.token)
-          props.setToken(res.data.token)
-          setProgres(0)
-          props.navigation.navigate('Interaction')
         } else {
           setProgres(0)
           validationError('Login Error!!!')

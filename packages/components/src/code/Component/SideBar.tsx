@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Pressable,
   TextInput,
+  ScrollView,
 } from 'react-native'
 import { Header, Divider } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -23,6 +24,7 @@ import {
   MediaDropdownList,
   MultipleDropdownList,
   StatusDropdownList,
+  DropdownList,
 } from './ReactSelect'
 
 const SideBar = (props: any) => {
@@ -45,6 +47,11 @@ const SideBar = (props: any) => {
   const [selMedia, setSelMediaList] = useState([] as any)
   const [selPriority, setSelPriority] = useState([] as any)
   const [setStatus, setSelStatus] = useState([] as any)
+  const [showBotComplaints, setShowBotComplaints] = useState([] as any)
+  const [brandPost, setBrandPost] = useState([] as any)
+  const [spam, setSpam] = useState([] as any)
+  const [deleted, setDeleted] = useState([] as any)
+  const [handles, setHandles] = useState([] as any)
 
   const setModal = () => {
     setModalVisible(!modalVisible)
@@ -71,6 +78,24 @@ const SideBar = (props: any) => {
         console.error('Media Details', error)
       }
     }
+
+    const dynamicFilter = async () => {
+      try {
+        const res: any = await Api.get(`${configs.dynamicFilter}`, token)
+        if (res.status === 200) {
+          console.log('FilterRes', res)
+          setShowBotComplaints(res.data.controls[0].lookup_data)
+          setBrandPost(res.data.controls[1].lookup_data)
+          setSpam(res.data.controls[2].lookup_data)
+          setDeleted(res.data.controls[3].lookup_data)
+          setHandles(res.data.controls[4].lookup_data)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    dynamicFilter()
     mediaDetails()
   }, [token])
 
@@ -284,115 +309,96 @@ const SideBar = (props: any) => {
   }
 
   return (
-    // <View
-    //   style={{
-    //     width: '20%',
-    //     marginTop: '4%',
-    //     height: '100%',
-    //     backgroundColor: '#FBFBFB',
-    //     alignSelf: 'flex-end',
-    //     borderTopLeftRadius: 5,
-    //     shadowColor: '#000',
-    //     shadowOffset: {
-    //       width: 0,
-    //       height: 2,
-    //     },
-    //     shadowOpacity: 0.25,
-    //     shadowRadius: 3.84,
-    //     elevation: 5,
-    //   }}
-    // >
-    //   <Header
-    //     containerStyle={{
-    //       backgroundColor: '#FBFBFB',
-    //       height: '8%',
-    //       borderTopLeftRadius: 5,
-    //     }}
-    //     leftComponent={<Filter />}
-    //     // leftComponent={<Icon name="filter" size={15} />}
-    //     centerComponent={
-    //       <Text style={{ marginRight: '50%' }}>All Filters</Text>
-    //     }
-    //     rightComponent={
-    //       <TouchableOpacity onPress={onclose}>
-    //         <Icon name="close" color="#000" size={15} />
-    //       </TouchableOpacity>
-    //     }
-    //   />
-    //   <Divider />
-    <>
-      <View style={{ marginVertical: '10%', marginHorizontal: '5%' }}>
-        <Text style={{ fontSize: 13 }}>Medium</Text>
-        <Pressable onPress={() => onMediaPress()}>
-          {/* <TextInput
-            style={{
-              paddingLeft: 0,
-              backgroundColor: '#fff',
-              color: '#424242',
-              // borderRadius: 5,
-              borderColor: 'gray',
-              borderWidth: 1,
-              borderRadius: 4,
-              paddingVertical: '1%',
-            }} */}
-          {/* /> */}
-          <MediaDropdownList
-            list={mediaList}
+    <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.dropdownStyle}>
+          <Text style={styles.labeltext}>Medium</Text>
+          <Pressable onPress={() => onMediaPress()}>
+            <MediaDropdownList
+              list={mediaList}
+              onSelectValue={(val: any) => {
+                onMediaSelect(val)
+              }}
+            />
+          </Pressable>
+        </View>
+        <View style={styles.dropdownStyle}>
+          <Text style={styles.labeltext}>Priority</Text>
+          <MultipleDropdownList
+            list={priorityDropdownList}
             onSelectValue={(val: any) => {
-              onMediaSelect(val)
+              onPrioritySelect(val)
             }}
           />
-        </Pressable>
-      </View>
-      <View style={{ marginVertical: '5%', marginHorizontal: '5%' }}>
-        <Text style={{ fontSize: 13, paddingVertical: '2%' }}>Priority</Text>
-        {/* <Dropdown
-          dropdownList={priorityDropdownList}
-          selectedItem={selectedItemItem}
-        /> */}
-        <MultipleDropdownList
-          list={priorityDropdownList}
-          onSelectValue={(val: any) => {
-            onPrioritySelect(val)
-          }}
-        />
-      </View>
-      <View style={{ marginVertical: '5%', marginHorizontal: '5%' }}>
-        <Text style={{ fontSize: 13, paddingVertical: '2%' }}>Status</Text>
-        {/* <Dropdown
-          dropdownList={statusDropdownList}
-          selectedItem={selectedItemItem}
-        /> */}
-        <StatusDropdownList
-          list={statusDropdownList}
-          onSelectValue={(val: any) => {
-            onStatausSelect(val)
-          }}
-        />
-      </View>
-      <View style={{ flex: 1, marginHorizontal: '40%', marginVertical: '40%' }}>
-        <Pressable onPress={onSubmitFilter} style={styles.buttonStyle}>
-          <Text
-            style={[
-              styles.fontFamily,
-              { justifyContent: 'center', color: '#fff' },
-            ]}
-          >
-            Apply
-          </Text>
-        </Pressable>
-      </View>
-      {/* <>
-        <Modal
-          style={{ flex: 1 }}
-          animationType="none"
-          transparent={modalVisible}
-          visible={modalVisible}
-        >
-          <DropDownList>{isMediaDropdown && flatList(mediaList)}</DropDownList>
-        </Modal>
-      </> */}
-    </>
+        </View>
+        <View style={styles.dropdownStyle}>
+          <Text style={styles.labeltext}>Status</Text>
+          <StatusDropdownList
+            list={statusDropdownList}
+            onSelectValue={(val: any) => {
+              onStatausSelect(val)
+            }}
+          />
+        </View>
+        <View style={styles.dropdownStyle}>
+          <Text style={styles.labeltext}>Show Bots Complaints</Text>
+          <DropdownList
+            list={showBotComplaints}
+            onSelectValue={(val: any) => {
+              onStatausSelect(val)
+            }}
+          />
+        </View>
+        <View style={styles.dropdownStyle}>
+          <Text style={styles.labeltext}>Brand Post</Text>
+          <DropdownList
+            list={brandPost}
+            onSelectValue={(val: any) => {
+              onStatausSelect(val)
+            }}
+          />
+        </View>
+        <View style={styles.dropdownStyle}>
+          <Text style={styles.labeltext}>Spam</Text>
+          <DropdownList
+            list={spam}
+            onSelectValue={(val: any) => {
+              onStatausSelect(val)
+            }}
+          />
+        </View>
+        <View style={styles.dropdownStyle}>
+          <Text style={styles.labeltext}>Deleted</Text>
+          <DropdownList
+            list={deleted}
+            onSelectValue={(val: any) => {
+              onStatausSelect(val)
+            }}
+          />
+        </View>
+        <View style={styles.dropdownStyle}>
+          <Text style={styles.labeltext}>Handles</Text>
+          <DropdownList
+            list={handles}
+            onSelectValue={(val: any) => {
+              onStatausSelect(val)
+            }}
+          />
+        </View>
+        <View style={{ marginHorizontal: '40%', marginVertical: '10%' }}>
+          <Pressable onPress={onSubmitFilter} style={styles.buttonStyle}>
+            <Text
+              style={[
+                styles.fontFamily,
+                { justifyContent: 'center', color: '#fff' },
+              ]}
+            >
+              Apply
+            </Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </View>
     // </View>
   )
 }
@@ -445,5 +451,13 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderColor: '#001163',
     backgroundColor: '#001163',
+  },
+  labeltext: {
+    fontSize: 13,
+    paddingVertical: '2%',
+  },
+  dropdownStyle: {
+    marginVertical: '5%',
+    marginHorizontal: '5%',
   },
 })

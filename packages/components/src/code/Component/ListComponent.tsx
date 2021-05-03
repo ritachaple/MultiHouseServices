@@ -527,7 +527,7 @@ const List = (props: any) => {
             <SentimentSelect
               defaultValue={{
                 value: senti.id,
-                label: <img src={senti.url} alt="" />,
+                label: <img src={senti.url} alt="" height="20" />,
               }}
               list={sentimentList}
               onStatusSelect={(val: any) => onSentimentSelect(val.value)}
@@ -561,7 +561,7 @@ const List = (props: any) => {
           <DropdownList
             defaultValue={{
               value: setPri.id,
-              label: <img src={setPri.url} alt="" />,
+              label: <img src={setPri.url} alt="" height="20" />,
               // label: <img src='https://unoboat.s3.ap-south-1.amazonaws.com/redflag.svg' alt="" />
             }}
             list={priorityDropdownList}

@@ -127,6 +127,7 @@ const Interaction = (props: any) => {
             >
               <View
                 style={{
+                  flex: 1,
                   width: '20%',
                   marginTop: '4%',
                   height: '100%',
