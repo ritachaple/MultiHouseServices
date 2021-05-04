@@ -109,7 +109,13 @@ const Interaction = (props: any) => {
               </View>
             </View>
             {isFilterHeader ? (
-              <View style={{ height: '11%' }}>
+              <View
+                style={{
+                  // height: '11%',
+                  height: '22%',
+                  // maxHeight: "20%"
+                }}
+              >
                 <SelectedFilterHeader />
               </View>
             ) : (

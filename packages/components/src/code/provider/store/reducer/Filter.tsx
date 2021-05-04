@@ -7,6 +7,11 @@ const initialState = {
   priority: pri,
   status: stat,
   isFilterHeader: true,
+  showBotsComplaints: '',
+  brandPost: '',
+  spam: '',
+  deleted: '',
+  handles: '',
 }
 
 const Filter = (state = { initialState }, action: any) => {
@@ -57,6 +62,36 @@ const Filter = (state = { initialState }, action: any) => {
       return {
         ...state,
         isFilterHeader: false,
+      }
+      break
+    case 'SHOW_BOTS_COMPLAINTS':
+      return {
+        ...state,
+        showBotsComplaints: action.payload,
+      }
+      break
+    case 'BRAND_POST':
+      return {
+        ...state,
+        brandPost: action.payload,
+      }
+      break
+    case 'SPAM':
+      return {
+        ...state,
+        spam: action.payload,
+      }
+      break
+    case 'DELETED':
+      return {
+        ...state,
+        deleted: action.payload,
+      }
+      break
+    case 'HANDLES':
+      return {
+        ...state,
+        handles: action.payload,
       }
       break
 

@@ -1,5 +1,7 @@
 export const initialState = {
   token: '',
+  userDetails: '',
+  clientDetails: '',
 }
 
 const loginReducer = (state = { initialState }, action: any) => {
@@ -13,6 +15,18 @@ const loginReducer = (state = { initialState }, action: any) => {
       return {
         ...state,
         token: '',
+      }
+      break
+    case 'VERIFY_USER':
+      return {
+        ...state,
+        userDetails: action.payload,
+      }
+      break
+    case 'CLIENT_DETAIL':
+      return {
+        ...state,
+        clientDetails: action.payload,
       }
       break
     default:

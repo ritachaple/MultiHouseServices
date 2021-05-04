@@ -27,5 +27,6 @@ export const configs = {
   mediaList: `${BaseUrl}${Api}${ticket}get_medium_details`,
   headerList: `${BaseUrl}${Api}client/complaint_list_columns`, // headerList
   verifyUser: `${BaseUrl}${Api}verify_user`, // verify user
-  dynamicFilter: `${BaseUrl}${Api}${ticket}get_controls_with_data?client_id=39&group_id=1`, // To get dynamic filters options
+  dynamicFilter: `${BaseUrl}${Api}${ticket}get_controls_with_data`, // To get dynamic filters options
+  getClient: `${BaseUrl}${Api}get_clients/`,
 }

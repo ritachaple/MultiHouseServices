@@ -49,6 +49,55 @@ const Login = (props: any) => {
     }
   }, [])
 
+  const parseJwt = (token: any) => {
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(function (c) {
+          return `%` + (`00` + c.charCodeAt(0).toString(16)).slice(-2)
+        })
+        .join(''),
+    )
+
+    return JSON.parse(jsonPayload)
+  }
+
+  const verifyUserApi = async (token: string, body: any) => {
+    // const ubody = {
+    // exp: 1610040764,
+    // // "username": "paytm",
+    // username: login.username,
+    // orig_iat: 1610022764,
+    // user_id: 5889,
+    // email: '',
+    // email_id: '',
+    // // "password": "Interactive!23"
+    // password: login.password,
+    // }
+    body.password = login.password
+    const res: any = await Api.post(configs.verifyUser, body, token)
+    if (res.status === 200) {
+      // console.log('verifyUser', res)
+      props.verifyUserData(res.data.data)
+      await getClientDetails(token, res.data.data.user_id)
+    }
+  }
+
+  const getClientDetails = async (token: string, clientId: any) => {
+    try {
+      console.log('clientId', clientId)
+      const res: any = await Api.get(`${configs.getClient}${clientId}`, token)
+      if (res.status === 200) {
+        console.log('ClientDettailsRes', res)
+        props.setClientDetails(res.data.data[0])
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const onLoginPress = async () => {
     try {
       setProgres(100)
@@ -57,37 +106,20 @@ const Login = (props: any) => {
           username: login.username,
           password: login.password,
         }
-        console.log('body', login)
+        // console.log('body', login)
 
         const res: any = await Api.post(configs.loginApi, body)
-        console.log('login Api res', res)
+        // console.log('login Api res', res)
 
         if (res.status === 200) {
           props.setToken(res.data.token)
-          setProgres(0)
+          const tokenEncode = await parseJwt(res.data.token)
+          // console.log("tokenEncode", tokenEncode);
+          await verifyUserApi(res.data.token, tokenEncode)
+          // await getClientDetails(res.data.token,)
           props.navigation.navigate('Interaction')
-
-          const ubody = {
-            exp: 1610040764,
-            // "username": "paytm",
-            username: login.username,
-            orig_iat: 1610022764,
-            user_id: 5889,
-            email: '',
-            email_id: '',
-            // "password": "Interactive!23"
-            password: login.password,
-          }
-          const verfyUser = await Api.post(
-            configs.verifyUser,
-            ubody,
-            res.data.token,
-          )
-          if (res.status === 200) {
-            console.log('verifyUser', verfyUser)
-          }
-
-          console.log('token', res.data.token)
+          setProgres(0)
+          // console.log('token', res.data.token)
         } else {
           setProgres(0)
           validationError('Login Error!!!')
@@ -302,6 +334,12 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     setToken: (token: any) => {
       dispatch({ type: 'LOGIN_TOKEN', payload: token })
+    },
+    verifyUserData: (data: any) => {
+      dispatch({ type: 'VERIFY_USER', payload: data })
+    },
+    setClientDetails: (data: any) => {
+      dispatch({ type: 'CLIENT_DETAIL', payload: data })
     },
   }
 }

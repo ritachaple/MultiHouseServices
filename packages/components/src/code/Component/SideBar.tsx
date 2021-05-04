@@ -18,6 +18,7 @@ import { Checked, UnChecked } from '../Images/Checkbox'
 import { Filter } from '../Images/Header'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
+import { CXP_COMPLAINT_LIST_CONTROLS } from '../provider/Const'
 import Dropdown from './Dropdown'
 import DropDownList from './DropDownList'
 import {
@@ -37,6 +38,8 @@ const SideBar = (props: any) => {
     startDate,
     endDate,
     onClose,
+    clientDetails,
+    userDetails,
   } = props
 
   const [mediaList, setMediaList] = useState([] as any)
@@ -52,6 +55,11 @@ const SideBar = (props: any) => {
   const [spam, setSpam] = useState([] as any)
   const [deleted, setDeleted] = useState([] as any)
   const [handles, setHandles] = useState([] as any)
+  const [selShowBotsComplaints, setSelShowBotsComplaints] = useState()
+  const [selBrandPost, setSelBrandPost] = useState()
+  const [selSpam, setSelSpam] = useState()
+  const [selDeleted, setSelDeleted] = useState()
+  const [selHandles, setSelHandles] = useState()
 
   const setModal = () => {
     setModalVisible(!modalVisible)
@@ -81,7 +89,16 @@ const SideBar = (props: any) => {
 
     const dynamicFilter = async () => {
       try {
-        const res: any = await Api.get(`${configs.dynamicFilter}`, token)
+        const params = {
+          client_id: clientDetails.client_id,
+          group_id: CXP_COMPLAINT_LIST_CONTROLS,
+        }
+        // const res: any = await Api.get(`${configs.dynamicFilter}client_id=39&group_id=1`, token)
+        const res: any = await Api.get(
+          `${configs.dynamicFilter}`,
+          token,
+          params,
+        )
         if (res.status === 200) {
           console.log('FilterRes', res)
           setShowBotComplaints(res.data.controls[0].lookup_data)
@@ -171,6 +188,32 @@ const SideBar = (props: any) => {
     setSelStatus(selData)
   }
 
+  const onShowBotsComplaints = (val: any) => {
+    setSelShowBotsComplaints(val.label)
+    props.setFilterShowBotsComplaints(val.label)
+    console.log(val)
+  }
+  const onBrandPostSelect = (val: any) => {
+    setSelBrandPost(val.label)
+    props.setFilterBrandPost(val.label)
+    console.log(val)
+  }
+  const onSpamSelect = (val: any) => {
+    setSelSpam(val.label)
+    props.setFilterSpam(val.label)
+    console.log(val)
+  }
+  const onDeletedSelect = (val: any) => {
+    setSelDeleted(val.label)
+    props.setFilterDeleted(val.label)
+    console.log(val)
+  }
+  const onHandlesSelect = (val: any) => {
+    setSelHandles(val.label)
+    props.setFilterHandles(val.label)
+    console.log(val)
+  }
+
   const onSubmitFilter = () => {
     // selPriority
     // setStatus
@@ -242,9 +285,17 @@ const SideBar = (props: any) => {
       pageIndex,
       startDate,
       endDate,
+      clientDetails && clientDetails.client_id,
+      userDetails && userDetails.user_id,
       mediaId,
       priority,
       status,
+      undefined,
+      selShowBotsComplaints,
+      selBrandPost,
+      selSpam,
+      selDeleted,
+      selHandles,
     )
     if (res && res.status === 200) {
       props.setTikitData(res.data.data)
@@ -255,57 +306,6 @@ const SideBar = (props: any) => {
     } else {
       props.clearToken()
     }
-  }
-
-  const flatList = (list: any) => {
-    return (
-      <View>
-        <Icon
-          name="remove"
-          onPress={onMediaPress}
-          style={{ marginLeft: '90%', paddingTop: '1%' }}
-          size={12}
-          color="#000"
-        />
-        <FlatList
-          style={{ flex: 1 }}
-          data={list}
-          renderItem={({ item, index }) => {
-            const isCheck = Boolean(
-              media.find((value: any) => {
-                return value === item.medium_name
-              }),
-            )
-            return (
-              <View
-                style={{
-                  paddingHorizontal: '2%',
-                  paddingVertical: '0.5%',
-                  borderBottomWidth: 0.2,
-                  borderBottomColor: 'gray',
-                  backgroundColor: '#fff',
-                  flexDirection: 'row',
-                }}
-              >
-                {isMediaDropdown && (
-                  <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        // onMediaSelect(item, index)
-                      }}
-                    >
-                      {isCheck ? <Checked /> : <UnChecked />}
-                    </TouchableOpacity>
-                    <Text style={styles.fontFamily}>{item.medium_name}</Text>
-                  </View>
-                )}
-              </View>
-            )
-          }}
-          keyExtractor={(index: any) => index.toString()}
-        />
-      </View>
-    )
   }
 
   return (
@@ -345,7 +345,7 @@ const SideBar = (props: any) => {
           <DropdownList
             list={showBotComplaints}
             onSelectValue={(val: any) => {
-              onStatausSelect(val)
+              onShowBotsComplaints(val)
             }}
           />
         </View>
@@ -354,7 +354,7 @@ const SideBar = (props: any) => {
           <DropdownList
             list={brandPost}
             onSelectValue={(val: any) => {
-              onStatausSelect(val)
+              onBrandPostSelect(val)
             }}
           />
         </View>
@@ -363,7 +363,7 @@ const SideBar = (props: any) => {
           <DropdownList
             list={spam}
             onSelectValue={(val: any) => {
-              onStatausSelect(val)
+              onSpamSelect(val)
             }}
           />
         </View>
@@ -372,7 +372,7 @@ const SideBar = (props: any) => {
           <DropdownList
             list={deleted}
             onSelectValue={(val: any) => {
-              onStatausSelect(val)
+              onDeletedSelect(val)
             }}
           />
         </View>
@@ -381,7 +381,7 @@ const SideBar = (props: any) => {
           <DropdownList
             list={handles}
             onSelectValue={(val: any) => {
-              onStatausSelect(val)
+              onHandlesSelect(val)
             }}
           />
         </View>
@@ -406,6 +406,8 @@ const SideBar = (props: any) => {
 const mapStateToProps = (state: any) => {
   return {
     token: state.loginReducer.token,
+    clientDetails: state.loginReducer.clientDetails,
+    userDetails: state.loginReducer.userDetails,
     statusDropdownList: state.dropdownListData.statusDropdownList,
     priorityDropdownList: state.dropdownListData.priorityDropdownList,
     pageSize: state.Pagination.initialState.pageSize,
@@ -434,6 +436,21 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     setFilterHeader: () => {
       dispatch({ type: 'SET_FILTER_HEADER' })
+    },
+    setFilterShowBotsComplaints: (data: any) => {
+      dispatch({ type: 'SHOW_BOTS_COMPLAINTS', payload: data })
+    },
+    setFilterBrandPost: (data: any) => {
+      dispatch({ type: 'BRAND_POST', payload: data })
+    },
+    setFilterSpam: (data: any) => {
+      dispatch({ type: 'SPAM', payload: data })
+    },
+    setFilterDeleted: (data: any) => {
+      dispatch({ type: 'DELETED', payload: data })
+    },
+    setFilterHandles: (data: any) => {
+      dispatch({ type: 'HANDLES', payload: data })
     },
   }
 }

@@ -17,7 +17,7 @@ const stDate = new Date()
 stDate.setDate(stDate.getDate() - 15)
 
 const Example = (props: any) => {
-  const { token, pageSize, pageIndex } = props
+  const { token, pageSize, pageIndex, clientDetails, userDetails } = props
 
   const [startDate, setStartDate] = useState(stDate)
   const [endDate, setEndDate] = useState(new Date())
@@ -63,6 +63,8 @@ const Example = (props: any) => {
       pageIndex,
       startDate,
       endDate,
+      clientDetails && clientDetails.client_id,
+      userDetails && userDetails.user_id,
     )
     if (res && res.status === 200) {
       // setTickit(res.data.data)
@@ -227,6 +229,8 @@ const mapStateToProps = (state: any) => {
     pageIndex: state.Pagination.pageIndex
       ? state.Pagination.pageIndex
       : state.Pagination.initialState.pageIndex,
+    clientDetails: state.loginReducer.clientDetails,
+    userDetails: state.loginReducer.userDetails,
   }
 }
 

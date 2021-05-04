@@ -24,6 +24,8 @@ const Pagination = (props: any) => {
     navigation,
     startDate,
     endDate,
+    clientDetails,
+    userDetails,
   } = props
 
   const [totalPageCount, setTotalPageCount] = useState(0)
@@ -61,6 +63,8 @@ const Pagination = (props: any) => {
         pageInd,
         startDate,
         endDate,
+        clientDetails && clientDetails.client_id,
+        userDetails && userDetails.user_id,
       )
       if (res && res.status === 200) {
         props.setTikitData(res.data.data)
@@ -226,6 +230,8 @@ const mapStateToProps = (state: any) => {
     totalRecords: state.Pagination.totalRecords,
     startDate: state.tickitListData.startDate,
     endDate: state.tickitListData.endDate,
+    clientDetails: state.loginReducer.clientDetails,
+    userDetails: state.loginReducer.userDetails,
   }
 }
 

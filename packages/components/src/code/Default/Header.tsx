@@ -24,6 +24,8 @@ const Header = (props: any) => {
     pageIndex,
     startDate,
     endDate,
+    clientDetails,
+    userDetails,
   } = props
 
   const [isMenu, setToggleMenu] = useState(false)
@@ -61,6 +63,8 @@ const Header = (props: any) => {
       pageIndex,
       startDate,
       endDate,
+      clientDetails && clientDetails.client_id,
+      userDetails && userDetails.user_id,
       undefined,
       undefined,
       undefined,
@@ -267,6 +271,8 @@ const mapStateToProps = (state: any) => {
     pageIndex: state.Pagination.initialState.pageIndex,
     startDate: state.tickitListData.startDate,
     endDate: state.tickitListData.endDate,
+    clientDetails: state.loginReducer.clientDetails,
+    userDetails: state.loginReducer.userDetails,
   }
 }
 

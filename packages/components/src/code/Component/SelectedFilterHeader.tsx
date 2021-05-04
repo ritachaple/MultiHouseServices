@@ -17,6 +17,13 @@ const SelectedFilterHeader = (props: any) => {
     pageIndex,
     startDate,
     endDate,
+    deleted,
+    handles,
+    spam,
+    brandPost,
+    showBotsComplaints,
+    clientDetails,
+    userDetails,
   } = props
 
   const [filter, setFilter] = useState(true)
@@ -41,6 +48,8 @@ const SelectedFilterHeader = (props: any) => {
       pageIndex,
       startDate,
       endDate,
+      clientDetails && clientDetails.client_id,
+      userDetails && userDetails.user_id,
     )
     if (res && res.status === 200) {
       // setTickit(res.data.data)
@@ -74,126 +83,219 @@ const SelectedFilterHeader = (props: any) => {
         </View>
       ) : (
         filter && (
-          <View
-            style={{
-              // paddingVertical:"1%",
-              flexDirection: 'row',
-              paddingLeft: '1%',
-              // alignContent:"center",
-              // paddingTop:"1%"
-            }}
-          >
-            <View style={{ marginVertical: '5%' }}>
-              <Text
-                style={[styles.textStyle, { color: '#000', fontWeight: '400' }]}
-              >
-                Applied Filters :
-              </Text>
-            </View>
-            <View style={styles.filterBox}>
-              <Text style={styles.textStyle}>Medium: </Text>
-              <View style={{ flexDirection: 'row' }}>
-                {medium !== undefined && medium.length > 0 ? (
-                  medium.slice(0, 2).map((item: any, i: number) => {
-                    return (
-                      <Text style={[styles.textStyle, styles.selectedFilter]}>
-                        {item}
-                      </Text>
-                    )
-                  })
-                ) : (
-                  <Text style={[styles.textStyle, styles.selectedFilter]}>
-                    All
-                  </Text>
-                )}
-              </View>
-              <Icon
-                style={[styles.iconStyle, styles.textStyle]}
-                name="close"
-                color="#4d4d4d"
-                size={15}
-                onPress={() => {
-                  props.clearMedium()
-                }}
-              />
-            </View>
-            <View style={styles.filterBox}>
-              <Text style={styles.textStyle}>Priority:</Text>
-              <View style={{ flexDirection: 'row' }}>
-                {priority !== undefined && priority.length > 0 ? (
-                  priority.map((item: any, i: number) => {
-                    return (
-                      <Text style={[styles.textStyle, styles.selectedFilter]}>
-                        {item}
-                      </Text>
-                    )
-                  })
-                ) : (
-                  <Text style={[styles.textStyle, styles.selectedFilter]}>
-                    All
-                  </Text>
-                )}
-              </View>
-              {/* <Text style={[styles.textStyle, styles.selectedFilter]}>
-
-                {priority || 'All'}
-              </Text> */}
-              <Icon
-                style={[styles.iconStyle, styles.textStyle]}
-                name="close"
-                color="#4d4d4d"
-                size={15}
-                onPress={() => {
-                  props.clearPriority()
-                }}
-              />
-            </View>
-            <View style={styles.filterBox}>
-              <Text style={styles.textStyle}>Status:</Text>
-              {/* <Text style={[styles.textStyle, styles.selectedFilter]}>
-                {status || 'All'}
-              </Text> */}
-              <View style={{ flexDirection: 'row' }}>
-                {status !== undefined && status.length > 0 ? (
-                  status.map((item: any, i: number) => {
-                    return (
-                      <Text style={[styles.textStyle, styles.selectedFilter]}>
-                        {item}
-                      </Text>
-                    )
-                  })
-                ) : (
-                  <Text style={[styles.textStyle, styles.selectedFilter]}>
-                    All
-                  </Text>
-                )}
-              </View>
-              <Icon
-                style={[styles.iconStyle, styles.textStyle]}
-                name="close"
-                color="#4d4d4d"
-                size={15}
-                onPress={() => {
-                  props.clearStatus()
-                }}
-              />
-            </View>
-
-            <View style={{ marginVertical: '5%' }}>
-              <TouchableOpacity
-                onPress={() => {
-                  clearFilter()
-                }}
-              >
+          <View>
+            <View
+              style={{
+                // paddingVertical:"1%",
+                flexDirection: 'row',
+                paddingLeft: '1%',
+                // alignContent:"center",
+                // paddingTop:"1%"
+              }}
+            >
+              <View style={{ marginVertical: '5%' }}>
                 <Text
                   style={[
                     styles.textStyle,
-                    { color: '#1968FF', fontWeight: '400' },
+                    { color: '#000', fontWeight: '400' },
                   ]}
                 >
-                  clear filters
+                  Applied Filters :
                 </Text>
-              </TouchableOpacity>
+              </View>
+              <View style={styles.filterBox}>
+                <Text style={styles.textStyle}>Medium: </Text>
+                <View style={{ flexDirection: 'row' }}>
+                  {medium !== undefined && medium.length > 0 ? (
+                    medium.slice(0, 2).map((item: any, i: number) => {
+                      return (
+                        <Text style={[styles.textStyle, styles.selectedFilter]}>
+                          {item}
+                        </Text>
+                      )
+                    })
+                  ) : (
+                    <Text style={[styles.textStyle, styles.selectedFilter]}>
+                      All
+                    </Text>
+                  )}
+                </View>
+                <Icon
+                  style={[styles.iconStyle, styles.textStyle]}
+                  name="close"
+                  color="#4d4d4d"
+                  size={15}
+                  onPress={() => {
+                    props.clearMedium()
+                  }}
+                />
+              </View>
+
+              <View style={styles.filterBox}>
+                <Text style={styles.textStyle}>Priority:</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  {priority !== undefined && priority.length > 0 ? (
+                    priority.map((item: any, i: number) => {
+                      return (
+                        <Text style={[styles.textStyle, styles.selectedFilter]}>
+                          {item}
+                        </Text>
+                      )
+                    })
+                  ) : (
+                    <Text style={[styles.textStyle, styles.selectedFilter]}>
+                      All
+                    </Text>
+                  )}
+                </View>
+
+                <Icon
+                  style={[styles.iconStyle, styles.textStyle]}
+                  name="close"
+                  color="#4d4d4d"
+                  size={15}
+                  onPress={() => {
+                    props.clearPriority()
+                  }}
+                />
+              </View>
+
+              <View style={styles.filterBox}>
+                <Text style={styles.textStyle}>Status:</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  {status !== undefined && status.length > 0 ? (
+                    status.map((item: any, i: number) => {
+                      return (
+                        <Text style={[styles.textStyle, styles.selectedFilter]}>
+                          {item}
+                        </Text>
+                      )
+                    })
+                  ) : (
+                    <Text style={[styles.textStyle, styles.selectedFilter]}>
+                      All
+                    </Text>
+                  )}
+                </View>
+                <Icon
+                  style={[styles.iconStyle, styles.textStyle]}
+                  name="close"
+                  color="#4d4d4d"
+                  size={15}
+                  onPress={() => {
+                    props.clearStatus()
+                  }}
+                />
+              </View>
+
+              <View style={{ marginVertical: '5%' }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    clearFilter()
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      { color: '#1968FF', fontWeight: '400' },
+                    ]}
+                  >
+                    clear filters
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingLeft: '1%',
+              }}
+            >
+              <View style={[styles.filterBox, { width: '60%' }]}>
+                <Text style={styles.textStyle}>Show Bots Complaints:</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={[styles.textStyle, styles.selectedFilter]}>
+                    {showBotsComplaints || 'All'}
+                  </Text>
+                </View>
+                {/* <Icon
+                  style={[styles.iconStyle, styles.textStyle]}
+                  name="close"
+                  color="#4d4d4d"
+                  size={15}
+                  onPress={() => {
+                    props.clearStatus()
+                  }}
+                /> */}
+              </View>
+              <View style={styles.filterBox}>
+                <Text style={styles.textStyle}>Brand Post:</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={[styles.textStyle, styles.selectedFilter]}>
+                    {brandPost || 'All'}
+                  </Text>
+                </View>
+                {/* <Icon
+                  style={[styles.iconStyle, styles.textStyle]}
+                  name="close"
+                  color="#4d4d4d"
+                  size={15}
+                  onPress={() => {
+                    props.clearStatus()
+                  }}
+                /> */}
+              </View>
+              <View style={styles.filterBox}>
+                <Text style={styles.textStyle}>Spam:</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={[styles.textStyle, styles.selectedFilter]}>
+                    {spam || 'All'}
+                  </Text>
+                </View>
+                {/* <Icon
+                  style={[styles.iconStyle, styles.textStyle]}
+                  name="close"
+                  color="#4d4d4d"
+                  size={15}
+                  onPress={() => {
+                    props.clearStatus()
+                  }}
+                /> */}
+              </View>
+              <View style={styles.filterBox}>
+                <Text style={styles.textStyle}>Deleted:</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={[styles.textStyle, styles.selectedFilter]}>
+                    {deleted || 'All'}
+                  </Text>
+                </View>
+                {/* <Icon
+                  style={[styles.iconStyle, styles.textStyle]}
+                  name="close"
+                  color="#4d4d4d"
+                  size={15}
+                  onPress={() => {
+                    props.clearStatus()
+                  }}
+                /> */}
+              </View>
+              <View style={styles.filterBox}>
+                <Text style={styles.textStyle}>Handles:</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={[styles.textStyle, styles.selectedFilter]}>
+                    {handles || 'All'}
+                  </Text>
+                </View>
+                {/* <Icon
+                  style={[styles.iconStyle, styles.textStyle]}
+                  name="close"
+                  color="#4d4d4d"
+                  size={15}
+                  onPress={() => {
+                    props.clearStatus()
+                  }}
+                /> */}
+              </View>
             </View>
           </View>
         )
@@ -214,6 +316,13 @@ const mapStateToProps = (state: any) => {
     pageIndex: state.Pagination.initialState.pageIndex,
     startDate: state.tickitListData.startDate,
     endDate: state.tickitListData.endDate,
+    showBotsComplaints: state.Filter.showBotsComplaints,
+    brandPost: state.Filter.brandPost,
+    spam: state.Filter.spam,
+    deleted: state.Filter.deleted,
+    handles: state.Filter.handles,
+    clientDetails: state.loginReducer.clientDetails,
+    userDetails: state.loginReducer.userDetails,
   }
 }
 
@@ -254,10 +363,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderColor: '#CCD8EB',
     borderWidth: 1,
-    alignContent: 'center',
+    // alignContent: 'center',
     paddingHorizontal: '7%',
     paddingVertical: '2%',
-    marginVertical: '3%',
+    marginVertical: '2%',
     marginHorizontal: '4%',
     flexDirection: 'row',
     width: '45%',
