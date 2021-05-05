@@ -175,9 +175,8 @@ const ReplyModal = (props: any) => {
     // console.log('msgText:', editorState.getCurrentContent().getPlainText());
     const onSendMsg = () => {
       console.log('msgtext', editorState.getCurrentContent().getPlainText())
-
-      // props.setMsg(editorState.getCurrentContent().getPlainText())
-      onSendMessage(editorState.getCurrentContent().getPlainText())
+      const isInternal = true
+      onSendMessage(editorState.getCurrentContent().getPlainText(), isInternal)
     }
 
     return (

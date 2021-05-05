@@ -41,9 +41,10 @@ import {
 } from '../Images/MediaIcon'
 import InternalNotes from './InternalNotes'
 import ReplyModal from './ReplyModal'
+import { CXP_CHAT_SCREEN_CONTROLS } from '../provider/Const'
 
 const Chat = (props: any) => {
-  const { clientId, token, selectedTickit } = props
+  const { clientId, token, selectedTickit, clientDetails, userDetails } = props
   // console.log('checkCID', complaintId)
   // console.log('clientId', clientId)
 
@@ -86,24 +87,10 @@ const Chat = (props: any) => {
 
   const fontWeight = 600
 
-  // const bottomBtn = [
-  //   {
-  //     iocnName:'',
-  //     btnText:'Internal Note'
-  //   },
-  //   {
-  //     iocnName:'',
-  //     btnText:'Internal Note'
-  //   },
-  //   {
-  //     iocnName:'',
-  //     btnText:'Internal Note'
-  //   }
-  // ]
   const chatDetails = async () => {
     try {
       const res: any = await Api.get(
-        `${configs.get_activity}${selectedTickit.complaint_id}/2`,
+        `${configs.get_activity}${selectedTickit.complaint_id}/${CXP_CHAT_SCREEN_CONTROLS}`,
         token,
       )
       console.log('chatDetails', res)
@@ -360,9 +347,8 @@ const Chat = (props: any) => {
     )
   }
 
-  const onSendMessage = async (msg: string) => {
+  const onSendMessage = async (msg: string, isInternal: any) => {
     // console.log("msg", rplymsg);
-
     try {
       // if (message !== '') {
       const body = {
@@ -381,10 +367,10 @@ const Chat = (props: any) => {
         activity_id: null,
         resolution_text: null,
         medium_id: 2,
-        created_by: 'paytm',
+        created_by: clientDetails.client_name,
         is_internal_user: true,
-        is_internal: true,
-        user_id: 5889,
+        is_internal: isInternal,
+        user_id: userDetails.user_id,
         is_dm: false,
         medium_name: 'Twitter',
         conversation_text: msg,
@@ -427,7 +413,7 @@ const Chat = (props: any) => {
         activity_id: null,
         resolution_text: null,
         medium_id: replyData.medium_id,
-        created_by: 'paytm',
+        created_by: clientDetails.client_name,
         is_internal_user: true,
         is_internal: false,
         user_id: replyData.user_id,
@@ -1026,6 +1012,7 @@ const Chat = (props: any) => {
             onCancel={() => {
               onCloseModal()
             }}
+            onSendMessage={onSendMessage}
           />
         )}
 
@@ -1333,6 +1320,8 @@ const mapStateToProps = (state: any) => {
   return {
     token: state.loginReducer.token,
     selectedTickit: state.tickitListData.selectedTickit,
+    clientDetails: state.loginReducer.clientDetails,
+    userDetails: state.loginReducer.userDetails,
   }
 }
 

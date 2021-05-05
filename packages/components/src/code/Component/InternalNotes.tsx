@@ -33,7 +33,7 @@ const bodercolor = '#acb3bf'
 // });
 
 const InternalNotes = (props: any) => {
-  const { onCancel } = props
+  const { onCancel, onSendMessage } = props
 
   const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>'
   const contentBlock = htmlToDraft(html)
@@ -171,6 +171,12 @@ const InternalNotes = (props: any) => {
   }
 
   const SubmitButton = () => {
+    const onSendMsg = () => {
+      console.log('msgtext', editorState.getCurrentContent().getPlainText())
+      const isInternal = false
+      onSendMessage(editorState.getCurrentContent().getPlainText(), isInternal)
+    }
+
     return (
       <View style={{ flexDirection: 'row' }}>
         <View style={{ marginRight: '10%' }}>
@@ -185,7 +191,7 @@ const InternalNotes = (props: any) => {
               paddingHorizontal: '2%',
               // marginLeft: '1%',
             }}
-            // onPress={}
+            onPress={() => onSendMsg()}
           >
             <Text style={[styles.textStyle, { color: '#fff' }]}>Submit</Text>
             <Entypo

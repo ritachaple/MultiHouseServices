@@ -21,6 +21,7 @@
     "html-to-draftjs": "^1.5.0",
     "maisonsport-common-ui": "^0.9.0",
     "moment": "^2.29.1",
+    "multiselect-react-dropdown": "^1.6.11",
     "react-app-rewired": "^2.1.8",
     "react-art": "17.0.1",
     "react-beautiful-dnd": "^13.1.0",

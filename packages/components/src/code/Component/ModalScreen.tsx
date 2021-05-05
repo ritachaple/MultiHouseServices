@@ -13,15 +13,19 @@ import { connect } from 'react-redux'
 // @ts-ignore
 import { Calendar } from 'react-date-range'
 import moment from 'moment'
+// @ts-ignore
+// import { Multiselect } from 'multiselect-react-dropdown';
 import Chat from './Chat'
 import Dropdown from './Dropdown'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import UserHistory from './UserHistory'
 import UserData from './UserDetails_New'
+
 import MultipleDropdown from './MultipleDropdown'
 import { Interaction2Edit } from './DropdownSelect'
-
+import { CXP_CHAT_SCREEN_CONTROLS } from '../provider/Const'
+import { DropdownList } from './ReactSelect'
 // import Datepicker from './DatePicker'
 
 const ModalScreen = (props: any) => {
@@ -32,6 +36,7 @@ const ModalScreen = (props: any) => {
     token,
     userId,
     selectedTickit,
+    clientDetails,
   } = props
   // console.log('selected tickit', selectedTickit.custom_column.policy_number)
 
@@ -49,22 +54,37 @@ const ModalScreen = (props: any) => {
   const [assignToData, setAssignToData] = useState([] as any)
   const [userDetails, setUserDetails] = useState(false)
   const [CalenderVisible, setCalenderVisible] = useState(false)
+  const [OMC, setOMC] = useState([] as any)
+  const [SBU, setSBU] = useState([] as any)
+  const [TypeOfQuery, setTypeOfQuery] = useState([] as any)
+  // const [state, setstate] = useState([] as any)
 
   useEffect(() => {
     const dynamicControls = async () => {
       try {
-        const res: any = await Api.get(`${configs.dynamic_get_controls}`, token)
+        const params = {
+          client_id: clientDetails.client_id,
+          group_id: CXP_CHAT_SCREEN_CONTROLS,
+        }
+        const res: any = await Api.get(
+          `${configs.dynamic_get_controls}`,
+          token,
+          params,
+        )
         console.log('dynamic control res', res)
         if (res.status === 200 && res.data.controls !== null) {
           setPendingWithDropdown(res.data.controls[0])
           setDepartment(res.data.controls[1])
-          setPolicyNo(res.data.controls[2])
+          setOMC(res.data.controls[2])
+          setPolicyNo(res.data.controls[3])
           setAssignTo(res.data.controls[4])
           setPriority(res.data.controls[5])
+          setSBU(res.data.controls[6])
           setStatus(res.data.controls[7])
-          // setDueDate(res.data.controls[6])
-          // setFakeNewsType(res.data.controls[7])
-          // setFakeFactor(res.data.controls[8])
+          setDueDate(res.data.controls[8])
+          setTypeOfQuery(res.data.controls[9])
+          setFakeFactor(res.data.controls[10])
+          setFakeNewsType(res.data.controls[11])
         }
       } catch (error) {
         console.log('dynamic Control error', error)
@@ -224,25 +244,45 @@ const ModalScreen = (props: any) => {
             <ScrollView
               style={{ paddingHorizontal: '3%', paddingVertical: '2%' }}
             >
-              {/* <View>
-                <Text>Pending With</Text>
-                <Dropdown
-                  dropdownList={PendingWithDropdown.lookup_data}
-                  selectedItem={selectedPendingItem}
+              <View style={styles.dropdownViewStyle}>
+                <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                  Pending With
+                </Text>
+                <DropdownList
+                  list={PendingWithDropdown.lookup_data}
+                  onSelectValue={selectedPendingItem}
                 />
-              </View> */}
+              </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   Department
                 </Text>
-                {/* <Dropdown
-                  dropdownList={Department.lookup_data}
-                  selectedItem={selectedPendingItem}
-                /> */}
-                <Interaction2Edit
+                <DropdownList
+                  list={Department.lookup_data}
+                  onSelectValue={selectedPendingItem}
+                />
+              </View>
+              <View style={styles.dropdownViewStyle}>
+                <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                  OMC
+                </Text>
+                <DropdownList
+                  list={OMC.lookup_data}
+                  onSelectValue={selectedPendingItem}
+                />
+              </View>
+              <View style={styles.dropdownViewStyle}>
+                <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                  Policy Number
+                </Text>
+                <DropdownList
+                  list={PolicyNo.lookup_data}
+                  onSelectValue={selectedPendingItem}
+                />
+                {/* <Interaction2Edit
                   list={Department.lookup_data}
                   onSelectedItem={selectedPendingItem}
-                />
+                /> */}
               </View>
               {/* <View style={styles.dropdownViewStyle}>
                 <Text>Policy No</Text>
@@ -255,9 +295,15 @@ const ModalScreen = (props: any) => {
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   Assign To
                 </Text>
-                <Interaction2Edit
+                {/* <Multiselect
+                  style={{ position: "static" }}
+                  options={AssignTo.lookup_data}
+                  displayValue="text"
+                  showCheckbox={true}
+                /> */}
+                <DropdownList
                   list={AssignTo.lookup_data}
-                  onSelectedItem={selectedPendingItem}
+                  onSelectValue={selectedPendingItem}
                 />
 
                 {/* <MultipleDropdown
@@ -269,18 +315,27 @@ const ModalScreen = (props: any) => {
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   Priority
                 </Text>
-                <Interaction2Edit
+                <DropdownList
                   list={Priority.lookup_data}
-                  onSelectedItem={selectedPendingItem}
+                  onSelectValue={selectedPendingItem}
+                />
+              </View>
+              <View style={styles.dropdownViewStyle}>
+                <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                  SBU
+                </Text>
+                <DropdownList
+                  list={SBU.lookup_data}
+                  onSelectValue={selectedPendingItem}
                 />
               </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   Status
                 </Text>
-                <Interaction2Edit
+                <DropdownList
                   list={Status.lookup_data}
-                  onSelectedItem={selectedPendingItem}
+                  onSelectValue={selectedPendingItem}
                 />
               </View>
               <View style={styles.dropdownViewStyle}>
@@ -306,8 +361,8 @@ const ModalScreen = (props: any) => {
                         backgroundColor: '#fff',
                         padding: '4%',
                         borderRadius: 8,
-                        borderColor: '#d6d9e6',
-                        borderWidth: 1,
+                        // borderColor: '#d6d9e6',
+                        // borderWidth: 1,
                       }}
                     >
                       <TouchableOpacity
@@ -326,6 +381,33 @@ const ModalScreen = (props: any) => {
                       </TouchableOpacity>
                     </View>
                   )}
+                </View>
+                <View style={styles.dropdownViewStyle}>
+                  <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                    Type Of Query
+                  </Text>
+                  <DropdownList
+                    list={TypeOfQuery.lookup_data}
+                    onSelectValue={selectedPendingItem}
+                  />
+                </View>
+                <View style={styles.dropdownViewStyle}>
+                  <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                    Fake Factor
+                  </Text>
+                  <DropdownList
+                    list={FakeFactor.lookup_data}
+                    onSelectValue={selectedPendingItem}
+                  />
+                </View>
+                <View style={styles.dropdownViewStyle}>
+                  <Text style={[styles.textStyle, styles.DropdownTextColor]}>
+                    Fake News Type
+                  </Text>
+                  <DropdownList
+                    list={FakeNewsType.lookup_data}
+                    onSelectValue={selectedPendingItem}
+                  />
                 </View>
               </View>
               {/* <View style={styles.dropdownViewStyle}>
@@ -356,6 +438,7 @@ const mapStateToProps = (state: any) => {
     selectedTickit: state.tickitListData.selectedTickit
       ? state.tickitListData.selectedTickit
       : {},
+    clientDetails: state.loginReducer.clientDetails,
   }
 }
 
@@ -405,7 +488,7 @@ const styles = StyleSheet.create({
     color: '#8A92BB',
   },
   dropdownViewStyle: {
-    paddingVertical: '10%',
+    paddingVertical: '5%',
   },
   angleDown: {
     paddingTop: '1%',

@@ -242,6 +242,10 @@ form button {
   z-index: 99999;
 }
 
+.optionListContainer {
+  position: static !important;
+}
+
 /* .select_box .css-tj5bde-Svg {
   display: hidden !important;
 } */
