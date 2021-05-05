@@ -98,6 +98,8 @@ const List = (props: any) => {
     pageIndex,
     startDate,
     endDate,
+    clientDetails,
+    userDetails,
   } = props
 
   const [isSentimentList, setSentimentList] = useState(false)
@@ -130,6 +132,8 @@ const List = (props: any) => {
         pageIndex,
         startDate,
         endDate,
+        clientDetails && clientDetails.client_id,
+        userDetails && userDetails.user_id,
       )
       if (res && res.status === 200) {
         props.setTikitData(res.data.data)
@@ -761,6 +765,8 @@ const mapStateToProps = (state: any) => {
     pageIndex: state.Pagination.initialState.pageIndex,
     startDate: state.tickitListData.startDate,
     endDate: state.tickitListData.endDate,
+    clientDetails: state.loginReducer.clientDetails,
+    userDetails: state.loginReducer.userDetails,
   }
 }
 
