@@ -25,7 +25,7 @@ export const searchComplaintsApi = async (
   selBrandPost?: string,
   selSpam?: string,
   selDeleted?: string,
-  selHandles?: string,
+  selHandles?: [],
 ) => {
   const medum = mediumId || []
   const priorityList = priority || []
@@ -34,12 +34,14 @@ export const searchComplaintsApi = async (
 
   try {
     const data = {
+      account_id: selHandles || [],
       client_id: clientId,
       status: statusList,
       priority: priorityList,
       department: [],
-      is_deleted: false,
-      is_spam: false,
+      is_deleted: selDeleted || null,
+      is_spam: selSpam || null,
+      brand_post: selBrandPost || null,
       to_date: endDate,
       from_date: startDate,
       custom_filter: null,

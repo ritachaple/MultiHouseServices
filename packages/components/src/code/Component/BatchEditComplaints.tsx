@@ -6,10 +6,11 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
+import { CXP_BATCH_ACTION_POPUP_CONROLS } from '../provider/Const'
 import Dropdown from './Dropdown'
 
 const BatchEditComplaints = (props: any) => {
-  const { onPress, token } = props
+  const { onPress, token, clientDetails } = props
 
   const [controlOption, setControlOption] = useState([])
   const [statusOption, setStatusOption] = useState({} as any)
@@ -20,9 +21,14 @@ const BatchEditComplaints = (props: any) => {
   useEffect(() => {
     const batchUpdateControlOption = async () => {
       try {
+        const params = {
+          client_id: clientDetails.client_id,
+          group_id: CXP_BATCH_ACTION_POPUP_CONROLS,
+        }
         const res: any = await Api.get(
-          configs.batch_update_control_option,
+          configs.dynamic_get_controls,
           token,
+          params,
         )
         console.log('batchUpdateOptionRes', res)
         if (res.status) {
@@ -184,6 +190,7 @@ const BatchEditComplaints = (props: any) => {
 const mapStateToProps = (state: any) => {
   return {
     token: state.loginReducer.token,
+    clientDetails: state.loginReducer.clientDetails,
   }
 }
 

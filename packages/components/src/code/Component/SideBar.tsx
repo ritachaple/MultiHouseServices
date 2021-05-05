@@ -59,7 +59,7 @@ const SideBar = (props: any) => {
   const [selBrandPost, setSelBrandPost] = useState()
   const [selSpam, setSelSpam] = useState()
   const [selDeleted, setSelDeleted] = useState()
-  const [selHandles, setSelHandles] = useState()
+  const [selHandles, setSelHandles] = useState([] as any)
 
   const setModal = () => {
     setModalVisible(!modalVisible)
@@ -95,7 +95,7 @@ const SideBar = (props: any) => {
         }
         // const res: any = await Api.get(`${configs.dynamicFilter}client_id=39&group_id=1`, token)
         const res: any = await Api.get(
-          `${configs.dynamicFilter}`,
+          `${configs.dynamic_get_controls}`,
           token,
           params,
         )
@@ -179,39 +179,43 @@ const SideBar = (props: any) => {
   }
 
   const onPrioritySelect = (selData: any) => {
-    console.log('selPriority', selData)
+    // console.log('selPriority', selData)
     setSelPriority(selData)
   }
 
   const onStatausSelect = (selData: any) => {
-    console.log('statusSel', selData)
+    // console.log('statusSel', selData)
     setSelStatus(selData)
   }
 
   const onShowBotsComplaints = (val: any) => {
-    setSelShowBotsComplaints(val.label)
+    setSelShowBotsComplaints(val.value)
     props.setFilterShowBotsComplaints(val.label)
-    console.log(val)
+    // console.log(val)
   }
   const onBrandPostSelect = (val: any) => {
-    setSelBrandPost(val.label)
+    setSelBrandPost(val.value)
     props.setFilterBrandPost(val.label)
-    console.log(val)
+    // console.log(val)
   }
   const onSpamSelect = (val: any) => {
-    setSelSpam(val.label)
+    setSelSpam(val.value)
     props.setFilterSpam(val.label)
-    console.log(val)
+    // console.log(val)
   }
   const onDeletedSelect = (val: any) => {
-    setSelDeleted(val.label)
+    setSelDeleted(val.value)
     props.setFilterDeleted(val.label)
-    console.log(val)
+    // console.log(val)
   }
   const onHandlesSelect = (val: any) => {
-    setSelHandles(val.label)
+    // setSelHandles(val.value)
+    const handleData: string[] = []
+    handleData.push(val.value.toString())
+    setSelHandles(handleData)
+    // const setSelHandles = selHandles[0] = val.value
+    // console.log("arr", arr)
     props.setFilterHandles(val.label)
-    console.log(val)
   }
 
   const onSubmitFilter = () => {

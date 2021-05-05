@@ -70,7 +70,7 @@ const ChatScreen = (props: any) => {
       }
       setIsInfluencer(type)
       const res: any = await Api.put(
-        `${configs.mark_influencer_detractor}`,
+        `${configs.mark_influencer_detractor}${selectedTickit.user_id}`,
         body,
         token,
       )

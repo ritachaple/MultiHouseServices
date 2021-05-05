@@ -15,7 +15,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 // @ts-ignore
 import styled from 'styled-components'
-
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Pagination from './Pagination'
@@ -25,6 +24,7 @@ import { UnChecked, Checked } from '../Images/Checkbox'
 import { searchComplaintsApi } from '../CommnFncn/IntegrationAPI'
 import { Plus } from '../Images/Header'
 import Loader from './Loader'
+import { CXP_CHAT_SCREEN_CONTROLS } from '../provider/Const'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -209,12 +209,17 @@ const SearchComplaints = (props: any) => {
   useEffect(() => {
     const dynamicControls = async () => {
       try {
+        const params = {
+          client_id: clientDetails.client_id,
+          group_id: CXP_CHAT_SCREEN_CONTROLS,
+        }
         const res: any = await Api.get(
           `${configs.dynamic_get_controls}`,
           props.token,
+          params,
         )
         if (res.status === 200 && res.data.controls !== null) {
-          // console.log(' priority dropdown data', res.data.controls[4])
+          console.log(' priority dropdown data', res.data.controls[4])
           // setPriority(res.data.controls[4])
           props.setAssigneeDropdownList(res.data.controls[4].lookup_data)
           props.setpriorityDropdown(res.data.controls[5].lookup_data)
