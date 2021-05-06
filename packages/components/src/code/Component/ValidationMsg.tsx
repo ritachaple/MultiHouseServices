@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
-const ValidationMsg = (props: any) => {
+export const ValidationMsg = (props: any) => {
   const { displayMsg, message, customeStyle } = props
   const [state, setState] = useState(displayMsg)
 
@@ -30,7 +30,36 @@ const ValidationMsg = (props: any) => {
   )
 }
 
-export default ValidationMsg
+export const ValidateNotification = (props: any) => {
+  const { displayMsg, message, customeStyle } = props
+  const [state, setState] = useState(displayMsg)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setState(false)
+      props.validationMsg()
+    }, 4000)
+    return () => clearInterval(interval)
+  })
+
+  return (
+    <View style={{ flex: 1 }}>
+      {state && (
+        <View style={[styles.notificationView, customeStyle]}>
+          <View style={styles.modalView}>
+            <View>
+              <Text style={[styles.textStyle, { color: '#990000' }]}>
+                {message}
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
+    </View>
+  )
+}
+
+// export default ValidationMsg
 
 const styles = StyleSheet.create({
   modalView: {
@@ -58,6 +87,21 @@ const styles = StyleSheet.create({
     maxWidth: '40%',
     height: '40%',
     marginLeft: '40%',
+  },
+  notificationView: {
+    position: 'absolute',
+    // top: "40%",
+    bottom: 0,
+    // right: "-5%",
+    left: '97%',
+    // right: 30,
+    // width: '35%',
+    minWidth: '20%',
+    maxWidth: '40%',
+    height: '40%',
+    // marginLeft: '40%',
+    marginBottom: '60%',
+    // marginTop: 100
   },
 
   textStyle: {

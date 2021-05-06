@@ -34,12 +34,16 @@ const ChatScreen = (props: any) => {
 
   useEffect(() => {
     const findIndexOfTickit = () => {
-      const ind = tickitList
-        .map(function (item: any) {
-          return item.complaint_id
-        })
-        .indexOf(complaintId)
-      setIndex(ind)
+      try {
+        const ind = tickitList
+          .map(function (item: any) {
+            return item.complaint_id
+          })
+          .indexOf(complaintId)
+        setIndex(ind)
+      } catch (error) {
+        console.error(error)
+      }
     }
     // {
     //   selectedTickit.user_type && setIsInfluencer(selectedTickit.user_type)

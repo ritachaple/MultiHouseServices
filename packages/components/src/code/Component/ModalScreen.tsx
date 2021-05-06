@@ -37,10 +37,15 @@ const ModalScreen = (props: any) => {
     userId,
     selectedTickit,
     clientDetails,
+    isChatSBU,
+    isChatPriority,
+    isChatOMC,
+    statusDropdownList,
+    priorityDropdownList,
   } = props
   // console.log('selected tickit', selectedTickit.custom_column.policy_number)
 
-  const [PendingWithDropdown, setPendingWithDropdown] = useState([] as any)
+  const [PendingWith, setPendingWithDropdown] = useState([] as any)
   const [Department, setDepartment] = useState([] as any)
   const [PolicyNo, setPolicyNo] = useState([] as any)
   const [AssignTo, setAssignTo] = useState([] as any)
@@ -57,13 +62,13 @@ const ModalScreen = (props: any) => {
   const [OMC, setOMC] = useState([] as any)
   const [SBU, setSBU] = useState([] as any)
   const [TypeOfQuery, setTypeOfQuery] = useState([] as any)
-  // const [state, setstate] = useState([] as any)
+  const [filterData, setFilterData] = useState({} as any)
 
   useEffect(() => {
     const dynamicControls = async () => {
       try {
         const params = {
-          client_id: clientDetails.client_id,
+          client_id: clientDetails && clientDetails.client_id,
           group_id: CXP_CHAT_SCREEN_CONTROLS,
         }
         const res: any = await Api.get(
@@ -72,7 +77,11 @@ const ModalScreen = (props: any) => {
           params,
         )
         console.log('dynamic control res', res)
-        if (res.status === 200 && res.data.controls !== null) {
+        if (
+          res.status === 200 &&
+          res.data.controls !== null &&
+          res.data.controls.length > 0
+        ) {
           setPendingWithDropdown(res.data.controls[0])
           setDepartment(res.data.controls[1])
           setOMC(res.data.controls[2])
@@ -85,18 +94,36 @@ const ModalScreen = (props: any) => {
           setTypeOfQuery(res.data.controls[9])
           setFakeFactor(res.data.controls[10])
           setFakeNewsType(res.data.controls[11])
+          props.clrChatOMCFilter()
+          props.clrChatSBUFilter()
+          props.clrChatPriorityFilter()
+
+          const priority = res.data.controls[5].lookup_data.find(
+            (item: any) => {
+              return item.value === selectedTickit.priority_id
+            },
+          )
+          const status = res.data.controls[7].lookup_data.find((item: any) => {
+            return item.value === selectedTickit.status_id
+          })
+          // console.log("11priority", priority);
+          console.log('res.data.controls[5]', res.data.controls[5])
+
+          const data: any = { ...filterData }
+          data['Priority'] = priority
+          data['Status'] = status
+          setFilterData(data)
+          props.setChatFilterData(data)
         }
       } catch (error) {
         console.log('dynamic Control error', error)
       }
     }
 
+    // console.log("filterpriority", priority);
+
     dynamicControls()
   }, [token])
-
-  const selectedPendingItem = (item: any) => {
-    console.log('selectedPendingItem', item)
-  }
 
   const handleSelect = (date: any) => {
     setDueDate(date)
@@ -196,6 +223,89 @@ const ModalScreen = (props: any) => {
     setUserDetails(!userDetails)
   }
 
+  const selectedPendingItem = (item: any) => {
+    console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['PendingWith'] = item
+    setFilterData(data)
+    props.setChatFilterData(data)
+  }
+
+  const selectedDepartment = (item: any) => {
+    // console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['Department'] = item
+    setFilterData(data)
+    props.setChatFilterData(data)
+  }
+
+  const selectedOMC = (item: any) => {
+    // console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['OMC'] = item
+    setFilterData(data)
+    props.clrChatOMCFilter()
+    props.setChatFilterData(data)
+  }
+
+  const selectedPolicyNo = (item: any) => {
+    // console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['PolicyNo'] = item
+    setFilterData(data)
+    props.setChatFilterData(data)
+  }
+
+  const selectedPriority = (item: any) => {
+    // console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['Priority'] = item
+    setFilterData(data)
+    props.clrChatPriorityFilter()
+    props.setChatFilterData(data)
+  }
+
+  const selectedSBU = (item: any) => {
+    // console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['SBU'] = item
+    setFilterData(data)
+    props.clrChatSBUFilter()
+    props.setChatFilterData(data)
+  }
+
+  const selectedStatus = (item: any) => {
+    // console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['Status'] = item
+    setFilterData(data)
+    props.setChatFilterData(data)
+  }
+
+  const selectedTypeOfQuery = (item: any) => {
+    // console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['TypeOfQuery'] = item
+    setFilterData(data)
+    props.setChatFilterData(data)
+  }
+
+  const selectedFakeFactor = (item: any) => {
+    // console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['FakeFactor'] = item
+    setFilterData(data)
+    props.setChatFilterData(data)
+  }
+
+  const selectedFakeNewsType = (item: any) => {
+    // console.log('selectedPendingItem', item)
+    const data: any = { ...filterData }
+    data['FakeNewsType'] = item
+    setFilterData(data)
+    props.setChatFilterData(data)
+  }
+
   return (
     <View style={styles.centeredView}>
       <View style={styles.modalView}>
@@ -249,7 +359,7 @@ const ModalScreen = (props: any) => {
                   Pending With
                 </Text>
                 <DropdownList
-                  list={PendingWithDropdown.lookup_data}
+                  list={PendingWith.lookup_data}
                   onSelectValue={selectedPendingItem}
                 />
               </View>
@@ -259,17 +369,25 @@ const ModalScreen = (props: any) => {
                 </Text>
                 <DropdownList
                   list={Department.lookup_data}
-                  onSelectValue={selectedPendingItem}
+                  onSelectValue={selectedDepartment}
                 />
               </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   OMC
                 </Text>
-                <DropdownList
-                  list={OMC.lookup_data}
-                  onSelectValue={selectedPendingItem}
-                />
+                <View
+                  style={[
+                    styles.filterValidation,
+                    { borderWidth: isChatOMC ? 1 : 0, borderColor: 'red' },
+                  ]}
+                >
+                  <DropdownList
+                    style={{}}
+                    list={OMC.lookup_data}
+                    onSelectValue={selectedOMC}
+                  />
+                </View>
               </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
@@ -277,7 +395,7 @@ const ModalScreen = (props: any) => {
                 </Text>
                 <DropdownList
                   list={PolicyNo.lookup_data}
-                  onSelectValue={selectedPendingItem}
+                  onSelectValue={selectedPolicyNo}
                 />
                 {/* <Interaction2Edit
                   list={Department.lookup_data}
@@ -315,27 +433,54 @@ const ModalScreen = (props: any) => {
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   Priority
                 </Text>
-                <DropdownList
-                  list={Priority.lookup_data}
-                  onSelectValue={selectedPendingItem}
-                />
+                <View
+                  style={[
+                    styles.filterValidation,
+                    { borderWidth: isChatPriority ? 1 : 0, borderColor: 'red' },
+                  ]}
+                >
+                  <DropdownList
+                    list={Priority.lookup_data}
+                    onSelectValue={selectedPriority}
+                  />
+                </View>
               </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   SBU
                 </Text>
-                <DropdownList
-                  list={SBU.lookup_data}
-                  onSelectValue={selectedPendingItem}
-                />
+                <View
+                  style={[
+                    styles.filterValidation,
+                    {
+                      // borderWidth: 1,
+                      borderWidth: isChatSBU ? 1 : 0,
+                    },
+                  ]}
+                >
+                  <DropdownList
+                    list={SBU.lookup_data}
+                    onSelectValue={selectedSBU}
+                  />
+                </View>
               </View>
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   Status
                 </Text>
                 <DropdownList
+                  defaultValue={{
+                    value:
+                      filterData &&
+                      filterData.Status &&
+                      filterData.Status.value,
+                    label:
+                      filterData && filterData.Status && filterData.Status.text,
+                    // value: filterData.Status && filterData.Status.value,
+                    // label: filterData.Status && filterData.Status.text
+                  }}
                   list={Status.lookup_data}
-                  onSelectValue={selectedPendingItem}
+                  onSelectValue={selectedStatus}
                 />
               </View>
               <View style={styles.dropdownViewStyle}>
@@ -388,7 +533,7 @@ const ModalScreen = (props: any) => {
                   </Text>
                   <DropdownList
                     list={TypeOfQuery.lookup_data}
-                    onSelectValue={selectedPendingItem}
+                    onSelectValue={selectedTypeOfQuery}
                   />
                 </View>
                 <View style={styles.dropdownViewStyle}>
@@ -397,7 +542,7 @@ const ModalScreen = (props: any) => {
                   </Text>
                   <DropdownList
                     list={FakeFactor.lookup_data}
-                    onSelectValue={selectedPendingItem}
+                    onSelectValue={selectedFakeFactor}
                   />
                 </View>
                 <View style={styles.dropdownViewStyle}>
@@ -406,7 +551,7 @@ const ModalScreen = (props: any) => {
                   </Text>
                   <DropdownList
                     list={FakeNewsType.lookup_data}
-                    onSelectValue={selectedPendingItem}
+                    onSelectValue={selectedFakeNewsType}
                   />
                 </View>
               </View>
@@ -438,11 +583,34 @@ const mapStateToProps = (state: any) => {
     selectedTickit: state.tickitListData.selectedTickit
       ? state.tickitListData.selectedTickit
       : {},
+
+    isChatOMC: state.Filter.isChatOMC,
+    isChatPriority: state.Filter.isChatPriority,
+    isChatSBU: state.Filter.isChatSBU,
     clientDetails: state.loginReducer.clientDetails,
+    priorityDropdownList: state.dropdownListData.priorityDropdownList,
+    statusDropdownList: state.dropdownListData.statusDropdownList,
   }
 }
 
-export default connect(mapStateToProps)(ModalScreen)
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setChatFilterData: (data: any) => {
+      dispatch({ type: 'SET_CHAT_SCREEN_FILTER', payload: data })
+    },
+    clrChatPriorityFilter: () => {
+      dispatch({ type: 'CLR_CHAT_PRIORITY_FILTER' })
+    },
+    clrChatSBUFilter: () => {
+      dispatch({ type: 'CLR_CHAT_SBU_FILTER' })
+    },
+    clrChatOMCFilter: () => {
+      dispatch({ type: 'CLR_CHAT_OMC_FILTER' })
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModalScreen)
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -494,5 +662,9 @@ const styles = StyleSheet.create({
     paddingTop: '1%',
     paddingLeft: '50%',
     // justifyContent: "flex-end"
+  },
+  filterValidation: {
+    borderColor: 'red',
+    borderRadius: 5,
   },
 })

@@ -12,6 +12,10 @@ const initialState = {
   spam: '',
   deleted: '',
   handles: '',
+  chatScreenFilter: {},
+  isChatOMC: false,
+  isChatPriority: false,
+  isChatSBU: false,
 }
 
 const Filter = (state = { initialState }, action: any) => {
@@ -92,6 +96,54 @@ const Filter = (state = { initialState }, action: any) => {
       return {
         ...state,
         handles: action.payload,
+      }
+      break
+    case 'SET_CHAT_SCREEN_FILTER':
+      return {
+        ...state,
+        chatScreenFilter: action.payload,
+      }
+      break
+    case 'CLR_CHAT_SCREEN_FILTER':
+      return {
+        ...state,
+        chatScreenFilter: {},
+      }
+      break
+    case 'CHAT_OMC_FILTER':
+      return {
+        ...state,
+        isChatOMC: true,
+      }
+      break
+    case 'CLR_CHAT_OMC_FILTER':
+      return {
+        ...state,
+        isChatOMC: false,
+      }
+      break
+    case 'CHAT_PRIORITY_FILTER':
+      return {
+        ...state,
+        isChatPriority: true,
+      }
+      break
+    case 'CLR_CHAT_PRIORITY_FILTER':
+      return {
+        ...state,
+        isChatPriority: false,
+      }
+      break
+    case 'CHAT_SBU_FILTER':
+      return {
+        ...state,
+        isChatSBU: true,
+      }
+      break
+    case 'CLR_CHAT_SBU_FILTER':
+      return {
+        ...state,
+        isChatSBU: false,
       }
       break
 

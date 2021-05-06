@@ -182,7 +182,6 @@ const Pagination = (props: any) => {
                   style={{ opacity: 0.2 }}
                   name="angle-left"
                   color="#585353"
-                  onPress={() => onPreviousPress()}
                   size={20}
                 />
               ) : (

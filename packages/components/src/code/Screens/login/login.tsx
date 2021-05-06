@@ -18,7 +18,7 @@ import Twitter from '../../Component/ImageComponents/Twitter'
 import UnoBot from '../../Component/ImageComponents/UnoBot'
 import LinkedIn from '../../Component/ImageComponents/LinkedIn'
 import { LoginFacebook } from '../../Images/MediaIcon'
-import ValidationMsg from '../../Component/ValidationMsg'
+import { ValidationMsg } from '../../Component/ValidationMsg'
 import Loader from '../../Component/Loader'
 
 const Login = (props: any) => {
@@ -65,23 +65,14 @@ const Login = (props: any) => {
   }
 
   const verifyUserApi = async (token: string, body: any) => {
-    // const ubody = {
-    // exp: 1610040764,
-    // // "username": "paytm",
-    // username: login.username,
-    // orig_iat: 1610022764,
-    // user_id: 5889,
-    // email: '',
-    // email_id: '',
-    // // "password": "Interactive!23"
-    // password: login.password,
-    // }
     body.password = login.password
     const res: any = await Api.post(configs.verifyUser, body, token)
     if (res.status === 200) {
       // console.log('verifyUser', res)
       props.verifyUserData(res.data.data)
       await getClientDetails(token, res.data.data.user_id)
+    } else {
+      validationError('Invalid User !!')
     }
   }
 
@@ -117,6 +108,7 @@ const Login = (props: any) => {
           // console.log("tokenEncode", tokenEncode);
           await verifyUserApi(res.data.token, tokenEncode)
           // await getClientDetails(res.data.token,)
+          validationError('Logged In Successfully !!')
           props.navigation.navigate('Interaction')
           setProgres(0)
           // console.log('token', res.data.token)

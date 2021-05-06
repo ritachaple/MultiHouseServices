@@ -19,7 +19,9 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
 // @ts-ignore
 import htmlToDraft from 'html-to-draftjs'
+import { connect } from 'react-redux'
 import { RadioChecked, RadioUnchecked } from '../Images/SelectCBoxIcon'
+import { ValidateNotification } from './ValidationMsg'
 
 const bodercolor = '#acb3bf'
 
@@ -28,13 +30,17 @@ const bodercolor = '#acb3bf'
 // });
 
 const ReplyModal = (props: any) => {
-  const { onCancel, onSendMessage, replyName } = props
+  const { onCancel, onSendMessage, replyName, filterDetails } = props
 
   const [replyType, setReplyType] = useState('')
+  const [msg, setMsg] = useState('Enter msg')
+  const [openValidationMsg, setOpenValidationMsg] = useState(false)
 
   console.log('replyName', replyName)
 
-  const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>'
+  // const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>'
+  const html = '<p></p>'
+  // const html = ''
   const contentBlock = htmlToDraft(html)
   let editorStat
   if (contentBlock) {
@@ -145,6 +151,10 @@ const ReplyModal = (props: any) => {
     history: { className: 'editor-opacity' },
   }
 
+  const hideValidationMsg = () => {
+    setOpenValidationMsg(false)
+  }
+
   const CancelButton = () => {
     return (
       <View>
@@ -172,11 +182,46 @@ const ReplyModal = (props: any) => {
   }
 
   const SubmitButton = () => {
+    const validationError = (mssg: string) => {
+      setMsg(mssg)
+      setOpenValidationMsg(true)
+    }
     // console.log('msgText:', editorState.getCurrentContent().getPlainText());
+
+    const checkFilterFields = () => {
+      // filterDetails.OMC && filterDetails.Priority && filterDetails.SBU
+      if (!filterDetails.OMC) {
+        props.setChatOMC()
+      }
+      if (!filterDetails.Priority) {
+        props.setChatPriority()
+      }
+      if (!filterDetails.SBU) {
+        props.setChatSBU()
+      }
+    }
+
     const onSendMsg = () => {
-      console.log('msgtext', editorState.getCurrentContent().getPlainText())
-      const isInternal = true
-      onSendMessage(editorState.getCurrentContent().getPlainText(), isInternal)
+      if (!editorState.getCurrentContent().getPlainText()) {
+        validationError('Please enter message')
+      } else {
+        if (
+          filterDetails &&
+          filterDetails.OMC &&
+          filterDetails.Priority &&
+          filterDetails.SBU
+        ) {
+          const isInternal = true
+          onSendMessage(
+            editorState.getCurrentContent().getPlainText(),
+            isInternal,
+          )
+          validationError('Message Sent Successfully')
+        } else {
+          checkFilterFields()
+          validationError('Please select required fields')
+        }
+      }
     }
 
     return (
@@ -342,9 +387,39 @@ const ReplyModal = (props: any) => {
           />
         </div>
       </View>
+      {openValidationMsg && (
+        <ValidateNotification
+          message={msg}
+          validationMsg={hideValidationMsg}
+          displayMsg={openValidationMsg}
+          customeStyle={{ width: '35%' }}
+        />
+      )}
     </View>
   )
 }
+
+const mapStateToProps = (state: any) => {
+  return {
+    filterDetails: state.Filter.chatScreenFilter,
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setChatOMC: () => {
+      dispatch({ type: 'CHAT_OMC_FILTER' })
+    },
+    setChatPriority: () => {
+      dispatch({ type: 'CHAT_PRIORITY_FILTER' })
+    },
+    setChatSBU: () => {
+      dispatch({ type: 'CHAT_SBU_FILTER' })
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReplyModal)
 
 const styles = StyleSheet.create({
   buttonStyle: {
@@ -358,4 +433,3 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
 })
-export default ReplyModal
