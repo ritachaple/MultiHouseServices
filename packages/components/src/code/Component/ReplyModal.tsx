@@ -204,23 +204,21 @@ const ReplyModal = (props: any) => {
     const onSendMsg = () => {
       if (!editorState.getCurrentContent().getPlainText()) {
         validationError('Please enter message')
+      } else if (
+        filterDetails &&
+        filterDetails.OMC &&
+        filterDetails.Priority &&
+        filterDetails.SBU
+      ) {
+        const isInternal = true
+        onSendMessage(
+          editorState.getCurrentContent().getPlainText(),
+          isInternal,
+        )
+        validationError('Message Sent Successfully')
       } else {
-        if (
-          filterDetails &&
-          filterDetails.OMC &&
-          filterDetails.Priority &&
-          filterDetails.SBU
-        ) {
-          const isInternal = true
-          onSendMessage(
-            editorState.getCurrentContent().getPlainText(),
-            isInternal,
-          )
-          validationError('Message Sent Successfully')
-        } else {
-          checkFilterFields()
-          validationError('Please select required fields')
-        }
+        checkFilterFields()
+        validationError('Please select required fields')
       }
     }
 
