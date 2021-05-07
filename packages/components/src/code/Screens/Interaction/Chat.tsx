@@ -307,7 +307,7 @@ const ChatScreen = (props: any) => {
             </View>
           </View>
         </View>
-        <ModalScreen />
+        <ModalScreen navigation={navigation} />
       </View>
     </Default>
   )

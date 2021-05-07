@@ -15,6 +15,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Foundation from 'react-native-vector-icons/Foundation'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Divider } from 'react-native-elements'
+import { connect } from 'react-redux'
 
 // @ts-ignore
 import { EditorState, Modifier, convertToRaw, ContentState } from 'draft-js'
@@ -25,6 +26,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
 // @ts-ignore
 import htmlToDraft from 'html-to-draftjs'
+import { ValidateNotification } from './ValidationMsg'
 
 const bodercolor = '#acb3bf'
 
@@ -33,9 +35,10 @@ const bodercolor = '#acb3bf'
 // });
 
 const ChatModal = (props: any) => {
-  const { onCancel, onForwardPress } = props
+  const { onCancel, onForwardPress, filterDetails } = props
 
-  const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>'
+  const html = '<p></p>'
+  // const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>'
   const contentBlock = htmlToDraft(html)
   let editorStat
   if (contentBlock) {
@@ -47,6 +50,10 @@ const ChatModal = (props: any) => {
     editorStat = null
   }
   const [editorState, seteditorState] = useState(editorStat)
+  const [email, setEmail] = useState('')
+  const [msg, setMsg] = useState('Enter msg')
+  const [openValidationMsg, setOpenValidationMsg] = useState(false)
+
   const onEditorStateChange = (value: any) => {
     seteditorState(value)
   }
@@ -144,6 +151,10 @@ const ChatModal = (props: any) => {
     history: { className: 'editor-opacity' },
   }
 
+  const hideValidationMsg = () => {
+    setOpenValidationMsg(false)
+  }
+
   const CancelButton = () => {
     return (
       <View>
@@ -171,6 +182,53 @@ const ChatModal = (props: any) => {
   }
 
   const SubmitButton = () => {
+    const validationError = (mssg: string) => {
+      setMsg(mssg)
+      setOpenValidationMsg(true)
+    }
+
+    const checkFilterFields = () => {
+      // filterDetails.OMC && filterDetails.Priority && filterDetails.SBU
+      if (!filterDetails.OMC) {
+        props.setChatOMC()
+      }
+      if (!filterDetails.Priority) {
+        props.setChatPriority()
+      }
+      if (!filterDetails.SBU) {
+        props.setChatSBU()
+      }
+    }
+
+    // function validateEmail(mailId: any) {
+
+    //   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    //   return re.test(mailId)
+    // }
+
+    const forwardMail = () => {
+      // const mailformat = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (email !== undefined) {
+        //   if (validateEmail(email)) {
+        //     if (
+        //       filterDetails &&
+        //       filterDetails.OMC &&
+        //       filterDetails.Priority &&
+        //       filterDetails.SBU
+        //     ) {
+        //       props.onForwardPress()
+        //     } else {
+        //       checkFilterFields()
+        //       validationError('Please select required fields')
+        //     }
+        //   } else {
+        //     validationError('Please enter a valid email address')
+        // }
+      } else {
+        validationError('Please enter a valid email address')
+      }
+    }
+
     return (
       <View style={{ flexDirection: 'row' }}>
         <View style={{ marginRight: '10%' }}>
@@ -185,7 +243,7 @@ const ChatModal = (props: any) => {
               paddingHorizontal: '2%',
               // marginLeft: '1%',
             }}
-            onPress={onForwardPress}
+            onPress={forwardMail}
           >
             <Text style={[styles.textStyle, { color: '#fff' }]}>Forward</Text>
             <Entypo
@@ -201,6 +259,7 @@ const ChatModal = (props: any) => {
   }
 
   const onInputChange = (value: any) => {
+    setEmail(value)
     props.onSetEmail(value)
   }
 
@@ -316,8 +375,36 @@ const ChatModal = (props: any) => {
           {/* <MyButton /> */}
         </div>
       </View>
+      {openValidationMsg && (
+        <ValidateNotification
+          message={msg}
+          validationMsg={hideValidationMsg}
+          displayMsg={openValidationMsg}
+          customeStyle={{ width: '35%' }}
+        />
+      )}
     </View>
   )
+}
+
+const mapStateToProps = (state: any) => {
+  return {
+    filterDetails: state.Filter.chatScreenFilter,
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setChatOMC: () => {
+      dispatch({ type: 'CHAT_OMC_FILTER' })
+    },
+    setChatPriority: () => {
+      dispatch({ type: 'CHAT_PRIORITY_FILTER' })
+    },
+    setChatSBU: () => {
+      dispatch({ type: 'CHAT_SBU_FILTER' })
+    },
+  }
 }
 
 const styles = StyleSheet.create({
@@ -332,4 +419,5 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
 })
-export default ChatModal
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatModal)

@@ -41,5 +41,8 @@
     "styled-components": "*",
     "react-top-loading-bar": "*",
     "lodash": "*"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168"
   }
 }

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import {
   View,
-  TouchableHighlight,
   StyleSheet,
   Text,
-  TextInput,
   ScrollView,
   TouchableOpacity,
 } from 'react-native'
@@ -16,19 +14,15 @@ import moment from 'moment'
 // @ts-ignore
 // import { Multiselect } from 'multiselect-react-dropdown';
 import Chat from './Chat'
-import Dropdown from './Dropdown'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import UserHistory from './UserHistory'
 import UserData from './UserDetails_New'
-import MultipleDropdown from './MultipleDropdown'
-import { Interaction2Edit } from './DropdownSelect'
 import { CXP_CHAT_SCREEN_CONTROLS } from '../provider/Const'
 import { DropdownList } from './ReactSelect'
-// import Datepicker from './DatePicker'
+
 const ModalScreen = (props: any) => {
   const {
-    closeModal,
     complaintId,
     clientId,
     token,
@@ -41,7 +35,14 @@ const ModalScreen = (props: any) => {
     statusDropdownList,
     priorityDropdownList,
   } = props
-  // console.log('selected tickit', selectedTickit.custom_column.policy_number)
+
+  const selsStatus: any = statusDropdownList.find((item: any) => {
+    return item.status_id === selectedTickit.status_id
+  })
+
+  const selpriority = priorityDropdownList.find((item: any) => {
+    return item.value === selectedTickit.priority_id
+  })
 
   const [PendingWith, setPendingWithDropdown] = useState([] as any)
   const [Department, setDepartment] = useState([] as any)
@@ -61,6 +62,8 @@ const ModalScreen = (props: any) => {
   const [SBU, setSBU] = useState([] as any)
   const [TypeOfQuery, setTypeOfQuery] = useState([] as any)
   const [filterData, setFilterData] = useState({} as any)
+  // const [defaultPriority, setDefaultPriority] = useState(selpriority)
+  // const [defaultStatus, setDefaultStatus] = useState(selsStatus)
 
   useEffect(() => {
     const dynamicControls = async () => {
@@ -95,30 +98,17 @@ const ModalScreen = (props: any) => {
           props.clrChatOMCFilter()
           props.clrChatSBUFilter()
           props.clrChatPriorityFilter()
-
-          const priority = res.data.controls[5].lookup_data.find(
-            (item: any) => {
-              return item.value === selectedTickit.priority_id
-            },
-          )
-          const status = res.data.controls[7].lookup_data.find((item: any) => {
-            return item.value === selectedTickit.status_id
-          })
-          // console.log("11priority", priority);
-          console.log('res.data.controls[5]', res.data.controls[5])
-
-          const data: any = { ...filterData }
-          data[`'Priority'`] = priority
-          data[`'Status'`] = status
-          setFilterData(data)
-          props.setChatFilterData(data)
         }
       } catch (error) {
         console.log('dynamic Control error', error)
       }
     }
 
-    // console.log("filterpriority", priority);
+    const data: any = { ...filterData }
+    data.Priority = selpriority && selpriority
+    data.Status = selsStatus && selsStatus
+    setFilterData(data)
+    props.setChatFilterData(data)
 
     dynamicControls()
   }, [token])
@@ -138,84 +128,84 @@ const ModalScreen = (props: any) => {
     setIsConversation(false)
   }
 
-  const fetchActivity = async () => {
-    try {
-      const res: any = await Api.get(
-        `${configs.get_activity}${complaintId}/2`,
-        token,
-      )
-      console.log('fetch activity', res)
-      if (res.status === 200) {
-        // setChatData(res.data.data)
-        console.log('fetch activity api success')
-      }
-    } catch (error) {
-      console.log('fetch activityError', error)
-    }
-  }
+  // const fetchActivity = async () => {
+  //   try {
+  //     const res: any = await Api.get(
+  //       `${configs.get_activity}${complaintId}/2`,
+  //       token,
+  //     )
+  //     console.log('fetch activity', res)
+  //     if (res.status === 200) {
+  //       // setChatData(res.data.data)
+  //       console.log('fetch activity api success')
+  //     }
+  //   } catch (error) {
+  //     console.log('fetch activityError', error)
+  //   }
+  // }
 
-  const onMarkSpam = async () => {
-    try {
-      const body = {
-        activity_id: null,
-        conversation_text: 'Marked as Spam !',
-        created_by: 'system',
-        is_internal_user: true,
-        is_internal: true,
-        is_system_generated: true,
-        user_id: 5889,
-        is_user_reply: false,
-        department_id: 59,
-        complaint_id: complaintId,
-        medium_id: 2,
-        status_id: 1,
-        is_spam: true,
-      }
-      const res: any = await Api.post(`${configs.log_activity}`, body, token)
-      console.log('spam res', res)
-      if (res.status === 200) {
-        console.log('spam api success')
-      }
-    } catch (error) {
-      console.error('spam api error', error)
-    }
-  }
+  // const onMarkSpam = async () => {
+  //   try {
+  //     const body = {
+  //       activity_id: null,
+  //       conversation_text: 'Marked as Spam !',
+  //       created_by: 'system',
+  //       is_internal_user: true,
+  //       is_internal: true,
+  //       is_system_generated: true,
+  //       user_id: 5889,
+  //       is_user_reply: false,
+  //       department_id: 59,
+  //       complaint_id: complaintId,
+  //       medium_id: 2,
+  //       status_id: 1,
+  //       is_spam: true,
+  //     }
+  //     const res: any = await Api.post(`${configs.log_activity}`, body, token)
+  //     console.log('spam res', res)
+  //     if (res.status === 200) {
+  //       console.log('spam api success')
+  //     }
+  //   } catch (error) {
+  //     console.error('spam api error', error)
+  //   }
+  // }
 
-  const onMarkInfluencer = async (type: any) => {
-    try {
-      const body = {
-        client_id: clientId,
-        user_type: type,
-        // "user_type": "influencer"
-      }
-      const res: any = await Api.put(
-        `${configs.mark_influencer_detractor}`,
-        body,
-        token,
-      )
-      console.log('mark influence res', res)
-      if (res.status === 200) {
-        console.log(`mark ${type} success`)
-      }
-    } catch (error) {
-      console.error('mark enfluencer error', error)
-    }
-  }
+  // const onMarkInfluencer = async (type: any) => {
+  //   try {
+  //     const body = {
+  //       client_id: clientId,
+  //       user_type: type,
+  //       // "user_type": "influencer"
+  //     }
+  //     const res: any = await Api.put(
+  //       `${configs.mark_influencer_detractor}`,
+  //       body,
+  //       token,
+  //     )
+  //     console.log('mark influence res', res)
+  //     if (res.status === 200) {
+  //       console.log(`mark ${type} success`)
+  //     }
+  //   } catch (error) {
+  //     console.error('mark enfluencer error', error)
+  //   }
+  // }
 
-  const onRatingLink = async () => {
-    try {
-      const param: any = {
-        complaint_id: complaintId,
-      }
-      const res: any = await Api.get(`${configs.ratingLink}`, token, param)
-      console.log('rating link api res', res)
-      if (res.status === 200) {
-        console.log('rating link api success')
-      }
-    } catch (error) {
-      console.error('rating api error', error)
-    }
-  }
+  // const onRatingLink = async () => {
+  //   try {
+  //     const param: any = {
+  //       complaint_id: complaintId,
+  //     }
+  //     const res: any = await Api.get(`${configs.ratingLink}`, token, param)
+  //     console.log('rating link api res', res)
+  //     if (res.status === 200) {
+  //       console.log('rating link api success')
+  //     }
+  //   } catch (error) {
+  //     console.error('rating api error', error)
+  //   }
+  // }
 
   const showUserDetails = async () => {
     setUserDetails(!userDetails)
@@ -224,7 +214,7 @@ const ModalScreen = (props: any) => {
   const selectedPendingItem = (item: any) => {
     console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`'PendingWith'`] = item
+    data.PendingWith = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -232,7 +222,7 @@ const ModalScreen = (props: any) => {
   const selectedDepartment = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`"Department"`] = item
+    data.Department = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -240,7 +230,7 @@ const ModalScreen = (props: any) => {
   const selectedOMC = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`"OMC"`] = item
+    data.OMC = item
     setFilterData(data)
     props.clrChatOMCFilter()
     props.setChatFilterData(data)
@@ -249,7 +239,7 @@ const ModalScreen = (props: any) => {
   const selectedPolicyNo = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`'PolicyNo'`] = item
+    data.PolicyNo = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -257,7 +247,7 @@ const ModalScreen = (props: any) => {
   const selectedPriority = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`"Priority"`] = item
+    data.Priority = item
     setFilterData(data)
     props.clrChatPriorityFilter()
     props.setChatFilterData(data)
@@ -266,7 +256,7 @@ const ModalScreen = (props: any) => {
   const selectedSBU = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`"SBU"`] = item
+    data.SBU = item
     setFilterData(data)
     props.clrChatSBUFilter()
     props.setChatFilterData(data)
@@ -275,7 +265,7 @@ const ModalScreen = (props: any) => {
   const selectedStatus = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`"Status"`] = item
+    data.Status = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -283,7 +273,7 @@ const ModalScreen = (props: any) => {
   const selectedTypeOfQuery = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`'TypeOfQuery'`] = item
+    data.TypeOfQuery = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -291,7 +281,7 @@ const ModalScreen = (props: any) => {
   const selectedFakeFactor = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`'FakeFactor'`] = item
+    data.FakeFactor = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -299,10 +289,18 @@ const ModalScreen = (props: any) => {
   const selectedFakeNewsType = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data[`'FakeNewsType'`] = item
+    data.FakeNewsType = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
+
+  // const priority = priorityDropdownList.find((item: any) => {
+  //   return item.value === selectedTickit.priority_id
+  // })
+
+  // const status = statusDropdownList.find((item: any) => {
+  //   return item.status_id === selectedTickit.status_id
+  // })
 
   return (
     <View style={styles.centeredView}>
@@ -312,20 +310,17 @@ const ModalScreen = (props: any) => {
             style={{
               flexDirection: 'row',
               justifyContent: 'flex-end',
-              // padding: '1%',
             }}
-          >
-            {/* <Text>#{complaintId}</Text> */}
-          </View>
+          />
         </View>
         <View style={{ flexDirection: 'row', flex: 15 }}>
           <View style={{ flex: 5 }}>
-            {isCRM &&
+            {/* {isCRM &&
               (userDetails ? (
                 <UserData userId={userId} onClose={showUserDetails} />
               ) : (
                 <UserHistory showUserDetails={showUserDetails} />
-              ))}
+              ))} */}
             {/* {isCRM ? <UserData userId={userId} onClose={showUserDetails}/> : null} */}
 
             {/* {isConversation ? ( */}
@@ -338,10 +333,7 @@ const ModalScreen = (props: any) => {
               flex: 1,
               paddingHorizontal: '1%',
               backgroundColor: '#FBFBFB',
-              // backgroundColor: "red",
-              // marginRight: "2%",
               paddingBottom: '4%',
-              //  marginHorizontal: '1%', paddingVertical: '2%'
             }}
           >
             <View style={{ paddingVertical: '5%' }}>
@@ -438,6 +430,10 @@ const ModalScreen = (props: any) => {
                   ]}
                 >
                   <DropdownList
+                    defaultValue={{
+                      value: selpriority && selpriority.value,
+                      label: selpriority && selpriority.text,
+                    }}
                     list={Priority.lookup_data}
                     onSelectValue={selectedPriority}
                   />
@@ -451,12 +447,17 @@ const ModalScreen = (props: any) => {
                   style={[
                     styles.filterValidation,
                     {
-                      // borderWidth: 1,
                       borderWidth: isChatSBU ? 1 : 0,
                     },
                   ]}
                 >
                   <DropdownList
+                    defaultValue={{
+                      value: null,
+                      // label: statusSelect
+                      // label: filterData && filterData.Status && filterData.Status.status_name,
+                      // label: <img src='https://unoboat.s3.ap-south-1.amazonaws.com/redflag.svg' alt="" />
+                    }}
                     list={SBU.lookup_data}
                     onSelectValue={selectedSBU}
                   />
@@ -468,14 +469,8 @@ const ModalScreen = (props: any) => {
                 </Text>
                 <DropdownList
                   defaultValue={{
-                    value:
-                      filterData &&
-                      filterData.Status &&
-                      filterData.Status.value,
-                    label:
-                      filterData && filterData.Status && filterData.Status.text,
-                    // value: filterData.Status && filterData.Status.value,
-                    // label: filterData.Status && filterData.Status.text
+                    value: selsStatus && selsStatus.selpriority,
+                    label: selsStatus && selsStatus.status_name,
                   }}
                   list={Status.lookup_data}
                   onSelectValue={selectedStatus}
@@ -504,8 +499,6 @@ const ModalScreen = (props: any) => {
                         backgroundColor: '#fff',
                         padding: '4%',
                         borderRadius: 8,
-                        // borderColor: '#d6d9e6',
-                        // borderWidth: 1,
                       }}
                     >
                       <TouchableOpacity
@@ -515,7 +508,6 @@ const ModalScreen = (props: any) => {
                         }}
                       >
                         <Text>{moment(DueDate).format('DD-MM-YYYY')}</Text>
-                        {/* <Text>Date</Text> */}
                         <Icon
                           style={styles.angleDown}
                           name="angle-down"
@@ -553,20 +545,6 @@ const ModalScreen = (props: any) => {
                   />
                 </View>
               </View>
-              {/* <View style={styles.dropdownViewStyle}>
-                <Text>Fake new Type</Text>
-                <Dropdown
-                  dropdownList={FakeNewsType.lookup_data}
-                  selectedItem={selectedPendingItem}
-                />
-              </View>
-              <View style={styles.dropdownViewStyle}>
-                <Text>Fake Factor</Text>
-                <Dropdown
-                  dropdownList={FakeFactor.lookup_data}
-                  selectedItem={selectedPendingItem}
-                />
-              </View> */}
             </ScrollView>
           </View>
         </View>
@@ -613,18 +591,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(ModalScreen)
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // marginTop: 22,
-    // width: '100%',
   },
   modalView: {
     flex: 1,
-    // margin: 20,
     backgroundColor: 'white',
-    // borderRadius: 20,
-    // padding: 35,
-    // alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -659,7 +629,6 @@ const styles = StyleSheet.create({
   angleDown: {
     paddingTop: '1%',
     paddingLeft: '50%',
-    // justifyContent: "flex-end"
   },
   filterValidation: {
     borderColor: 'red',

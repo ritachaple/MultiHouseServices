@@ -15,6 +15,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Foundation from 'react-native-vector-icons/Foundation'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Divider } from 'react-native-elements'
+import { connect } from 'react-redux'
 
 // @ts-ignore
 import { EditorState, Modifier, convertToRaw, ContentState } from 'draft-js'
@@ -25,6 +26,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
 // @ts-ignore
 import htmlToDraft from 'html-to-draftjs'
+import { ValidateNotification } from './ValidationMsg'
 
 const bodercolor = '#acb3bf'
 
@@ -33,9 +35,9 @@ const bodercolor = '#acb3bf'
 // });
 
 const InternalNotes = (props: any) => {
-  const { onCancel, onSendMessage } = props
+  const { onCancel, onSendMessage, filterDetails } = props
 
-  const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>'
+  const html = '<p></p>'
   const contentBlock = htmlToDraft(html)
   let editorStat
   if (contentBlock) {
@@ -47,6 +49,9 @@ const InternalNotes = (props: any) => {
     editorStat = null
   }
   const [editorState, seteditorState] = useState(editorStat)
+  const [msg, setMsg] = useState('Enter msg')
+  const [openValidationMsg, setOpenValidationMsg] = useState(false)
+
   const onEditorStateChange = (value: any) => {
     seteditorState(value)
   }
@@ -144,6 +149,10 @@ const InternalNotes = (props: any) => {
     history: { className: 'editor-opacity' },
   }
 
+  const hideValidationMsg = () => {
+    setOpenValidationMsg(false)
+  }
+
   const CancelButton = () => {
     return (
       <View>
@@ -171,10 +180,44 @@ const InternalNotes = (props: any) => {
   }
 
   const SubmitButton = () => {
+    const validationError = (mssg: string) => {
+      setMsg(mssg)
+      setOpenValidationMsg(true)
+    }
+    // console.log('msgText:', editorState.getCurrentContent().getPlainText());
+
+    const checkFilterFields = () => {
+      // filterDetails.OMC && filterDetails.Priority && filterDetails.SBU
+      if (!filterDetails.OMC) {
+        props.setChatOMC()
+      }
+      if (!filterDetails.Priority) {
+        props.setChatPriority()
+      }
+      if (!filterDetails.SBU) {
+        props.setChatSBU()
+      }
+    }
+
     const onSendMsg = () => {
-      console.log('msgtext', editorState.getCurrentContent().getPlainText())
-      const isInternal = false
-      onSendMessage(editorState.getCurrentContent().getPlainText(), isInternal)
+      if (!editorState.getCurrentContent().getPlainText()) {
+        validationError('Please enter message')
+      } else if (
+        filterDetails &&
+        filterDetails.OMC &&
+        filterDetails.Priority &&
+        filterDetails.SBU
+      ) {
+        const isInternal = false
+        onSendMessage(
+          editorState.getCurrentContent().getPlainText(),
+          isInternal,
+        )
+        validationError('Message Sent Successfully')
+      } else {
+        checkFilterFields()
+        validationError('Please select required fields')
+      }
     }
 
     return (
@@ -310,8 +353,36 @@ const InternalNotes = (props: any) => {
           {/* <MyButton /> */}
         </div>
       </View>
+      {openValidationMsg && (
+        <ValidateNotification
+          message={msg}
+          validationMsg={hideValidationMsg}
+          displayMsg={openValidationMsg}
+          customeStyle={{ width: '35%' }}
+        />
+      )}
     </View>
   )
+}
+
+const mapStateToProps = (state: any) => {
+  return {
+    filterDetails: state.Filter.chatScreenFilter,
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setChatOMC: () => {
+      dispatch({ type: 'CHAT_OMC_FILTER' })
+    },
+    setChatPriority: () => {
+      dispatch({ type: 'CHAT_PRIORITY_FILTER' })
+    },
+    setChatSBU: () => {
+      dispatch({ type: 'CHAT_SBU_FILTER' })
+    },
+  }
 }
 
 const styles = StyleSheet.create({
@@ -326,4 +397,4 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
 })
-export default InternalNotes
+export default connect(mapStateToProps, mapDispatchToProps)(InternalNotes)

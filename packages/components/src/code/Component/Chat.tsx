@@ -20,8 +20,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Overlay, Divider, Input } from 'react-native-elements'
 import { Hoverable } from 'react-native-web-hover'
 import { connect } from 'react-redux'
-import * as _ from 'lodash'
 import Api from '../provider/api/Api'
+// import * as _ from 'lodash'
 // import _ from 'lodash'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
@@ -102,21 +102,21 @@ const Chat = (props: any) => {
         `${configs.get_activity}${selectedTickit.complaint_id}/${CXP_CHAT_SCREEN_CONTROLS}`,
         token,
       )
-      console.log('chatDetails', res)
-      if (res.status === 200) {
-        const sortedArray = _.orderBy(
-          res.data.data,
-          (item: any) => {
-            return moment(item.created_on)
-          },
-          ['asc'],
-        )
-        console.log('sortedArray', sortedArray)
+      // console.log('chatDetails', res)
+      // if (res.status === 200) {
+      //   const sortedArray = _.orderBy(
+      //     res.data.data,
+      //     (item: any) => {
+      //       return moment(item.created_on)
+      //     },
+      //     ['asc'],
+      //   )
+      //   console.log('sortedArray', sortedArray)
 
-        setChatData(sortedArray)
-        setChatDataCopy(sortedArray)
-        checkMedia(sortedArray)
-      }
+      //   setChatData(sortedArray)
+      //   setChatDataCopy(sortedArray)
+      //   checkMedia(sortedArray)
+      // }
     } catch (error) {
       console.log('chatDetailsError', error)
     }
