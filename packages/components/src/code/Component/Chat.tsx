@@ -20,7 +20,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Overlay, Divider, Input } from 'react-native-elements'
 import { Hoverable } from 'react-native-web-hover'
 import { connect } from 'react-redux'
-const _ = require('lodash')
+// const _ = require('lodash')
+const lodash = require('lodash')
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
@@ -95,7 +96,7 @@ const Chat = (props: any) => {
       )
       console.log('chatDetails', res)
       if (res.status === 200) {
-        const sortedArray = _.orderBy(
+        const sortedArray = lodash.orderBy(
           res.data.data,
           (item: any) => {
             return moment(item.created_on)
