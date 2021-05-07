@@ -21,13 +21,11 @@ import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import UserHistory from './UserHistory'
 import UserData from './UserDetails_New'
-
 import MultipleDropdown from './MultipleDropdown'
 import { Interaction2Edit } from './DropdownSelect'
 import { CXP_CHAT_SCREEN_CONTROLS } from '../provider/Const'
 import { DropdownList } from './ReactSelect'
 // import Datepicker from './DatePicker'
-
 const ModalScreen = (props: any) => {
   const {
     closeModal,
@@ -110,8 +108,8 @@ const ModalScreen = (props: any) => {
           console.log('res.data.controls[5]', res.data.controls[5])
 
           const data: any = { ...filterData }
-          data['Priority'] = priority
-          data['Status'] = status
+          data[`'Priority'`] = priority
+          data[`'Status'`] = status
           setFilterData(data)
           props.setChatFilterData(data)
         }
@@ -226,7 +224,7 @@ const ModalScreen = (props: any) => {
   const selectedPendingItem = (item: any) => {
     console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['PendingWith'] = item
+    data[`'PendingWith'`] = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -234,7 +232,7 @@ const ModalScreen = (props: any) => {
   const selectedDepartment = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['Department'] = item
+    data[`"Department"`] = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -242,7 +240,7 @@ const ModalScreen = (props: any) => {
   const selectedOMC = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['OMC'] = item
+    data[`"OMC"`] = item
     setFilterData(data)
     props.clrChatOMCFilter()
     props.setChatFilterData(data)
@@ -251,7 +249,7 @@ const ModalScreen = (props: any) => {
   const selectedPolicyNo = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['PolicyNo'] = item
+    data[`'PolicyNo'`] = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -259,7 +257,7 @@ const ModalScreen = (props: any) => {
   const selectedPriority = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['Priority'] = item
+    data[`"Priority"`] = item
     setFilterData(data)
     props.clrChatPriorityFilter()
     props.setChatFilterData(data)
@@ -268,7 +266,7 @@ const ModalScreen = (props: any) => {
   const selectedSBU = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['SBU'] = item
+    data[`"SBU"`] = item
     setFilterData(data)
     props.clrChatSBUFilter()
     props.setChatFilterData(data)
@@ -277,7 +275,7 @@ const ModalScreen = (props: any) => {
   const selectedStatus = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['Status'] = item
+    data[`"Status"`] = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -285,7 +283,7 @@ const ModalScreen = (props: any) => {
   const selectedTypeOfQuery = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['TypeOfQuery'] = item
+    data[`'TypeOfQuery'`] = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -293,7 +291,7 @@ const ModalScreen = (props: any) => {
   const selectedFakeFactor = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['FakeFactor'] = item
+    data[`'FakeFactor'`] = item
     setFilterData(data)
     props.setChatFilterData(data)
   }
@@ -301,7 +299,7 @@ const ModalScreen = (props: any) => {
   const selectedFakeNewsType = (item: any) => {
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
-    data['FakeNewsType'] = item
+    data[`'FakeNewsType'`] = item
     setFilterData(data)
     props.setChatFilterData(data)
   }

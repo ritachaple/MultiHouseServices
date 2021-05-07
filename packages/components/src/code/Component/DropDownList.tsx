@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native'
 
 const DropDownList = (props: any) => {
   const { children, style } = props
-  console.log('dropdown props', props)
+  console.log('dropdown props ::', props)
 
   return (
     <View style={style || styles.defaultStyle}>
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     alignSelf: 'center',
     elevation: 8,
+    fontFamily: 'Poppins-Light',
   },
 })
 

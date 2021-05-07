@@ -9,7 +9,10 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+
 import { connect } from 'react-redux'
+import Select from 'react-select'
+
 import Unobot from '../Images/Unobot'
 import UnobotText from '../Images/UnobotText'
 import { DropdownList } from '../Component/ReactSelect'
@@ -32,6 +35,21 @@ const Header = (props: any) => {
   const [SearchInput, setSearchInput] = useState()
 
   const menuList = [{ value: 'SignOut', text: 'SignOut' }]
+  const { list, onSelectValue, defaultValue } = props
+
+  const [selectedOption, setSelectedOption] = useState(defaultValue as any)
+
+  const options =
+    list !== undefined &&
+    list.length > 0 &&
+    list.map(function (item: any) {
+      return { value: item.value, label: item.text }
+    })
+
+  const onSelect = (val: any) => {
+    setSelectedOption(val)
+    onSelectValue(val)
+  }
 
   const onSelectMenu = (val: any) => {
     try {
@@ -227,7 +245,7 @@ const Header = (props: any) => {
           />
 
           <View style={{ flexDirection: 'row' }}>
-            {!isMenu ? (
+            {/* {!isMenu ? (
               <View style={{ flexDirection: 'row' }}>
                 <FontAwesome
                   style={{ padding: '10%' }}
@@ -255,7 +273,18 @@ const Header = (props: any) => {
                   onSelectValue={(val: any) => onSelectMenu(val)}
                 />
               </View>
-            )}
+            )} */}
+            <Select
+              menuPlacement="auto"
+              className="select_box"
+              menuPortalTarget={document.querySelector('body')}
+              defaultValue={selectedOption}
+              onChange={(value: any) => {
+                onSelect(value)
+              }}
+              options={options}
+              isSearchable={false}
+            />
           </View>
         </View>
       </View>

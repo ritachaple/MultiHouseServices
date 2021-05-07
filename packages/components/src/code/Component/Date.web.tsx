@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
 import DatePicker from 'react-datepicker'
 import { connect } from 'react-redux'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -206,13 +206,35 @@ const Example = (props: any) => {
             borderRadius: 100,
             paddingVertical: '4%',
             paddingHorizontal: '4%',
+
+            // fontFamily: 'Poppins-Light',
           }}
         >
           <TouchableOpacity onPress={showDatePicker}>
-            <Text>
-              {moment(state[0].startDate).format('DD MMM,yyyy')},{startTime} -{' '}
-              {moment(state[0].endDate).format('DD MMM,yyyy')},{endTime}
-            </Text>
+            {/* <View></View> */}
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Light',
+                  flex: 12,
+                }}
+              >
+                <Image
+                  source={{
+                    uri:
+                      'https://unoboat.s3.ap-south-1.amazonaws.com/default_priority.svg',
+                  }}
+                  style={{
+                    width: '25px',
+                    height: '25px',
+                    // paddingRight: '15px',
+                    marginHorizontal: '10px',
+                  }}
+                />
+                {moment(state[0].startDate).format('DD MMM,yyyy')},{startTime} -{' '}
+                {moment(state[0].endDate).format('DD MMM,yyyy')},{endTime}
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
       )}

@@ -172,7 +172,7 @@ const SelectIcon = (props: any) => {
   return (
     <View
       style={{
-        paddingLeft: '8%',
+        paddingLeft: '18%',
         flexDirection: 'row',
         justifyContent: 'space-around',
       }}
@@ -261,7 +261,7 @@ const SelectIcon = (props: any) => {
           <MarkUndelete />
         </TouchableOpacity>
       </View>
-      {/* <View style={[styles.borderBox,{ marginLeft:"8%" }]}>
+      <View style={[styles.borderBox, { marginLeft: '8%' }]}>
         <IconButton
           name="chain"
           onPress={() => {
@@ -269,7 +269,7 @@ const SelectIcon = (props: any) => {
           }}
         />
       </View>
-      <View style={{ paddingLeft: '4%' }}>
+      {/* <View style={{ paddingLeft: '4%' }}>
         <IconButton name="envelope-open-o" />
       </View>
       <View style={{ paddingLeft: '4%' }}>
@@ -330,7 +330,7 @@ const SelectIcon = (props: any) => {
           />
         ) : null}
 
-        {/* {mergeModalVisible ? (
+        {mergeModalVisible ? (
           <NotificationModal
             onCancelPress={() => {
               onMergePress()
@@ -343,7 +343,7 @@ const SelectIcon = (props: any) => {
             message="Selected complaints will be merged. Proceed with merge?"
             title="Merge Notification"
           />
-        ) : null} */}
+        ) : null}
 
         {spamModalVisible && (
           <NotificationModal
