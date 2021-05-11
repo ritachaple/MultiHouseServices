@@ -20,8 +20,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Overlay, Divider, Input } from 'react-native-elements'
 import { Hoverable } from 'react-native-web-hover'
 import { connect } from 'react-redux'
-// const _ = require('lodash')
-const lodash = require('lodash')
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
@@ -43,6 +41,8 @@ import {
 import InternalNotes from './InternalNotes'
 import ReplyModal from './ReplyModal'
 import { CXP_CHAT_SCREEN_CONTROLS } from '../provider/Const'
+// const _ = require('lodash')
+const lodash = require('lodash')
 
 const Chat = (props: any) => {
   const { clientId, token, selectedTickit, clientDetails, userDetails } = props

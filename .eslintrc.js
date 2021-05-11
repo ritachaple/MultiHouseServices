@@ -26,5 +26,6 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react-hooks/exhaustive-deps': 'off',
+    'no-param-reassign': 0,
   },
 }

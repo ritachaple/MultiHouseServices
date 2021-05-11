@@ -20,6 +20,7 @@ import UserHistory from './UserHistory'
 import UserData from './UserDetails_New'
 import { CXP_CHAT_SCREEN_CONTROLS } from '../provider/Const'
 import { DropdownList } from './ReactSelect'
+import { logActivityApi } from '../CommnFncn/IntegrationAPI'
 
 const ModalScreen = (props: any) => {
   const {
@@ -34,15 +35,16 @@ const ModalScreen = (props: any) => {
     isChatOMC,
     statusDropdownList,
     priorityDropdownList,
+    userDetails,
   } = props
 
-  const selsStatus: any = statusDropdownList.find((item: any) => {
-    return item.status_id === selectedTickit.status_id
-  })
+  // const selsStatus: any = statusDropdownList.find((item: any) => {
+  //   return item.status_id === selectedTickit.status_id
+  // })
 
-  const selpriority = priorityDropdownList.find((item: any) => {
-    return item.value === selectedTickit.priority_id
-  })
+  // const selpriority = priorityDropdownList.find((item: any) => {
+  //   return item.value === selectedTickit.priority_id
+  // })
 
   const [PendingWith, setPendingWithDropdown] = useState([] as any)
   const [Department, setDepartment] = useState([] as any)
@@ -56,14 +58,32 @@ const ModalScreen = (props: any) => {
   const [isConversation, setIsConversation] = useState(true)
   const [isCRM, setIsCRM] = useState(false)
   const [assignToData, setAssignToData] = useState([] as any)
-  const [userDetails, setUserDetails] = useState(false)
+  // const [userDetailss, setUserDetails] = useState(false)
   const [CalenderVisible, setCalenderVisible] = useState(false)
   const [OMC, setOMC] = useState([] as any)
   const [SBU, setSBU] = useState([] as any)
   const [TypeOfQuery, setTypeOfQuery] = useState([] as any)
-  const [filterData, setFilterData] = useState({} as any)
-  // const [defaultPriority, setDefaultPriority] = useState(selpriority)
-  // const [defaultStatus, setDefaultStatus] = useState(selsStatus)
+  const [filterData, setFilterData] = useState({
+    // PendingWith: "",
+    // Department: "",
+    // OMC: "",
+    // PolicyNo: "",
+    // Priority: "",
+    // SBU: "",
+    // Status: "",
+    // TypeOfQuery: "",
+    // FakeFactor: "",
+    // FakeNewsType: ""
+  } as any)
+
+  // useEffect(() => {
+  // const data: any = { ...filterData }
+  // data.Priority = selpriority && selpriority
+  // data.Status = selsStatus && selsStatus
+  // setFilterData(data)
+  // props.setChatFilterData(data)
+
+  // }, [])
 
   useEffect(() => {
     const dynamicControls = async () => {
@@ -104,14 +124,80 @@ const ModalScreen = (props: any) => {
       }
     }
 
-    const data: any = { ...filterData }
-    data.Priority = selpriority && selpriority
-    data.Status = selsStatus && selsStatus
-    setFilterData(data)
-    props.setChatFilterData(data)
-
     dynamicControls()
+
+    // const param = {
+    //   address_book: {}, email_template: {}, canned_response: {
+    //     status_id: ""
+    //     // status_id: selsStatus && selsStatus.status_id
+    //   }
+    // }
+    // channedResponse(param)
   }, [token])
+
+  const channedResponse = async (param: any) => {
+    console.log('dynamic Canned Error')
+
+    // try {
+    //   const body = {
+    //     client_id: selectedTickit.client_id,
+    //     params: param
+    //     // params: {
+    //     //   address_book: {}, email_template: {}, canned_response: {
+    //     //     status_id: selsStatus && selsStatus.status_id
+    //     //   }
+    //     // },
+    //   }
+    //   const res: any = await Api.post(
+    //     `${configs.dynamic_canned_response}`,
+    //     body,
+    //     token,
+    //   )
+    //   console.log('dynamic canned Res', res)
+    //   if (res.status === 200) {
+    //     // setDynamicCannedRes(res.data.data[0].val)
+    //     // setEmailTemplate(res.data.data[1].val)
+    //     // setAddressBook(res.data.data[2].val)
+    //   }
+    // } catch (error) {
+    //   console.log('dynamic Canned Error', error)
+    // }
+  }
+
+  const logActivity = (data: any) => {
+    const body = {
+      activity_id: null,
+      assigned_to: null,
+      blocked_by: data.blocked_by,
+      client_id: clientDetails && clientDetails.client_id,
+      complaint_id: selectedTickit && selectedTickit.complaint_id,
+      conversation_text: 'Field updated successfully !!',
+      created_by: clientDetails && clientDetails.client_name,
+      custom_column: data.custom_column,
+      category_id: data.category_id,
+      due_date: data.due_date,
+      omc_id: data.omc_id,
+      policy_number: data.policy_number,
+      sbu: data.sbu,
+      department_id: data.department_id,
+      fake_factor: data.fake_factor,
+      fake_news_type: data.fake_news_type,
+      is_dm: selectedTickit && selectedTickit.is_dm,
+      is_internal: true,
+      is_internal_user: true,
+      is_system_generated: true,
+      is_user_reply: false,
+      medium_id: selectedTickit && selectedTickit.medium_id,
+      medium_name: 'Youtube',
+      priority_id: data.priority_id,
+      resolution_text: null,
+      status_id: data.status_id,
+      updated_field: data.updated_field,
+      user_id: userDetails && userDetails.user_id,
+    }
+    const res: any = logActivityApi(body, token)
+    console.log(res, 'res')
+  }
 
   const handleSelect = (date: any) => {
     setDueDate(date)
@@ -171,27 +257,6 @@ const ModalScreen = (props: any) => {
   //   }
   // }
 
-  // const onMarkInfluencer = async (type: any) => {
-  //   try {
-  //     const body = {
-  //       client_id: clientId,
-  //       user_type: type,
-  //       // "user_type": "influencer"
-  //     }
-  //     const res: any = await Api.put(
-  //       `${configs.mark_influencer_detractor}`,
-  //       body,
-  //       token,
-  //     )
-  //     console.log('mark influence res', res)
-  //     if (res.status === 200) {
-  //       console.log(`mark ${type} success`)
-  //     }
-  //   } catch (error) {
-  //     console.error('mark enfluencer error', error)
-  //   }
-  // }
-
   // const onRatingLink = async () => {
   //   try {
   //     const param: any = {
@@ -207,12 +272,113 @@ const ModalScreen = (props: any) => {
   //   }
   // }
 
-  const showUserDetails = async () => {
-    setUserDetails(!userDetails)
+  // const showUserDetails = async () => {
+  //   setUserDetails(!userDetails)
+  // }
+
+  const logActivtCommonFunction = (fields: any) => {
+    let blockedBy = ''
+    let priorityId = ''
+    let dprtId = ''
+    let omcId = ''
+    let policyNo = ''
+    let sbuId = ''
+    let statusId = ''
+    let categoryId = ''
+    let fakeNewsType = ''
+    let fakeFactor = ''
+
+    if (fields && fields.blocked_by) {
+      blockedBy = fields.blocked_by
+    } else if (filterData.PendingWith) {
+      blockedBy = filterData.PendingWith.value
+    }
+
+    if (fields.priority_id) {
+      priorityId = fields.priority_id
+    } else if (filterData.Priority) {
+      priorityId = filterData.Priority.value
+    }
+
+    if (fields.department_id) {
+      dprtId = fields.department_id
+    } else if (filterData.Department) {
+      dprtId = filterData.Department.value
+    }
+
+    if (fields.omc_id) {
+      omcId = fields.omc_id
+    } else if (filterData.OMC) {
+      omcId = filterData.OMC.value
+    }
+
+    if (fields.policy_number) {
+      policyNo = fields.policy_number
+    } else if (filterData.PolicyNo) {
+      policyNo = filterData.PolicyNo.value
+    }
+
+    if (fields.sbu) {
+      sbuId = fields.sbu
+    } else if (filterData.SBU) {
+      sbuId = filterData.SBU.value
+    }
+
+    if (fields.status_id) {
+      statusId = fields.status_id
+    } else if (filterData.Status) {
+      statusId = filterData.Status.value
+    }
+
+    if (fields.category_id) {
+      categoryId = fields.category_id
+    } else if (filterData.TypeOfQuery) {
+      categoryId = filterData.TypeOfQuery.value
+    }
+
+    if (fields.fake_news_type) {
+      fakeNewsType = fields.fake_news_type
+    } else if (filterData.FakeNewsType) {
+      fakeNewsType = filterData.FakeNewsType.value
+    }
+
+    if (fields.fake_factor) {
+      fakeFactor = fields.fake_factor
+    } else if (filterData.FakeFactor) {
+      fakeFactor = filterData.FakeFactor.value
+    }
+
+    const data: any = {
+      custom_column: fields.custom_column,
+      updated_field: fields.updated_field,
+      blocked_by: blockedBy,
+      priority_id: priorityId,
+      department_id: dprtId,
+      omc_id: omcId,
+      policy_number: policyNo,
+      sbu: sbuId,
+      status_id: statusId,
+      category_id: categoryId,
+      fake_news_type: fakeNewsType,
+      fake_factor: fakeFactor,
+    }
+    logActivity(data)
   }
 
   const selectedPendingItem = (item: any) => {
-    console.log('selectedPendingItem', item)
+    const body: any = {
+      custom_column: {
+        omc_id: (filterData.OMC && filterData.OMC.value) || '',
+        policy_number: (filterData.PolicyNo && filterData.PolicyNo.value) || '',
+        sbu: (filterData.SBU && filterData.SBU.value) || '',
+        due_date: null,
+        category_id:
+          (filterData.TypeOfQuery && filterData.TypeOfQuery.value) || '',
+      },
+      blocked_by: item.value,
+      updated_field: { blocked_by: item.value },
+    }
+    logActivtCommonFunction(body)
     const data: any = { ...filterData }
     data.PendingWith = item
     setFilterData(data)
@@ -220,6 +386,37 @@ const ModalScreen = (props: any) => {
   }
 
   const selectedDepartment = (item: any) => {
+    // const param = {
+    //   address_book: {
+    //     department_id: item.value || ""
+    //   },
+    //   email_template: {
+    //     department_id: item.value || ""
+    //   },
+    //   canned_response: {
+    //     status_id: filterData.Status.status_id || "",
+    //     category_id: filterData.TypeOfQuery.value || "",
+    //     department_id: item.value || "",
+    //     omc_id: filterData.OMC.value || "",
+    //     sbu: filterData.SBU.value || "",
+    //   }
+    // }
+    // channedResponse(param)
+
+    const body: any = {
+      custom_column: {
+        omc_id: (filterData.OMC && filterData.OMC.value) || '',
+        policy_number: (filterData.PolicyNo && filterData.PolicyNo.value) || '',
+        sbu: (filterData.SBU && filterData.SBU.value) || '',
+        due_date: null,
+        category_id:
+          (filterData.TypeOfQuery && filterData.TypeOfQuery.value) || '',
+      },
+      department_id: item.value,
+      updated_field: { department_id: item.value },
+    }
+    logActivtCommonFunction(body)
+
     // console.log('selectedPendingItem', item)
     const data: any = { ...filterData }
     data.Department = item
@@ -229,6 +426,37 @@ const ModalScreen = (props: any) => {
 
   const selectedOMC = (item: any) => {
     // console.log('selectedPendingItem', item)
+    // const param = {
+    //   address_book: {
+    //     department_id: filterData.Department.value || ""
+    //   },
+    //   email_template: {
+    //     department_id: filterData.Department.value || ""
+    //   },
+    //   canned_response: {
+    //     status_id: filterData.Status.status_id || "",
+    //     category_id: filterData.TypeOfQuery.value || "",
+    //     department_id: filterData.Department.value || "",
+    //     omc_id: item.value || "",
+    //     sbu: filterData.SBU.value || "",
+    //   }
+    // }
+    // channedResponse(param)
+
+    const body: any = {
+      custom_column: {
+        omc_id: item.value || '',
+        policy_number: (filterData.PolicyNo && filterData.PolicyNo.value) || '',
+        sbu: (filterData.SBU && filterData.SBU.value) || '',
+        due_date: null,
+        category_id:
+          (filterData.TypeOfQuery && filterData.TypeOfQuery.value) || '',
+      },
+      omc_id: item.value,
+      updated_field: { omc_id: item.value },
+    }
+    logActivtCommonFunction(body)
+
     const data: any = { ...filterData }
     data.OMC = item
     setFilterData(data)
@@ -237,45 +465,188 @@ const ModalScreen = (props: any) => {
   }
 
   const selectedPolicyNo = (item: any) => {
-    // console.log('selectedPendingItem', item)
-    const data: any = { ...filterData }
-    data.PolicyNo = item
-    setFilterData(data)
-    props.setChatFilterData(data)
+    console.log('selectedPendingItem', item)
+    try {
+      if (item) {
+        const body: any = {
+          custom_column: {
+            omc_id: (filterData.OMC && filterData.OMC.value) || '',
+            policy_number: item.value || '',
+            sbu: (filterData.SBU && filterData.SBU.value) || '',
+            due_date: null,
+            category_id:
+              (filterData.TypeOfQuery && filterData.TypeOfQuery.value) || '',
+          },
+          policy_number: item.value,
+          updated_field: { policy_number: item.value },
+        }
+        logActivtCommonFunction(body)
+
+        const data: any = { ...filterData }
+        data.PolicyNo = item
+        setFilterData(data)
+        props.setChatFilterData(data)
+      }
+    } catch (error) {
+      console.error('error', error)
+    }
   }
 
   const selectedPriority = (item: any) => {
     // console.log('selectedPendingItem', item)
-    const data: any = { ...filterData }
-    data.Priority = item
-    setFilterData(data)
-    props.clrChatPriorityFilter()
-    props.setChatFilterData(data)
+    try {
+      const body: any = {
+        custom_column: {
+          omc_id: (filterData.OMC && filterData.OMC.value) || '',
+          priority_id: item.value || '',
+          sbu: (filterData.SBU && filterData.SBU.value) || '',
+          due_date: null,
+          category_id:
+            (filterData.TypeOfQuery && filterData.TypeOfQuery.value) || '',
+        },
+        priority_id: item.value,
+        updated_field: { priority_id: item.value },
+      }
+      logActivtCommonFunction(body)
+
+      const data: any = { ...filterData }
+      data.Priority = item
+      setFilterData(data)
+      props.clrChatPriorityFilter()
+      props.setChatFilterData(data)
+    } catch (error) {
+      console.error()
+    }
   }
 
   const selectedSBU = (item: any) => {
     // console.log('selectedPendingItem', item)
-    const data: any = { ...filterData }
-    data.SBU = item
-    setFilterData(data)
-    props.clrChatSBUFilter()
-    props.setChatFilterData(data)
+    // const param = {
+    //   address_book: {
+    //     department_id: filterData.Department.value || ""
+    //   },
+    //   email_template: {
+    //     department_id: filterData.Department.value || ""
+    //   },
+    //   canned_response: {
+    //     status_id: filterData.Status.status_id || "",
+    //     category_id: filterData.TypeOfQuery.value || "",
+    //     department_id: filterData.Department.value || "",
+    //     omc_id: filterData.OMC.value || "",
+    //     sbu: item.value || "",
+    //   }
+    // }
+    // channedResponse(param)
+    try {
+      const body: any = {
+        custom_column: {
+          omc_id: (filterData.OMC && filterData.OMC.value) || '',
+          policy_number:
+            (filterData.PolicyNo && filterData.PolicyNo.value) || '',
+          sbu: item.value,
+          due_date: null,
+          category_id:
+            (filterData.TypeOfQuery && filterData.TypeOfQuery.value) || '',
+        },
+        sbu: item.value,
+        updated_field: { sbu: item.value },
+      }
+      logActivtCommonFunction(body)
+
+      const data: any = { ...filterData }
+      data.SBU = item
+      setFilterData(data)
+      props.clrChatSBUFilter()
+      props.setChatFilterData(data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const selectedStatus = (item: any) => {
     // console.log('selectedPendingItem', item)
-    const data: any = { ...filterData }
-    data.Status = item
-    setFilterData(data)
-    props.setChatFilterData(data)
+    // const param = {
+    //   address_book: {
+    //     department_id: filterData.Department.value || ""
+    //   },
+    //   email_template: {
+    //     department_id: filterData.Department.value || ""
+    //   },
+    //   canned_response: {
+    //     status_id: item.status_id || "",
+    //     category_id: filterData.TypeOfQuery.value || "",
+    //     department_id: filterData.Department.value || "",
+    //     omc_id: filterData.OMC.value || "",
+    //     sbu: filterData.SBU.value || "",
+    //   }
+    // }
+    // channedResponse(param)
+    try {
+      const data: any = { ...filterData }
+      data.Status = item
+      setFilterData(data)
+      props.setChatFilterData(data)
+
+      const body: any = {
+        custom_column: {
+          omc_id: (filterData.OMC && filterData.OMC.value) || '',
+          policy_number:
+            (filterData.PolicyNo && filterData.PolicyNo.value) || '',
+          sbu: (filterData.SBU && filterData.SBU.value) || '',
+          due_date: null,
+          category_id:
+            (filterData.TypeOfQuery && filterData.TypeOfQuery.value) || '',
+        },
+        status_id: item.value,
+        updated_field: { status_id: item.value },
+      }
+      logActivtCommonFunction(body)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const selectedTypeOfQuery = (item: any) => {
     // console.log('selectedPendingItem', item)
-    const data: any = { ...filterData }
-    data.TypeOfQuery = item
-    setFilterData(data)
-    props.setChatFilterData(data)
+    // const param = {
+    //   address_book: {
+    //     department_id: (filterData.Department && filterData.Department.value) || ""
+    //   },
+    //   email_template: {
+    //     department_id: filterData.Department.value || ""
+    //   },
+    //   canned_response: {
+    //     status_id: item.status_id || "",
+    //     category_id: item.value || "",
+    //     department_id: filterData.Department.value || "",
+    //     omc_id: filterData.OMC.value || "",
+    //     sbu: filterData.SBU.value || "",
+    //   }
+    // }
+    // channedResponse(param)
+
+    try {
+      const data: any = { ...filterData }
+      data.TypeOfQuery = item
+      setFilterData(data)
+      props.setChatFilterData(data)
+
+      const body: any = {
+        custom_column: {
+          omc_id: (filterData.OMC && filterData.OMC.value) || '',
+          policy_number:
+            (filterData.PolicyNo && filterData.PolicyNo.value) || '',
+          sbu: (filterData.SBU && filterData.SBU.value) || '',
+          due_date: null,
+          category_id: item.value,
+        },
+        category_id: item.value,
+        updated_field: { category_id: item.value },
+      }
+      logActivtCommonFunction(body)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const selectedFakeFactor = (item: any) => {
@@ -284,23 +655,47 @@ const ModalScreen = (props: any) => {
     data.FakeFactor = item
     setFilterData(data)
     props.setChatFilterData(data)
+    const body: any = {
+      custom_column: {
+        omc_id: (filterData.OMC && filterData.OMC.value) || '',
+        policy_number: (filterData.PolicyNo && filterData.PolicyNo.value) || '',
+        sbu: (filterData.SBU && filterData.SBU.value) || '',
+        due_date: null,
+        category_id:
+          (filterData.TypeOfQuery && filterData.TypeOfQuery.value) || '',
+      },
+      fake_factor: item.value,
+      updated_field: { fake_factor: item.value },
+    }
+    logActivtCommonFunction(body)
   }
 
   const selectedFakeNewsType = (item: any) => {
     // console.log('selectedPendingItem', item)
-    const data: any = { ...filterData }
-    data.FakeNewsType = item
-    setFilterData(data)
-    props.setChatFilterData(data)
+    try {
+      const data: any = { ...filterData }
+      data.FakeNewsType = item
+      setFilterData(data)
+      props.setChatFilterData(data)
+
+      const body: any = {
+        custom_column: {
+          omc_id: (filterData.OMC && filterData.OMC.value) || '',
+          policy_number:
+            (filterData.PolicyNo && filterData.PolicyNo.value) || '',
+          sbu: (filterData.SBU && filterData.SBU.value) || '',
+          due_date: null,
+          category_id:
+            (filterData.TypeOfQuery && filterData.TypeOfQuery.value) || '',
+        },
+        fake_news_type: item.value,
+        updated_field: { fake_news_type: item.value },
+      }
+      logActivtCommonFunction(body)
+    } catch (error) {
+      console.error(error)
+    }
   }
-
-  // const priority = priorityDropdownList.find((item: any) => {
-  //   return item.value === selectedTickit.priority_id
-  // })
-
-  // const status = statusDropdownList.find((item: any) => {
-  //   return item.status_id === selectedTickit.status_id
-  // })
 
   return (
     <View style={styles.centeredView}>
@@ -387,18 +782,7 @@ const ModalScreen = (props: any) => {
                   list={PolicyNo.lookup_data}
                   onSelectValue={selectedPolicyNo}
                 />
-                {/* <Interaction2Edit
-                  list={Department.lookup_data}
-                  onSelectedItem={selectedPendingItem}
-                /> */}
               </View>
-              {/* <View style={styles.dropdownViewStyle}>
-                <Text>Policy No</Text>
-                <Dropdown
-                  dropdownList={PolicyNo.lookup_data}
-                  selectedItem={selectedPendingItem}
-                />
-              </View> */}
               <View style={styles.dropdownViewStyle}>
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   Assign To
@@ -430,10 +814,12 @@ const ModalScreen = (props: any) => {
                   ]}
                 >
                   <DropdownList
-                    defaultValue={{
-                      value: selpriority && selpriority.value,
-                      label: selpriority && selpriority.text,
-                    }}
+                    // defaultValue={{
+                    //   // value: filterData.Priority && filterData.Priority.value,
+                    //   // label: filterData.Priority && filterData.Priority.text
+                    //   value: selpriority && selpriority.value,
+                    //   label: selpriority && selpriority.text,
+                    // }}
                     list={Priority.lookup_data}
                     onSelectValue={selectedPriority}
                   />
@@ -468,10 +854,10 @@ const ModalScreen = (props: any) => {
                   Status
                 </Text>
                 <DropdownList
-                  defaultValue={{
-                    value: selsStatus && selsStatus.selpriority,
-                    label: selsStatus && selsStatus.status_name,
-                  }}
+                  // defaultValue={{
+                  //   value: selsStatus && selsStatus.selpriority,
+                  //   label: selsStatus && selsStatus.status_name,
+                  // }}
                   list={Status.lookup_data}
                   onSelectValue={selectedStatus}
                 />
@@ -564,6 +950,7 @@ const mapStateToProps = (state: any) => {
     isChatPriority: state.Filter.isChatPriority,
     isChatSBU: state.Filter.isChatSBU,
     clientDetails: state.loginReducer.clientDetails,
+    userDetails: state.loginReducer.userDetails,
     priorityDropdownList: state.dropdownListData.priorityDropdownList,
     statusDropdownList: state.dropdownListData.statusDropdownList,
   }
