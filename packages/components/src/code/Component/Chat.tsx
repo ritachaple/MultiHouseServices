@@ -146,7 +146,7 @@ const Chat = (props: any) => {
   }
   useEffect(() => {
     chatDetails()
-    channedResponse()
+    // channedResponse()
     return () => {
       closeMediaIcon()
     }

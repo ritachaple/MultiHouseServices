@@ -133,18 +133,7 @@ const ModalScreen = (props: any) => {
   const [assignToData, setAssignToData] = useState([] as any)
   // const [userDetailss, setUserDetails] = useState(false)
   const [CalenderVisible, setCalenderVisible] = useState(false)
-  const [filterData, setFilterData] = useState({
-    // PendingWith: "",
-    // Department: "",
-    // OMC: "",
-    // PolicyNo: "",
-    // Priority: "",
-    // SBU: "",
-    // Status: "",
-    // TypeOfQuery: "",
-    // FakeFactor: "",
-    // FakeNewsType: ""
-  } as any)
+  const [filterData, setFilterData] = useState({} as any)
 
   useEffect(() => {
     try {
@@ -165,33 +154,50 @@ const ModalScreen = (props: any) => {
     }
   }, [])
 
-  const channedResponse = async (param: any) => {
-    console.log('dynamic Canned Error')
+  useEffect(() => {
+    const params: any = {
+      status_id: (selsStatus && selsStatus.value) || '',
+      department_id: (selsDepartment && selsDepartment.value) || '',
+      category_id: (selTypeOfQuery && selTypeOfQuery.value) || '',
+      // department_id: "63",
+      omc_id: (selsOMC && selsOMC.value) || '',
+      sbu: (selSBU && selSBU.value) || '',
+    }
+    channedResponse(params)
+  })
 
-    // try {
-    //   const body = {
-    //     client_id: selectedTickit.client_id,
-    //     params: param
-    //     // params: {
-    //     //   address_book: {}, email_template: {}, canned_response: {
-    //     //     status_id: selsStatus && selsStatus.status_id
-    //     //   }
-    //     // },
-    //   }
-    //   const res: any = await Api.post(
-    //     `${configs.dynamic_canned_response}`,
-    //     body,
-    //     token,
-    //   )
-    //   console.log('dynamic canned Res', res)
-    //   if (res.status === 200) {
-    //     // setDynamicCannedRes(res.data.data[0].val)
-    //     // setEmailTemplate(res.data.data[1].val)
-    //     // setAddressBook(res.data.data[2].val)
-    //   }
-    // } catch (error) {
-    //   console.log('dynamic Canned Error', error)
-    // }
+  const channedResponse = async (param: any) => {
+    try {
+      const body = {
+        client_id: selectedTickit.client_id,
+        params: {
+          address_book: { department_id: param.department_id },
+          email_template: { department_id: param.department_id },
+          canned_response: {
+            status_id: param.status_id,
+            department_id: param.department_id,
+            category_id: param.category_id,
+            omc_id: param.omc_id,
+            sbu: param.sbu,
+          },
+          // address_book: {}, email_template: {},
+          // canned_response: {}
+        },
+      }
+      const res: any = await Api.post(
+        `${configs.dynamic_canned_response}`,
+        body,
+        token,
+      )
+      console.log('dynamic canned Res', res)
+      if (res.status === 200) {
+        // setDynamicCannedRes(res.data.data[0].val)
+        // setEmailTemplate(res.data.data[1].val)
+        // setAddressBook(res.data.data[2].val)
+      }
+    } catch (error) {
+      console.log('dynamic Canned Error', error)
+    }
   }
 
   const logActivity = (data: any) => {
@@ -445,7 +451,15 @@ const ModalScreen = (props: any) => {
     //     sbu: filterData.SBU.value || "",
     //   }
     // }
-    // channedResponse(param)
+    const params: any = {
+      status_id: (selsStatus && selsStatus.value) || '',
+      department_id: (item && item.value) || '',
+      category_id: (selTypeOfQuery && selTypeOfQuery.value) || '',
+      // department_id: "63",
+      omc_id: (selsOMC && selsOMC.value) || '',
+      sbu: (selSBU && selSBU.value) || '',
+    }
+    channedResponse(params)
 
     const body: any = {
       custom_column: {
@@ -485,7 +499,16 @@ const ModalScreen = (props: any) => {
     //     sbu: filterData.SBU.value || "",
     //   }
     // }
-    // channedResponse(param)
+
+    const params: any = {
+      status_id: (selsStatus && selsStatus.value) || '',
+      department_id: (selsDepartment && selsDepartment.value) || '',
+      category_id: (selTypeOfQuery && selTypeOfQuery.value) || '',
+      // department_id: "63",
+      omc_id: (item && item.value) || '',
+      sbu: (selSBU && selSBU.value) || '',
+    }
+    channedResponse(params)
 
     const body: any = {
       custom_column: {
@@ -580,7 +603,16 @@ const ModalScreen = (props: any) => {
     //     sbu: item.value || "",
     //   }
     // }
-    // channedResponse(param)
+
+    const params: any = {
+      status_id: (selsStatus && selsStatus.value) || '',
+      department_id: (selsDepartment && selsDepartment.value) || '',
+      category_id: (selTypeOfQuery && selTypeOfQuery.value) || '',
+      // department_id: "63",
+      omc_id: (selsOMC && selsOMC.value) || '',
+      sbu: (item && item.value) || '',
+    }
+    channedResponse(params)
     try {
       const body: any = {
         custom_column: {
@@ -624,12 +656,22 @@ const ModalScreen = (props: any) => {
     //     sbu: filterData.SBU.value || "",
     //   }
     // }
-    // channedResponse(param)
+
     try {
       const data: any = { ...filterData }
       data.Status = item
       setFilterData(data)
       props.setChatFilterData(data)
+
+      const params: any = {
+        status_id: (item && item.value) || '',
+        department_id: (selsDepartment && selsDepartment.value) || '',
+        category_id: (selTypeOfQuery && selTypeOfQuery.value) || '',
+        // department_id: "63",
+        omc_id: (selsOMC && selsOMC.value) || '',
+        sbu: (selSBU && selSBU.value) || '',
+      }
+      channedResponse(params)
 
       const body: any = {
         custom_column: {
@@ -674,6 +716,16 @@ const ModalScreen = (props: any) => {
       data.TypeOfQuery = item
       setFilterData(data)
       props.setChatFilterData(data)
+
+      const params: any = {
+        status_id: (selsStatus && selsStatus.value) || '',
+        department_id: (selsDepartment && selsDepartment.value) || '',
+        category_id: (item && item.value) || '',
+        // department_id: "63",
+        omc_id: (selsOMC && selsOMC.value) || '',
+        sbu: (selSBU && selSBU.value) || '',
+      }
+      channedResponse(params)
 
       const body: any = {
         custom_column: {
