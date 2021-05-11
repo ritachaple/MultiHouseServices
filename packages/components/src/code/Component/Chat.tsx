@@ -977,8 +977,25 @@ const Chat = (props: any) => {
             onReplyModalClick()
           }}
         >
-          <Entypo name="reply" size={18} color="#595959" />
-          <Text style={{ fontSize: 12 }}>Reply</Text>
+          {/* <Entypo name="reply" size={18} color="#595959" />
+           */}
+          <Image
+            source={{
+              uri:
+                'https://unoboat.s3.ap-south-1.amazonaws.com/replyButton.svg',
+            }}
+            style={{ width: '18px', height: '18px', margin: '1%' }}
+          />
+          &nbsp;&nbsp;
+          <Text
+            style={{
+              fontSize: 12,
+              fontFamily: 'Poppins-Light',
+              padding: '1.5%',
+            }}
+          >
+            Reply
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -993,8 +1010,24 @@ const Chat = (props: any) => {
             marginRight: '1%',
           }}
         >
-          <Entypo name="forward" size={18} color="#595959" />
-          <Text style={{ fontSize: 12 }}>Forward</Text>
+          {/* <Entypo name="forward" size={18} color="#595959" /> */}
+          <Image
+            source={{
+              uri:
+                'https://unoboat.s3.ap-south-1.amazonaws.com/ForwardButton.svg',
+            }}
+            style={{ width: '18px', height: '18px' }}
+          />
+          &nbsp;&nbsp;
+          <Text
+            style={{
+              fontSize: 12,
+              fontFamily: 'Poppins-Light',
+              padding: '1.5%',
+            }}
+          >
+            Forward
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -1003,14 +1036,30 @@ const Chat = (props: any) => {
             padding: '0.5%',
             borderRadius: 20,
             flexDirection: 'row',
+            width: '125px',
             marginRight: '1%',
           }}
           onPress={() => {
             onInternalNote()
           }}
         >
-          <MaterialIcons name="notes" size={18} color="#595959" />
-          <Text style={{ fontSize: 12 }}>Internal Note</Text>
+          {/* <MaterialIcons name="notes" size={18} color="#595959" />&nbsp;&nbsp; */}
+          <Image
+            source={{
+              uri: 'https://unoboat.s3.ap-south-1.amazonaws.com/notes.svg',
+            }}
+            style={{ width: '18px', height: '18px' }}
+          />
+          &nbsp;&nbsp;
+          <Text
+            style={{
+              fontSize: 12,
+              fontFamily: 'Poppins-Light',
+              padding: '1.5%',
+            }}
+          >
+            Internal Note
+          </Text>
         </TouchableOpacity>
       </View>
       <Divider style={{ backgroundColor: bodercolor }} />
