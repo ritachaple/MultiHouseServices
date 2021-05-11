@@ -21,8 +21,6 @@ import { Overlay, Divider, Input } from 'react-native-elements'
 import { Hoverable } from 'react-native-web-hover'
 import { connect } from 'react-redux'
 import Api from '../provider/api/Api'
-// import * as _ from 'lodash'
-// import _ from 'lodash'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
 import DropDownList from './DropDownList'
@@ -49,7 +47,7 @@ import {
 import InternalNotes from './InternalNotes'
 import ReplyModal from './ReplyModal'
 import { CXP_CHAT_SCREEN_CONTROLS } from '../provider/Const'
-// const _ = require('lodash')
+
 const lodash = require('lodash')
 
 const Chat = (props: any) => {
@@ -104,17 +102,17 @@ const Chat = (props: any) => {
       )
       console.log('chatDetails', res)
       if (res.status === 200) {
-        // const sortedArray = lodash.orderBy(
-        //   res.data.data,
-        //   (item: any) => {
-        //     return moment(item.created_on)
-        //   },
-        //   ['asc'],
-        // )
-        // console.log('sortedArray', sortedArray)
-        // setChatData(sortedArray)
-        // setChatDataCopy(sortedArray)
-        // checkMedia(sortedArray)
+        const sortedArray = lodash.orderBy(
+          res.data.data,
+          (item: any) => {
+            return moment(item.created_on)
+          },
+          ['asc'],
+        )
+        console.log('sortedArray', sortedArray)
+        setChatData(sortedArray)
+        setChatDataCopy(sortedArray)
+        checkMedia(sortedArray)
       }
     } catch (error) {
       console.log('chatDetailsError', error)

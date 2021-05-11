@@ -36,33 +36,103 @@ const ModalScreen = (props: any) => {
     statusDropdownList,
     priorityDropdownList,
     userDetails,
+    dynamicControl,
   } = props
 
-  // const selsStatus: any = statusDropdownList.find((item: any) => {
-  //   return item.status_id === selectedTickit.status_id
-  // })
+  const PendingWith = dynamicControl[0]
+  const Department = dynamicControl[1]
+  const OMC = dynamicControl[2]
+  const PolicyNo = dynamicControl[3]
+  const AssignTo = dynamicControl[4]
+  const Priority = dynamicControl[5]
+  const SBU = dynamicControl[6]
+  const Status = dynamicControl[7]
+  // const dueDate = dynamicControl[8]
+  const TypeOfQuery = dynamicControl[9]
+  const FakeFactor = dynamicControl[10]
+  const FakeNewsType = dynamicControl[11]
 
-  // const selpriority = priorityDropdownList.find((item: any) => {
-  //   return item.value === selectedTickit.priority_id
-  // })
+  const selsPendingWith: any =
+    PendingWith.lookup_data !== undefined &&
+    PendingWith.lookup_data.length > 0 &&
+    PendingWith.lookup_data.find((item: any) => {
+      return item.value === selectedTickit.blocked_by
+    })
 
-  const [PendingWith, setPendingWithDropdown] = useState([] as any)
-  const [Department, setDepartment] = useState([] as any)
-  const [PolicyNo, setPolicyNo] = useState([] as any)
-  const [AssignTo, setAssignTo] = useState([] as any)
-  const [Priority, setPriority] = useState([] as any)
+  const selsDepartment: any =
+    Department.lookup_data !== undefined &&
+    Department.lookup_data.length > 0 &&
+    Department.lookup_data.find((item: any) => {
+      return item.value === selectedTickit.department_id
+    })
+
+  let selsOMC: any
+  if (selectedTickit.custom_column && selectedTickit.custom_column.omc_id) {
+    selsOMC =
+      OMC.lookup_data !== undefined &&
+      OMC.lookup_data.length > 0 &&
+      OMC.lookup_data.find((item: any) => {
+        return item.value === selectedTickit.custom_column.omc_id
+      })
+  }
+
+  const selsStatus: any =
+    Status.lookup_data !== undefined &&
+    Status.lookup_data.length > 0 &&
+    Status.lookup_data.find((item: any) => {
+      return item.value === selectedTickit.status_id
+    })
+
+  const selPriority =
+    Priority.lookup_data !== undefined &&
+    Priority.lookup_data.length > 0 &&
+    Priority.lookup_data.find((item: any) => {
+      return item.value === selectedTickit.priority_id
+    })
+
+  let selTypeOfQuery: any
+  if (
+    selectedTickit.custom_column &&
+    selectedTickit.custom_column.category_id
+  ) {
+    selTypeOfQuery =
+      TypeOfQuery.lookup_data !== undefined &&
+      TypeOfQuery.lookup_data.length > 0 &&
+      TypeOfQuery.lookup_data.find((item: any) => {
+        return item.value === selectedTickit.custom_column.category_id
+      })
+  }
+
+  let selSBU: any
+  if (selectedTickit.custom_column && selectedTickit.custom_column.omc_id) {
+    selSBU =
+      SBU.lookup_data !== undefined &&
+      SBU.lookup_data.length > 0 &&
+      SBU.lookup_data.find((item: any) => {
+        return item.value === selectedTickit.custom_column.omc_id
+      })
+  }
+
+  const selsFakeFactor: any =
+    FakeFactor.lookup_data !== undefined &&
+    FakeFactor.lookup_data.length > 0 &&
+    FakeFactor.lookup_data.find((item: any) => {
+      return item.value === selectedTickit.fake_factor
+    })
+
+  const selsFakeNewsType: any =
+    FakeNewsType.lookup_data !== undefined &&
+    FakeNewsType.lookup_data.length > 0 &&
+    FakeNewsType.lookup_data.find((item: any) => {
+      return item.value === selectedTickit.fake_news_type
+    })
+
   const [DueDate, setDueDate] = useState(new Date())
-  const [Status, setStatus] = useState([] as any)
-  const [FakeNewsType, setFakeNewsType] = useState([] as any)
-  const [FakeFactor, setFakeFactor] = useState([] as any)
   const [isConversation, setIsConversation] = useState(true)
   const [isCRM, setIsCRM] = useState(false)
   const [assignToData, setAssignToData] = useState([] as any)
   // const [userDetailss, setUserDetails] = useState(false)
   const [CalenderVisible, setCalenderVisible] = useState(false)
-  const [OMC, setOMC] = useState([] as any)
-  const [SBU, setSBU] = useState([] as any)
-  const [TypeOfQuery, setTypeOfQuery] = useState([] as any)
   const [filterData, setFilterData] = useState({
     // PendingWith: "",
     // Department: "",
@@ -76,64 +146,24 @@ const ModalScreen = (props: any) => {
     // FakeNewsType: ""
   } as any)
 
-  // useEffect(() => {
-  // const data: any = { ...filterData }
-  // data.Priority = selpriority && selpriority
-  // data.Status = selsStatus && selsStatus
-  // setFilterData(data)
-  // props.setChatFilterData(data)
-
-  // }, [])
-
   useEffect(() => {
-    const dynamicControls = async () => {
-      try {
-        const params = {
-          client_id: clientDetails && clientDetails.client_id,
-          group_id: CXP_CHAT_SCREEN_CONTROLS,
-        }
-        const res: any = await Api.get(
-          `${configs.dynamic_get_controls}`,
-          token,
-          params,
-        )
-        console.log('dynamic control res', res)
-        if (
-          res.status === 200 &&
-          res.data.controls !== null &&
-          res.data.controls.length > 0
-        ) {
-          setPendingWithDropdown(res.data.controls[0])
-          setDepartment(res.data.controls[1])
-          setOMC(res.data.controls[2])
-          setPolicyNo(res.data.controls[3])
-          setAssignTo(res.data.controls[4])
-          setPriority(res.data.controls[5])
-          setSBU(res.data.controls[6])
-          setStatus(res.data.controls[7])
-          setDueDate(res.data.controls[8])
-          setTypeOfQuery(res.data.controls[9])
-          setFakeFactor(res.data.controls[10])
-          setFakeNewsType(res.data.controls[11])
-          props.clrChatOMCFilter()
-          props.clrChatSBUFilter()
-          props.clrChatPriorityFilter()
-        }
-      } catch (error) {
-        console.log('dynamic Control error', error)
-      }
+    try {
+      const data: any = { ...filterData }
+      data.PendingWith = selsPendingWith && selsPendingWith
+      data.Department = selsDepartment && selsDepartment
+      data.OMC = selsOMC && selsOMC
+      data.Priority = selPriority && selPriority
+      data.SBU = selSBU && selSBU
+      data.Status = selsStatus && selsStatus
+      data.TypeOfQuery = selTypeOfQuery && selTypeOfQuery
+      data.FakeFactor = selsFakeFactor && selsFakeFactor
+      data.FakeNewsType = selsFakeNewsType && selsFakeNewsType
+      setFilterData(data)
+      props.setChatFilterData(data)
+    } catch (error) {
+      console.error(error)
     }
-
-    dynamicControls()
-
-    // const param = {
-    //   address_book: {}, email_template: {}, canned_response: {
-    //     status_id: ""
-    //     // status_id: selsStatus && selsStatus.status_id
-    //   }
-    // }
-    // channedResponse(param)
-  }, [token])
+  }, [])
 
   const channedResponse = async (param: any) => {
     console.log('dynamic Canned Error')
@@ -277,16 +307,16 @@ const ModalScreen = (props: any) => {
   // }
 
   const logActivtCommonFunction = (fields: any) => {
-    let blockedBy = ''
-    let priorityId = ''
-    let dprtId = ''
-    let omcId = ''
-    let policyNo = ''
-    let sbuId = ''
-    let statusId = ''
-    let categoryId = ''
-    let fakeNewsType = ''
-    let fakeFactor = ''
+    let blockedBy: any = null
+    let priorityId: any = null
+    let dprtId: any = null
+    let omcId: any = null
+    let policyNo: any = null
+    let sbuId: any = null
+    let statusId: any = null
+    let categoryId: any = null
+    let fakeNewsType: any = null
+    let fakeFactor: any = null
 
     if (fields && fields.blocked_by) {
       blockedBy = fields.blocked_by
@@ -349,18 +379,32 @@ const ModalScreen = (props: any) => {
     }
 
     const data: any = {
+      // category_id: "21471",
+      due_date: null,
+      // omc_id: "21490",
+      // policy_number: "",
+      // sbu: null,
+      // department_id: null,
+      // fake_factor: "21571",
+      // fake_news_type: "21562",
+      // priority_id: "2",
+      // status_id: "9",
+
       custom_column: fields.custom_column,
       updated_field: fields.updated_field,
       blocked_by: blockedBy,
-      priority_id: priorityId,
+      category_id: categoryId,
       department_id: dprtId,
       omc_id: omcId,
       policy_number: policyNo,
       sbu: sbuId,
-      status_id: statusId,
-      category_id: categoryId,
-      fake_news_type: fakeNewsType,
+      // status_id: "1",
       fake_factor: fakeFactor,
+      fake_news_type: fakeNewsType,
+      priority_id: priorityId,
+      status_id: statusId,
+
+      // blocked_by: null,
     }
     logActivity(data)
   }
@@ -744,6 +788,10 @@ const ModalScreen = (props: any) => {
                   Pending With
                 </Text>
                 <DropdownList
+                  defaultValue={{
+                    value: selsPendingWith && selsPendingWith.value,
+                    label: selsPendingWith && selsPendingWith.text,
+                  }}
                   list={PendingWith.lookup_data}
                   onSelectValue={selectedPendingItem}
                 />
@@ -753,6 +801,10 @@ const ModalScreen = (props: any) => {
                   Department
                 </Text>
                 <DropdownList
+                  defaultValue={{
+                    value: selsDepartment && selsDepartment.value,
+                    label: selsDepartment && selsDepartment.text,
+                  }}
                   list={Department.lookup_data}
                   onSelectValue={selectedDepartment}
                 />
@@ -768,7 +820,10 @@ const ModalScreen = (props: any) => {
                   ]}
                 >
                   <DropdownList
-                    style={{}}
+                    defaultValue={{
+                      value: selsOMC && selsOMC.value,
+                      label: selsOMC && selsOMC.text,
+                    }}
                     list={OMC.lookup_data}
                     onSelectValue={selectedOMC}
                   />
@@ -814,12 +869,10 @@ const ModalScreen = (props: any) => {
                   ]}
                 >
                   <DropdownList
-                    // defaultValue={{
-                    //   // value: filterData.Priority && filterData.Priority.value,
-                    //   // label: filterData.Priority && filterData.Priority.text
-                    //   value: selpriority && selpriority.value,
-                    //   label: selpriority && selpriority.text,
-                    // }}
+                    defaultValue={{
+                      value: selPriority && selPriority.value,
+                      label: selPriority && selPriority.text,
+                    }}
                     list={Priority.lookup_data}
                     onSelectValue={selectedPriority}
                   />
@@ -839,10 +892,8 @@ const ModalScreen = (props: any) => {
                 >
                   <DropdownList
                     defaultValue={{
-                      value: null,
-                      // label: statusSelect
-                      // label: filterData && filterData.Status && filterData.Status.status_name,
-                      // label: <img src='https://unoboat.s3.ap-south-1.amazonaws.com/redflag.svg' alt="" />
+                      value: selSBU && selSBU.value,
+                      label: selSBU && selSBU.text,
                     }}
                     list={SBU.lookup_data}
                     onSelectValue={selectedSBU}
@@ -854,10 +905,10 @@ const ModalScreen = (props: any) => {
                   Status
                 </Text>
                 <DropdownList
-                  // defaultValue={{
-                  //   value: selsStatus && selsStatus.selpriority,
-                  //   label: selsStatus && selsStatus.status_name,
-                  // }}
+                  defaultValue={{
+                    value: selsStatus && selsStatus.value,
+                    label: selsStatus && selsStatus.text,
+                  }}
                   list={Status.lookup_data}
                   onSelectValue={selectedStatus}
                 />
@@ -908,6 +959,10 @@ const ModalScreen = (props: any) => {
                     Type Of Query
                   </Text>
                   <DropdownList
+                    defaultValue={{
+                      value: selTypeOfQuery && selTypeOfQuery.value,
+                      label: selTypeOfQuery && selTypeOfQuery.text,
+                    }}
                     list={TypeOfQuery.lookup_data}
                     onSelectValue={selectedTypeOfQuery}
                   />
@@ -917,6 +972,10 @@ const ModalScreen = (props: any) => {
                     Fake Factor
                   </Text>
                   <DropdownList
+                    defaultValue={{
+                      value: selsFakeFactor && selsFakeFactor.value,
+                      label: selsFakeFactor && selsFakeFactor.text,
+                    }}
                     list={FakeFactor.lookup_data}
                     onSelectValue={selectedFakeFactor}
                   />
@@ -926,6 +985,10 @@ const ModalScreen = (props: any) => {
                     Fake News Type
                   </Text>
                   <DropdownList
+                    defaultValue={{
+                      value: selsFakeNewsType && selsFakeNewsType.value,
+                      label: selsFakeNewsType && selsFakeNewsType.text,
+                    }}
                     list={FakeNewsType.lookup_data}
                     onSelectValue={selectedFakeNewsType}
                   />
@@ -953,6 +1016,7 @@ const mapStateToProps = (state: any) => {
     userDetails: state.loginReducer.userDetails,
     priorityDropdownList: state.dropdownListData.priorityDropdownList,
     statusDropdownList: state.dropdownListData.statusDropdownList,
+    dynamicControl: state.Filter.dynamicControl,
   }
 }
 

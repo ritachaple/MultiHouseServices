@@ -20,6 +20,7 @@ import LinkedIn from '../../Component/ImageComponents/LinkedIn'
 import { LoginFacebook } from '../../Images/MediaIcon'
 import { ValidationMsg } from '../../Component/ValidationMsg'
 import Loader from '../../Component/Loader'
+import { CXP_CHAT_SCREEN_CONTROLS } from '../../provider/Const'
 
 const Login = (props: any) => {
   // const Login = ({ navigation }: { navigation: any }) => {
@@ -70,16 +71,17 @@ const Login = (props: any) => {
     if (res.status === 200) {
       // console.log('verifyUser', res)
       props.verifyUserData(res.data.data)
-      await getClientDetails(token, res.data.data.user_id)
     } else {
       validationError('Invalid User !!')
     }
+    return res
   }
 
   const getClientDetails = async (token: string, clientId: any) => {
+    let res: any
     try {
       console.log('clientId', clientId)
-      const res: any = await Api.get(`${configs.getClient}${clientId}`, token)
+      res = await Api.get(`${configs.getClient}${clientId}`, token)
       if (res.status === 200) {
         console.log('ClientDettailsRes', res)
         props.setClientDetails(res.data.data[0])
@@ -87,6 +89,7 @@ const Login = (props: any) => {
     } catch (error) {
       console.error(error)
     }
+    return res.data.data[0]
   }
 
   const onLoginPress = async () => {
@@ -106,11 +109,19 @@ const Login = (props: any) => {
           props.setToken(res.data.token)
           const tokenEncode = await parseJwt(res.data.token)
           // console.log("tokenEncode", tokenEncode);
-          await verifyUserApi(res.data.token, tokenEncode)
+          const verifyUserres: any = await verifyUserApi(
+            res.data.token,
+            tokenEncode,
+          )
+          const clientRes: any = await getClientDetails(
+            res.data.token,
+            verifyUserres.data.data.user_id,
+          )
           // await getClientDetails(res.data.token,)
           validationError('Logged In Successfully !!')
           props.navigation.navigate('Interaction')
           setProgres(0)
+          dynamicControlsApi(res.data.token, clientRes)
           // console.log('token', res.data.token)
         } else {
           setProgres(0)
@@ -123,6 +134,30 @@ const Login = (props: any) => {
     } catch (error) {
       validationError('Login Error!!!')
       console.log('Login Api Error', error)
+    }
+  }
+
+  const dynamicControlsApi = async (token: string, clientDetails: any) => {
+    try {
+      const params = {
+        client_id: clientDetails && clientDetails.client_id,
+        group_id: CXP_CHAT_SCREEN_CONTROLS,
+      }
+      const res: any = await Api.get(
+        `${configs.dynamic_get_controls}`,
+        token,
+        params,
+      )
+      console.log('dynamic control res', res)
+      if (
+        res.status === 200 &&
+        res.data.controls !== null &&
+        res.data.controls.length > 0
+      ) {
+        props.setDynamicControl(res.data.controls)
+      }
+    } catch (error) {
+      console.log('dynamic Control error', error)
     }
   }
 
@@ -332,6 +367,9 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     setClientDetails: (data: any) => {
       dispatch({ type: 'CLIENT_DETAIL', payload: data })
+    },
+    setDynamicControl: (data: any) => {
+      dispatch({ type: 'SET_DYNAMIC_CONTROL', payload: data })
     },
   }
 }
