@@ -17,7 +17,18 @@ import { connect } from 'react-redux'
 // import MultiSelect from 'react-multi-select-component'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
-import { Twitter, Facebook, Email, WhatsApp } from '../Images/MediaIcon'
+import {
+  Twitter,
+  Facebook,
+  Email,
+  WhatsApp,
+  YouTube,
+  Knowlarity,
+  Instagram,
+  PlayStore,
+  GoogleMyBusiness,
+  SMS,
+} from '../Images/MediaIcon'
 import { UnChecked, Checked } from '../Images/Checkbox'
 import { Low, High, Medium, Default, Urgent } from '../Images/Priority'
 import { AssignUser } from '../Images/AssignUser'
@@ -359,11 +370,50 @@ const List = (props: any) => {
         case 2:
           return <Twitter />
           break
+        case 3:
+          return <SMS />
+          break
         case 4:
           return <Email />
           break
+        case 5:
+          return <Twitter />
+          break
+        case 6:
+          return <Twitter />
+          break
+        case 7:
+          return <Twitter />
+          break
+        case 10:
+          return <Twitter />
+          break
+        case 11:
+          return <GoogleMyBusiness />
+          break
+        case 12:
+          return <Twitter />
+          break
+        case 13:
+          return <Twitter />
+          break
+        case 14:
+          return <Instagram />
+          break
+        case 15:
+          return <Twitter />
+          break
+        case 17:
+          return <PlayStore />
+          break
         case 18:
           return <WhatsApp />
+          break
+        case 19:
+          return <Knowlarity />
+          break
+        case 20:
+          return <YouTube />
           break
         default:
           return null

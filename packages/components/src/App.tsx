@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
+import { StyleSheet } from 'react-native'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux'
 import Navigation from './code/provider/navigation/Navigation'

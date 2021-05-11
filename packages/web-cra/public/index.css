@@ -56,6 +56,7 @@ form button {
   box-sizing: border-box;
   border-radius: 8px;
   z-index: 9999;
+  font-family: 'Poppins-Light' !important;
 }
 
 .cal-time-dropdown {
@@ -204,6 +205,12 @@ form button {
 
 .select_box .css-yk16xz-control {
   background-color: none !important;
+  font-family: 'Poppins-Light' !important;
+  line-height: '4px' !important;
+}
+
+.css-yk16xz-control {
+  line-height: '4px' !important;
 }
 
 /* .css-yk16xz-control .css-1okebmr-indicatorSeparator,
@@ -236,6 +243,8 @@ form button {
 
 .select_box {
   background-color: none !important;
+  font-family: 'Poppins-Light' !important;
+  font-size: 12px;
 }
 
 .multiselect {
@@ -244,6 +253,8 @@ form button {
 
 .optionListContainer {
   position: static !important;
+  font-family: 'Poppins-Light' !important;
+  font-size: 12px;
 }
 
 /* .select_box .css-tj5bde-Svg {

@@ -21,6 +21,8 @@ import { Overlay, Divider, Input } from 'react-native-elements'
 import { Hoverable } from 'react-native-web-hover'
 import { connect } from 'react-redux'
 import Api from '../provider/api/Api'
+// import * as _ from 'lodash'
+// import _ from 'lodash'
 import { configs } from '../provider/api/ApiUrl'
 import Toggle2 from './ToggleButton'
 import DropDownList from './DropDownList'
@@ -37,6 +39,12 @@ import {
   Twitter,
   Email,
   WhatsApp,
+  Instagram,
+  Knowlarity,
+  SMS,
+  GoogleMyBusiness,
+  PlayStore,
+  YouTube,
 } from '../Images/MediaIcon'
 import InternalNotes from './InternalNotes'
 import ReplyModal from './ReplyModal'
@@ -96,18 +104,17 @@ const Chat = (props: any) => {
       )
       console.log('chatDetails', res)
       if (res.status === 200) {
-        const sortedArray = lodash.orderBy(
-          res.data.data,
-          (item: any) => {
-            return moment(item.created_on)
-          },
-          ['asc'],
-        )
-        console.log('sortedArray', sortedArray)
-
-        setChatData(sortedArray)
-        setChatDataCopy(sortedArray)
-        checkMedia(sortedArray)
+        // const sortedArray = lodash.orderBy(
+        //   res.data.data,
+        //   (item: any) => {
+        //     return moment(item.created_on)
+        //   },
+        //   ['asc'],
+        // )
+        // console.log('sortedArray', sortedArray)
+        // setChatData(sortedArray)
+        // setChatDataCopy(sortedArray)
+        // checkMedia(sortedArray)
       }
     } catch (error) {
       console.log('chatDetailsError', error)
@@ -292,24 +299,30 @@ const Chat = (props: any) => {
             onMediaClick('Twitter')
           }}
         >
-          <View>
+          <View style={{ marginLeft: '35%' }}>
             <Twitter2 />
+            {/* <Image
+      source={{
+        uri: 'https://unoboat.s3.ap-south-1.amazonaws.com/icons/social/twitter.svg',
+      }}
+      style={{ width: '15px', height: '15px' }}
+    /> */}
+          </View>
+          <View>
+            <Text
+              style={[
+                styles.textStyle,
+                {
+                  fontSize: 11,
+                  lineHeight: 18,
+                  fontWeight: selectedMedia === 'Twitter' ? '600' : '400',
+                },
+              ]}
+            >
+              Twitter
+            </Text>
           </View>
         </TouchableOpacity>
-        <View>
-          <Text
-            style={[
-              styles.textStyle,
-              {
-                fontSize: 11,
-                lineHeight: 18,
-                fontWeight: selectedMedia === 'Twitter' ? '600' : '400',
-              },
-            ]}
-          >
-            Twitter
-          </Text>
-        </View>
       </View>
     )
   }
@@ -474,7 +487,6 @@ const Chat = (props: any) => {
     setIsAddressBook(!IsAddressBook)
     setDropdownList(AddressBook)
   }
-
   const onEmailTemplatePress = () => {
     setDropdownList(EmailTemplate)
     setdisplayList(!displayList)
@@ -563,20 +575,33 @@ const Chat = (props: any) => {
         case 'Facebook':
           return <Facebook />
           break
+        case 'Twitter':
+          return <Twitter />
+          break
+        case 'SMS':
+          return <SMS />
+          break
         case 'Email':
           return <Email />
           break
+        case 'YouTube':
+          return <YouTube />
+          break
         case 'Instagram':
           // return <Twitter3 />
+          return <Instagram />
           break
-        case 'Twitter':
-          return <Twitter />
+        case 'GoogleMyBusiness':
+          return <GoogleMyBusiness />
           break
         case 'WhatsApp':
           return <WhatsApp />
           break
+        case 'PlayStore':
+          return <PlayStore />
+          break
         case 'Knowlarity':
-          return null
+          return <Knowlarity />
           break
 
         default:
@@ -643,7 +668,7 @@ const Chat = (props: any) => {
 
           break
         case 'WhatsApp':
-          setTwitterMedia(true)
+          setWatsAppMedia(true)
 
           break
 

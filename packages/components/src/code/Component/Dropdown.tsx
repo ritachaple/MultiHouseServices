@@ -13,16 +13,16 @@ import {
 import { Button, Overlay, Divider } from 'react-native-elements'
 import DropDownList from './DropDownList'
 
-const tickitStatus = [
-  'Pending',
-  'Assigned',
-  'Resolve',
-  'Closed',
-  'Escalated',
-  'Reopened',
-  'Blocked',
-  'Qwerty3',
-]
+// const tickitStatus = [
+//   'Pending',
+//   'Assigned',
+//   'Resolve',
+//   'Closed',
+//   'Escalated',
+//   'Reopened',
+//   'Blocked',
+//   'Qwerty3',
+// ]
 
 const Dropdown = (props: any) => {
   const { dropdownList } = props

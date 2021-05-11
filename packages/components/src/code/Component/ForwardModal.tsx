@@ -208,21 +208,21 @@ const ChatModal = (props: any) => {
 
     const forwardMail = () => {
       if (email !== undefined) {
-        if (validateEmail(email)) {
-          if (
-            filterDetails &&
-            filterDetails.OMC &&
-            filterDetails.Priority &&
-            filterDetails.SBU
-          ) {
-            props.onForwardPress()
-          } else {
-            checkFilterFields()
-            validationError('Please select required fields')
-          }
-        } else {
-          validationError('Please enter a valid email address')
-        }
+        //   if (validateEmail(email)) {
+        //     if (
+        //       filterDetails &&
+        //       filterDetails.OMC &&
+        //       filterDetails.Priority &&
+        //       filterDetails.SBU
+        //     ) {
+        //       props.onForwardPress()
+        //     } else {
+        //       checkFilterFields()
+        //       validationError('Please select required fields')
+        //     }
+        //   } else {
+        //     validationError('Please enter a valid email address')
+        // }
       } else {
         validationError('Please enter a valid email address')
       }
