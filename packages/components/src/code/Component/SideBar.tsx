@@ -283,33 +283,38 @@ const SideBar = (props: any) => {
     priority: any,
     status: any,
   ) => {
-    const res: any = await searchComplaintsApi(
-      token,
-      pageSize,
-      pageIndex,
-      startDate,
-      endDate,
-      clientDetails && clientDetails.client_id,
-      userDetails && userDetails.user_id,
-      mediaId,
-      priority,
-      status,
-      undefined,
-      selShowBotsComplaints,
-      selBrandPost,
-      selSpam,
-      selDeleted,
-      selHandles,
-    )
-    if (res && res.status === 200) {
-      props.setTikitData(res.data.data)
-      props.setTotalRecords(res.data.total_records)
-      // props.setPageIndex(pageIndex)
-      // props.setPageSize(pageSize)
-      // console.log('res.data', res.data.data)
-    } else {
-      props.clearToken()
+    try {
+      const res: any = await searchComplaintsApi(
+        token,
+        pageSize,
+        pageIndex,
+        startDate,
+        endDate,
+        clientDetails && clientDetails.client_id,
+        userDetails && userDetails.user_id,
+        mediaId,
+        priority,
+        status,
+        undefined,
+        selShowBotsComplaints,
+        selBrandPost,
+        selSpam,
+        selDeleted,
+        selHandles,
+      )
+      if (res && res.status === 200) {
+        props.setTikitData(res.data.data)
+        props.setTotalRecords(res.data.total_records)
+        // props.setPageIndex(pageIndex)
+        // props.setPageSize(pageSize)
+        // console.log('res.data', res.data.data)
+      }
+    } catch (error) {
+      console.error(error)
     }
+    // else {
+    //   props.clearToken()
+    // }
   }
 
   return (

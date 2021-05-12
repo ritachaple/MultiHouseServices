@@ -16,14 +16,18 @@ import TimePicker from './TimePicker.web'
 const stDate = new Date()
 stDate.setDate(stDate.getDate() - 15)
 
+const ct = moment(stDate).format('hh:mm a')
+
 const Example = (props: any) => {
   const { token, pageSize, pageIndex, clientDetails, userDetails } = props
 
   const [startDate, setStartDate] = useState(stDate)
   const [endDate, setEndDate] = useState(new Date())
   const [selectedDateTime, setSelectedDateTime] = useState(0)
-  const [startTime, setStartTime] = useState('12:00 AM')
-  const [endTime, setEndTime] = useState('12:00 PM')
+  // const [startTime, setStartTime] = useState('12:00 AM')
+  // const [endTime, setEndTime] = useState('12:00 PM')
+  const [startTime, setStartTime] = useState(ct)
+  const [endTime, setEndTime] = useState(ct)
 
   const [isVisible, setIsVisible] = useState(false)
 
@@ -61,8 +65,8 @@ const Example = (props: any) => {
       token,
       pageSize,
       pageIndex,
-      startDate,
-      endDate,
+      startDate.toISOString(),
+      endDate.toISOString(),
       clientDetails && clientDetails.client_id,
       userDetails && userDetails.user_id,
     )
@@ -88,7 +92,15 @@ const Example = (props: any) => {
   const handleSelect = (item: any) => {
     console.log('date selcted : ', item)
     setState([item.selection]) // changes only for view
+    const sdd = item.selection.startDate
+    const edd = item.selection.endDate
+    // console.log("sdd", sdd.toISOString());
+    // setStartDate(sdd.toISOString())
+    // setEndDate(edd.toISOString())
+    setStartDate(sdd)
+    setEndDate(edd)
   }
+
   const showDatePicker = () => {
     setIsVisible(true)
   }
@@ -99,10 +111,10 @@ const Example = (props: any) => {
     const sd = state[0].startDate
     const ed = state[0].endDate
     // console.log("startDate", startDate.toISOString());
+    tickitList()
 
     props.storeEndDate(ed.toISOString())
     props.storeStartDate(sd.toISOString())
-    tickitList()
   }
   const hideDatePicker = () => {
     setIsVisible(false)
@@ -222,13 +234,13 @@ const Example = (props: any) => {
                 <Image
                   source={{
                     uri:
-                      'https://unoboat.s3.ap-south-1.amazonaws.com/default_priority.svg',
+                      'https://unoboat.s3.ap-south-1.amazonaws.com/calendar.svg',
                   }}
                   style={{
-                    width: '25px',
-                    height: '25px',
+                    width: '15px',
+                    height: '15px',
                     // paddingRight: '15px',
-                    marginHorizontal: '10px',
+                    marginHorizontal: 4,
                   }}
                 />
                 {moment(state[0].startDate).format('DD MMM,yyyy')},{startTime} -{' '}
