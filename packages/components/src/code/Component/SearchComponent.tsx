@@ -244,6 +244,7 @@ const SearchComplaints = (props: any) => {
 
     const unsubscribe = props.navigation.addListener('focus', () => {
       const searchComplaints = async () => {
+        // props.clearToken()
         setProgres(100)
         const res: any = await searchComplaintsApi(
           token,

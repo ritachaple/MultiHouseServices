@@ -16,6 +16,7 @@ const initialState = {
   isChatOMC: false,
   isChatPriority: false,
   isChatSBU: false,
+  dynamicControl: [],
 }
 
 const Filter = (state = { initialState }, action: any) => {
@@ -144,6 +145,12 @@ const Filter = (state = { initialState }, action: any) => {
       return {
         ...state,
         isChatSBU: false,
+      }
+      break
+    case 'SET_DYNAMIC_CONTROL':
+      return {
+        ...state,
+        dynamicControl: action.payload,
       }
       break
 
