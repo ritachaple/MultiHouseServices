@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import { Calendar } from 'react-date-range'
 import moment from 'moment'
 // @ts-ignore
-// import { Multiselect } from 'multiselect-react-dropdown';
+import { Multiselect } from 'multiselect-react-dropdown'
 import Chat from './Chat'
 import Api from '../provider/api/Api'
 import { configs } from '../provider/api/ApiUrl'
@@ -39,18 +39,51 @@ const ModalScreen = (props: any) => {
     dynamicControl,
   } = props
 
-  const PendingWith = dynamicControl[0]
-  const Department = dynamicControl[1]
-  const OMC = dynamicControl[2]
-  const PolicyNo = dynamicControl[3]
-  const AssignTo = dynamicControl[4]
-  const Priority = dynamicControl[5]
-  const SBU = dynamicControl[6]
-  const Status = dynamicControl[7]
+  const PendingWith =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[0]
+  const Department =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[1]
+  const OMC =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[2]
+  const PolicyNo =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[3]
+  const AssignTo =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[4]
+  const Priority =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[5]
+  const SBU =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[6]
+  const Status =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[7]
   // const dueDate = dynamicControl[8]
-  const TypeOfQuery = dynamicControl[9]
-  const FakeFactor = dynamicControl[10]
-  const FakeNewsType = dynamicControl[11]
+  const TypeOfQuery =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[9]
+  const FakeFactor =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[10]
+  const FakeNewsType =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[11]
 
   const selsPendingWith: any =
     PendingWith.lookup_data !== undefined &&
@@ -134,6 +167,7 @@ const ModalScreen = (props: any) => {
   // const [userDetailss, setUserDetails] = useState(false)
   const [CalenderVisible, setCalenderVisible] = useState(false)
   const [filterData, setFilterData] = useState({} as any)
+  const [assignTo, setAssignTo] = useState([] as any)
 
   useEffect(() => {
     try {
@@ -165,6 +199,15 @@ const ModalScreen = (props: any) => {
     }
     channedResponse(params)
   })
+
+  const onSelect = (item: any) => {
+    console.log('multi', item)
+    setAssignTo(item)
+  }
+
+  // const onRemove = (item: any) => {
+  //   console.log("multiDD", item);
+  // }
 
   const channedResponse = async (param: any) => {
     try {
@@ -894,16 +937,23 @@ const ModalScreen = (props: any) => {
                 <Text style={[styles.textStyle, styles.DropdownTextColor]}>
                   Assign To
                 </Text>
-                {/* <Multiselect
-                  style={{ position: "static" }}
+                <Multiselect
+                  // style={{ position: "static" }}
                   options={AssignTo.lookup_data}
                   displayValue="text"
-                  showCheckbox={true}
-                /> */}
-                <DropdownList
+                  // selectionLimit={2}
+                  // defaultValue={[{ text: "merilent_int", value: 5896 }]}
+                  // selectedValues={[{ text: "merilent_int", value: 5896 }]}
+                  selectedValues={assignTo}
+                  emptyRecordMsg="no data found"
+                  showCheckbox
+                  onSelect={onSelect} // Function will trigger on select event
+                  onRemove={onSelect} // Function will trigger on remove event
+                />
+                {/* <DropdownList
                   list={AssignTo.lookup_data}
                   onSelectValue={selectedPendingItem}
-                />
+                /> */}
 
                 {/* <MultipleDropdown
                   dropdownList={AssignTo.lookup_data}
