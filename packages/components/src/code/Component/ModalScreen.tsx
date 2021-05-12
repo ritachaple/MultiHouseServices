@@ -39,18 +39,51 @@ const ModalScreen = (props: any) => {
     dynamicControl,
   } = props
 
-  const PendingWith = dynamicControl[0]
-  const Department = dynamicControl[1]
-  const OMC = dynamicControl[2]
-  const PolicyNo = dynamicControl[3]
-  const AssignTo = dynamicControl[4]
-  const Priority = dynamicControl[5]
-  const SBU = dynamicControl[6]
-  const Status = dynamicControl[7]
+  const PendingWith =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[0]
+  const Department =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[1]
+  const OMC =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[2]
+  const PolicyNo =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[3]
+  const AssignTo =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[4]
+  const Priority =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[5]
+  const SBU =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[6]
+  const Status =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[7]
   // const dueDate = dynamicControl[8]
-  const TypeOfQuery = dynamicControl[9]
-  const FakeFactor = dynamicControl[10]
-  const FakeNewsType = dynamicControl[11]
+  const TypeOfQuery =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[9]
+  const FakeFactor =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[10]
+  const FakeNewsType =
+    dynamicControl !== undefined &&
+    dynamicControl.length > 0 &&
+    dynamicControl[11]
 
   const selsPendingWith: any =
     PendingWith.lookup_data !== undefined &&
