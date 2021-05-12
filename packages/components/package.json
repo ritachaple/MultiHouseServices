@@ -40,7 +40,8 @@
     "react-beautiful-dnd": "*",
     "styled-components": "*",
     "react-top-loading-bar": "*",
-    "lodash": "*"
+    "lodash": "*",
+    "multiselect-react-dropdown":"*"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168"
